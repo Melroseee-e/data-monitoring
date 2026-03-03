@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On-Chain Exchange Flow Monitor</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+  :root {
+    --bg: #faf9f5;
+    --bg-card: #ffffff;
+    --text: #141413;
+    --text-secondary: #5a5a58;
+    --accent: #d97757;
+    --accent-light: #f0c4b3;
+    --border: #e8e6e1;
+    --inflow: #d97757;
+    --outflow: #5b8a72;
+    --net-positive: #d97757;
+    --net-negative: #5b8a72;
+    --alert-bg: #fff3ed;
+    --alert-border: #d97757;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+  h2 { font-size: 17px; font-weight: 600; margin-bottom: 16px; }
+
+  .timestamp { font-size: 13px; color: var(--text-secondary); }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  .tab-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .filter-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .filter-group select {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-card);
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    min-width: 140px;
+  }
+
+  /* Summary cards */
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .summary-card .label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .summary-card .value {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .summary-card .value.positive { color: var(--net-positive); }
+  .summary-card .value.negative { color: var(--net-negative); }
+
+  /* Alert badge */
+  .alert-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--alert-bg);
+    border: 1px solid var(--alert-border);
+    color: var(--accent);
+    margin-left: 8px;
+    font-weight: 500;
+  }
+
+  /* Token cards */
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+    gap: 16px;
+  }
+  .token-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .token-card.alert {
+    border-color: var(--alert-border);
+    box-shadow: 0 0 0 1px var(--alert-border);
+  }
+  .token-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .token-name { font-size: 17px; font-weight: 600; }
+  .token-chain {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .token-net { font-size: 14px; font-weight: 500; }
+  .chart-container {
+    position: relative;
+    height: 220px;
+    margin-bottom: 12px;
+  }
+
+  /* Tables */
+  .exchange-table, .ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .exchange-table th, .ranking-table th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--text-secondary);
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .exchange-table td, .ranking-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .exchange-table tr:last-child td, .ranking-table tr:last-child td {
+    border-bottom: none;
+  }
+  .ranking-table td.positive { color: var(--net-positive); font-weight: 500; }
+  .ranking-table td.negative { color: var(--net-negative); font-weight: 500; }
+
+  /* Section cards */
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* Sankey */
+  #sankey-chart { width: 100%; min-height: 400px; }
+
+  /* Trend chart */
+  .trend-chart-container { position: relative; height: 300px; }
+
+  .no-data {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 40px 20px;
+    font-size: 14px;
+  }
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 600px) {
+    .token-grid { grid-template-columns: 1fr; }
+    .summary-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>On-Chain Exchange Flow Monitor</h1>
+    <span class="timestamp" id="timestamp">Loading...</span>
+  </header>
+
+  <div class="filters">
+    <div class="filter-group">
+      <label>Token</label>
+      <select id="filter-token"><option value="all">All Tokens</option></select>
+    </div>
+    <div class="filter-group">
+      <label>Exchange</label>
+      <select id="filter-exchange"><option value="all">All Exchanges</option></select>
+    </div>
+  </div>
+
+  <div class="summary-row" id="summary-row"></div>
+
+  <!-- Tab navigation -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="sankey">Flow Diagram</button>
+    <button class="tab-btn" data-tab="trend">Trend</button>
+    <button class="tab-btn" data-tab="ranking">Exchange Ranking</button>
+  </div>
+
+  <!-- Overview tab -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="token-grid" id="token-grid">
+      <div class="loading">Loading data...</div>
+    </div>
+  </div>
+
+  <!-- Sankey tab -->
+  <div class="tab-panel" id="tab-sankey">
+    <div class="section-card">
+      <h2>Token ↔ Exchange Flow</h2>
+      <div id="sankey-chart"></div>
+    </div>
+  </div>
+
+  <!-- Trend tab -->
+  <div class="tab-panel" id="tab-trend">
+    <div class="section-card">
+      <h2>Historical Trend (Last 7 Days)</h2>
+      <div class="trend-chart-container">
+        <canvas id="trend-chart"></canvas>
+      </div>
+      <div id="trend-no-data" class="no-data" style="display:none">
+        No history data available yet. Data accumulates over time as the collector runs hourly.
+      </div>
+    </div>
+  </div>
+
+  <!-- Ranking tab -->
+  <div class="tab-panel" id="tab-ranking">
+    <div class="section-card">
+      <h2>Exchange Ranking (by Volume)</h2>
+      <table class="ranking-table" id="ranking-table">
+        <thead>
+          <tr><th>#</th><th>Exchange</th><th>Inflow</th><th>Outflow</th><th>Net Flow</th><th>Txns</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA_URL = '../data/latest_data.json';
+const HISTORY_URL = '../data/history_summary.json';
+const ANOMALY_THRESHOLD = 1000000; // net flow threshold for alerts
+
+let rawData = null;
+let historyData = null;
+let trendChart = null;
+const chartInstances = {};
+
+// ── Tab switching ────────────────────────────────────────────────────
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Data loading ─────────────────────────────────────────────────────
+
+async function loadData() {
+  try {
+    const resp = await fetch(DATA_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    rawData = await resp.json();
+    populateFilters();
+    render();
+  } catch (e) {
+    document.getElementById('token-grid').innerHTML =
+      `<div class="no-data">Failed to load data. Run <code>python scripts/data_collector.py</code> first.<br><small>${e.message}</small></div>`;
+  }
+
+  // Load history (non-blocking)
+  try {
+    const hResp = await fetch(HISTORY_URL);
+    if (hResp.ok) {
+      historyData = await hResp.json();
+      renderTrendChart();
+    }
+  } catch (_) { /* history not available yet */ }
+}
+
+function populateFilters() {
+  const tokenSelect = document.getElementById('filter-token');
+  const exchangeSelect = document.getElementById('filter-exchange');
+
+  const tokens = Object.keys(rawData.tokens).sort();
+  tokens.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    tokenSelect.appendChild(opt);
+  });
+
+  const exchanges = new Set();
+  for (const token of Object.values(rawData.tokens)) {
+    for (const dep of token.deployments) {
+      for (const ex of Object.keys(dep.exchange_flows || {})) {
+        exchanges.add(ex);
+      }
+    }
+  }
+  [...exchanges].sort().forEach(ex => {
+    const opt = document.createElement('option');
+    opt.value = ex; opt.textContent = ex;
+    exchangeSelect.appendChild(opt);
+  });
+
+  tokenSelect.addEventListener('change', render);
+  exchangeSelect.addEventListener('change', render);
+}
+
+// ── Main render ──────────────────────────────────────────────────────
+
+function render() {
+  if (!rawData) return;
+
+  const tokenFilter = document.getElementById('filter-token').value;
+  const exchangeFilter = document.getElementById('filter-exchange').value;
+
+  document.getElementById('timestamp').textContent =
+    `Last updated: ${new Date(rawData.timestamp).toLocaleString()}`;
+
+  let totalInflow = 0, totalOutflow = 0;
+  const activeExchanges = new Set();
+  let activeTokens = 0;
+
+  const filteredTokens = {};
+  for (const [symbol, data] of Object.entries(rawData.tokens)) {
+    if (tokenFilter !== 'all' && tokenFilter !== symbol) continue;
+    activeTokens++;
+    const filteredDeployments = [];
+    for (const dep of data.deployments) {
+      const filteredFlows = {};
+      for (const [ex, flows] of Object.entries(dep.exchange_flows || {})) {
+        if (exchangeFilter !== 'all' && exchangeFilter !== ex) continue;
+        filteredFlows[ex] = flows;
+        totalInflow += flows.inflow;
+        totalOutflow += flows.outflow;
+        activeExchanges.add(ex);
+      }
+      filteredDeployments.push({ ...dep, exchange_flows: filteredFlows });
+    }
+    filteredTokens[symbol] = { ...data, deployments: filteredDeployments };
+  }
+
+  // Summary cards
+  const netFlow = totalInflow - totalOutflow;
+  document.getElementById('summary-row').innerHTML = `
+    <div class="summary-card">
+      <div class="label">Total Inflow</div>
+      <div class="value positive">${formatNumber(totalInflow)}</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Total Outflow</div>
+      <div class="value negative">${formatNumber(totalOutflow)}</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Net Flow</div>
+      <div class="value ${netFlow >= 0 ? 'positive' : 'negative'}">${netFlow >= 0 ? '+' : ''}${formatNumber(netFlow)}</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Tracking</div>
+      <div class="value">${activeTokens} tokens / ${activeExchanges.size} CEX</div>
+    </div>
+  `;
+
+  renderTokenCards(filteredTokens);
+  renderSankeyChart(filteredTokens);
+  renderExchangeRanking(filteredTokens);
+}
+
+// ── Token cards ──────────────────────────────────────────────────────
+
+function renderTokenCards(filteredTokens) {
+  const grid = document.getElementById('token-grid');
+  grid.innerHTML = '';
+
+  // Destroy old chart instances
+  for (const key in chartInstances) {
+    chartInstances[key].destroy();
+    delete chartInstances[key];
+  }
+
+  for (const [symbol, data] of Object.entries(filteredTokens)) {
+    for (const dep of data.deployments) {
+      const flows = dep.exchange_flows;
+      const exchangeNames = Object.keys(flows);
+      if (exchangeNames.length === 0) continue;
+
+      const card = document.createElement('div');
+      card.className = 'token-card';
+
+      const depNetFlow = exchangeNames.reduce((s, ex) => s + flows[ex].net_flow, 0);
+      const isAnomaly = Math.abs(depNetFlow) > ANOMALY_THRESHOLD;
+      if (isAnomaly) card.classList.add('alert');
+
+      const chartId = `chart-${symbol}-${dep.chain}`;
+      card.innerHTML = `
+        <div class="token-card-header">
+          <div>
+            <span class="token-name">${symbol}</span>
+            <span class="token-chain">${dep.chain}</span>
+            ${isAnomaly ? '<span class="alert-badge">Unusual Flow</span>' : ''}
+          </div>
+          <span class="token-net" style="color: ${depNetFlow >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'}">
+            Net: ${depNetFlow >= 0 ? '+' : ''}${formatNumber(depNetFlow)}
+          </span>
+        </div>
+        <div class="chart-container"><canvas id="${chartId}"></canvas></div>
+        <table class="exchange-table">
+          <thead><tr><th>Exchange</th><th>Inflow</th><th>Outflow</th><th>Net</th><th>Txns</th></tr></thead>
+          <tbody>
+            ${exchangeNames.map(ex => {
+              const f = flows[ex];
+              return `<tr>
+                <td>${ex}</td>
+                <td style="color:var(--inflow)">${formatNumber(f.inflow)}</td>
+                <td style="color:var(--outflow)">${formatNumber(f.outflow)}</td>
+                <td style="color:${f.net_flow >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'}">${f.net_flow >= 0 ? '+' : ''}${formatNumber(f.net_flow)}</td>
+                <td>${f.inflow_tx_count + f.outflow_tx_count}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+      grid.appendChild(card);
+
+      const ctx = document.getElementById(chartId).getContext('2d');
+      chartInstances[chartId] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: exchangeNames,
+          datasets: [
+            { label: 'Inflow', data: exchangeNames.map(ex => flows[ex].inflow), backgroundColor: 'rgba(217,119,87,0.7)', borderColor: 'rgba(217,119,87,1)', borderWidth: 1 },
+            { label: 'Outflow', data: exchangeNames.map(ex => flows[ex].outflow), backgroundColor: 'rgba(91,138,114,0.7)', borderColor: 'rgba(91,138,114,1)', borderWidth: 1 },
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'top', labels: { font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 } } },
+            x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          }
+        }
+      });
+    }
+  }
+
+  if (grid.children.length === 0) {
+    grid.innerHTML = '<div class="no-data">No exchange flow data for the selected filters.</div>';
+  }
+}
+
+// ── Sankey chart ─────────────────────────────────────────────────────
+
+function renderSankeyChart(filteredTokens) {
+  const nodeLabels = [];
+  const nodeColors = [];
+  const linkSources = [];
+  const linkTargets = [];
+  const linkValues = [];
+  const linkColors = [];
+
+  const nodeIndex = {};
+  function getNodeIdx(label, color) {
+    if (!(label in nodeIndex)) {
+      nodeIndex[label] = nodeLabels.length;
+      nodeLabels.push(label);
+      nodeColors.push(color);
+    }
+    return nodeIndex[label];
+  }
+
+  for (const [token, tdata] of Object.entries(filteredTokens)) {
+    for (const dep of tdata.deployments) {
+      const tokenLabel = dep.chain === tdata.deployments[0]?.chain && tdata.deployments.length === 1
+        ? token
+        : `${token} (${dep.chain})`;
+      const tokenIdx = getNodeIdx(tokenLabel, '#d97757');
+
+      for (const [exchange, flows] of Object.entries(dep.exchange_flows)) {
+        const exIdx = getNodeIdx(exchange, '#5b8a72');
+
+        if (flows.inflow > 0) {
+          linkSources.push(tokenIdx);
+          linkTargets.push(exIdx);
+          linkValues.push(flows.inflow);
+          linkColors.push('rgba(217,119,87,0.35)');
+        }
+        if (flows.outflow > 0) {
+          linkSources.push(exIdx);
+          linkTargets.push(tokenIdx);
+          linkValues.push(flows.outflow);
+          linkColors.push('rgba(91,138,114,0.35)');
+        }
+      }
+    }
+  }
+
+  if (linkValues.length === 0) {
+    document.getElementById('sankey-chart').innerHTML =
+      '<div class="no-data">No flow data available for Sankey diagram.</div>';
+    return;
+  }
+
+  Plotly.newPlot('sankey-chart', [{
+    type: 'sankey',
+    node: {
+      pad: 15, thickness: 20,
+      line: { color: 'white', width: 0.5 },
+      label: nodeLabels,
+      color: nodeColors,
+    },
+    link: {
+      source: linkSources,
+      target: linkTargets,
+      value: linkValues,
+      color: linkColors,
+    }
+  }], {
+    font: { size: 12, family: '-apple-system, BlinkMacSystemFont, Inter, sans-serif' },
+    paper_bgcolor: 'transparent',
+    margin: { l: 10, r: 10, t: 10, b: 10 },
+  }, { responsive: true });
+}
+
+// ── Trend chart ──────────────────────────────────────────────────────
+
+function renderTrendChart() {
+  if (!historyData || historyData.length === 0) {
+    document.getElementById('trend-no-data').style.display = 'block';
+    return;
+  }
+  document.getElementById('trend-no-data').style.display = 'none';
+
+  const tokenFilter = document.getElementById('filter-token').value;
+  const labels = [];
+  const inflowData = [];
+  const outflowData = [];
+  const netData = [];
+
+  for (const entry of historyData) {
+    labels.push(new Date(entry.timestamp).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }));
+    let inflow = 0, outflow = 0;
+    for (const [symbol, tdata] of Object.entries(entry.tokens || {})) {
+      if (tokenFilter !== 'all' && tokenFilter !== symbol) continue;
+      inflow += tdata.total_inflow || 0;
+      outflow += tdata.total_outflow || 0;
+    }
+    inflowData.push(inflow);
+    outflowData.push(outflow);
+    netData.push(inflow - outflow);
+  }
+
+  const ctx = document.getElementById('trend-chart').getContext('2d');
+  if (trendChart) trendChart.destroy();
+
+  trendChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Inflow', data: inflowData, borderColor: '#d97757', backgroundColor: 'rgba(217,119,87,0.1)', fill: true, tension: 0.3, pointRadius: 2 },
+        { label: 'Outflow', data: outflowData, borderColor: '#5b8a72', backgroundColor: 'rgba(91,138,114,0.1)', fill: true, tension: 0.3, pointRadius: 2 },
+        { label: 'Net', data: netData, borderColor: '#888', borderDash: [5, 5], tension: 0.3, pointRadius: 0 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } } },
+      scales: {
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 12 } },
+      },
+      interaction: { mode: 'index', intersect: false },
+    }
+  });
+}
+
+// ── Exchange ranking ─────────────────────────────────────────────────
+
+function renderExchangeRanking(filteredTokens) {
+  const rankings = {};
+
+  for (const tdata of Object.values(filteredTokens)) {
+    for (const dep of tdata.deployments) {
+      for (const [exchange, flows] of Object.entries(dep.exchange_flows)) {
+        if (!rankings[exchange]) {
+          rankings[exchange] = { inflow: 0, outflow: 0, txns: 0 };
+        }
+        rankings[exchange].inflow += flows.inflow;
+        rankings[exchange].outflow += flows.outflow;
+        rankings[exchange].txns += flows.inflow_tx_count + flows.outflow_tx_count;
+      }
+    }
+  }
+
+  const sorted = Object.entries(rankings)
+    .map(([ex, r]) => ({ exchange: ex, ...r, net: r.inflow - r.outflow, volume: r.inflow + r.outflow }))
+    .sort((a, b) => b.volume - a.volume);
+
+  const tbody = document.querySelector('#ranking-table tbody');
+  if (sorted.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="no-data">No data available</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = sorted.slice(0, 20).map((r, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${r.exchange}</td>
+      <td style="color:var(--inflow)">${formatNumber(r.inflow)}</td>
+      <td style="color:var(--outflow)">${formatNumber(r.outflow)}</td>
+      <td class="${r.net >= 0 ? 'positive' : 'negative'}">${r.net >= 0 ? '+' : ''}${formatNumber(r.net)}</td>
+      <td>${r.txns}</td>
+    </tr>
+  `).join('');
+}
+
+// ── Utils ────────────────────────────────────────────────────────────
+
+function formatNumber(n) {
+  if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+  if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(2) + 'K';
+  return n.toFixed(2);
+}
+
+loadData();
+</script>
+</body>
+</html>
