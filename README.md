@@ -12,7 +12,7 @@
 
 ## 在线访问
 
-🌐 **[查看实时数据](https://YOUR_USERNAME.github.io/data-monitoring/)**
+🌐 **[查看实时数据](https://melroseee-e.github.io/data-monitoring/)**
 
 ## 本地运行
 
