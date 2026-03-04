@@ -1,0 +1,140 @@
+{
+  "metadata": {
+    "created": "2026-03-04",
+    "strategy": "Hybrid: exchange_first_transfer > contract_deployment > news_tge",
+    "description": "Final TGE configuration using on-chain verified data where available"
+  },
+  "tokens": {
+    "AZTEC": {
+      "final_tge": {
+        "date": "2025-07-01",
+        "block": 22823299,
+        "chain": "ethereum",
+        "source": "contract_deployment"
+      },
+      "data_sources": {
+        "contract_deployment": {
+          "date": "2025-07-01",
+          "block": 22823299,
+          "tx_hash": "0x52140fb3c22e868c79b2f710e0ad900812b73fb4cc2c6c164f2b22e7dd212fd9"
+        },
+        "news_tge": {
+          "date": "2026-02-12"
+        },
+        "exchange_first_transfer": null
+      }
+    },
+    "UAI": {
+      "final_tge": {
+        "date": "2025-11-06",
+        "block": 43500000,
+        "chain": "bsc",
+        "source": "news_tge"
+      },
+      "data_sources": {
+        "contract_deployment": null,
+        "news_tge": {
+          "date": "2025-11-06"
+        },
+        "exchange_first_transfer": null
+      }
+    },
+    "SPACE": {
+      "final_tge": {
+        "date": "2026-01-29",
+        "block": 24340673,
+        "chain": "ethereum",
+        "source": "exchange_first_transfer"
+      },
+      "data_sources": {
+        "contract_deployment": {
+          "date": "2025-09-24",
+          "block": 23436064,
+          "tx_hash": "0x3a6212b7ca0014cec8f2e73c033c08af27de2d328ee6cd0d4d642caa74cab6f5"
+        },
+        "news_tge": {
+          "date": "2026-01-23"
+        },
+        "exchange_first_transfer": {
+          "date": "2026-01-29",
+          "block": 24340673,
+          "tx_hash": "0x6b56000fa30863d77c4fa31c0ae39fa4d16f516e0d0216fd5f9ba518048ef0d6",
+          "exchange_address": "0x03a5f7ee6b93342675f97902dc94eca27679feed"
+        }
+      }
+    },
+    "GWEI": {
+      "final_tge": {
+        "date": "2026-02-05",
+        "block": 24389809,
+        "chain": "ethereum",
+        "source": "exchange_first_transfer"
+      },
+      "data_sources": {
+        "contract_deployment": {
+          "date": "2026-01-09",
+          "block": 24195727,
+          "tx_hash": "0x39250017db2bf5956fdce60dfd43bae91dfd8a18faf103274cb3d7e503f41ecb"
+        },
+        "news_tge": {
+          "date": "2026-01-21"
+        },
+        "exchange_first_transfer": {
+          "date": "2026-02-05",
+          "block": 24389809,
+          "tx_hash": "0xfc418dbc13caf97684684df2fd49711a6dcf0a17b8ace15fd2017ba36a15a902",
+          "exchange_address": "0x9ba9beb3e7b83714b5c121d3ef9cee5a2f9396e9"
+        }
+      }
+    },
+    "TRIA": {
+      "final_tge": {
+        "date": "2026-01-16",
+        "block": 24249417,
+        "chain": "ethereum",
+        "source": "contract_deployment"
+      },
+      "data_sources": {
+        "contract_deployment": {
+          "date": "2026-01-16",
+          "block": 24249417,
+          "tx_hash": "0x6eac543c106255311eeb9f86a1b7ced10ae732f0874bbdf488d72ef8666192c6"
+        },
+        "news_tge": {
+          "date": "2026-02-03"
+        },
+        "exchange_first_transfer": null
+      }
+    },
+    "SKR": {
+      "final_tge": {
+        "date": "2026-01-21",
+        "block": null,
+        "chain": "solana",
+        "source": "news_tge"
+      },
+      "data_sources": {
+        "contract_deployment": null,
+        "news_tge": {
+          "date": "2026-01-21"
+        },
+        "exchange_first_transfer": null
+      }
+    },
+    "BIRB": {
+      "final_tge": {
+        "date": "2026-01-28",
+        "block": null,
+        "chain": "solana",
+        "source": "news_tge"
+      },
+      "data_sources": {
+        "contract_deployment": null,
+        "news_tge": {
+          "date": "2026-01-28"
+        },
+        "exchange_first_transfer": null
+      }
+    }
+  }
+}

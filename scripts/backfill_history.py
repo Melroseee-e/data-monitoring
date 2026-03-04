@@ -27,14 +27,27 @@ HELIUS_RPC = "https://mainnet.helius-rpc.com/?api-key={api_key}"
 
 TRANSFER_EVENT_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
 
-# TGE block numbers
+# TGE block numbers (using hybrid strategy: exchange first transfer > contract deployment > news TGE)
 TGE_BLOCKS = {
+    # AZTEC: Contract deployment (2025-07-01) - no exchange first transfer found
     "AZTEC": {"ethereum": 22823299, "date": "2025-07-01"},
+
+    # UAI: News TGE (2025-11-06) - no on-chain data available
     "UAI": {"bsc": 43500000, "date": "2025-11-06"},
-    "SPACE": {"ethereum": 23436064, "bsc": 44800000, "date": "2026-01-23"},
-    "GWEI": {"ethereum": 24195727, "date": "2026-01-21"},
-    "TRIA": {"ethereum": 24249417, "bsc": 45200000, "date": "2026-02-03"},
+
+    # SPACE: Exchange first transfer (2026-01-29) - most accurate
+    "SPACE": {"ethereum": 24340673, "bsc": 44800000, "date": "2026-01-29"},
+
+    # GWEI: Exchange first transfer (2026-02-05) - most accurate
+    "GWEI": {"ethereum": 24389809, "date": "2026-02-05"},
+
+    # TRIA: Contract deployment (2026-01-16) - no exchange first transfer found
+    "TRIA": {"ethereum": 24249417, "bsc": 45200000, "date": "2026-01-16"},
+
+    # SKR: News TGE (2026-01-21) - Solana, no on-chain data available
     "SKR": {"solana": None, "date": "2026-01-21"},
+
+    # BIRB: News TGE (2026-01-28) - Solana, no on-chain data available
     "BIRB": {"solana": None, "date": "2026-01-28"}
 }
 
