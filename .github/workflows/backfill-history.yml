@@ -20,6 +20,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: backfill-data
+  cancel-in-progress: false
+
 jobs:
   backfill:
     runs-on: ubuntu-latest
