@@ -1,0 +1,320 @@
+#!/usr/bin/env python3
+"""
+Historical data backfill script - fetches token transfers from TGE to present.
+"""
+
+import json
+import os
+import sys
+import time
+from datetime import datetime, timezone, timedelta
+from pathlib import Path
+from collections import defaultdict
+
+import requests
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
+TOKENS_FILE = BASE_DIR / "data" / "tokens.json"
+EXCHANGES_FILE = BASE_DIR / "data" / "exchange_addresses_normalized.json"
+HISTORY_DIR = BASE_DIR / "data" / "history"
+
+ETHERSCAN_API = "https://api.etherscan.io/v2/api"
+BSCTRACE_RPC = "https://bsc-mainnet.nodereal.io/v1/{api_key}"
+HELIUS_RPC = "https://mainnet.helius-rpc.com/?api-key={api_key}"
+
+TRANSFER_EVENT_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+
+# TGE block numbers
+TGE_BLOCKS = {
+    "AZTEC": {"ethereum": 22823299, "date": "2025-07-01"},
+    "UAI": {"bsc": 43500000, "date": "2025-11-06"},
+    "SPACE": {"ethereum": 23436064, "bsc": 44800000, "date": "2026-01-23"},
+    "GWEI": {"ethereum": 24195727, "date": "2026-01-21"},
+    "TRIA": {"ethereum": 24249417, "bsc": 45200000, "date": "2026-02-03"},
+    "SKR": {"solana": None, "date": "2026-01-21"},
+    "BIRB": {"solana": None, "date": "2026-01-28"}
+}
+
+def load_exchange_lookup(exchanges_data):
+    lookup = defaultdict(dict)
+    for exchange_name, chains in exchanges_data.items():
+        for chain, addresses in chains.items():
+            for addr in addresses:
+                lookup[chain][addr.lower()] = exchange_name
+    return dict(lookup)
+
+def get_current_block_eth(api_key):
+    params = {"chainid": "1", "module": "proxy", "action": "eth_blockNumber", "apikey": api_key}
+    resp = requests.get(ETHERSCAN_API, params=params, timeout=15)
+    return int(resp.json()["result"], 16)
+
+def get_current_block_bsc(api_key):
+    rpc = BSCTRACE_RPC.format(api_key=api_key)
+    payload = {"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1}
+    resp = requests.post(rpc, json=payload, timeout=15)
+    return int(resp.json()["result"], 16)
+
+def fetch_eth_transfers_range(api_key, contract, start_block, end_block):
+    params = {
+        "chainid": "1", "module": "account", "action": "tokentx",
+        "contractaddress": contract, "startblock": start_block,
+        "endblock": end_block, "sort": "asc", "apikey": api_key
+    }
+    resp = requests.get(ETHERSCAN_API, params=params, timeout=30)
+    data = resp.json()
+    return data.get("result", []) if data.get("status") == "1" else []
+
+def fetch_bsc_transfers_range(api_key, contract, start_block, end_block):
+    rpc = BSCTRACE_RPC.format(api_key=api_key)
+    payload = {
+        "jsonrpc": "2.0", "method": "eth_getLogs", "id": 1,
+        "params": [{
+            "fromBlock": hex(start_block), "toBlock": hex(end_block),
+            "address": contract, "topics": [TRANSFER_EVENT_TOPIC]
+        }]
+    }
+    resp = requests.post(rpc, json=payload, timeout=30)
+    return resp.json().get("result", [])
+
+def process_eth_transfers(transfers, exchange_lookup, decimals=18):
+    flows = defaultdict(lambda: {"inflow": 0, "outflow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0})
+    for tx in transfers:
+        from_addr = tx.get("from", "").lower()
+        to_addr = tx.get("to", "").lower()
+        value = float(tx.get("value", 0)) / (10 ** decimals)
+
+        if from_addr in exchange_lookup:
+            flows[exchange_lookup[from_addr]]["outflow"] += value
+            flows[exchange_lookup[from_addr]]["outflow_tx_count"] += 1
+        if to_addr in exchange_lookup:
+            flows[exchange_lookup[to_addr]]["inflow"] += value
+            flows[exchange_lookup[to_addr]]["inflow_tx_count"] += 1
+
+    for ex in flows:
+        flows[ex]["net_flow"] = flows[ex]["inflow"] - flows[ex]["outflow"]
+    return dict(flows)
+
+def process_bsc_transfers(logs, exchange_lookup, decimals=18):
+    flows = defaultdict(lambda: {"inflow": 0, "outflow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0})
+    for log in logs:
+        topics = log.get("topics", [])
+        if len(topics) < 3:
+            continue
+        from_addr = "0x" + topics[1][-40:]
+        to_addr = "0x" + topics[2][-40:]
+        value = int(log.get("data", "0x0"), 16) / (10 ** decimals)
+
+        if from_addr.lower() in exchange_lookup:
+            flows[exchange_lookup[from_addr.lower()]]["outflow"] += value
+            flows[exchange_lookup[from_addr.lower()]]["outflow_tx_count"] += 1
+        if to_addr.lower() in exchange_lookup:
+            flows[exchange_lookup[to_addr.lower()]]["inflow"] += value
+            flows[exchange_lookup[to_addr.lower()]]["inflow_tx_count"] += 1
+
+    for ex in flows:
+        flows[ex]["net_flow"] = flows[ex]["inflow"] - flows[ex]["outflow"]
+    return dict(flows)
+
+def aggregate_by_hour(transfers_by_timestamp, token_name, chain, contract, exchange_flows):
+    """Group transfers into hourly snapshots."""
+    hourly_data = {}
+    for ts_str, flows in exchange_flows.items():
+        dt = datetime.fromisoformat(ts_str.replace('Z', '+00:00'))
+        hour_key = dt.replace(minute=0, second=0, microsecond=0).isoformat().replace('+00:00', 'Z')
+
+        if hour_key not in hourly_data:
+            hourly_data[hour_key] = {}
+
+        for exchange, flow_data in flows.items():
+            if exchange not in hourly_data[hour_key]:
+                hourly_data[hour_key][exchange] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
+            hourly_data[hour_key][exchange]["inflow"] += flow_data["inflow"]
+            hourly_data[hour_key][exchange]["outflow"] += flow_data["outflow"]
+            hourly_data[hour_key][exchange]["net_flow"] += flow_data["net_flow"]
+            hourly_data[hour_key][exchange]["inflow_tx_count"] += flow_data["inflow_tx_count"]
+            hourly_data[hour_key][exchange]["outflow_tx_count"] += flow_data["outflow_tx_count"]
+
+    return hourly_data
+
+def write_to_jsonl(hourly_data, token_name, chain, contract):
+    """Write hourly snapshots to daily JSONL files."""
+    by_date = defaultdict(list)
+    for hour_ts, flows in sorted(hourly_data.items()):
+        dt = datetime.fromisoformat(hour_ts.replace('Z', '+00:00'))
+        date_key = dt.strftime('%Y-%m-%d')
+
+        total_inflow = sum(f["inflow"] for f in flows.values())
+        total_outflow = sum(f["outflow"] for f in flows.values())
+
+        snapshot = {
+            "timestamp": hour_ts,
+            "lookback_seconds": 3600,
+            "tokens": {
+                token_name: {
+                    "deployments": [{
+                        "chain": chain,
+                        "contract": contract,
+                        "exchange_flows": flows
+                    }],
+                    "total_inflow": total_inflow,
+                    "total_outflow": total_outflow,
+                    "net_flow": total_inflow - total_outflow
+                }
+            }
+        }
+        by_date[date_key].append(snapshot)
+
+    for date_key, snapshots in by_date.items():
+        file_path = HISTORY_DIR / f"{date_key}.jsonl"
+        mode = 'a' if file_path.exists() else 'w'
+        with open(file_path, mode) as f:
+            for snap in snapshots:
+                f.write(json.dumps(snap) + '\n')
+        print(f"    Wrote {len(snapshots)} snapshots to {date_key}.jsonl")
+
+def backfill_token(token_name, deployments, exchange_lookup, api_keys):
+    print(f"\n=== Backfilling {token_name} ===")
+    tge_info = TGE_BLOCKS.get(token_name, {})
+
+    for deployment in deployments:
+        chain = deployment["chain"]
+        contract = deployment["contract"]
+
+        if chain == "solana":
+            print(f"  Skipping Solana ({contract}) - requires different approach")
+            continue
+
+        start_block = tge_info.get(chain)
+        if not start_block:
+            print(f"  No TGE block for {chain}, skipping")
+            continue
+
+        all_transfers = []
+
+        if chain == "ethereum":
+            api_key = api_keys.get("eth")
+            if not api_key:
+                continue
+            current_block = get_current_block_eth(api_key)
+            print(f"  ETH: {contract} from block {start_block} to {current_block}")
+
+            block_range = 10000
+            for block in range(start_block, current_block, block_range):
+                end = min(block + block_range - 1, current_block)
+                print(f"    Fetching blocks {block}-{end}...")
+                transfers = fetch_eth_transfers_range(api_key, contract, block, end)
+                all_transfers.extend(transfers)
+                print(f"      Got {len(transfers)} transfers")
+                time.sleep(0.2)
+
+            exchange_flows = {}
+            for tx in all_transfers:
+                ts = datetime.fromtimestamp(int(tx.get("timeStamp", 0)), tz=timezone.utc).isoformat().replace('+00:00', 'Z')
+                if ts not in exchange_flows:
+                    exchange_flows[ts] = {}
+
+                from_addr = tx.get("from", "").lower()
+                to_addr = tx.get("to", "").lower()
+                value = float(tx.get("value", 0)) / 1e18
+
+                if from_addr in exchange_lookup.get("ethereum", {}):
+                    ex = exchange_lookup["ethereum"][from_addr]
+                    if ex not in exchange_flows[ts]:
+                        exchange_flows[ts][ex] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
+                    exchange_flows[ts][ex]["outflow"] += value
+                    exchange_flows[ts][ex]["outflow_tx_count"] += 1
+
+                if to_addr in exchange_lookup.get("ethereum", {}):
+                    ex = exchange_lookup["ethereum"][to_addr]
+                    if ex not in exchange_flows[ts]:
+                        exchange_flows[ts][ex] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
+                    exchange_flows[ts][ex]["inflow"] += value
+                    exchange_flows[ts][ex]["inflow_tx_count"] += 1
+
+            for ts in exchange_flows:
+                for ex in exchange_flows[ts]:
+                    exchange_flows[ts][ex]["net_flow"] = exchange_flows[ts][ex]["inflow"] - exchange_flows[ts][ex]["outflow"]
+
+            hourly_data = aggregate_by_hour(all_transfers, token_name, chain, contract, exchange_flows)
+            write_to_jsonl(hourly_data, token_name, chain, contract)
+
+        elif chain == "bsc":
+            api_key = api_keys.get("bsc")
+            if not api_key:
+                continue
+            current_block = get_current_block_bsc(api_key)
+            print(f"  BSC: {contract} from block {start_block} to {current_block}")
+
+            block_range = 5000
+            all_logs = []
+            for block in range(start_block, current_block, block_range):
+                end = min(block + block_range - 1, current_block)
+                print(f"    Fetching blocks {block}-{end}...")
+                logs = fetch_bsc_transfers_range(api_key, contract, block, end)
+                all_logs.extend(logs)
+                print(f"      Got {len(logs)} logs")
+                time.sleep(0.2)
+
+            exchange_flows = {}
+            for log in all_logs:
+                block_num = int(log.get("blockNumber", "0x0"), 16)
+                ts = datetime.fromtimestamp(block_num * 3, tz=timezone.utc).isoformat().replace('+00:00', 'Z')
+
+                topics = log.get("topics", [])
+                if len(topics) < 3:
+                    continue
+
+                from_addr = "0x" + topics[1][-40:]
+                to_addr = "0x" + topics[2][-40:]
+                value = int(log.get("data", "0x0"), 16) / 1e18
+
+                if ts not in exchange_flows:
+                    exchange_flows[ts] = {}
+
+                if from_addr.lower() in exchange_lookup.get("bsc", {}):
+                    ex = exchange_lookup["bsc"][from_addr.lower()]
+                    if ex not in exchange_flows[ts]:
+                        exchange_flows[ts][ex] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
+                    exchange_flows[ts][ex]["outflow"] += value
+                    exchange_flows[ts][ex]["outflow_tx_count"] += 1
+
+                if to_addr.lower() in exchange_lookup.get("bsc", {}):
+                    ex = exchange_lookup["bsc"][to_addr.lower()]
+                    if ex not in exchange_flows[ts]:
+                        exchange_flows[ts][ex] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
+                    exchange_flows[ts][ex]["inflow"] += value
+                    exchange_flows[ts][ex]["inflow_tx_count"] += 1
+
+            for ts in exchange_flows:
+                for ex in exchange_flows[ts]:
+                    exchange_flows[ts][ex]["net_flow"] = exchange_flows[ts][ex]["inflow"] - exchange_flows[ts][ex]["outflow"]
+
+            hourly_data = aggregate_by_hour(all_logs, token_name, chain, contract, exchange_flows)
+            write_to_jsonl(hourly_data, token_name, chain, contract)
+
+def main():
+    HISTORY_DIR.mkdir(exist_ok=True)
+
+    with open(TOKENS_FILE) as f:
+        tokens = json.load(f)
+    with open(EXCHANGES_FILE) as f:
+        exchanges = json.load(f)
+
+    exchange_lookup = load_exchange_lookup(exchanges)
+
+    api_keys = {
+        "eth": os.getenv("ETHERSCAN_API_KEY", ""),
+        "bsc": os.getenv("BSCTrace_API_KEY", ""),
+        "helius": os.getenv("HELIUS_API_KEY", "")
+    }
+
+    for token_name, deployments in tokens.items():
+        backfill_token(token_name, deployments, exchange_lookup, api_keys)
+
+    print("\n✓ Backfill complete")
+
+if __name__ == "__main__":
+    main()

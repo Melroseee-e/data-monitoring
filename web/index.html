@@ -228,6 +228,72 @@
   /* Trend chart */
   .trend-chart-container { position: relative; height: 300px; }
 
+  /* Daily tab */
+  .scheme-switcher { display: flex; gap: 8px; }
+  .scheme-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .scheme-btn:hover { background: var(--bg); }
+  .scheme-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* Animation switcher */
+  .animation-switcher { display: flex; gap: 8px; }
+  .anim-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .anim-btn:hover { background: var(--bg); }
+  .anim-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  @keyframes flowAnimation {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -20; }
+  }
+  @keyframes pulseAnimation {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.02); }
+  }
+
+  .daily-scheme { min-height: 400px; }
+  .daily-heatmap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 20px 0; }
+  .heatmap-cell {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    border: 1px solid var(--border);
+    transition: transform 0.1s;
+  }
+  .heatmap-cell:hover { transform: scale(1.05); }
+  .daily-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .daily-table th { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; color: var(--text-secondary); }
+  .daily-table td { padding: 8px; border-bottom: 1px solid var(--border); }
+  .sparkline { width: 100px; height: 30px; }
+
   .no-data {
     text-align: center;
     color: var(--text-secondary);
@@ -272,6 +338,7 @@
     <button class="tab-btn" data-tab="sankey">Flow Diagram</button>
     <button class="tab-btn" data-tab="trend">Trend</button>
     <button class="tab-btn" data-tab="ranking">Exchange Ranking</button>
+    <button class="tab-btn" data-tab="daily">Daily</button>
   </div>
 
   <!-- Overview tab -->
@@ -284,8 +351,17 @@
   <!-- Sankey tab -->
   <div class="tab-panel" id="tab-sankey">
     <div class="section-card">
-      <h2>Token ↔ Exchange Flow</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h2>Token ↔ Exchange Flow</h2>
+        <div class="animation-switcher">
+          <button class="anim-btn" data-anim="off">Off</button>
+          <button class="anim-btn" data-anim="flow">Flow</button>
+          <button class="anim-btn" data-anim="pulse">Pulse</button>
+          <button class="anim-btn" data-anim="particle">Particle</button>
+        </div>
+      </div>
       <div id="sankey-chart"></div>
+      <canvas id="particle-canvas" style="position:absolute;pointer-events:none;display:none;"></canvas>
     </div>
   </div>
 
@@ -312,6 +388,23 @@
         </thead>
         <tbody></tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Daily tab -->
+  <div class="tab-panel" id="tab-daily">
+    <div class="section-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h2>Daily Summary</h2>
+        <div class="scheme-switcher">
+          <button class="scheme-btn active" data-scheme="A">Scheme A</button>
+          <button class="scheme-btn" data-scheme="B">Scheme B</button>
+          <button class="scheme-btn" data-scheme="C">Scheme C</button>
+        </div>
+      </div>
+      <div id="daily-scheme-a" class="daily-scheme active"></div>
+      <div id="daily-scheme-b" class="daily-scheme" style="display:none;"></div>
+      <div id="daily-scheme-c" class="daily-scheme" style="display:none;"></div>
     </div>
   </div>
 </div>
@@ -604,7 +697,136 @@ function renderSankeyChart(filteredTokens) {
     paper_bgcolor: 'transparent',
     margin: { l: 10, r: 10, t: 10, b: 10 },
   }, { responsive: true });
+
+  sankeyLinkData = { sources: linkSources, targets: linkTargets, values: linkValues };
 }
+
+// ── Sankey Animations ────────────────────────────────────────────────
+
+let sankeyLinkData = null;
+let currentAnimation = 'off';
+let particleSystem = null;
+
+function applyFlowAnimation() {
+  const paths = document.querySelectorAll('#sankey-chart .sankey-link path');
+  paths.forEach(path => {
+    path.style.strokeDasharray = '10 5';
+    path.style.animation = 'flowAnimation 2s linear infinite';
+  });
+}
+
+function applyPulseAnimation() {
+  const paths = document.querySelectorAll('#sankey-chart .sankey-link path');
+  paths.forEach(path => {
+    path.style.animation = 'pulseAnimation 1.5s ease-in-out infinite';
+  });
+}
+
+function clearAnimations() {
+  const paths = document.querySelectorAll('#sankey-chart .sankey-link path');
+  paths.forEach(path => {
+    path.style.animation = '';
+    path.style.strokeDasharray = '';
+  });
+  if (particleSystem) {
+    particleSystem.stop();
+    particleSystem = null;
+  }
+  document.getElementById('particle-canvas').style.display = 'none';
+}
+
+class ParticleSystem {
+  constructor() {
+    this.canvas = document.getElementById('particle-canvas');
+    this.ctx = this.canvas.getContext('2d');
+    this.particles = [];
+    this.running = false;
+    this.resize();
+  }
+
+  resize() {
+    const chart = document.getElementById('sankey-chart');
+    this.canvas.width = chart.offsetWidth;
+    this.canvas.height = chart.offsetHeight;
+    this.canvas.style.width = chart.offsetWidth + 'px';
+    this.canvas.style.height = chart.offsetHeight + 'px';
+    this.canvas.style.display = 'block';
+  }
+
+  start() {
+    this.running = true;
+    this.spawnParticles();
+    this.animate();
+  }
+
+  stop() {
+    this.running = false;
+    this.particles = [];
+  }
+
+  spawnParticles() {
+    if (!this.running || !sankeyLinkData) return;
+
+    for (let i = 0; i < 3; i++) {
+      const x = Math.random() * this.canvas.width * 0.3;
+      const y = Math.random() * this.canvas.height;
+      const targetX = this.canvas.width * (0.7 + Math.random() * 0.3);
+      const targetY = Math.random() * this.canvas.height;
+
+      this.particles.push({
+        x, y, targetX, targetY,
+        progress: 0,
+        color: Math.random() > 0.5 ? '#d97757' : '#5b8a72'
+      });
+    }
+
+    setTimeout(() => this.spawnParticles(), 500);
+  }
+
+  animate() {
+    if (!this.running) return;
+
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.particles = this.particles.filter(p => {
+      p.progress += 0.01;
+      if (p.progress > 1) return false;
+
+      const x = p.x + (p.targetX - p.x) * p.progress;
+      const y = p.y + (p.targetY - p.y) * p.progress;
+
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, 3, 0, Math.PI * 2);
+      this.ctx.fillStyle = p.color;
+      this.ctx.globalAlpha = 1 - p.progress;
+      this.ctx.fill();
+      this.ctx.globalAlpha = 1;
+
+      return true;
+    });
+
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+document.querySelectorAll('.anim-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.anim-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    clearAnimations();
+    currentAnimation = btn.dataset.anim;
+
+    setTimeout(() => {
+      if (currentAnimation === 'flow') applyFlowAnimation();
+      else if (currentAnimation === 'pulse') applyPulseAnimation();
+      else if (currentAnimation === 'particle') {
+        particleSystem = new ParticleSystem();
+        particleSystem.start();
+      }
+    }, 100);
+  });
+});
 
 // ── Trend chart ──────────────────────────────────────────────────────
 
@@ -708,7 +930,134 @@ function formatNumber(n) {
   return n.toFixed(2);
 }
 
+// ── Daily Tab ────────────────────────────────────────────────────────
+
+let dailyData = null;
+
+async function loadDailyData() {
+  try {
+    const files = await fetch('../data/history/').then(r => r.text()).catch(() => '');
+    const dates = [...files.matchAll(/(\d{4}-\d{2}-\d{2})\.jsonl/g)].map(m => m[1]).sort();
+
+    dailyData = {};
+    for (const date of dates.slice(-30)) {
+      const resp = await fetch(`../data/history/${date}.jsonl`);
+      const text = await resp.text();
+      const lines = text.trim().split('\n').filter(l => l);
+
+      let dayTotal = { inflow: 0, outflow: 0, hourly: [] };
+      for (const line of lines) {
+        const snap = JSON.parse(line);
+        let hourInflow = 0, hourOutflow = 0;
+        for (const token of Object.values(snap.tokens || {})) {
+          hourInflow += token.total_inflow || 0;
+          hourOutflow += token.total_outflow || 0;
+        }
+        dayTotal.inflow += hourInflow;
+        dayTotal.outflow += hourOutflow;
+        dayTotal.hourly.push({ ts: snap.timestamp, inflow: hourInflow, outflow: hourOutflow });
+      }
+      dailyData[date] = dayTotal;
+    }
+    renderDailySchemes();
+  } catch (e) {
+    console.error('Daily data load failed:', e);
+  }
+}
+
+function renderDailySchemes() {
+  if (!dailyData) return;
+  renderSchemeA();
+  renderSchemeB();
+  renderSchemeC();
+}
+
+function renderSchemeA() {
+  const container = document.getElementById('daily-scheme-a');
+  const dates = Object.keys(dailyData).sort();
+
+  let html = '<div class="daily-heatmap">';
+  for (const date of dates) {
+    const d = dailyData[date];
+    const net = d.inflow - d.outflow;
+    const intensity = Math.min(Math.abs(net) / 5000000, 1);
+    const color = net >= 0
+      ? `rgba(217, 119, 87, ${intensity})`
+      : `rgba(91, 138, 114, ${intensity})`;
+
+    html += `<div class="heatmap-cell" style="background:${color}" title="${date}: ${formatNumber(net)}">
+      ${date.slice(8)}
+    </div>`;
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderSchemeB() {
+  const container = document.getElementById('daily-scheme-b');
+  container.innerHTML = '<canvas id="daily-chart-b" style="max-height:400px"></canvas>';
+
+  const dates = Object.keys(dailyData).sort();
+  const dailyInflows = dates.map(d => dailyData[d].inflow);
+  const dailyOutflows = dates.map(d => dailyData[d].outflow);
+
+  new Chart(document.getElementById('daily-chart-b'), {
+    type: 'bar',
+    data: {
+      labels: dates.map(d => d.slice(5)),
+      datasets: [
+        { label: 'Daily Inflow', data: dailyInflows, backgroundColor: 'rgba(217,119,87,0.6)' },
+        { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: 'rgba(91,138,114,0.6)' }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+function renderSchemeC() {
+  const container = document.getElementById('daily-scheme-c');
+  const dates = Object.keys(dailyData).sort();
+
+  let html = '<table class="daily-table"><thead><tr><th>Date</th><th>Inflow</th><th>Outflow</th><th>Net</th><th>24h Chart</th></tr></thead><tbody>';
+
+  for (const date of dates) {
+    const d = dailyData[date];
+    const net = d.inflow - d.outflow;
+    const sparkId = `spark-${date}`;
+
+    html += `<tr>
+      <td>${date}</td>
+      <td style="color:var(--inflow)">${formatNumber(d.inflow)}</td>
+      <td style="color:var(--outflow)">${formatNumber(d.outflow)}</td>
+      <td class="${net >= 0 ? 'positive' : 'negative'}">${formatNumber(net)}</td>
+      <td><canvas id="${sparkId}" class="sparkline"></canvas></td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  container.innerHTML = html;
+
+  for (const date of dates) {
+    const canvas = document.getElementById(`spark-${date}`);
+    const hourly = dailyData[date].hourly.map(h => h.inflow - h.outflow);
+    new Chart(canvas, {
+      type: 'line',
+      data: { labels: hourly.map((_, i) => i), datasets: [{ data: hourly, borderColor: '#d97757', borderWidth: 1, pointRadius: 0 }] },
+      options: { responsive: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+    });
+  }
+}
+
+document.querySelectorAll('.scheme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.scheme-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.daily-scheme').forEach(s => s.style.display = 'none');
+    btn.classList.add('active');
+    document.getElementById(`daily-scheme-${btn.dataset.scheme.toLowerCase()}`).style.display = 'block';
+  });
+});
+
 loadData();
+loadDailyData();
 </script>
 </body>
 </html>
