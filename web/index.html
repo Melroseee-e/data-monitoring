@@ -224,28 +224,17 @@
 
   /* Sankey */
   #sankey-chart { width: 100%; min-height: 400px; }
+  .sankey-section { position: relative; overflow: hidden; }
+  #particle-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: none;
+    z-index: 2;
+  }
 
   /* Trend chart */
   .trend-chart-container { position: relative; height: 300px; }
-
-  /* Daily tab */
-  .scheme-switcher { display: flex; gap: 8px; }
-  .scheme-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-secondary);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .scheme-btn:hover { background: var(--bg); }
-  .scheme-btn.active {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-  }
 
   /* Animation switcher */
   .animation-switcher { display: flex; gap: 8px; }
@@ -338,7 +327,9 @@
     <button class="tab-btn" data-tab="sankey">Flow Diagram</button>
     <button class="tab-btn" data-tab="trend">Trend</button>
     <button class="tab-btn" data-tab="ranking">Exchange Ranking</button>
-    <button class="tab-btn" data-tab="daily">Daily</button>
+    <button class="tab-btn" data-tab="daily-heatmap">Daily Heatmap</button>
+    <button class="tab-btn" data-tab="daily-chart">Daily Chart</button>
+    <button class="tab-btn" data-tab="daily-table">Daily Table</button>
   </div>
 
   <!-- Overview tab -->
@@ -350,18 +341,18 @@
 
   <!-- Sankey tab -->
   <div class="tab-panel" id="tab-sankey">
-    <div class="section-card">
+    <div class="section-card sankey-section">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h2>Token ↔ Exchange Flow</h2>
         <div class="animation-switcher">
-          <button class="anim-btn" data-anim="off">Off</button>
+          <button class="anim-btn active" data-anim="off">Off</button>
           <button class="anim-btn" data-anim="flow">Flow</button>
           <button class="anim-btn" data-anim="pulse">Pulse</button>
           <button class="anim-btn" data-anim="particle">Particle</button>
         </div>
       </div>
       <div id="sankey-chart"></div>
-      <canvas id="particle-canvas" style="position:absolute;pointer-events:none;display:none;"></canvas>
+      <canvas id="particle-canvas"></canvas>
     </div>
   </div>
 
@@ -391,20 +382,27 @@
     </div>
   </div>
 
-  <!-- Daily tab -->
-  <div class="tab-panel" id="tab-daily">
+  <!-- Daily Heatmap tab -->
+  <div class="tab-panel" id="tab-daily-heatmap">
     <div class="section-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h2>Daily Summary</h2>
-        <div class="scheme-switcher">
-          <button class="scheme-btn active" data-scheme="A">Scheme A</button>
-          <button class="scheme-btn" data-scheme="B">Scheme B</button>
-          <button class="scheme-btn" data-scheme="C">Scheme C</button>
-        </div>
-      </div>
-      <div id="daily-scheme-a" class="daily-scheme active"></div>
-      <div id="daily-scheme-b" class="daily-scheme" style="display:none;"></div>
-      <div id="daily-scheme-c" class="daily-scheme" style="display:none;"></div>
+      <h2>Daily Heatmap</h2>
+      <div id="daily-scheme-a" class="daily-scheme"></div>
+    </div>
+  </div>
+
+  <!-- Daily Chart tab -->
+  <div class="tab-panel" id="tab-daily-chart">
+    <div class="section-card">
+      <h2>Daily Chart</h2>
+      <div id="daily-scheme-b" class="daily-scheme"></div>
+    </div>
+  </div>
+
+  <!-- Daily Table tab -->
+  <div class="tab-panel" id="tab-daily-table">
+    <div class="section-card">
+      <h2>Daily Table</h2>
+      <div id="daily-scheme-c" class="daily-scheme"></div>
     </div>
   </div>
 </div>
@@ -412,7 +410,9 @@
 <script>
 const DATA_URL = '../data/latest_data.json';
 const HISTORY_URL = '../data/history_summary.json';
+const HISTORY_DIR_URL = '../data/history';
 const ANOMALY_THRESHOLD = 1000000; // net flow threshold for alerts
+const DAILY_DAYS_TO_LOAD = 30;
 
 let rawData = null;
 let historyData = null;
@@ -426,9 +426,29 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    const tabName = btn.dataset.tab;
+    document.getElementById('tab-' + tabName).classList.add('active');
+    handleTabActivated(tabName);
   });
 });
+
+function handleTabActivated(tabName) {
+  if (tabName === 'sankey') {
+    setTimeout(applyCurrentSankeyAnimation, 120);
+    return;
+  }
+
+  if (tabName === 'daily-chart') {
+    setTimeout(() => {
+      if (!dailyChartB && Object.keys(dailyData).length > 0) {
+        renderSchemeB(Object.keys(dailyData).sort());
+      }
+      if (dailyChartB) {
+        dailyChartB.resize();
+      }
+    }, 120);
+  }
+}
 
 // ── Data loading ─────────────────────────────────────────────────────
 
@@ -673,10 +693,14 @@ function renderSankeyChart(filteredTokens) {
   }
 
   if (linkValues.length === 0) {
+    sankeyLinkData = null;
+    clearAnimations();
     document.getElementById('sankey-chart').innerHTML =
       '<div class="no-data">No flow data available for Sankey diagram.</div>';
     return;
   }
+
+  sankeyLinkData = { sources: linkSources, targets: linkTargets, values: linkValues };
 
   Plotly.newPlot('sankey-chart', [{
     type: 'sankey',
@@ -696,9 +720,9 @@ function renderSankeyChart(filteredTokens) {
     font: { size: 12, family: '-apple-system, BlinkMacSystemFont, Inter, sans-serif' },
     paper_bgcolor: 'transparent',
     margin: { l: 10, r: 10, t: 10, b: 10 },
-  }, { responsive: true });
-
-  sankeyLinkData = { sources: linkSources, targets: linkTargets, values: linkValues };
+  }, { responsive: true })
+    .then(() => applyCurrentSankeyAnimation())
+    .catch(() => {});
 }
 
 // ── Sankey Animations ────────────────────────────────────────────────
@@ -707,32 +731,78 @@ let sankeyLinkData = null;
 let currentAnimation = 'off';
 let particleSystem = null;
 
+function getSankeyLinkPaths() {
+  const candidates = Array.from(document.querySelectorAll(
+    '#sankey-chart .sankey-link, #sankey-chart path.sankey-link, #sankey-chart .sankey-links path'
+  ));
+  const paths = [];
+
+  for (const el of candidates) {
+    if (el.tagName && el.tagName.toLowerCase() === 'path') {
+      paths.push(el);
+      continue;
+    }
+    const childPath = el.querySelector('path');
+    if (childPath) paths.push(childPath);
+  }
+
+  return [...new Set(paths)];
+}
+
 function applyFlowAnimation() {
-  const paths = document.querySelectorAll('#sankey-chart .sankey-link path');
+  const paths = getSankeyLinkPaths();
   paths.forEach(path => {
+    path.style.stroke = 'rgba(255,255,255,0.85)';
+    path.style.strokeWidth = '1.25px';
+    path.style.strokeLinecap = 'round';
     path.style.strokeDasharray = '10 5';
-    path.style.animation = 'flowAnimation 2s linear infinite';
+    path.style.strokeDashoffset = '0';
+    path.style.animation = 'flowAnimation 1.8s linear infinite';
   });
 }
 
 function applyPulseAnimation() {
-  const paths = document.querySelectorAll('#sankey-chart .sankey-link path');
+  const paths = getSankeyLinkPaths();
   paths.forEach(path => {
+    path.style.stroke = '';
+    path.style.strokeWidth = '';
+    path.style.strokeLinecap = '';
+    path.style.strokeDasharray = '';
+    path.style.strokeDashoffset = '';
     path.style.animation = 'pulseAnimation 1.5s ease-in-out infinite';
   });
 }
 
 function clearAnimations() {
-  const paths = document.querySelectorAll('#sankey-chart .sankey-link path');
+  const paths = getSankeyLinkPaths();
   paths.forEach(path => {
     path.style.animation = '';
+    path.style.stroke = '';
+    path.style.strokeWidth = '';
+    path.style.strokeLinecap = '';
     path.style.strokeDasharray = '';
+    path.style.strokeDashoffset = '';
   });
   if (particleSystem) {
     particleSystem.stop();
     particleSystem = null;
   }
-  document.getElementById('particle-canvas').style.display = 'none';
+  const canvas = document.getElementById('particle-canvas');
+  if (canvas) canvas.style.display = 'none';
+}
+
+function applyCurrentSankeyAnimation() {
+  clearAnimations();
+  if (!sankeyLinkData) return;
+
+  if (currentAnimation === 'flow') {
+    applyFlowAnimation();
+  } else if (currentAnimation === 'pulse') {
+    applyPulseAnimation();
+  } else if (currentAnimation === 'particle') {
+    particleSystem = new ParticleSystem();
+    particleSystem.start();
+  }
 }
 
 class ParticleSystem {
@@ -746,10 +816,12 @@ class ParticleSystem {
 
   resize() {
     const chart = document.getElementById('sankey-chart');
-    this.canvas.width = chart.offsetWidth;
-    this.canvas.height = chart.offsetHeight;
-    this.canvas.style.width = chart.offsetWidth + 'px';
-    this.canvas.style.height = chart.offsetHeight + 'px';
+    const width = Math.max(chart.offsetWidth, 1);
+    const height = Math.max(chart.offsetHeight, 400);
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.canvas.style.width = width + 'px';
+    this.canvas.style.height = height + 'px';
     this.canvas.style.display = 'block';
   }
 
@@ -813,18 +885,8 @@ document.querySelectorAll('.anim-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.anim-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    clearAnimations();
     currentAnimation = btn.dataset.anim;
-
-    setTimeout(() => {
-      if (currentAnimation === 'flow') applyFlowAnimation();
-      else if (currentAnimation === 'pulse') applyPulseAnimation();
-      else if (currentAnimation === 'particle') {
-        particleSystem = new ParticleSystem();
-        particleSystem.start();
-      }
-    }, 100);
+    setTimeout(applyCurrentSankeyAnimation, 100);
   });
 });
 
@@ -932,76 +994,192 @@ function formatNumber(n) {
 
 // ── Daily Tab ────────────────────────────────────────────────────────
 
-let dailyData = null;
+let dailyData = {};
+let dailyChartB = null;
+const dailySparkCharts = {};
+
+function toDateKeyFromTimestamp(ts) {
+  const date = new Date(ts);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toISOString().slice(0, 10);
+}
+
+function recentDateKeys(anchorDateKey, days) {
+  const anchor = anchorDateKey ? new Date(`${anchorDateKey}T00:00:00Z`) : new Date();
+  if (Number.isNaN(anchor.getTime())) return [];
+
+  const dates = [];
+  for (let i = 0; i < days; i++) {
+    const d = new Date(anchor);
+    d.setUTCDate(d.getUTCDate() - i);
+    dates.push(d.toISOString().slice(0, 10));
+  }
+  return dates;
+}
+
+function addDatesFromEntries(dateSet, entries) {
+  for (const entry of entries || []) {
+    const key = toDateKeyFromTimestamp(entry.timestamp);
+    if (key) dateSet.add(key);
+  }
+}
+
+async function discoverDailyDates() {
+  const dateSet = new Set();
+
+  if (Array.isArray(historyData) && historyData.length > 0) {
+    addDatesFromEntries(dateSet, historyData);
+  }
+
+  if (dateSet.size === 0) {
+    try {
+      const resp = await fetch(HISTORY_URL, { cache: 'no-store' });
+      if (resp.ok) {
+        const entries = await resp.json();
+        if (Array.isArray(entries)) addDatesFromEntries(dateSet, entries);
+      }
+    } catch (_) {}
+  }
+
+  let anchorDate = [...dateSet].sort().pop() || null;
+  if (!anchorDate) {
+    try {
+      const resp = await fetch(DATA_URL, { cache: 'no-store' });
+      if (resp.ok) {
+        const latest = await resp.json();
+        anchorDate = toDateKeyFromTimestamp(latest.timestamp);
+      }
+    } catch (_) {}
+  }
+
+  for (const date of recentDateKeys(anchorDate, 45)) {
+    dateSet.add(date);
+  }
+
+  return [...dateSet].sort().reverse();
+}
+
+async function loadDailyFile(date) {
+  const resp = await fetch(`${HISTORY_DIR_URL}/${date}.jsonl`, { cache: 'no-store' });
+  if (!resp.ok) return null;
+
+  const text = await resp.text();
+  const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
+  if (lines.length === 0) return null;
+
+  const dayTotal = { inflow: 0, outflow: 0, hourly: [] };
+  for (const line of lines) {
+    try {
+      const snap = JSON.parse(line);
+      let hourInflow = 0;
+      let hourOutflow = 0;
+      for (const token of Object.values(snap.tokens || {})) {
+        hourInflow += token.total_inflow || 0;
+        hourOutflow += token.total_outflow || 0;
+      }
+      dayTotal.inflow += hourInflow;
+      dayTotal.outflow += hourOutflow;
+      dayTotal.hourly.push({ ts: snap.timestamp, inflow: hourInflow, outflow: hourOutflow });
+    } catch (e) {
+      console.error(`Invalid JSONL snapshot in ${date}.jsonl`, e);
+    }
+  }
+
+  if (dayTotal.hourly.length === 0) return null;
+  dayTotal.hourly.sort((a, b) => new Date(a.ts) - new Date(b.ts));
+  return dayTotal;
+}
 
 async function loadDailyData() {
+  const loadingMarkup = '<div class="loading">Loading daily data...</div>';
+  document.getElementById('daily-scheme-a').innerHTML = loadingMarkup;
+  document.getElementById('daily-scheme-b').innerHTML = loadingMarkup;
+  document.getElementById('daily-scheme-c').innerHTML = loadingMarkup;
+
   try {
-    const files = await fetch('../data/history/').then(r => r.text()).catch(() => '');
-    const dates = [...files.matchAll(/(\d{4}-\d{2}-\d{2})\.jsonl/g)].map(m => m[1]).sort();
+    const candidateDates = await discoverDailyDates();
+    const loaded = {};
 
-    dailyData = {};
-    for (const date of dates.slice(-30)) {
-      const resp = await fetch(`../data/history/${date}.jsonl`);
-      const text = await resp.text();
-      const lines = text.trim().split('\n').filter(l => l);
-
-      let dayTotal = { inflow: 0, outflow: 0, hourly: [] };
-      for (const line of lines) {
-        const snap = JSON.parse(line);
-        let hourInflow = 0, hourOutflow = 0;
-        for (const token of Object.values(snap.tokens || {})) {
-          hourInflow += token.total_inflow || 0;
-          hourOutflow += token.total_outflow || 0;
-        }
-        dayTotal.inflow += hourInflow;
-        dayTotal.outflow += hourOutflow;
-        dayTotal.hourly.push({ ts: snap.timestamp, inflow: hourInflow, outflow: hourOutflow });
+    for (const date of candidateDates) {
+      if (Object.keys(loaded).length >= DAILY_DAYS_TO_LOAD) break;
+      try {
+        const fileData = await loadDailyFile(date);
+        if (fileData) loaded[date] = fileData;
+      } catch (_) {
+        // Missing files are expected when probing recent dates.
       }
-      dailyData[date] = dayTotal;
     }
+
+    dailyData = loaded;
     renderDailySchemes();
   } catch (e) {
+    dailyData = {};
+    renderDailySchemes();
     console.error('Daily data load failed:', e);
   }
 }
 
-function renderDailySchemes() {
-  if (!dailyData) return;
-  renderSchemeA();
-  renderSchemeB();
-  renderSchemeC();
+function destroyDailyCharts() {
+  if (dailyChartB) {
+    dailyChartB.destroy();
+    dailyChartB = null;
+  }
+  for (const key of Object.keys(dailySparkCharts)) {
+    dailySparkCharts[key].destroy();
+    delete dailySparkCharts[key];
+  }
 }
 
-function renderSchemeA() {
-  const container = document.getElementById('daily-scheme-a');
-  const dates = Object.keys(dailyData).sort();
+function renderDailyNoData() {
+  const noDataMarkup = '<div class="no-data">No daily history data available.</div>';
+  document.getElementById('daily-scheme-a').innerHTML = noDataMarkup;
+  document.getElementById('daily-scheme-b').innerHTML = noDataMarkup;
+  document.getElementById('daily-scheme-c').innerHTML = noDataMarkup;
+}
 
+function renderDailySchemes() {
+  destroyDailyCharts();
+
+  const dates = Object.keys(dailyData).sort();
+  if (dates.length === 0) {
+    renderDailyNoData();
+    return;
+  }
+
+  renderSchemeA(dates);
+  renderSchemeB(dates);
+  renderSchemeC(dates);
+}
+
+function renderSchemeA(dates) {
+  const container = document.getElementById('daily-scheme-a');
   let html = '<div class="daily-heatmap">';
+
   for (const date of dates) {
     const d = dailyData[date];
     const net = d.inflow - d.outflow;
-    const intensity = Math.min(Math.abs(net) / 5000000, 1);
+    const intensity = Math.max(0.2, Math.min(Math.abs(net) / 5000000, 1));
     const color = net >= 0
       ? `rgba(217, 119, 87, ${intensity})`
       : `rgba(91, 138, 114, ${intensity})`;
 
-    html += `<div class="heatmap-cell" style="background:${color}" title="${date}: ${formatNumber(net)}">
+    html += `<div class="heatmap-cell" style="background:${color}" title="${date}: ${net >= 0 ? '+' : ''}${formatNumber(net)}">
       ${date.slice(8)}
     </div>`;
   }
+
   html += '</div>';
   container.innerHTML = html;
 }
 
-function renderSchemeB() {
+function renderSchemeB(dates) {
   const container = document.getElementById('daily-scheme-b');
-  container.innerHTML = '<canvas id="daily-chart-b" style="max-height:400px"></canvas>';
+  container.innerHTML = '<div class="trend-chart-container" style="height:320px"><canvas id="daily-chart-b"></canvas></div>';
 
-  const dates = Object.keys(dailyData).sort();
   const dailyInflows = dates.map(d => dailyData[d].inflow);
   const dailyOutflows = dates.map(d => dailyData[d].outflow);
 
-  new Chart(document.getElementById('daily-chart-b'), {
+  dailyChartB = new Chart(document.getElementById('daily-chart-b'), {
     type: 'bar',
     data: {
       labels: dates.map(d => d.slice(5)),
@@ -1010,14 +1188,25 @@ function renderSchemeB() {
         { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: 'rgba(91,138,114,0.6)' }
       ]
     },
-    options: { responsive: true, maintainAspectRatio: false }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' }
+        }
+      },
+      scales: {
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+      }
+    }
   });
 }
 
-function renderSchemeC() {
+function renderSchemeC(dates) {
   const container = document.getElementById('daily-scheme-c');
-  const dates = Object.keys(dailyData).sort();
-
   let html = '<table class="daily-table"><thead><tr><th>Date</th><th>Inflow</th><th>Outflow</th><th>Net</th><th>24h Chart</th></tr></thead><tbody>';
 
   for (const date of dates) {
@@ -1029,32 +1218,32 @@ function renderSchemeC() {
       <td>${date}</td>
       <td style="color:var(--inflow)">${formatNumber(d.inflow)}</td>
       <td style="color:var(--outflow)">${formatNumber(d.outflow)}</td>
-      <td class="${net >= 0 ? 'positive' : 'negative'}">${formatNumber(net)}</td>
+      <td class="${net >= 0 ? 'positive' : 'negative'}">${net >= 0 ? '+' : ''}${formatNumber(net)}</td>
       <td><canvas id="${sparkId}" class="sparkline"></canvas></td>
     </tr>`;
   }
+
   html += '</tbody></table>';
   container.innerHTML = html;
 
   for (const date of dates) {
     const canvas = document.getElementById(`spark-${date}`);
     const hourly = dailyData[date].hourly.map(h => h.inflow - h.outflow);
-    new Chart(canvas, {
+    dailySparkCharts[date] = new Chart(canvas, {
       type: 'line',
-      data: { labels: hourly.map((_, i) => i), datasets: [{ data: hourly, borderColor: '#d97757', borderWidth: 1, pointRadius: 0 }] },
-      options: { responsive: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+      data: {
+        labels: hourly.map((_, i) => i),
+        datasets: [{ data: hourly, borderColor: '#d97757', borderWidth: 1, pointRadius: 0 }]
+      },
+      options: {
+        responsive: false,
+        animation: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { display: false }, y: { display: false } }
+      }
     });
   }
 }
-
-document.querySelectorAll('.scheme-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.scheme-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.daily-scheme').forEach(s => s.style.display = 'none');
-    btn.classList.add('active');
-    document.getElementById(`daily-scheme-${btn.dataset.scheme.toLowerCase()}`).style.display = 'block';
-  });
-});
 
 loadData();
 loadDailyData();
