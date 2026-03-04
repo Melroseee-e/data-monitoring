@@ -29,8 +29,8 @@ TRANSFER_EVENT_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a
 
 # TGE block numbers (using hybrid strategy: exchange first transfer > contract deployment > news TGE)
 TGE_BLOCKS = {
-    # AZTEC: Contract deployment (2025-07-01) - no exchange first transfer found
-    "AZTEC": {"ethereum": 22823299, "date": "2025-07-01"},
+    # AZTEC: News TGE (2026-02-12) - contract deployment was test/early deploy
+    "AZTEC": {"ethereum": 24416000, "date": "2026-02-12"},
 
     # UAI: News TGE (2025-11-06) - no on-chain data available
     "UAI": {"bsc": 43500000, "date": "2025-11-06"},
