@@ -309,6 +309,11 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
             write_to_jsonl(hourly_data, token_name, chain, contract)
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Backfill historical token data")
+    parser.add_argument("--token", type=str, help="Specific token to backfill (e.g., AZTEC). If not specified, backfills all tokens.")
+    args = parser.parse_args()
+
     HISTORY_DIR.mkdir(exist_ok=True)
 
     with open(TOKENS_FILE) as f:
@@ -324,7 +329,18 @@ def main():
         "helius": os.getenv("HELIUS_API_KEY", "")
     }
 
-    for token_name, deployments in tokens.items():
+    # Filter tokens if specific token requested
+    if args.token:
+        if args.token not in tokens:
+            print(f"Error: Token '{args.token}' not found in tokens.json")
+            sys.exit(1)
+        tokens_to_process = {args.token: tokens[args.token]}
+        print(f"Processing single token: {args.token}")
+    else:
+        tokens_to_process = tokens
+        print(f"Processing all {len(tokens)} tokens")
+
+    for token_name, deployments in tokens_to_process.items():
         backfill_token(token_name, deployments, exchange_lookup, api_keys)
 
     print("\n✓ Backfill complete")

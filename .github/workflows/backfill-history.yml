@@ -1,7 +1,21 @@
 name: Backfill Historical Data
 
 on:
-  workflow_dispatch:  # Manual trigger only
+  workflow_dispatch:
+    inputs:
+      token:
+        description: 'Token to backfill'
+        required: true
+        type: choice
+        options:
+          - ALL
+          - AZTEC
+          - UAI
+          - SPACE
+          - GWEI
+          - TRIA
+          - SKR
+          - BIRB
 
 permissions:
   contents: write
@@ -22,7 +36,12 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run historical data backfill
-        run: python scripts/backfill_history.py
+        run: |
+          if [ "${{ github.event.inputs.token }}" = "ALL" ]; then
+            python scripts/backfill_history.py
+          else
+            python scripts/backfill_history.py --token ${{ github.event.inputs.token }}
+          fi
         env:
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
           BSCTrace_API_KEY: ${{ secrets.BSCTrace_API_KEY }}
@@ -44,5 +63,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/history/
-          git diff --quiet && git diff --staged --quiet || git commit -m "data: Historical backfill from TGE to $(date -u +'%Y-%m-%d')"
+          if [ "${{ github.event.inputs.token }}" = "ALL" ]; then
+            git diff --quiet && git diff --staged --quiet || git commit -m "data: Historical backfill (all tokens) to $(date -u +'%Y-%m-%d')"
+          else
+            git diff --quiet && git diff --staged --quiet || git commit -m "data: Historical backfill (${{ github.event.inputs.token }}) to $(date -u +'%Y-%m-%d')"
+          fi
           git push
