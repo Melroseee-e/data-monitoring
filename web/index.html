@@ -260,8 +260,8 @@
     to { stroke-dashoffset: -20; }
   }
   @keyframes pulseAnimation {
-    0%, 100% { opacity: 0.35; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.02); }
+    0%, 100% { opacity: 0.35; stroke-width: 1px; }
+    50% { opacity: 0.8; stroke-width: 2.25px; }
   }
 
   .daily-scheme { min-height: 400px; }
@@ -438,12 +438,12 @@ function handleTabActivated(tabName) {
     return;
   }
 
-  if (tabName === 'daily-chart') {
+  if (tabName.startsWith('daily-')) {
     setTimeout(() => {
-      if (!dailyChartB && Object.keys(dailyData).length > 0) {
-        renderSchemeB(Object.keys(dailyData).sort());
-      }
-      if (dailyChartB) {
+      const dates = Object.keys(dailyData).sort();
+      if (dates.length === 0) return;
+      renderDailySchemes();
+      if (tabName === 'daily-chart' && dailyChartB) {
         dailyChartB.resize();
       }
     }, 120);
@@ -721,7 +721,18 @@ function renderSankeyChart(filteredTokens) {
     paper_bgcolor: 'transparent',
     margin: { l: 10, r: 10, t: 10, b: 10 },
   }, { responsive: true })
-    .then(() => applyCurrentSankeyAnimation())
+    .then(() => {
+      const chart = document.getElementById('sankey-chart');
+      if (chart && typeof chart.on === 'function' && !chart.__animHookBound) {
+        chart.on('plotly_afterplot', () => {
+          if (document.getElementById('tab-sankey').classList.contains('active')) {
+            applyCurrentSankeyAnimation();
+          }
+        });
+        chart.__animHookBound = true;
+      }
+      applyCurrentSankeyAnimation();
+    })
     .catch(() => {});
 }
 
@@ -732,9 +743,13 @@ let currentAnimation = 'off';
 let particleSystem = null;
 
 function getSankeyLinkPaths() {
-  const candidates = Array.from(document.querySelectorAll(
-    '#sankey-chart .sankey-link, #sankey-chart path.sankey-link, #sankey-chart .sankey-links path'
+  const primaryCandidates = Array.from(document.querySelectorAll(
+    '#sankey-chart .sankey-link, #sankey-chart path.sankey-link, #sankey-chart .sankey-links path, #sankey-chart g.sankey-links path'
   ));
+  const fallbackCandidates = primaryCandidates.length > 0
+    ? []
+    : Array.from(document.querySelectorAll('#sankey-chart .sankey path'));
+  const candidates = primaryCandidates.length > 0 ? primaryCandidates : fallbackCandidates;
   const paths = [];
 
   for (const el of candidates) {
@@ -764,9 +779,9 @@ function applyFlowAnimation() {
 function applyPulseAnimation() {
   const paths = getSankeyLinkPaths();
   paths.forEach(path => {
-    path.style.stroke = '';
-    path.style.strokeWidth = '';
-    path.style.strokeLinecap = '';
+    path.style.stroke = 'rgba(255,255,255,0.65)';
+    path.style.strokeWidth = '1px';
+    path.style.strokeLinecap = 'round';
     path.style.strokeDasharray = '';
     path.style.strokeDashoffset = '';
     path.style.animation = 'pulseAnimation 1.5s ease-in-out infinite';
@@ -888,6 +903,12 @@ document.querySelectorAll('.anim-btn').forEach(btn => {
     currentAnimation = btn.dataset.anim;
     setTimeout(applyCurrentSankeyAnimation, 100);
   });
+});
+
+window.addEventListener('resize', () => {
+  if (particleSystem) {
+    particleSystem.resize();
+  }
 });
 
 // ── Trend chart ──────────────────────────────────────────────────────
@@ -1041,15 +1062,23 @@ async function discoverDailyDates() {
     } catch (_) {}
   }
 
-  let anchorDate = [...dateSet].sort().pop() || null;
+  // If we already know concrete historical dates from summary data,
+  // avoid probing a large range of likely-missing files.
+  if (dateSet.size > 0) {
+    return [...dateSet].sort().reverse();
+  }
+
+  let anchorDate = null;
+  try {
+    const resp = await fetch(DATA_URL, { cache: 'no-store' });
+    if (resp.ok) {
+      const latest = await resp.json();
+      anchorDate = toDateKeyFromTimestamp(latest.timestamp);
+    }
+  } catch (_) {}
+
   if (!anchorDate) {
-    try {
-      const resp = await fetch(DATA_URL, { cache: 'no-store' });
-      if (resp.ok) {
-        const latest = await resp.json();
-        anchorDate = toDateKeyFromTimestamp(latest.timestamp);
-      }
-    } catch (_) {}
+    anchorDate = new Date().toISOString().slice(0, 10);
   }
 
   for (const date of recentDateKeys(anchorDate, 45)) {
@@ -1147,8 +1176,20 @@ function renderDailySchemes() {
   }
 
   renderSchemeA(dates);
-  renderSchemeB(dates);
-  renderSchemeC(dates);
+
+  if (document.getElementById('tab-daily-chart').classList.contains('active')) {
+    renderSchemeB(dates);
+  } else {
+    document.getElementById('daily-scheme-b').innerHTML =
+      '<div class="loading">Open Daily Chart tab to render the chart.</div>';
+  }
+
+  if (document.getElementById('tab-daily-table').classList.contains('active')) {
+    renderSchemeC(dates);
+  } else {
+    document.getElementById('daily-scheme-c').innerHTML =
+      '<div class="loading">Open Daily Table tab to render the table.</div>';
+  }
 }
 
 function renderSchemeA(dates) {
@@ -1173,6 +1214,11 @@ function renderSchemeA(dates) {
 }
 
 function renderSchemeB(dates) {
+  if (dailyChartB) {
+    dailyChartB.destroy();
+    dailyChartB = null;
+  }
+
   const container = document.getElementById('daily-scheme-b');
   container.innerHTML = '<div class="trend-chart-container" style="height:320px"><canvas id="daily-chart-b"></canvas></div>';
 
