@@ -68,4 +68,8 @@ jobs:
           else
             git diff --quiet && git diff --staged --quiet || git commit -m "data: Historical backfill (${{ github.event.inputs.token }}) to $(date -u +'%Y-%m-%d')"
           fi
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "Push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
