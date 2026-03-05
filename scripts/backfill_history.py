@@ -47,11 +47,11 @@ TGE_BLOCKS = {
     # TRIA: Contract deployment (2026-01-16) - no exchange first transfer found
     "TRIA": {"ethereum": 24249417, "bsc": 45200000, "date": "2026-01-16"},
 
-    # SKR: News TGE (2026-01-21) - Solana, no on-chain data available
-    "SKR": {"solana": None, "date": "2026-01-21"},
+    # SKR: News TGE (2026-01-21) - Solana
+    "SKR": {"solana": "2026-01-21T00:00:00Z", "date": "2026-01-21"},
 
-    # BIRB: News TGE (2026-01-28) - Solana, no on-chain data available
-    "BIRB": {"solana": None, "date": "2026-01-28"}
+    # BIRB: News TGE (2026-01-28) - Solana
+    "BIRB": {"solana": "2026-01-28T00:00:00Z", "date": "2026-01-28"}
 }
 
 def load_exchange_lookup(exchanges_data):
@@ -138,6 +138,131 @@ def process_eth_transfers(transfers, exchange_lookup, decimals=18):
         flows[ex]["net_flow"] = flows[ex]["inflow"] - flows[ex]["outflow"]
     return dict(flows)
 
+def rpc_call(url, method, params):
+    """Generic JSON-RPC call."""
+    payload = {"jsonrpc": "2.0", "method": method, "params": params, "id": 1}
+    try:
+        resp = requests.post(url, json=payload, timeout=30)
+        resp.raise_for_status()
+        result = resp.json()
+        return result.get("result")
+    except Exception as e:
+        print(f"RPC call failed: {method} - {e}", flush=True)
+        return None
+
+def fetch_solana_signatures_since(api_key, token_mint, exchange_addresses, start_time_iso):
+    """Fetch all Solana signatures for a token since start_time."""
+    rpc_url = HELIUS_RPC.format(api_key=api_key)
+    start_timestamp = int(datetime.fromisoformat(start_time_iso.replace('Z', '+00:00')).timestamp())
+
+    # Step 1: Find all ATAs for exchange addresses
+    ata_to_exchange = {}
+    print(f"  Finding ATAs for {len(exchange_addresses)} exchanges...", flush=True)
+    for addr in exchange_addresses:
+        result = rpc_call(rpc_url, "getTokenAccountsByOwner", [
+            addr,
+            {"mint": token_mint},
+            {"encoding": "jsonParsed"},
+        ])
+        if result and result.get("value"):
+            for acct in result["value"]:
+                ata_to_exchange[acct["pubkey"]] = addr
+        time.sleep(0.1)
+
+    if not ata_to_exchange:
+        print(f"  No ATAs found for token {token_mint[:8]}...", flush=True)
+        return []
+
+    print(f"  Found {len(ata_to_exchange)} ATAs", flush=True)
+
+    # Step 2: Fetch all signatures for each ATA (paginated)
+    all_signatures = []
+    for ata_pubkey, ex_addr in ata_to_exchange.items():
+        print(f"  Fetching signatures for ATA {ata_pubkey[:8]}...", flush=True)
+        before = None
+        page_count = 0
+
+        while True:
+            params = [ata_pubkey, {"limit": 1000}]
+            if before:
+                params[1]["before"] = before
+
+            sigs = rpc_call(rpc_url, "getSignaturesForAddress", params)
+            if not sigs:
+                break
+
+            page_count += 1
+            print(f"    Page {page_count}: {len(sigs)} signatures", flush=True)
+
+            # Filter by time
+            filtered = []
+            for sig_info in sigs:
+                block_time = sig_info.get("blockTime")
+                if block_time and block_time >= start_timestamp:
+                    filtered.append({
+                        "signature": sig_info["signature"],
+                        "blockTime": block_time,
+                        "ata": ata_pubkey,
+                        "exchange": ex_addr
+                    })
+                else:
+                    # Reached transactions before start_time, stop pagination
+                    print(f"    Reached start time, stopping pagination", flush=True)
+                    return all_signatures + filtered
+
+            all_signatures.extend(filtered)
+
+            # Check if we need to continue pagination
+            if len(sigs) < 1000:
+                break
+
+            before = sigs[-1]["signature"]
+            time.sleep(0.2)
+
+    print(f"  Total signatures collected: {len(all_signatures)}", flush=True)
+    return all_signatures
+
+def parse_solana_transaction(api_key, signature):
+    """Parse a Solana transaction to extract SPL token transfer details."""
+    rpc_url = HELIUS_RPC.format(api_key=api_key)
+
+    tx = rpc_call(rpc_url, "getTransaction", [
+        signature,
+        {"encoding": "jsonParsed", "maxSupportedTransactionVersion": 0}
+    ])
+
+    if not tx or not tx.get("meta"):
+        return None
+
+    block_time = tx.get("blockTime")
+    if not block_time:
+        return None
+
+    # Parse token transfers from meta.postTokenBalances and preTokenBalances
+    pre_balances = {b["accountIndex"]: b for b in tx["meta"].get("preTokenBalances", [])}
+    post_balances = {b["accountIndex"]: b for b in tx["meta"].get("postTokenBalances", [])}
+
+    transfers = []
+    for idx, post in post_balances.items():
+        pre = pre_balances.get(idx, {})
+        pre_amount = int(pre.get("uiTokenAmount", {}).get("amount", 0))
+        post_amount = int(post.get("uiTokenAmount", {}).get("amount", 0))
+
+        if post_amount != pre_amount:
+            decimals = post.get("uiTokenAmount", {}).get("decimals", 9)
+            amount = abs(post_amount - pre_amount)
+            account = post.get("owner")
+
+            transfers.append({
+                "account": account,
+                "amount": amount,
+                "decimals": decimals,
+                "blockTime": block_time,
+                "direction": "in" if post_amount > pre_amount else "out"
+            })
+
+    return transfers
+
 def process_bsc_transfers(logs, exchange_lookup, decimals=18):
     flows = defaultdict(lambda: {"inflow": 0, "outflow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0})
     for log in logs:
@@ -161,6 +286,27 @@ def process_bsc_transfers(logs, exchange_lookup, decimals=18):
 
 def aggregate_by_hour(transfers_by_timestamp, token_name, chain, contract, exchange_flows):
     """Group transfers into hourly snapshots."""
+    hourly_data = {}
+    for ts_str, flows in exchange_flows.items():
+        dt = datetime.fromisoformat(ts_str.replace('Z', '+00:00'))
+        hour_key = dt.replace(minute=0, second=0, microsecond=0).isoformat().replace('+00:00', 'Z')
+
+        if hour_key not in hourly_data:
+            hourly_data[hour_key] = {}
+
+        for exchange, flow_data in flows.items():
+            if exchange not in hourly_data[hour_key]:
+                hourly_data[hour_key][exchange] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
+            hourly_data[hour_key][exchange]["inflow"] += flow_data["inflow"]
+            hourly_data[hour_key][exchange]["outflow"] += flow_data["outflow"]
+            hourly_data[hour_key][exchange]["net_flow"] += flow_data["net_flow"]
+            hourly_data[hour_key][exchange]["inflow_tx_count"] += flow_data["inflow_tx_count"]
+            hourly_data[hour_key][exchange]["outflow_tx_count"] += flow_data["outflow_tx_count"]
+
+    return hourly_data
+
+def aggregate_by_hour_solana(exchange_flows, token_name, chain, contract):
+    """Group Solana transfers into hourly snapshots."""
     hourly_data = {}
     for ts_str, flows in exchange_flows.items():
         dt = datetime.fromisoformat(ts_str.replace('Z', '+00:00'))
@@ -246,7 +392,76 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
         contract = deployment["contract"]
 
         if chain == "solana":
-            print(f"  Skipping Solana ({contract}) - requires different approach", flush=True)
+            api_key = api_keys.get("solana")
+            if not api_key:
+                print(f"  No Helius API key, skipping", flush=True)
+                continue
+
+            start_time = tge_info.get("solana")
+            if not start_time:
+                print(f"  No TGE time for Solana, skipping", flush=True)
+                continue
+
+            print(f"  Solana: {contract} from {start_time}", flush=True)
+
+            # Get exchange addresses for Solana
+            sol_exchange_lookup = exchange_lookup.get("solana", {})
+            sol_exchanges = list(sol_exchange_lookup.keys())
+
+            if not sol_exchanges:
+                print(f"  No Solana exchange addresses configured", flush=True)
+                continue
+
+            # Fetch all signatures since TGE
+            signatures = fetch_solana_signatures_since(api_key, contract, sol_exchanges, start_time)
+
+            if not signatures:
+                print(f"  No signatures found", flush=True)
+                continue
+
+            # Parse transactions in batches
+            print(f"  Parsing {len(signatures)} transactions...", flush=True)
+            exchange_flows = {}
+
+            for i, sig_info in enumerate(signatures):
+                if i % 100 == 0:
+                    print(f"    Progress: {i}/{len(signatures)}", flush=True)
+
+                transfers = parse_solana_transaction(api_key, sig_info["signature"])
+                if not transfers:
+                    continue
+
+                ts = datetime.fromtimestamp(sig_info["blockTime"], tz=timezone.utc).isoformat().replace('+00:00', 'Z')
+                if ts not in exchange_flows:
+                    exchange_flows[ts] = {}
+
+                # Match transfers to exchanges
+                sol_exchange_lookup = exchange_lookup.get("solana", {})
+                for transfer in transfers:
+                    account = transfer.get("account", "").lower()
+                    if account in sol_exchange_lookup:
+                        ex = sol_exchange_lookup[account]
+                        if ex not in exchange_flows[ts]:
+                            exchange_flows[ts][ex] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
+
+                        amount = transfer["amount"] / (10 ** transfer["decimals"])
+                        if transfer["direction"] == "in":
+                            exchange_flows[ts][ex]["inflow"] += amount
+                            exchange_flows[ts][ex]["inflow_tx_count"] += 1
+                        else:
+                            exchange_flows[ts][ex]["outflow"] += amount
+                            exchange_flows[ts][ex]["outflow_tx_count"] += 1
+
+                time.sleep(0.05)  # Rate limiting
+
+            # Calculate net flows
+            for ts in exchange_flows:
+                for ex in exchange_flows[ts]:
+                    exchange_flows[ts][ex]["net_flow"] = exchange_flows[ts][ex]["inflow"] - exchange_flows[ts][ex]["outflow"]
+
+            # Aggregate by hour and write
+            hourly_data = aggregate_by_hour_solana(exchange_flows, token_name, chain, contract)
+            write_to_jsonl(hourly_data, token_name, chain, contract)
             continue
 
         start_block = tge_info.get(chain)
