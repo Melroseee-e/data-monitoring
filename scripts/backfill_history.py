@@ -181,7 +181,7 @@ def aggregate_by_hour(transfers_by_timestamp, token_name, chain, contract, excha
     return hourly_data
 
 def write_to_jsonl(hourly_data, token_name, chain, contract):
-    """Write hourly snapshots to daily JSONL files."""
+    """Write hourly snapshots to daily JSONL files with smart merging."""
     by_date = defaultdict(list)
     for hour_ts, flows in sorted(hourly_data.items()):
         dt = datetime.fromisoformat(hour_ts.replace('Z', '+00:00'))
@@ -210,10 +210,31 @@ def write_to_jsonl(hourly_data, token_name, chain, contract):
 
     for date_key, snapshots in by_date.items():
         file_path = HISTORY_DIR / f"{date_key}.jsonl"
-        mode = 'a' if file_path.exists() else 'w'
-        with open(file_path, mode) as f:
-            for snap in snapshots:
-                f.write(json.dumps(snap) + '\n')
+
+        # Read existing data and index by timestamp
+        existing_data = {}
+        if file_path.exists():
+            with open(file_path, 'r') as f:
+                for line in f:
+                    if line.strip():
+                        record = json.loads(line)
+                        existing_data[record["timestamp"]] = record
+
+        # Merge new snapshots into existing data
+        for snap in snapshots:
+            ts = snap["timestamp"]
+            if ts in existing_data:
+                # Merge tokens: add new token to existing record
+                existing_data[ts]["tokens"][token_name] = snap["tokens"][token_name]
+            else:
+                # New timestamp: add entire snapshot
+                existing_data[ts] = snap
+
+        # Write back all data sorted by timestamp
+        with open(file_path, 'w') as f:
+            for ts in sorted(existing_data.keys()):
+                f.write(json.dumps(existing_data[ts]) + '\n')
+
         print(f"    Wrote {len(snapshots)} snapshots to {date_key}.jsonl", flush=True)
 
 def backfill_token(token_name, deployments, exchange_lookup, api_keys):
