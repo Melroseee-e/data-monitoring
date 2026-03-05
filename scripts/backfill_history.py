@@ -302,12 +302,12 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
             exchange_flows = {}
             for log in all_logs:
                 block_num = int(log.get("blockNumber", "0x0"), 16)
-                # BSC timestamp estimation: Use block number to estimate timestamp
-                # BSC genesis block 0 was at ~2020-09-01, block time ~3 seconds
-                # Better approach: fetch actual block timestamp via RPC, but for backfill we estimate
-                # This is approximate - for accurate timestamps, would need to query each block
-                bsc_genesis_timestamp = 1598918400  # 2020-09-01 00:00:00 UTC
-                estimated_timestamp = bsc_genesis_timestamp + (block_num * 3)
+                # BSC timestamp estimation: Calculate based on block number
+                # BSC block time: ~3 seconds
+                # Use TGE block as reference point instead of genesis
+                # Estimate: current_time - (current_block - block_num) * 3
+                blocks_ago = current_block - block_num
+                estimated_timestamp = int(time.time()) - (blocks_ago * 3)
                 ts = datetime.fromtimestamp(estimated_timestamp, tz=timezone.utc).isoformat().replace('+00:00', 'Z')
 
                 topics = log.get("topics", [])
