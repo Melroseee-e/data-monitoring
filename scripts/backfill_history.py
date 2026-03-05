@@ -14,6 +14,9 @@ from collections import defaultdict
 import requests
 from dotenv import load_dotenv
 
+# Force unbuffered output for GitHub Actions
+sys.stdout.reconfigure(line_buffering=True) if hasattr(sys.stdout, 'reconfigure') else None
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
@@ -60,15 +63,25 @@ def load_exchange_lookup(exchanges_data):
     return dict(lookup)
 
 def get_current_block_eth(api_key):
-    params = {"chainid": "1", "module": "proxy", "action": "eth_blockNumber", "apikey": api_key}
-    resp = requests.get(ETHERSCAN_API, params=params, timeout=15)
-    return int(resp.json()["result"], 16)
+    try:
+        params = {"chainid": "1", "module": "proxy", "action": "eth_blockNumber", "apikey": api_key}
+        resp = requests.get(ETHERSCAN_API, params=params, timeout=15)
+        resp.raise_for_status()
+        return int(resp.json()["result"], 16)
+    except Exception as e:
+        print(f"ERROR getting ETH block: {e}", flush=True)
+        raise
 
 def get_current_block_bsc(api_key):
-    rpc = BSCTRACE_RPC.format(api_key=api_key)
-    payload = {"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1}
-    resp = requests.post(rpc, json=payload, timeout=15)
-    return int(resp.json()["result"], 16)
+    try:
+        rpc = BSCTRACE_RPC.format(api_key=api_key)
+        payload = {"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1}
+        resp = requests.post(rpc, json=payload, timeout=15)
+        resp.raise_for_status()
+        return int(resp.json()["result"], 16)
+    except Exception as e:
+        print(f"ERROR getting BSC block: {e}", flush=True)
+        raise
 
 def fetch_eth_transfers_range(api_key, contract, start_block, end_block):
     params = {
@@ -186,10 +199,10 @@ def write_to_jsonl(hourly_data, token_name, chain, contract):
         with open(file_path, mode) as f:
             for snap in snapshots:
                 f.write(json.dumps(snap) + '\n')
-        print(f"    Wrote {len(snapshots)} snapshots to {date_key}.jsonl")
+        print(f"    Wrote {len(snapshots)} snapshots to {date_key}.jsonl", flush=True)
 
 def backfill_token(token_name, deployments, exchange_lookup, api_keys):
-    print(f"\n=== Backfilling {token_name} ===")
+    print(f"\n=== Backfilling {token_name} ===", flush=True)
     tge_info = TGE_BLOCKS.get(token_name, {})
 
     for deployment in deployments:
@@ -197,12 +210,12 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
         contract = deployment["contract"]
 
         if chain == "solana":
-            print(f"  Skipping Solana ({contract}) - requires different approach")
+            print(f"  Skipping Solana ({contract}) - requires different approach", flush=True)
             continue
 
         start_block = tge_info.get(chain)
         if not start_block:
-            print(f"  No TGE block for {chain}, skipping")
+            print(f"  No TGE block for {chain}, skipping", flush=True)
             continue
 
         all_transfers = []
@@ -212,15 +225,15 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
             if not api_key:
                 continue
             current_block = get_current_block_eth(api_key)
-            print(f"  ETH: {contract} from block {start_block} to {current_block}")
+            print(f"  ETH: {contract} from block {start_block} to {current_block}", flush=True)
 
             block_range = 10000
             for block in range(start_block, current_block, block_range):
                 end = min(block + block_range - 1, current_block)
-                print(f"    Fetching blocks {block}-{end}...")
+                print(f"    Fetching blocks {block}-{end}...", flush=True)
                 transfers = fetch_eth_transfers_range(api_key, contract, block, end)
                 all_transfers.extend(transfers)
-                print(f"      Got {len(transfers)} transfers")
+                print(f"      Got {len(transfers)} transfers", flush=True)
                 time.sleep(0.2)
 
             exchange_flows = {}
@@ -259,22 +272,28 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
             if not api_key:
                 continue
             current_block = get_current_block_bsc(api_key)
-            print(f"  BSC: {contract} from block {start_block} to {current_block}")
+            print(f"  BSC: {contract} from block {start_block} to {current_block}", flush=True)
 
             block_range = 5000
             all_logs = []
             for block in range(start_block, current_block, block_range):
                 end = min(block + block_range - 1, current_block)
-                print(f"    Fetching blocks {block}-{end}...")
+                print(f"    Fetching blocks {block}-{end}...", flush=True)
                 logs = fetch_bsc_transfers_range(api_key, contract, block, end)
                 all_logs.extend(logs)
-                print(f"      Got {len(logs)} logs")
+                print(f"      Got {len(logs)} logs", flush=True)
                 time.sleep(0.2)
 
             exchange_flows = {}
             for log in all_logs:
                 block_num = int(log.get("blockNumber", "0x0"), 16)
-                ts = datetime.fromtimestamp(block_num * 3, tz=timezone.utc).isoformat().replace('+00:00', 'Z')
+                # BSC timestamp estimation: Use block number to estimate timestamp
+                # BSC genesis block 0 was at ~2020-09-01, block time ~3 seconds
+                # Better approach: fetch actual block timestamp via RPC, but for backfill we estimate
+                # This is approximate - for accurate timestamps, would need to query each block
+                bsc_genesis_timestamp = 1598918400  # 2020-09-01 00:00:00 UTC
+                estimated_timestamp = bsc_genesis_timestamp + (block_num * 3)
+                ts = datetime.fromtimestamp(estimated_timestamp, tz=timezone.utc).isoformat().replace('+00:00', 'Z')
 
                 topics = log.get("topics", [])
                 if len(topics) < 3:
@@ -329,21 +348,28 @@ def main():
         "helius": os.getenv("HELIUS_API_KEY", "")
     }
 
+    # Validate API keys
+    print("=== API Key Status ===", flush=True)
+    for key_name, key_value in api_keys.items():
+        status = "✓ SET" if key_value else "✗ MISSING"
+        print(f"  {key_name}: {status}", flush=True)
+    print("", flush=True)
+
     # Filter tokens if specific token requested
     if args.token:
         if args.token not in tokens:
-            print(f"Error: Token '{args.token}' not found in tokens.json")
+            print(f"Error: Token '{args.token}' not found in tokens.json", flush=True)
             sys.exit(1)
         tokens_to_process = {args.token: tokens[args.token]}
-        print(f"Processing single token: {args.token}")
+        print(f"Processing single token: {args.token}", flush=True)
     else:
         tokens_to_process = tokens
-        print(f"Processing all {len(tokens)} tokens")
+        print(f"Processing all {len(tokens)} tokens", flush=True)
 
     for token_name, deployments in tokens_to_process.items():
         backfill_token(token_name, deployments, exchange_lookup, api_keys)
 
-    print("\n✓ Backfill complete")
+    print("\n✓ Backfill complete", flush=True)
 
 if __name__ == "__main__":
     main()
