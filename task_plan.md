@@ -3,7 +3,49 @@
 ## Goal
 构建一个自动化的链上数据监控系统，追踪 7 个代币在 38 个主要交易所的流入流出情况，通过 GitHub Pages 展示实时数据。
 
-## Status: ✅ COMPLETE (Phase 1-6)
+## Status: ⚠️ IN PROGRESS (Phase 7: 历史数据回填)
+
+---
+
+## Phase 7: 历史数据回填 ⚠️ IN_PROGRESS
+**Status:** `in_progress`
+**Started:** 2026-03-05 06:00 UTC
+**Current Progress:** 4/6 代币完成 (67%)
+
+### 已完成代币 ✅
+- GWEI (Ethereum) - commit 063d0b2
+- AZTEC (Ethereum) - commit 1bb2c01
+- TRIA (Ethereum + BSC) - commit 66cc4c5
+- SPACE (Ethereum + BSC) - commit c9fb5ba
+
+### 进行中 ⚠️
+- **UAI (BSC)** - 失败，合并冲突
+  - 工作流 ID: 22716810918
+  - 错误: 与AZTEC数据冲突（2026-02-09 到 2026-03-05所有文件）
+  - 原因: JSONL追加模式 + Git rebase无法自动合并
+
+### 待完成 ⏳
+- BIRB (Ethereum) - 等待UAI完成
+
+### 跳过 ⏭️
+- SKR (Solana) - 需要不同API实现
+- BIRB (Solana) - 需要不同API实现
+
+### 当前问题
+**合并冲突根本原因:**
+多个代币回填时，同一JSONL文件被不同工作流修改，Git无法自动合并JSON Lines格式。
+
+**解决方案: ✅ 已实施**
+修改`scripts/backfill_history.py`添加智能合并逻辑（commit 459e2c4）：
+1. 读取现有JSONL文件
+2. 解析每行JSON
+3. 合并新代币数据到现有时间戳记录
+4. 写回文件
+5. 避免Git冲突
+
+**教训:**
+❌ 不要重复运行失败的工作流期待不同结果
+✅ 第2次失败后立即停止，深度诊断根因，修改代码
 
 ---
 
