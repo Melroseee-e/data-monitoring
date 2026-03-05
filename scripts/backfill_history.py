@@ -78,7 +78,22 @@ def get_current_block_bsc(api_key):
         payload = {"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1}
         resp = requests.post(rpc, json=payload, timeout=15)
         resp.raise_for_status()
-        return int(resp.json()["result"], 16)
+        block_num = int(resp.json()["result"], 16)
+
+        # Sanity check: BSC genesis was 2020-09-01, block time ~3s
+        # As of 2026-03, max reasonable block should be ~60M
+        MAX_REASONABLE_BLOCK = 65000000
+        if block_num > MAX_REASONABLE_BLOCK:
+            print(f"WARNING: BSC block {block_num:,} seems too high (max expected ~{MAX_REASONABLE_BLOCK:,})", flush=True)
+            print(f"         Using estimated block based on time instead", flush=True)
+            # Estimate based on time: BSC genesis + (current_time - genesis_time) / 3
+            genesis_ts = 1598918400  # 2020-09-01 00:00:00 UTC
+            current_ts = int(time.time())
+            estimated_block = (current_ts - genesis_ts) // 3
+            print(f"         Estimated current block: {estimated_block:,}", flush=True)
+            return estimated_block
+
+        return block_num
     except Exception as e:
         print(f"ERROR getting BSC block: {e}", flush=True)
         raise
