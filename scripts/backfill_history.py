@@ -35,8 +35,8 @@ TGE_BLOCKS = {
     # AZTEC: News TGE (2026-02-12) - contract deployment was test/early deploy
     "AZTEC": {"ethereum": 24416000, "date": "2026-02-12"},
 
-    # UAI: News TGE (2025-11-06) - no on-chain data available
-    "UAI": {"bsc": 43500000, "date": "2025-11-06"},
+    # UAI: First transfer verified (2025-11-06 17:01:27 UTC) - block 67224960
+    "UAI": {"bsc": 67224860, "date": "2025-11-06"},
 
     # SPACE: Exchange first transfer (2026-01-29) - most accurate
     "SPACE": {"ethereum": 24340673, "bsc": 44800000, "date": "2026-01-29"},
@@ -83,8 +83,8 @@ def get_current_block_bsc(api_key):
         block_num = int(resp.json()["result"], 16)
 
         # Sanity check: BSC genesis was 2020-09-01, block time ~3s
-        # As of 2026-03, max reasonable block should be ~60M
-        MAX_REASONABLE_BLOCK = 65000000
+        # As of 2026-03, BSC is at ~85M blocks
+        MAX_REASONABLE_BLOCK = 100000000  # 100M blocks as upper limit
         if block_num > MAX_REASONABLE_BLOCK:
             print(f"WARNING: BSC block {block_num:,} seems too high (max expected ~{MAX_REASONABLE_BLOCK:,})", flush=True)
             print(f"         Using estimated block based on time instead", flush=True)

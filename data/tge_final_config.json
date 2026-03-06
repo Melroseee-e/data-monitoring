@@ -27,16 +27,22 @@
     "UAI": {
       "final_tge": {
         "date": "2025-11-06",
-        "block": 43500000,
+        "block": 67224860,
         "chain": "bsc",
-        "source": "news_tge"
+        "source": "first_transfer_verified"
       },
       "data_sources": {
         "contract_deployment": null,
         "news_tge": {
           "date": "2025-11-06"
         },
-        "exchange_first_transfer": null
+        "exchange_first_transfer": null,
+        "first_transfer_verified": {
+          "date": "2025-11-06",
+          "block": 67224960,
+          "tx_hash": "0x95d870eb6cf6fbb41788567a82760e17c1b587dd8fbe876f7bc1d540bc975549",
+          "timestamp": "2025-11-06 17:01:27 UTC"
+        }
       }
     },
     "SPACE": {
