@@ -57,7 +57,9 @@ def load_exchange_lookup(exchanges_data: dict) -> dict:
     for exchange_name, chains in exchanges_data.items():
         for chain, addresses in chains.items():
             for addr in addresses:
-                lookup[chain][addr.lower()] = exchange_name
+                # Solana addresses are case-sensitive, EVM addresses are not
+                key = addr if chain == "solana" else addr.lower()
+                lookup[chain][key] = exchange_name
     return dict(lookup)
 
 

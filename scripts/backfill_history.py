@@ -59,7 +59,9 @@ def load_exchange_lookup(exchanges_data):
     for exchange_name, chains in exchanges_data.items():
         for chain, addresses in chains.items():
             for addr in addresses:
-                lookup[chain][addr.lower()] = exchange_name
+                # Solana addresses are case-sensitive, EVM addresses are not
+                key = addr if chain == "solana" else addr.lower()
+                lookup[chain][key] = exchange_name
     return dict(lookup)
 
 def get_current_block_eth(api_key):
@@ -158,6 +160,8 @@ def fetch_solana_signatures_since(api_key, token_mint, exchange_addresses, start
     # Step 1: Find all ATAs for exchange addresses
     ata_to_exchange = {}
     print(f"  Finding ATAs for {len(exchange_addresses)} exchanges...", flush=True)
+    print(f"  Token mint: {token_mint}", flush=True)
+    print(f"  First 3 addresses: {exchange_addresses[:3]}", flush=True)
     for addr in exchange_addresses:
         result = rpc_call(rpc_url, "getTokenAccountsByOwner", [
             addr,
