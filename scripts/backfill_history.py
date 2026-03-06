@@ -51,7 +51,10 @@ TGE_BLOCKS = {
     "SKR": {"solana": "2026-01-21T00:00:00Z", "date": "2026-01-21"},
 
     # BIRB: News TGE (2026-01-28) - Solana
-    "BIRB": {"solana": "2026-01-28T00:00:00Z", "date": "2026-01-28"}
+    "BIRB": {"solana": "2026-01-28T00:00:00Z", "date": "2026-01-28"},
+
+    # PUMP: ICO launch (2025-07-12 14:00 UTC) - Solana
+    "PUMP": {"solana": "2025-07-12T14:00:00Z", "date": "2025-07-12"}
 }
 
 def load_exchange_lookup(exchanges_data):
