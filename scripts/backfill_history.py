@@ -140,17 +140,31 @@ def process_eth_transfers(transfers, exchange_lookup, decimals=18):
         flows[ex]["net_flow"] = flows[ex]["inflow"] - flows[ex]["outflow"]
     return dict(flows)
 
-def rpc_call(url, method, params):
-    """Generic JSON-RPC call."""
+def rpc_call(url, method, params, max_retries=3):
+    """Generic JSON-RPC call with retry logic for rate limiting."""
     payload = {"jsonrpc": "2.0", "method": method, "params": params, "id": 1}
-    try:
-        resp = requests.post(url, json=payload, timeout=30)
-        resp.raise_for_status()
-        result = resp.json()
-        return result.get("result")
-    except Exception as e:
-        print(f"RPC call failed: {method} - {e}", flush=True)
-        return None
+
+    for attempt in range(max_retries):
+        try:
+            resp = requests.post(url, json=payload, timeout=30)
+            resp.raise_for_status()
+            result = resp.json()
+            return result.get("result")
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 429:  # Rate limit
+                wait_time = (attempt + 1) * 2  # Exponential backoff: 2s, 4s, 6s
+                print(f"  Rate limited, waiting {wait_time}s before retry {attempt+1}/{max_retries}...", flush=True)
+                time.sleep(wait_time)
+                continue
+            else:
+                print(f"RPC call failed: {method} - {e}", flush=True)
+                return None
+        except Exception as e:
+            print(f"RPC call failed: {method} - {e}", flush=True)
+            return None
+
+    print(f"RPC call failed after {max_retries} retries: {method}", flush=True)
+    return None
 
 def fetch_solana_signatures_since(api_key, token_mint, exchange_addresses, start_time_iso):
     """Fetch all Solana signatures for a token since start_time."""
@@ -160,8 +174,6 @@ def fetch_solana_signatures_since(api_key, token_mint, exchange_addresses, start
     # Step 1: Find all ATAs for exchange addresses
     ata_to_exchange = {}
     print(f"  Finding ATAs for {len(exchange_addresses)} exchanges...", flush=True)
-    print(f"  Token mint: {token_mint}", flush=True)
-    print(f"  First 3 addresses: {exchange_addresses[:3]}", flush=True)
     for addr in exchange_addresses:
         result = rpc_call(rpc_url, "getTokenAccountsByOwner", [
             addr,
@@ -456,7 +468,7 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
                             exchange_flows[ts][ex]["outflow"] += amount
                             exchange_flows[ts][ex]["outflow_tx_count"] += 1
 
-                time.sleep(0.05)  # Rate limiting
+                time.sleep(0.15)  # Rate limiting: increased from 0.05 to 0.15
 
             # Calculate net flows
             for ts in exchange_flows:
