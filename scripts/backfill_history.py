@@ -596,7 +596,7 @@ def main():
     api_keys = {
         "eth": os.getenv("ETHERSCAN_API_KEY", ""),
         "bsc": os.getenv("BSCTrace_API_KEY", ""),
-        "helius": os.getenv("HELIUS_API_KEY", "")
+        "solana": os.getenv("HELIUS_API_KEY", "")
     }
 
     # Validate API keys
