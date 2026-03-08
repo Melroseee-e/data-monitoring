@@ -1,35 +1,5 @@
 [
   {
-    "timestamp": "2026-03-03T16:00:00Z",
-    "tokens": {
-      "AZTEC": {
-        "total_inflow": 1428115.0,
-        "total_outflow": 2043103.806654,
-        "net_flow": -614988.806654
-      },
-      "SKR": {
-        "total_inflow": 0,
-        "total_outflow": 0,
-        "net_flow": 0
-      },
-      "SPACE": {
-        "total_inflow": 0,
-        "total_outflow": 1859501.67720288,
-        "net_flow": -1859501.67720288
-      },
-      "TRIA": {
-        "total_inflow": 369945.79,
-        "total_outflow": 0,
-        "net_flow": 369945.79
-      },
-      "GWEI": {
-        "total_inflow": 1118084.479249296,
-        "total_outflow": 277404.31981433,
-        "net_flow": 840680.159434966
-      }
-    }
-  },
-  {
     "timestamp": "2026-03-03T16:34:16Z",
     "tokens": {
       "UAI": {
@@ -6066,6 +6036,51 @@
         "total_inflow": 44954.0722,
         "total_outflow": 85365.708,
         "net_flow": -40411.6358
+      },
+      "PUMP": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-08T20:13:48Z",
+    "tokens": {
+      "UAI": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "BIRB": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "AZTEC": {
+        "total_inflow": 0.0,
+        "total_outflow": 199953.14,
+        "net_flow": -199953.14
+      },
+      "TRIA": {
+        "total_inflow": 358370.3002,
+        "total_outflow": 0.0,
+        "net_flow": 358370.3002
+      },
+      "SKR": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "GWEI": {
+        "total_inflow": 722025.7477,
+        "total_outflow": 200274.4002,
+        "net_flow": 521751.3475
+      },
+      "SPACE": {
+        "total_inflow": 124187.6141,
+        "total_outflow": 90402.0856,
+        "net_flow": 33785.5285
       },
       "PUMP": {
         "total_inflow": 0,
