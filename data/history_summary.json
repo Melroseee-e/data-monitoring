@@ -1,45 +1,5 @@
 [
   {
-    "timestamp": "2026-03-03T10:28:45Z",
-    "tokens": {
-      "UAI": {
-        "total_inflow": 0,
-        "total_outflow": 0,
-        "net_flow": 0
-      },
-      "BIRB": {
-        "total_inflow": 338887.8086,
-        "total_outflow": 465438.0006,
-        "net_flow": -126550.192
-      },
-      "AZTEC": {
-        "total_inflow": 857414.2323,
-        "total_outflow": 483136.5698,
-        "net_flow": 374277.6625
-      },
-      "TRIA": {
-        "total_inflow": 668829.323,
-        "total_outflow": 647681.1826,
-        "net_flow": 21148.1404
-      },
-      "SKR": {
-        "total_inflow": 2221193.15,
-        "total_outflow": 1726181.3782,
-        "net_flow": 495011.7718
-      },
-      "GWEI": {
-        "total_inflow": 203715.3103,
-        "total_outflow": 29602.18,
-        "net_flow": 174113.1303
-      },
-      "SPACE": {
-        "total_inflow": 6106438.6732,
-        "total_outflow": 4652486.0,
-        "net_flow": 1453952.6732
-      }
-    }
-  },
-  {
     "timestamp": "2026-03-03T11:00:00Z",
     "tokens": {
       "AZTEC": {
@@ -5946,6 +5906,51 @@
         "total_inflow": 52542.337,
         "total_outflow": 13846.4852,
         "net_flow": 38695.8518
+      },
+      "PUMP": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-08T09:19:07Z",
+    "tokens": {
+      "UAI": {
+        "total_inflow": 142.1664,
+        "total_outflow": 0.0,
+        "net_flow": 142.1664
+      },
+      "BIRB": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "AZTEC": {
+        "total_inflow": 2772.0,
+        "total_outflow": 315432.14,
+        "net_flow": -312660.14
+      },
+      "TRIA": {
+        "total_inflow": 0.0,
+        "total_outflow": 27779.2888,
+        "net_flow": -27779.2888
+      },
+      "SKR": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "GWEI": {
+        "total_inflow": 7771.1648,
+        "total_outflow": 0.0,
+        "net_flow": 7771.1648
+      },
+      "SPACE": {
+        "total_inflow": 8433.1279,
+        "total_outflow": 706591.6379,
+        "net_flow": -698158.51
       },
       "PUMP": {
         "total_inflow": 0,
