@@ -1,35 +1,5 @@
 [
   {
-    "timestamp": "2026-03-03T17:00:00Z",
-    "tokens": {
-      "AZTEC": {
-        "total_inflow": 2359368.5094642444,
-        "total_outflow": 83366.95346817,
-        "net_flow": 2276001.5559960743
-      },
-      "SKR": {
-        "total_inflow": 0,
-        "total_outflow": 0,
-        "net_flow": 0
-      },
-      "SPACE": {
-        "total_inflow": 15961730.249428,
-        "total_outflow": 15253633.67762163,
-        "net_flow": 708096.5718063712
-      },
-      "TRIA": {
-        "total_inflow": 650201.2,
-        "total_outflow": 331502.0,
-        "net_flow": 318699.19999999995
-      },
-      "GWEI": {
-        "total_inflow": 428398.9209986319,
-        "total_outflow": 359827.671191,
-        "net_flow": 68571.24980763195
-      }
-    }
-  },
-  {
     "timestamp": "2026-03-03T17:38:40Z",
     "tokens": {
       "UAI": {
@@ -6086,6 +6056,51 @@
         "total_inflow": 1111823.5009,
         "total_outflow": 1193385.0351,
         "net_flow": -81561.5342
+      },
+      "PUMP": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-08T22:13:13Z",
+    "tokens": {
+      "UAI": {
+        "total_inflow": 63.2743,
+        "total_outflow": 0.0,
+        "net_flow": 63.2743
+      },
+      "BIRB": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "AZTEC": {
+        "total_inflow": 95992.0,
+        "total_outflow": 95992.0,
+        "net_flow": 0.0
+      },
+      "TRIA": {
+        "total_inflow": 339451.1444,
+        "total_outflow": 339451.1444,
+        "net_flow": 0.0
+      },
+      "SKR": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "GWEI": {
+        "total_inflow": 81548.3319,
+        "total_outflow": 0.0,
+        "net_flow": 81548.3319
+      },
+      "SPACE": {
+        "total_inflow": 0.0,
+        "total_outflow": 39902.4673,
+        "net_flow": -39902.4673
       },
       "PUMP": {
         "total_inflow": 0,
