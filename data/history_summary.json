@@ -1,35 +1,5 @@
 [
   {
-    "timestamp": "2026-03-03T21:00:00Z",
-    "tokens": {
-      "AZTEC": {
-        "total_inflow": 0,
-        "total_outflow": 745626.0,
-        "net_flow": -745626.0
-      },
-      "SKR": {
-        "total_inflow": 0,
-        "total_outflow": 0,
-        "net_flow": 0
-      },
-      "SPACE": {
-        "total_inflow": 0,
-        "total_outflow": 0,
-        "net_flow": 0
-      },
-      "TRIA": {
-        "total_inflow": 897387.74,
-        "total_outflow": 472258.86768495,
-        "net_flow": 425128.87231505
-      },
-      "GWEI": {
-        "total_inflow": 229651.0077785,
-        "total_outflow": 108259.65957453,
-        "net_flow": 121391.34820397
-      }
-    }
-  },
-  {
     "timestamp": "2026-03-03T21:24:03Z",
     "tokens": {
       "UAI": {
@@ -6181,6 +6151,51 @@
         "total_inflow": 572834.6965,
         "total_outflow": 334342.8888,
         "net_flow": 238491.8077
+      },
+      "PUMP": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-09T09:37:28Z",
+    "tokens": {
+      "UAI": {
+        "total_inflow": 2500.9878,
+        "total_outflow": 15601.5926,
+        "net_flow": -13100.6048
+      },
+      "BIRB": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "AZTEC": {
+        "total_inflow": 559754.356,
+        "total_outflow": 326584.3895,
+        "net_flow": 233169.9665
+      },
+      "TRIA": {
+        "total_inflow": 12326041.8488,
+        "total_outflow": 9913961.1785,
+        "net_flow": 2412080.6703
+      },
+      "SKR": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "GWEI": {
+        "total_inflow": 28213.3152,
+        "total_outflow": 0.0,
+        "net_flow": 28213.3152
+      },
+      "SPACE": {
+        "total_inflow": 0.0,
+        "total_outflow": 67349.5205,
+        "net_flow": -67349.5205
       },
       "PUMP": {
         "total_inflow": 0,
