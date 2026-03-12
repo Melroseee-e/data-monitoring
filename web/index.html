@@ -411,11 +411,13 @@
 const DATA_URL = '../data/latest_data.json';
 const HISTORY_URL = '../data/history_summary.json';
 const HISTORY_DIR_URL = '../data/history';
+const TGE_NETFLOWS_URL = '../data/tge_netflows.json';
 const ANOMALY_THRESHOLD = 1000000; // net flow threshold for alerts
 const DAILY_DAYS_TO_LOAD = 30;
 
 let rawData = null;
 let historyData = null;
+let tgeNetflows = null;
 let trendChart = null;
 const chartInstances = {};
 
@@ -472,6 +474,15 @@ async function loadData() {
       renderTrendChart();
     }
   } catch (_) { /* history not available yet */ }
+
+  // Load TGE netflows (non-blocking)
+  try {
+    const tgeResp = await fetch(TGE_NETFLOWS_URL);
+    if (tgeResp.ok) {
+      tgeNetflows = await tgeResp.json();
+      render(); // Re-render to show TGE data
+    }
+  } catch (_) { /* TGE data not available yet */ }
 }
 
 function populateFilters() {
@@ -588,6 +599,13 @@ function renderTokenCards(filteredTokens) {
       const isAnomaly = Math.abs(depNetFlow) > ANOMALY_THRESHOLD;
       if (isAnomaly) card.classList.add('alert');
 
+      // Get TGE cumulative netflow if available
+      const tgeData = tgeNetflows?.tokens?.[symbol];
+      const tgeNetflowHtml = tgeData ?
+        `<div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
+          Since TGE (${tgeData.tge_date}): <span style="color: ${tgeData.cumulative_netflow >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'}; font-weight: 500;">${tgeData.cumulative_netflow >= 0 ? '+' : ''}${formatNumber(tgeData.cumulative_netflow)}</span>
+        </div>` : '';
+
       const chartId = `chart-${symbol}-${dep.chain}`;
       card.innerHTML = `
         <div class="token-card-header">
@@ -596,9 +614,12 @@ function renderTokenCards(filteredTokens) {
             <span class="token-chain">${dep.chain}</span>
             ${isAnomaly ? '<span class="alert-badge">Unusual Flow</span>' : ''}
           </div>
-          <span class="token-net" style="color: ${depNetFlow >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'}">
-            Net: ${depNetFlow >= 0 ? '+' : ''}${formatNumber(depNetFlow)}
-          </span>
+          <div style="text-align: right;">
+            <span class="token-net" style="color: ${depNetFlow >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'}">
+              Net: ${depNetFlow >= 0 ? '+' : ''}${formatNumber(depNetFlow)}
+            </span>
+            ${tgeNetflowHtml}
+          </div>
         </div>
         <div class="chart-container"><canvas id="${chartId}"></canvas></div>
         <table class="exchange-table">
