@@ -330,6 +330,7 @@
     <button class="tab-btn" data-tab="daily-heatmap">Daily Heatmap</button>
     <button class="tab-btn" data-tab="daily-chart">Daily Chart</button>
     <button class="tab-btn" data-tab="daily-table">Daily Table</button>
+    <button class="tab-btn" data-tab="tge-chart">TGE Net Flow</button>
   </div>
 
   <!-- Overview tab -->
@@ -405,6 +406,30 @@
       <div id="daily-scheme-c" class="daily-scheme"></div>
     </div>
   </div>
+
+  <!-- TGE Net Flow tab -->
+  <div class="tab-panel" id="tab-tge-chart">
+    <div class="section-card">
+      <h2>Cumulative Net Flow Since TGE</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+        Cumulative exchange net flow (inflow − outflow) for each token from its TGE date to today.
+        Positive = more tokens flowing into exchanges (selling pressure). Negative = more tokens leaving exchanges (accumulation).
+      </p>
+      <div class="filters" style="margin-bottom:16px;">
+        <div class="filter-group">
+          <label>Token</label>
+          <select id="tge-token-filter">
+            <option value="all">All Tokens</option>
+          </select>
+        </div>
+      </div>
+      <div id="tge-no-data" class="no-data" style="display:none">No TGE chart data available yet.</div>
+      <div style="position:relative;height:400px;">
+        <canvas id="tge-cumulative-chart"></canvas>
+      </div>
+      <div id="tge-summary-table" style="margin-top:24px;"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -412,12 +437,15 @@ const DATA_URL = '../data/latest_data.json';
 const HISTORY_URL = '../data/history_summary.json';
 const HISTORY_DIR_URL = '../data/history';
 const TGE_NETFLOWS_URL = '../data/tge_netflows.json';
+const TGE_CHART_DATA_URL = '../data/tge_chart_data.json';
 const ANOMALY_THRESHOLD = 1000000; // net flow threshold for alerts
 const DAILY_DAYS_TO_LOAD = 30;
 
 let rawData = null;
 let historyData = null;
 let tgeNetflows = null;
+let tgeChartData = null;
+let tgeCumulativeChart = null;
 let trendChart = null;
 const chartInstances = {};
 
@@ -447,6 +475,14 @@ function handleTabActivated(tabName) {
       renderDailySchemes();
       if (tabName === 'daily-chart' && dailyChartB) {
         dailyChartB.resize();
+      }
+    }, 120);
+  }
+
+  if (tabName === 'tge-chart') {
+    setTimeout(() => {
+      if (tgeChartData) {
+        renderTgeCumulativeChart();
       }
     }, 120);
   }
@@ -483,6 +519,16 @@ async function loadData() {
       render(); // Re-render to show TGE data
     }
   } catch (_) { /* TGE data not available yet */ }
+
+  // Load TGE chart data (non-blocking)
+  try {
+    const tgeChartResp = await fetch(TGE_CHART_DATA_URL);
+    if (tgeChartResp.ok) {
+      tgeChartData = await tgeChartResp.json();
+      populateTgeTokenFilter();
+      renderTgeCumulativeChart();
+    }
+  } catch (_) { /* TGE chart data not available yet */ }
 }
 
 function populateFilters() {
@@ -986,6 +1032,144 @@ function renderTrendChart() {
 }
 
 // ── Exchange ranking ─────────────────────────────────────────────────
+
+// ── TGE Cumulative Net Flow Chart ────────────────────────────────────
+
+const TOKEN_COLORS = {
+  'UAI':   '#d97757',
+  'BIRB':  '#5b8a72',
+  'AZTEC': '#7b68ee',
+  'TRIA':  '#e8a838',
+  'SKR':   '#4a9eca',
+  'GWEI':  '#e05c8a',
+  'SPACE': '#6abf69',
+  'PUMP':  '#ff7043',
+};
+
+function populateTgeTokenFilter() {
+  if (!tgeChartData) return;
+  const sel = document.getElementById('tge-token-filter');
+  // Clear existing options except "All"
+  while (sel.options.length > 1) sel.remove(1);
+  for (const token of Object.keys(tgeChartData.tokens).sort()) {
+    const opt = document.createElement('option');
+    opt.value = token; opt.textContent = token;
+    sel.appendChild(opt);
+  }
+  sel.addEventListener('change', renderTgeCumulativeChart);
+}
+
+function renderTgeCumulativeChart() {
+  if (!tgeChartData || !tgeChartData.tokens) {
+    document.getElementById('tge-no-data').style.display = 'block';
+    return;
+  }
+  document.getElementById('tge-no-data').style.display = 'none';
+
+  const tokenFilter = document.getElementById('tge-token-filter')?.value || 'all';
+  const tokens = tgeChartData.tokens;
+
+  // Collect all unique dates across selected tokens
+  const dateSet = new Set();
+  for (const [tok, data] of Object.entries(tokens)) {
+    if (tokenFilter !== 'all' && tokenFilter !== tok) continue;
+    for (const pt of data.series) dateSet.add(pt.date);
+  }
+  const allDates = Array.from(dateSet).sort();
+
+  // Build datasets
+  const datasets = [];
+  for (const [tok, data] of Object.entries(tokens)) {
+    if (tokenFilter !== 'all' && tokenFilter !== tok) continue;
+    if (!data.series || data.series.length === 0) continue;
+
+    // Map date -> cumulative_net
+    const byDate = {};
+    for (const pt of data.series) byDate[pt.date] = pt.cumulative_net;
+
+    // Fill in values for all dates (carry forward last known value)
+    const values = [];
+    let last = null;
+    for (const d of allDates) {
+      if (d < data.tge_date) { values.push(null); continue; }
+      if (byDate[d] !== undefined) last = byDate[d];
+      values.push(last);
+    }
+
+    const color = TOKEN_COLORS[tok] || '#888';
+    datasets.push({
+      label: tok,
+      data: values,
+      borderColor: color,
+      backgroundColor: color + '18',
+      fill: false,
+      tension: 0.3,
+      pointRadius: 1,
+      borderWidth: 2,
+    });
+  }
+
+  const ctx = document.getElementById('tge-cumulative-chart').getContext('2d');
+  if (tgeCumulativeChart) tgeCumulativeChart.destroy();
+
+  tgeCumulativeChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: allDates, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } },
+        tooltip: {
+          mode: 'index', intersect: false,
+          callbacks: {
+            label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y !== null ? (ctx.parsed.y >= 0 ? '+' : '') + formatNumber(ctx.parsed.y) : 'N/A'}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          grid: { color: 'rgba(0,0,0,0.04)' },
+          ticks: { font: { size: 11 }, callback: v => formatNumber(v) }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 10 }, maxTicksLimit: 16 }
+        }
+      },
+      interaction: { mode: 'index', intersect: false },
+    }
+  });
+
+  // Render summary table
+  renderTgeSummaryTable(tokens, tokenFilter);
+}
+
+function renderTgeSummaryTable(tokens, tokenFilter) {
+  const container = document.getElementById('tge-summary-table');
+  let html = `<table class="exchange-table"><thead><tr>
+    <th>Token</th><th>TGE Date</th><th>Days Tracked</th><th>Cumulative Net Flow</th><th>Status</th>
+  </tr></thead><tbody>`;
+
+  for (const [tok, data] of Object.entries(tokens)) {
+    if (tokenFilter !== 'all' && tokenFilter !== tok) continue;
+    const net = data.final_cumulative;
+    const color = net >= 0 ? 'var(--net-positive)' : 'var(--net-negative)';
+    const sign = net >= 0 ? '+' : '';
+    const status = net >= 0 ? '📈 Net Inflow' : '📉 Net Outflow';
+    html += `<tr>
+      <td><strong>${tok}</strong></td>
+      <td>${data.tge_date}</td>
+      <td>${data.days_tracked}</td>
+      <td style="color:${color};font-weight:500">${sign}${formatNumber(net)}</td>
+      <td>${status}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+
 
 function renderExchangeRanking(filteredTokens) {
   const rankings = {};
