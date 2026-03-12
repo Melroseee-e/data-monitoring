@@ -405,8 +405,8 @@ def process_solana_transfers(transfers: list[dict], exchange_lookup: dict) -> di
     tx_count_out = defaultdict(int)
 
     for tx in transfers:
-        to_addr = tx.get("to_address", "").lower()
-        from_addr = tx.get("from_address", "").lower()
+        to_addr = tx.get("to_address", "")  # Solana addresses are case-sensitive
+        from_addr = tx.get("from_address", "")  # Solana addresses are case-sensitive
         decimals = int(tx.get("decimals", 9))
         amount = int(tx.get("amount", 0)) / (10 ** decimals)
 
