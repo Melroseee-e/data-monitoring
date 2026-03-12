@@ -141,6 +141,21 @@
         },
         "exchange_first_transfer": null
       }
+    },
+    "PUMP": {
+      "final_tge": {
+        "date": "2026-01-21",
+        "block": null,
+        "chain": "solana",
+        "source": "news_tge"
+      },
+      "data_sources": {
+        "contract_deployment": null,
+        "news_tge": {
+          "date": "2026-01-21"
+        },
+        "exchange_first_transfer": null
+      }
     }
   }
 }
