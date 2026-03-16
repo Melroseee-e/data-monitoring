@@ -23,10 +23,10 @@
     --accent: #1E40AF;
     --accent-light: #DBEAFE;
     --border: #E2E8F0;
-    --inflow: #1D4ED8;
-    --outflow: #16A34A;
-    --net-positive: #1D4ED8;
-    --net-negative: #16A34A;
+    --inflow: #16A34A;
+    --outflow: #DC2626;
+    --net-positive: #1E40AF;
+    --net-negative: #DC2626;
     --alert-bg: #FEE2E2;
     --alert-border: #DC2626;
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
@@ -143,12 +143,12 @@
   }
 
   .filter-group label {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--text-secondary);
     margin-right: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    text-transform: none;
+    letter-spacing: 0;
   }
 
   .filter-group select {
@@ -297,6 +297,7 @@
     padding: 24px;
     box-shadow: var(--shadow-sm);
     transition: box-shadow 0.2s, transform 0.2s;
+    cursor: pointer;
   }
 
   .token-card:hover {
@@ -390,11 +391,26 @@
     transition: background 0.2s;
   }
 
-  .exchange-table th::after, .ranking-table th::after, .daily-table th::after {
+  .exchange-table th.sortable, .ranking-table th.sortable, .daily-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .exchange-table th.sortable::after, .ranking-table th.sortable::after, .daily-table th.sortable::after {
     content: ' \21D5';
     opacity: 0.3;
     font-size: 10px;
     margin-left: 4px;
+  }
+
+  .exchange-table th.sortable.sort-asc::after, .ranking-table th.sortable.sort-asc::after, .daily-table th.sortable.sort-asc::after {
+    content: ' \25B2';
+    opacity: 0.8;
+  }
+
+  .exchange-table th.sortable.sort-desc::after, .ranking-table th.sortable.sort-desc::after, .daily-table th.sortable.sort-desc::after {
+    content: ' \25BC';
+    opacity: 0.8;
   }
 
   .exchange-table td, .ranking-table td, .daily-table td {
@@ -597,15 +613,15 @@
   </div>
 
   <!-- Tab navigation -->
-  <div class="tab-bar">
-    <button class="tab-btn active" data-tab="overview">Overview</button>
-    <button class="tab-btn" data-tab="sankey">Flow Diagram</button>
-    <button class="tab-btn" data-tab="trend">Trend</button>
-    <button class="tab-btn" data-tab="ranking">Exchange Ranking</button>
-    <button class="tab-btn" data-tab="daily-heatmap">Daily Heatmap</button>
-    <button class="tab-btn" data-tab="daily-chart">Daily Chart</button>
-    <button class="tab-btn" data-tab="daily-table">Daily Table</button>
-    <button class="tab-btn" data-tab="tge-chart">TGE Net Flow</button>
+  <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+    <button class="tab-btn" data-tab="sankey" role="tab" aria-selected="false">Flow Diagram</button>
+    <button class="tab-btn" data-tab="trend" role="tab" aria-selected="false">Trend</button>
+    <button class="tab-btn" data-tab="ranking" role="tab" aria-selected="false">Exchange Ranking</button>
+    <button class="tab-btn" data-tab="daily-heatmap" role="tab" aria-selected="false">Daily Heatmap</button>
+    <button class="tab-btn" data-tab="daily-chart" role="tab" aria-selected="false">Daily Chart</button>
+    <button class="tab-btn" data-tab="daily-table" role="tab" aria-selected="false">Daily Table</button>
+    <button class="tab-btn" data-tab="tge-chart" role="tab" aria-selected="false">TGE Net Flow</button>
   </div>
 
   <!-- Overview tab -->
@@ -638,7 +654,7 @@
       <h2>Historical Trend (Last 7 Days)</h2>
       <div class="trend-chart-container">
         <button class="zoom-reset-btn" onclick="resetChartZoom('trend-chart')">↺ Reset</button>
-        <canvas id="trend-chart"></canvas>
+        <canvas id="trend-chart" aria-label="Historical trend chart"></canvas>
       </div>
       <div id="trend-no-data" class="no-data" style="display:none">
         No history data available yet. Data accumulates over time as the collector runs hourly.
@@ -650,12 +666,14 @@
   <div class="tab-panel" id="tab-ranking">
     <div class="section-card">
       <h2>Exchange Ranking (by Volume)</h2>
+      <div style="overflow-x:auto">
       <table class="ranking-table" id="ranking-table">
         <thead>
-          <tr><th>#</th><th>Exchange</th><th>Inflow</th><th>Outflow</th><th>Net Flow</th><th>Txns</th></tr>
+          <tr><th>#</th><th class="sortable" data-col="exchange">Exchange</th><th class="sortable" data-col="inflow">Inflow</th><th class="sortable" data-col="outflow">Outflow</th><th class="sortable" data-col="net">Net Flow</th><th class="sortable" data-col="txns">Txns</th></tr>
         </thead>
         <tbody></tbody>
       </table>
+      </div>
     </div>
   </div>
 
@@ -710,7 +728,7 @@
       <div id="tge-no-data" class="no-data" style="display:none">No TGE chart data available yet.</div>
       <div class="tge-chart-container">
         <button class="zoom-reset-btn" onclick="resetChartZoom('tge-cumulative-chart')">↺ Reset</button>
-        <canvas id="tge-cumulative-chart"></canvas>
+        <canvas id="tge-cumulative-chart" aria-label="TGE cumulative net flow chart"></canvas>
       </div>
       <div id="tge-summary-table" style="margin-top:32px;"></div>
       <div id="tge-pending-tokens" style="margin-top:16px;font-size:13px;color:var(--text-secondary);font-weight:500;"></div>
@@ -759,7 +777,7 @@ const TOOLTIP_OPTS = {
   titleColor: '#F1F5F9', bodyColor: '#CBD5E1',
   padding: 12, cornerRadius: 8,
   titleFont: { size: 12, weight: '600' },
-  bodyFont: { size: 11 },
+  bodyFont: { size: 13 },
   usePointStyle: true,
   callbacks: {
     label: function(context) {
@@ -798,9 +816,10 @@ function resetChartZoom(chartId) {
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
     const tabName = btn.dataset.tab;
     document.getElementById('tab-' + tabName).classList.add('active');
     handleTabActivated(tabName);
@@ -862,7 +881,7 @@ async function loadData() {
     render();
   } catch (e) {
     document.getElementById('token-grid').innerHTML =
-      `<div class="no-data">Failed to load data. Run <code>python scripts/data_collector.py</code> first.<br><small>${e.message}</small></div>`;
+      `<div class="no-data">Data temporarily unavailable. Please check back later.<br><small style="opacity:0.6">${e.message}</small></div>`;
   }
 
   // Load history (non-blocking)
@@ -1037,24 +1056,25 @@ function renderTokenCards(filteredTokens) {
           </div>
         </div>
         <div class="chart-container">
-          <button class="zoom-reset-btn" onclick="resetChartZoom('${chartId}')">↺ Reset</button>
           <canvas id="${chartId}"></canvas>
         </div>
-        <table class="exchange-table">
-          <thead><tr><th>Exchange</th><th>Inflow</th><th>Outflow</th><th>Net</th><th>Txns</th></tr></thead>
+        <div style="overflow-x:auto">
+        <table class="exchange-table" data-chartid="${chartId}">
+          <thead><tr><th class="sortable" data-col="exchange">Exchange</th><th class="sortable" data-col="inflow">Inflow</th><th class="sortable" data-col="outflow">Outflow</th><th class="sortable" data-col="net">Net</th><th class="sortable" data-col="txns">Txns</th></tr></thead>
           <tbody>
             ${exchangeNames.map(ex => {
               const f = flows[ex];
               return `<tr>
                 <td>${ex}</td>
-                <td style="color:var(--inflow)">${formatNumber(f.inflow)}</td>
-                <td style="color:var(--outflow)">${formatNumber(f.outflow)}</td>
-                <td style="color:${f.net_flow >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'};font-weight:700;">${f.net_flow >= 0 ? '+' : ''}${formatNumber(f.net_flow)}</td>
-                <td>${f.inflow_tx_count + f.outflow_tx_count}</td>
+                <td style="color:var(--inflow);text-align:right">${formatNumber(f.inflow)}</td>
+                <td style="color:var(--outflow);text-align:right">${formatNumber(f.outflow)}</td>
+                <td style="color:${f.net_flow >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'};font-weight:700;text-align:right">${f.net_flow >= 0 ? '+' : ''}${formatNumber(f.net_flow)}</td>
+                <td style="text-align:right">${f.inflow_tx_count + f.outflow_tx_count}</td>
               </tr>`;
             }).join('')}
           </tbody>
         </table>
+        </div>
       `;
       grid.appendChild(card);
 
@@ -1064,21 +1084,55 @@ function renderTokenCards(filteredTokens) {
         data: {
           labels: exchangeNames,
           datasets: [
-            { label: 'Inflow', data: exchangeNames.map(ex => flows[ex].inflow), backgroundColor: 'rgba(29, 78, 216, 0.8)', borderColor: '#1D4ED8', borderWidth: 1 },
-            { label: 'Outflow', data: exchangeNames.map(ex => flows[ex].outflow), backgroundColor: 'rgba(22, 163, 74, 0.8)', borderColor: '#16A34A', borderWidth: 1 },
+            { label: 'Inflow', data: exchangeNames.map(ex => flows[ex].inflow), backgroundColor: 'rgba(22, 163, 74, 0.8)', borderColor: '#16A34A', borderWidth: 1 },
+            { label: 'Outflow', data: exchangeNames.map(ex => flows[ex].outflow), backgroundColor: 'rgba(220, 38, 38, 0.8)', borderColor: '#DC2626', borderWidth: 1 },
           ]
         },
         options: {
           responsive: true, maintainAspectRatio: false,
-          plugins: { 
+          plugins: {
             legend: { display: false },
-            zoom: ZOOM_OPTS,
             tooltip: TOOLTIP_OPTS,
           },
           scales: { ...AXIS_OPTS }
         }
       });
       window.allCharts[chartId] = chart;
+
+      // Wire up exchange-table sorting
+      const tableEl = card.querySelector('.exchange-table');
+      const exchangeFlowsData = exchangeNames.map(ex => ({ exchange: ex, ...flows[ex], net: flows[ex].net_flow, txns: flows[ex].inflow_tx_count + flows[ex].outflow_tx_count }));
+      let exSort = { col: 'inflow', dir: 'desc' };
+
+      function renderExTableBody() {
+        const col = exSort.col;
+        const dir = exSort.dir === 'asc' ? 1 : -1;
+        const sorted = [...exchangeFlowsData].sort((a, b) => {
+          if (col === 'exchange') return dir * a.exchange.localeCompare(b.exchange);
+          return dir * ((a[col] || 0) - (b[col] || 0));
+        });
+        updateSortIndicators(tableEl, exSort);
+        tableEl.querySelector('tbody').innerHTML = sorted.map(f => `<tr>
+          <td>${f.exchange}</td>
+          <td style="color:var(--inflow);text-align:right">${formatNumber(f.inflow)}</td>
+          <td style="color:var(--outflow);text-align:right">${formatNumber(f.outflow)}</td>
+          <td style="color:${f.net >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'};font-weight:700;text-align:right">${f.net >= 0 ? '+' : ''}${formatNumber(f.net)}</td>
+          <td style="text-align:right">${f.txns}</td>
+        </tr>`).join('');
+      }
+
+      tableEl.querySelectorAll('th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+          const col = th.dataset.col;
+          if (exSort.col === col) {
+            exSort.dir = exSort.dir === 'asc' ? 'desc' : 'asc';
+          } else {
+            exSort.col = col;
+            exSort.dir = col === 'exchange' ? 'asc' : 'desc';
+          }
+          renderExTableBody();
+        });
+      });
     }
   }
 
@@ -1112,7 +1166,7 @@ function renderSankeyChart(filteredTokens) {
       const tokenLabel = dep.chain === tdata.deployments[0]?.chain && tdata.deployments.length === 1
         ? token
         : `${token} (${dep.chain})`;
-      const tokenIdx = getNodeIdx(tokenLabel, '#1D4ED8');
+      const tokenIdx = getNodeIdx(tokenLabel, '#1E40AF');
 
       for (const [exchange, flows] of Object.entries(dep.exchange_flows)) {
         const exIdx = getNodeIdx(exchange, '#16A34A');
@@ -1121,13 +1175,13 @@ function renderSankeyChart(filteredTokens) {
           linkSources.push(tokenIdx);
           linkTargets.push(exIdx);
           linkValues.push(flows.inflow);
-          linkColors.push('rgba(29, 78, 216, 0.35)');
+          linkColors.push('rgba(22, 163, 74, 0.35)');
         }
         if (flows.outflow > 0) {
           linkSources.push(exIdx);
           linkTargets.push(tokenIdx);
           linkValues.push(flows.outflow);
-          linkColors.push('rgba(22, 163, 74, 0.35)');
+          linkColors.push('rgba(220, 38, 38, 0.35)');
         }
       }
     }
@@ -1304,7 +1358,7 @@ class ParticleSystem {
       this.particles.push({
         x, y, targetX, targetY,
         progress: 0,
-        color: Math.random() > 0.5 ? '#1D4ED8' : '#16A34A'
+        color: Math.random() > 0.5 ? '#1E40AF' : '#16A34A'
       });
     }
 
@@ -1389,8 +1443,8 @@ function renderTrendChart() {
     data: {
       labels,
       datasets: [
-        { label: 'Inflow', data: inflowData, borderColor: '#1D4ED8', backgroundColor: 'rgba(29, 78, 216, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
-        { label: 'Outflow', data: outflowData, borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
+        { label: 'Inflow', data: inflowData, borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
+        { label: 'Outflow', data: outflowData, borderColor: '#DC2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
         { label: 'Net', data: netData, borderColor: '#475569', borderDash: [5, 5], tension: 0.3, pointRadius: 0, borderWidth: 2, fill: false },
       ]
     },
@@ -1413,6 +1467,28 @@ function renderTrendChart() {
 }
 
 // ── Exchange ranking ─────────────────────────────────────────────────
+
+let rankingSort = { col: 'volume', dir: 'desc' };
+let rankingData = [];
+
+function initTableSort(tableEl, getColFn, renderFn) {
+  tableEl.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      getColFn(col);
+      renderFn();
+    });
+  });
+}
+
+function updateSortIndicators(tableEl, sortState) {
+  tableEl.querySelectorAll('th.sortable').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (th.dataset.col === sortState.col) {
+      th.classList.add(sortState.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+  });
+}
 
 // ── TGE Cumulative Net Flow Chart ────────────────────────────────────
 
@@ -1511,7 +1587,8 @@ function renderTgeCumulativeChart() {
         x: {
            ...AXIS_OPTS.x,
           type: 'time',
-          time: { unit: 'month' },
+          time: { tooltipFormat: 'yyyy-MM-dd' },
+          ticks: { ...AXIS_OPTS.x.ticks, autoSkip: true, maxTicksLimit: 10 },
         }
       },
     }
@@ -1590,24 +1667,56 @@ function renderExchangeRanking(filteredTokens) {
     }
   }
 
-  const sorted = Object.entries(rankings)
-    .map(([ex, r]) => ({ exchange: ex, ...r, net: r.inflow - r.outflow, volume: r.inflow + r.outflow }))
-    .sort((a, b) => b.volume - a.volume);
+  rankingData = Object.entries(rankings)
+    .map(([ex, r]) => ({ exchange: ex, ...r, net: r.inflow - r.outflow, volume: r.inflow + r.outflow }));
 
-  const tbody = document.querySelector('#ranking-table tbody');
-  if (sorted.length === 0) {
+  renderRankingTableBody();
+
+  // Wire up sorting once (check if already bound)
+  const tableEl = document.getElementById('ranking-table');
+  if (!tableEl.__sortBound) {
+    tableEl.__sortBound = true;
+    tableEl.querySelectorAll('th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        const col = th.dataset.col;
+        if (rankingSort.col === col) {
+          rankingSort.dir = rankingSort.dir === 'asc' ? 'desc' : 'asc';
+        } else {
+          rankingSort.col = col;
+          rankingSort.dir = col === 'exchange' ? 'asc' : 'desc';
+        }
+        renderRankingTableBody();
+      });
+    });
+  }
+}
+
+function renderRankingTableBody() {
+  const tableEl = document.getElementById('ranking-table');
+  const tbody = tableEl.querySelector('tbody');
+
+  if (rankingData.length === 0) {
     tbody.innerHTML = '<tr><td colspan="6" class="no-data">No data available</td></tr>';
     return;
   }
+
+  const col = rankingSort.col;
+  const dir = rankingSort.dir === 'asc' ? 1 : -1;
+  const sorted = [...rankingData].sort((a, b) => {
+    if (col === 'exchange') return dir * a.exchange.localeCompare(b.exchange);
+    return dir * ((a[col] || 0) - (b[col] || 0));
+  });
+
+  updateSortIndicators(tableEl, rankingSort);
 
   tbody.innerHTML = sorted.slice(0, 20).map((r, i) => `
     <tr>
       <td>${i + 1}</td>
       <td style="font-weight:600">${r.exchange}</td>
-      <td style="color:var(--inflow)">${formatNumber(r.inflow)}</td>
-      <td style="color:var(--outflow)">${formatNumber(r.outflow)}</td>
-      <td class="${r.net >= 0 ? 'positive' : 'negative'}">${r.net >= 0 ? '+' : ''}${formatNumber(r.net)}</td>
-      <td>${r.txns}</td>
+      <td style="color:var(--inflow);text-align:right">${formatNumber(r.inflow)}</td>
+      <td style="color:var(--outflow);text-align:right">${formatNumber(r.outflow)}</td>
+      <td class="${r.net >= 0 ? 'positive' : 'negative'}" style="text-align:right">${r.net >= 0 ? '+' : ''}${formatNumber(r.net)}</td>
+      <td style="text-align:right">${r.txns}</td>
     </tr>
   `).join('');
 }
@@ -1786,27 +1895,40 @@ function renderDailySchemes() {
   if (document.getElementById('tab-daily-chart').classList.contains('active')) {
     renderSchemeB(dates);
   } else {
-    dailyChartContainer.innerHTML = '<div class="loading">Open Daily Chart tab to render the chart.</div>';
+    dailyChartContainer.innerHTML = '<div class="loading">Loading daily chart data...</div>';
   }
 
   if (document.getElementById('tab-daily-table').classList.contains('active')) {
     renderSchemeC(dates);
   } else {
-    dailyTableContainer.innerHTML = '<div class="loading">Open Daily Table tab to render the table.</div>';
+    dailyTableContainer.innerHTML = '<div class="loading">Loading daily table data...</div>';
   }
 }
 
 function renderSchemeA(dates) {
   const container = document.getElementById('daily-scheme-a');
-  let html = '<div class="daily-heatmap">';
+  let html = `<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:12px;font-weight:600;color:var(--text-secondary)">
+    <span>Color legend:</span>
+    <span style="display:flex;align-items:center;gap:6px">
+      <span style="width:16px;height:16px;border-radius:4px;background:rgba(29,78,216,0.75);display:inline-block"></span>Net Outflow (accumulation)
+    </span>
+    <span style="display:flex;align-items:center;gap:6px">
+      <span style="width:16px;height:16px;border-radius:4px;background:#F8FAFC;border:1px solid #E2E8F0;display:inline-block"></span>Neutral
+    </span>
+    <span style="display:flex;align-items:center;gap:6px">
+      <span style="width:16px;height:16px;border-radius:4px;background:rgba(220,38,38,0.75);display:inline-block"></span>Net Inflow (selling pressure)
+    </span>
+  </div>`;
+  html += '<div class="daily-heatmap">';
 
   for (const date of dates) {
     const d = dailyData[date];
     const net = d.inflow - d.outflow;
-    const intensity = Math.max(0.2, Math.min(Math.abs(net) / 5000000, 1));
+    const intensity = Math.max(0.15, Math.min(Math.abs(net) / 5000000, 1));
+    // Diverging color: Red for net inflow (selling pressure), Blue for net outflow (accumulation)
     const color = net >= 0
-      ? `rgba(29, 78, 216, ${intensity})`
-      : `rgba(22, 163, 74, ${intensity})`;
+      ? `rgba(220, 38, 38, ${intensity})`
+      : `rgba(29, 78, 216, ${intensity})`;
 
     html += `<div class="heatmap-cell" style="background:${color}" title="${date}: ${net >= 0 ? '+' : ''}${formatNumber(net)}">
       ${date.slice(8)}
@@ -1825,8 +1947,7 @@ function renderSchemeB(dates) {
 
   const container = document.getElementById('daily-scheme-b');
   container.innerHTML = `<div class="daily-chart-container">
-    <button class="zoom-reset-btn" onclick="resetChartZoom('${chartId}')">↺ Reset</button>
-    <canvas id="${chartId}"></canvas>
+    <canvas id="${chartId}" aria-label="Daily inflow and outflow bar chart"></canvas>
   </div>`;
 
   const dailyInflows = dates.map(d => dailyData[d].inflow);
@@ -1835,10 +1956,10 @@ function renderSchemeB(dates) {
   const chart = new Chart(document.getElementById(chartId), {
     type: 'bar',
     data: {
-      labels: dates.map(d => d.slice(5)),
+      labels: dates.map(d => d.slice(2)),
       datasets: [
-        { label: 'Daily Inflow', data: dailyInflows, backgroundColor: 'rgba(29, 78, 216, 0.8)', borderWidth: 1, borderColor: '#1D4ED8' },
-        { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: 'rgba(22, 163, 74, 0.8)', borderWidth: 1, borderColor: '#16A34A' }
+        { label: 'Daily Inflow', data: dailyInflows, backgroundColor: 'rgba(22, 163, 74, 0.8)', borderWidth: 1, borderColor: '#16A34A' },
+        { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: 'rgba(220, 38, 38, 0.8)', borderWidth: 1, borderColor: '#DC2626' }
       ]
     },
     options: {
@@ -1850,7 +1971,6 @@ function renderSchemeB(dates) {
           labels: { font: { size: 12, family: "'DM Sans', sans-serif" }, usePointStyle: true, pointStyle: 'circle' }
         },
         tooltip: TOOLTIP_OPTS,
-        zoom: ZOOM_OPTS,
       },
       scales: { ...AXIS_OPTS }
     }
