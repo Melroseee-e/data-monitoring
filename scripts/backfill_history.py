@@ -439,72 +439,97 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
                 print(f"  No signatures found", flush=True)
                 continue
 
-            # Parse transactions in batches (OPTIMIZED with batch RPC calls)
+            # Parse transactions one by one (free plan doesn't support batch requests)
             print(f"  Parsing {len(signatures)} transactions...", flush=True)
             exchange_flows = {}
-            BATCH_SIZE = 50  # Process 50 transactions per batch RPC call
+            WRITE_INTERVAL = 5000  # Write to disk every 5000 transactions
+            SLEEP_BETWEEN = 0.12   # 10 req/s limit → 1/10 = 0.1s, use 0.12s to be safe
 
-            for batch_start in range(0, len(signatures), BATCH_SIZE):
-                batch_end = min(batch_start + BATCH_SIZE, len(signatures))
-                batch = signatures[batch_start:batch_end]
+            # Resume from checkpoint if exists
+            progress_file = HISTORY_DIR / f".backfill_progress_{token_name}_{chain}.json"
+            start_index = 0
+            if progress_file.exists():
+                try:
+                    with open(progress_file, 'r') as f:
+                        progress_data = json.load(f)
+                        start_index = progress_data.get("last_processed_index", 0) + 1
+                        print(f"  Resuming from index {start_index} (skipping {start_index} already processed)", flush=True)
+                except Exception as e:
+                    print(f"  Could not load progress file: {e}, starting from beginning", flush=True)
+                    start_index = 0
 
-                if batch_start % 500 == 0:
-                    print(f"    Progress: {batch_start}/{len(signatures)}", flush=True)
+            for i, sig_info in enumerate(signatures):
+                # Skip already processed signatures
+                if i < start_index:
+                    continue
 
-                # Prepare batch RPC request
-                batch_requests = []
-                for j, sig_info in enumerate(batch):
-                    batch_requests.append({
+                if i % 500 == 0:
+                    print(f"    Progress: {i}/{len(signatures)}", flush=True)
+
+                # Periodic write to disk to avoid data loss
+                if i > 0 and i % WRITE_INTERVAL == 0:
+                    print(f"    Writing checkpoint at {i}...", flush=True)
+                    for ts in exchange_flows:
+                        for ex in exchange_flows[ts]:
+                            exchange_flows[ts][ex]["net_flow"] = exchange_flows[ts][ex]["inflow"] - exchange_flows[ts][ex]["outflow"]
+                    hourly_data = aggregate_by_hour_solana(exchange_flows, token_name, chain, contract)
+                    write_to_jsonl(hourly_data, token_name, chain, contract)
+                    exchange_flows = {}  # Clear memory after writing
+
+                    # Save progress checkpoint for resume
+                    with open(progress_file, 'w') as pf:
+                        json.dump({"last_processed_index": i, "total": len(signatures), "timestamp": datetime.now().isoformat()}, pf)
+                    print(f"    Progress saved: {i}/{len(signatures)}", flush=True)
+
+                # Single RPC request
+                try:
+                    rpc_url = HELIUS_RPC.format(api_key=api_key)
+                    single_request = {
                         "jsonrpc": "2.0",
-                        "id": batch_start + j,
+                        "id": i,
                         "method": "getTransaction",
                         "params": [
                             sig_info["signature"],
                             {"encoding": "jsonParsed", "maxSupportedTransactionVersion": 0}
                         ]
-                    })
-
-                # Make batch RPC call
-                try:
-                    rpc_url = HELIUS_RPC.format(api_key=api_key)
-                    response = requests.post(rpc_url, json=batch_requests, timeout=30)
+                    }
+                    response = requests.post(rpc_url, json=single_request, timeout=30)
                     response.raise_for_status()
-                    batch_results = response.json()
+                    result = response.json()
+                    tx = result.get("result") if result else None
 
-                    # Handle both list and single response
-                    if not isinstance(batch_results, list):
-                        batch_results = [batch_results]
+                    if not tx or not tx.get("meta"):
+                        time.sleep(SLEEP_BETWEEN)
+                        continue
 
-                    # Parse each transaction in the batch
-                    for sig_info, result in zip(batch, batch_results):
-                        tx = result.get("result") if result else None
-                        if not tx or not tx.get("meta"):
-                            continue
+                    block_time = tx.get("blockTime")
+                    if not block_time:
+                        time.sleep(SLEEP_BETWEEN)
+                        continue
 
-                        block_time = tx.get("blockTime")
-                        if not block_time:
-                            continue
+                    # Smart skip: pre-filter by accountKeys (99.4% time savings)
+                    sol_exchange_lookup = exchange_lookup.get("solana", {})
+                    account_keys = tx.get("transaction", {}).get("message", {}).get("accountKeys", [])
+                    # accountKeys is a list of objects with "pubkey" field when encoding="jsonParsed"
+                    account_pubkeys = [k.get("pubkey") if isinstance(k, dict) else k for k in account_keys]
+                    has_exchange = any(key in sol_exchange_lookup for key in account_pubkeys)
+                    if not has_exchange:
+                        time.sleep(SLEEP_BETWEEN)
+                        continue
 
-                        # Smart skip: pre-filter by accountKeys (99.4% time savings)
-                        sol_exchange_lookup = exchange_lookup.get("solana", {})
-                        account_keys = tx.get("transaction", {}).get("message", {}).get("accountKeys", [])
-                        has_exchange = any(key in sol_exchange_lookup for key in account_keys)
-                        if not has_exchange:
-                            continue
+                    ts = datetime.fromtimestamp(sig_info["blockTime"], tz=timezone.utc).isoformat().replace('+00:00', 'Z')
+                    if ts not in exchange_flows:
+                        exchange_flows[ts] = {}
 
-                        ts = datetime.fromtimestamp(sig_info["blockTime"], tz=timezone.utc).isoformat().replace('+00:00', 'Z')
-                        if ts not in exchange_flows:
-                            exchange_flows[ts] = {}
+                    # Parse token transfers
+                    pre_balances = {b["accountIndex"]: b for b in tx["meta"].get("preTokenBalances", [])}
+                    post_balances = {b["accountIndex"]: b for b in tx["meta"].get("postTokenBalances", [])}
+                    for idx, post in post_balances.items():
+                        pre = pre_balances.get(idx, {})
+                        pre_amount = int(pre.get("uiTokenAmount", {}).get("amount", 0))
+                        post_amount = int(post.get("uiTokenAmount", {}).get("amount", 0))
 
-                        # Parse token transfers
-                        pre_balances = {b["accountIndex"]: b for b in tx["meta"].get("preTokenBalances", [])}
-                        post_balances = {b["accountIndex"]: b for b in tx["meta"].get("postTokenBalances", [])}
-                        for idx, post in post_balances.items():
-                            pre = pre_balances.get(idx, {})
-                            pre_amount = int(pre.get("uiTokenAmount", {}).get("amount", 0))
-                            post_amount = int(post.get("uiTokenAmount", {}).get("amount", 0))
-
-                            if post_amount != pre_amount:
+                        if post_amount != pre_amount:
                                 decimals = post.get("uiTokenAmount", {}).get("decimals", 9)
                                 amount = abs(post_amount - pre_amount)
                                 account = post.get("owner", "")  # Solana addresses are case-sensitive
@@ -524,59 +549,18 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
 
                 except requests.exceptions.HTTPError as e:
                     if e.response.status_code == 429:
-                        print(f"    Rate limited, waiting 2s and retrying batch...", flush=True)
-                        time.sleep(2)
-                        # Fallback to individual calls for this batch
-                        for sig_info in batch:
-                            transfers = parse_solana_transaction(api_key, sig_info["signature"])
-                            if not transfers:
-                                continue
-                            ts = datetime.fromtimestamp(sig_info["blockTime"], tz=timezone.utc).isoformat().replace('+00:00', 'Z')
-                            if ts not in exchange_flows:
-                                exchange_flows[ts] = {}
-                            sol_exchange_lookup = exchange_lookup.get("solana", {})
-                            for transfer in transfers:
-                                account = transfer.get("account", "")  # Solana addresses are case-sensitive
-                                if account in sol_exchange_lookup:
-                                    ex = sol_exchange_lookup[account]
-                                    if ex not in exchange_flows[ts]:
-                                        exchange_flows[ts][ex] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
-                                    amount = transfer["amount"] / (10 ** transfer["decimals"])
-                                    if transfer["direction"] == "in":
-                                        exchange_flows[ts][ex]["inflow"] += amount
-                                        exchange_flows[ts][ex]["inflow_tx_count"] += 1
-                                    else:
-                                        exchange_flows[ts][ex]["outflow"] += amount
-                                        exchange_flows[ts][ex]["outflow_tx_count"] += 1
-                            time.sleep(0.15)
+                        print(f"    Rate limited, waiting 30s before retry...", flush=True)
+                        time.sleep(30)
+                    else:
+                        print(f"    HTTP error: {e}", flush=True)
+                    time.sleep(SLEEP_BETWEEN)
+                    continue
                 except Exception as e:
-                    print(f"    Batch error: {e}, using individual calls", flush=True)
-                    # Fallback to individual calls
-                    for sig_info in batch:
-                        transfers = parse_solana_transaction(api_key, sig_info["signature"])
-                        if not transfers:
-                            continue
-                        ts = datetime.fromtimestamp(sig_info["blockTime"], tz=timezone.utc).isoformat().replace('+00:00', 'Z')
-                        if ts not in exchange_flows:
-                            exchange_flows[ts] = {}
-                        sol_exchange_lookup = exchange_lookup.get("solana", {})
-                        for transfer in transfers:
-                            account = transfer.get("account", "")  # Solana addresses are case-sensitive
-                            if account in sol_exchange_lookup:
-                                ex = sol_exchange_lookup[account]
-                                if ex not in exchange_flows[ts]:
-                                    exchange_flows[ts][ex] = {"inflow": 0, "outflow": 0, "net_flow": 0, "inflow_tx_count": 0, "outflow_tx_count": 0}
-                                amount = transfer["amount"] / (10 ** transfer["decimals"])
-                                if transfer["direction"] == "in":
-                                    exchange_flows[ts][ex]["inflow"] += amount
-                                    exchange_flows[ts][ex]["inflow_tx_count"] += 1
-                                else:
-                                    exchange_flows[ts][ex]["outflow"] += amount
-                                    exchange_flows[ts][ex]["outflow_tx_count"] += 1
-                        time.sleep(0.15)
+                    print(f"    Error: {e}", flush=True)
+                    time.sleep(SLEEP_BETWEEN)
+                    continue
 
-                # Rate limiting between batches (reduced from 0.15 per tx to 0.5 per batch)
-                time.sleep(0.5)
+                time.sleep(SLEEP_BETWEEN)
 
             # Calculate net flows
             for ts in exchange_flows:
@@ -586,6 +570,11 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
             # Aggregate by hour and write
             hourly_data = aggregate_by_hour_solana(exchange_flows, token_name, chain, contract)
             write_to_jsonl(hourly_data, token_name, chain, contract)
+
+            # Delete progress file — backfill complete for this token/chain
+            if progress_file.exists():
+                progress_file.unlink()
+                print(f"  Backfill complete, progress file removed.", flush=True)
             continue
 
         start_block = tge_info.get(chain)
