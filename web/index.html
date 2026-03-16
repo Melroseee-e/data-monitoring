@@ -10,6 +10,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@2.0.0/dist/chartjs-plugin-crosshair.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
   :root {
@@ -362,7 +365,7 @@
 
   .chart-container {
     position: relative;
-    height: 240px;
+    height: 200px;
     margin-bottom: 24px;
   }
 
@@ -437,8 +440,25 @@
     z-index: 2;
   }
 
-  /* Trend chart */
+  /* Chart Styles & Containers */
   .trend-chart-container { position: relative; height: 360px; }
+  .tge-chart-container { position: relative; height: 360px; }
+  .daily-chart-container { position: relative; height: 320px; }
+
+  .zoom-reset-btn { 
+    position:absolute; 
+    top:8px; 
+    right:8px; 
+    z-index:10; 
+    padding:3px 8px; 
+    font-size:11px; 
+    background:#F1F5F9; 
+    border:1px solid #E2E8F0; 
+    border-radius:4px; 
+    cursor:pointer; 
+    color:#475569; 
+  }
+  .zoom-reset-btn:hover { background:#E2E8F0; }
 
   /* Animation Switcher */
   .animation-switcher { display: flex; gap: 8px; background: var(--bg); padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
@@ -617,6 +637,7 @@
     <div class="section-card">
       <h2>Historical Trend (Last 7 Days)</h2>
       <div class="trend-chart-container">
+        <button class="zoom-reset-btn" onclick="resetChartZoom('trend-chart')">↺ Reset</button>
         <canvas id="trend-chart"></canvas>
       </div>
       <div id="trend-no-data" class="no-data" style="display:none">
@@ -687,7 +708,8 @@
         </div>
       </div>
       <div id="tge-no-data" class="no-data" style="display:none">No TGE chart data available yet.</div>
-      <div style="position:relative;height:460px;">
+      <div class="tge-chart-container">
+        <button class="zoom-reset-btn" onclick="resetChartZoom('tge-cumulative-chart')">↺ Reset</button>
         <canvas id="tge-cumulative-chart"></canvas>
       </div>
       <div id="tge-summary-table" style="margin-top:32px;"></div>
@@ -701,6 +723,7 @@
 </footer>
 
 <script>
+// ── Shared Config & Globals ──────────────────────────────────────────
 const DATA_URL = '../data/latest_data.json';
 const HISTORY_URL = '../data/history_summary.json';
 const HISTORY_DIR_URL = '../data/history';
@@ -709,13 +732,67 @@ const TGE_CHART_DATA_URL = '../data/tge_chart_data.json';
 const ANOMALY_THRESHOLD = 1000000; // net flow threshold for alerts
 const DAILY_DAYS_TO_LOAD = 30;
 
+window.allCharts = {};
+
 let rawData = null;
 let historyData = null;
 let tgeNetflows = null;
 let tgeChartData = null;
-let tgeCumulativeChart = null;
-let trendChart = null;
-const chartInstances = {};
+
+function formatNumber(n) {
+  if (n === null || n === undefined) return 'N/A';
+  if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+  if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(2) + 'K';
+  const val = typeof n.toFixed === 'function' ? n.toFixed(2) : n;
+  return val;
+}
+
+const ZOOM_OPTS = {
+  pan: { enabled: true, mode: 'x' },
+  zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+};
+
+const TOOLTIP_OPTS = {
+  mode: 'index', intersect: false,
+  backgroundColor: 'rgba(15,23,42,0.92)',
+  titleColor: '#F1F5F9', bodyColor: '#CBD5E1',
+  padding: 12, cornerRadius: 8,
+  titleFont: { size: 12, weight: '600' },
+  bodyFont: { size: 11 },
+  usePointStyle: true,
+  callbacks: {
+    label: function(context) {
+      let label = context.dataset.label || '';
+      if (label) { label += ': '; }
+      if (context.parsed.y !== null) { label += formatNumber(context.parsed.y); }
+      return label;
+    }
+  }
+};
+
+const CROSSHAIR_OPTS = {
+  line: { color: '#64748B', width: 1, dashPattern: [5,3] },
+  sync: { enabled: false },
+  zoom: { enabled: false }
+};
+
+const AXIS_OPTS = {
+  y: { 
+    grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false }, 
+    ticks: { font: { size: 11, family: 'DM Sans' }, callback: v => formatNumber(v) } 
+  },
+  x: { 
+    grid: { display: false }, 
+    ticks: { font: { size: 10, family: 'DM Sans' }, maxTicksLimit: 12 } 
+  }
+};
+
+function resetChartZoom(chartId) { 
+  if (window.allCharts[chartId]) {
+    window.allCharts[chartId].resetZoom();
+  }
+}
 
 // ── Tab switching ────────────────────────────────────────────────────
 
@@ -731,30 +808,48 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 function handleTabActivated(tabName) {
-  if (tabName === 'sankey') {
-    setTimeout(applyCurrentSankeyAnimation, 120);
-    return;
-  }
+  // Use timeout to ensure panel is visible before chart resize/render
+  setTimeout(() => {
+    if (tabName === 'sankey') {
+      applyCurrentSankeyAnimation();
+      return;
+    }
 
-  if (tabName.startsWith('daily-')) {
-    setTimeout(() => {
-      const dates = Object.keys(dailyData).sort();
-      if (dates.length === 0) return;
-      renderDailySchemes();
-      if (tabName === 'daily-chart' && dailyChartB) {
-        dailyChartB.resize();
+    // Trend Chart
+    if (tabName === 'trend') {
+      const chart = window.allCharts['trend-chart'];
+      if (chart) {
+        chart.resize();
+      } else if (historyData && historyData.length > 0) {
+        renderTrendChart();
       }
-    }, 120);
-  }
+    }
 
-  if (tabName === 'tge-chart') {
-    setTimeout(() => {
-      if (tgeChartData) {
+    // TGE Chart
+    if (tabName === 'tge-chart') {
+      const chart = window.allCharts['tge-cumulative-chart'];
+      if (chart) {
+        chart.resize();
+      } else if (tgeChartData) {
         renderTgeCumulativeChart();
       }
-    }, 120);
-  }
+    }
+
+    // Daily Schemes (Heatmap, Chart, Table)
+    if (tabName.startsWith('daily-')) {
+      const dates = Object.keys(dailyData).sort();
+      if (dates.length > 0) {
+        renderDailySchemes();
+        const dailyChart = window.allCharts['daily-chart-b'];
+        // Ensure resize is called after render.
+        if (dailyChart) {
+          dailyChart.resize();
+        }
+      }
+    }
+  }, 100);
 }
+
 
 // ── Data loading ─────────────────────────────────────────────────────
 
@@ -775,7 +870,9 @@ async function loadData() {
     const hResp = await fetch(HISTORY_URL);
     if (hResp.ok) {
       historyData = await hResp.json();
-      renderTrendChart();
+      if (document.getElementById('tab-trend').classList.contains('active')) {
+        renderTrendChart();
+      }
     }
   } catch (_) { /* history not available yet */ }
 
@@ -794,7 +891,9 @@ async function loadData() {
     if (tgeChartResp.ok) {
       tgeChartData = await tgeChartResp.json();
       populateTgeTokenFilter();
-      renderTgeCumulativeChart();
+      if (document.getElementById('tab-tge-chart').classList.contains('active')) {
+        renderTgeCumulativeChart();
+      }
     }
   } catch (_) { /* TGE chart data not available yet */ }
 }
@@ -895,9 +994,11 @@ function renderTokenCards(filteredTokens) {
   grid.innerHTML = '';
 
   // Destroy old chart instances
-  for (const key in chartInstances) {
-    chartInstances[key].destroy();
-    delete chartInstances[key];
+  for (const key in window.allCharts) {
+    if (key.startsWith('chart-')) {
+      window.allCharts[key].destroy();
+      delete window.allCharts[key];
+    }
   }
 
   for (const [symbol, data] of Object.entries(filteredTokens)) {
@@ -935,7 +1036,10 @@ function renderTokenCards(filteredTokens) {
             ${tgeNetflowHtml}
           </div>
         </div>
-        <div class="chart-container"><canvas id="${chartId}"></canvas></div>
+        <div class="chart-container">
+          <button class="zoom-reset-btn" onclick="resetChartZoom('${chartId}')">↺ Reset</button>
+          <canvas id="${chartId}"></canvas>
+        </div>
         <table class="exchange-table">
           <thead><tr><th>Exchange</th><th>Inflow</th><th>Outflow</th><th>Net</th><th>Txns</th></tr></thead>
           <tbody>
@@ -955,7 +1059,7 @@ function renderTokenCards(filteredTokens) {
       grid.appendChild(card);
 
       const ctx = document.getElementById(chartId).getContext('2d');
-      chartInstances[chartId] = new Chart(ctx, {
+      const chart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: exchangeNames,
@@ -967,27 +1071,14 @@ function renderTokenCards(filteredTokens) {
         options: {
           responsive: true, maintainAspectRatio: false,
           plugins: { 
-            legend: { position: 'top', labels: { font: { size: 12, family: "'DM Sans', sans-serif" }, usePointStyle: true, pointStyle: 'circle' } },
-            tooltip: {
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              titleColor: '#0F172A',
-              bodyColor: '#0F172A',
-              borderColor: '#E2E8F0',
-              borderWidth: 1,
-              padding: 12,
-              callbacks: {
-                label: function(context) {
-                  return context.dataset.label + ': ' + formatNumber(context.parsed.y);
-                }
-              }
-            }
+            legend: { display: false },
+            zoom: ZOOM_OPTS,
+            tooltip: TOOLTIP_OPTS,
           },
-          scales: {
-            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 12, family: "'DM Sans', sans-serif" } } },
-            x: { grid: { display: false }, ticks: { font: { size: 12, family: "'DM Sans', sans-serif" } } },
-          }
+          scales: { ...AXIS_OPTS }
         }
       });
+      window.allCharts[chartId] = chart;
     }
   }
 
@@ -1277,7 +1368,7 @@ function renderTrendChart() {
   const netData = [];
 
   for (const entry of historyData) {
-    labels.push(new Date(entry.timestamp).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }));
+    labels.push(new Date(entry.timestamp));
     let inflow = 0, outflow = 0;
     for (const [symbol, tdata] of Object.entries(entry.tokens || {})) {
       if (tokenFilter !== 'all' && tokenFilter !== symbol) continue;
@@ -1288,55 +1379,37 @@ function renderTrendChart() {
     outflowData.push(outflow);
     netData.push(inflow - outflow);
   }
+  
+  const chartId = 'trend-chart';
+  const ctx = document.getElementById(chartId).getContext('2d');
+  if (window.allCharts[chartId]) window.allCharts[chartId].destroy();
 
-  const ctx = document.getElementById('trend-chart').getContext('2d');
-  if (trendChart) trendChart.destroy();
-
-  trendChart = new Chart(ctx, {
+  const chart = new Chart(ctx, {
     type: 'line',
     data: {
       labels,
       datasets: [
         { label: 'Inflow', data: inflowData, borderColor: '#1D4ED8', backgroundColor: 'rgba(29, 78, 216, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
         { label: 'Outflow', data: outflowData, borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
-        { label: 'Net', data: netData, borderColor: '#0F172A', borderDash: [5, 5], tension: 0.3, pointRadius: 0, borderWidth: 2 },
+        { label: 'Net', data: netData, borderColor: '#475569', borderDash: [5, 5], tension: 0.3, pointRadius: 0, borderWidth: 2, fill: false },
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: { 
         legend: { position: 'top', labels: { font: { size: 12, family: "'DM Sans', sans-serif" }, usePointStyle: true, pointStyle: 'circle' } },
-        zoom: {
-          pan: { enabled: true, mode: 'x' },
-          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
-        },
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          titleColor: '#0F172A',
-          bodyColor: '#0F172A',
-          borderColor: '#E2E8F0',
-          borderWidth: 1,
-          padding: 12,
-          usePointStyle: true,
-          callbacks: {
-            label: function(context) {
-              let label = context.dataset.label || '';
-              if (label) { label += ': '; }
-              if (context.parsed.y !== null) { label += (context.parsed.y >= 0 && label.includes('Net') ? '+' : '') + formatNumber(context.parsed.y); }
-              return label;
-            }
-          }
-        }
+        zoom: ZOOM_OPTS,
+        tooltip: TOOLTIP_OPTS,
+        crosshair: CROSSHAIR_OPTS,
       },
       scales: {
-        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11, family: "'DM Sans', sans-serif" } } },
-        x: { grid: { display: false }, ticks: { font: { size: 11, family: "'DM Sans', sans-serif" }, maxTicksLimit: 12 } },
+        ...AXIS_OPTS,
+         x: { ...AXIS_OPTS.x, type: 'time', time: { unit: 'day' }, ticks: { ...AXIS_OPTS.x.ticks, maxTicksLimit: 7 } }
       },
-      interaction: { mode: 'index', intersect: false },
     }
   });
+  window.allCharts[chartId] = chart;
 }
 
 // ── Exchange ranking ─────────────────────────────────────────────────
@@ -1344,14 +1417,9 @@ function renderTrendChart() {
 // ── TGE Cumulative Net Flow Chart ────────────────────────────────────
 
 const TOKEN_COLORS = {
-  'UAI':   '#1D4ED8',
-  'BIRB':  '#16A34A',
-  'AZTEC': '#7C3AED',
-  'TRIA':  '#D97706',
-  'SKR':   '#0284C7',
-  'GWEI':  '#DB2777',
-  'SPACE': '#059669',
-  'PUMP':  '#EA580C',
+  'UAI':   '#1D4ED8', 'BIRB':  '#16A34A', 'AZTEC': '#7C3AED',
+  'TRIA':  '#D97706', 'SKR':   '#0284C7', 'GWEI':  '#DB2777',
+  'SPACE': '#059669', 'PUMP':  '#EA580C',
 };
 
 function populateTgeTokenFilter() {
@@ -1367,7 +1435,6 @@ function populateTgeTokenFilter() {
   document.getElementById('tge-scale-filter')?.addEventListener('change', renderTgeCumulativeChart);
 }
 
-// All known tokens with TGE dates (for showing pending ones)
 const ALL_TOKEN_TGE = {
   'AZTEC': '2025-07-01', 'UAI': '2025-11-06', 'TRIA': '2026-01-16',
   'SKR': '2026-01-21', 'PUMP': '2025-07-12', 'BIRB': '2026-01-28',
@@ -1385,7 +1452,6 @@ function renderTgeCumulativeChart() {
   const scaleType = document.getElementById('tge-scale-filter')?.value || 'linear';
   const tokens = tgeChartData.tokens;
 
-  // Collect all unique dates across selected tokens
   const dateSet = new Set();
   for (const [tok, data] of Object.entries(tokens)) {
     if (tokenFilter !== 'all' && tokenFilter !== tok) continue;
@@ -1393,20 +1459,17 @@ function renderTgeCumulativeChart() {
   }
   const allDates = Array.from(dateSet).sort();
 
-  // Build datasets
   const datasets = [];
   for (const [tok, data] of Object.entries(tokens)) {
     if (tokenFilter !== 'all' && tokenFilter !== tok) continue;
     if (!data.series || data.series.length === 0) continue;
 
-    const byDate = {};
-    for (const pt of data.series) byDate[pt.date] = pt.cumulative_net;
-
+    const byDate = new Map(data.series.map(pt => [pt.date, pt.cumulative_net]));
     const values = [];
     let last = null;
     for (const d of allDates) {
       if (d < data.tge_date) { values.push(null); continue; }
-      if (byDate[d] !== undefined) last = byDate[d];
+      if (byDate.has(d)) last = byDate.get(d);
       values.push(last);
     }
 
@@ -1423,53 +1486,40 @@ function renderTgeCumulativeChart() {
     });
   }
 
-  const ctx = document.getElementById('tge-cumulative-chart').getContext('2d');
-  if (tgeCumulativeChart) tgeCumulativeChart.destroy();
+  const chartId = 'tge-cumulative-chart';
+  const ctx = document.getElementById(chartId).getContext('2d');
+  if (window.allCharts[chartId]) window.allCharts[chartId].destroy();
 
-  tgeCumulativeChart = new Chart(ctx, {
+  const chart = new Chart(ctx, {
     type: 'line',
     data: { labels: allDates, datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { position: 'top', labels: { font: { size: 12, family: "'DM Sans', sans-serif" }, usePointStyle: true, pointStyle: 'circle' } },
-        zoom: {
-          pan: { enabled: true, mode: 'x' },
-          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
-        },
-        tooltip: {
-          mode: 'index', intersect: false,
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          titleColor: '#0F172A',
-          bodyColor: '#0F172A',
-          borderColor: '#E2E8F0',
-          borderWidth: 1,
-          padding: 12,
-          usePointStyle: true,
-          callbacks: {
-            label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y !== null ? (ctx.parsed.y >= 0 ? '+' : '') + formatNumber(ctx.parsed.y) : 'N/A'}`
-          }
-        }
+        zoom: ZOOM_OPTS,
+        tooltip: TOOLTIP_OPTS,
+        crosshair: CROSSHAIR_OPTS,
       },
       scales: {
         y: {
+          ...AXIS_OPTS.y,
           type: scaleType === 'log' ? 'logarithmic' : 'linear',
-          grid: { color: 'rgba(0,0,0,0.04)' },
-          ticks: { font: { size: 12, family: "'DM Sans', sans-serif" }, callback: v => formatNumber(v) }
         },
         x: {
-          grid: { display: false },
-          ticks: { font: { size: 11, family: "'DM Sans', sans-serif" }, maxTicksLimit: 16 }
+           ...AXIS_OPTS.x,
+          type: 'time',
+          time: { unit: 'month' },
         }
       },
-      interaction: { mode: 'index', intersect: false },
     }
   });
+  window.allCharts[chartId] = chart;
 
   renderTgeSummaryTable(tokens, tokenFilter);
 
-  // Show pending tokens (in ALL_TOKEN_TGE but not in tgeChartData)
   const pendingEl = document.getElementById('tge-pending-tokens');
   const pending = Object.keys(ALL_TOKEN_TGE).filter(t => !tokens[t]);
   if (pending.length > 0) {
@@ -1485,7 +1535,6 @@ function renderTgeSummaryTable(tokens, tokenFilter) {
     <th>Token</th><th>TGE Date</th><th>Days Tracked</th><th>Cumulative Net Flow</th><th>Trend</th><th>Status</th>
   </tr></thead><tbody>`;
 
-  // Also show tokens with no data yet
   const allTokens = { ...tokens };
   for (const [tok, tge] of Object.entries(ALL_TOKEN_TGE)) {
     if (!allTokens[tok]) allTokens[tok] = { tge_date: tge, series: [], final_cumulative: null, days_tracked: 0 };
@@ -1563,19 +1612,10 @@ function renderExchangeRanking(filteredTokens) {
   `).join('');
 }
 
-// ── Utils ────────────────────────────────────────────────────────────
-
-function formatNumber(n) {
-  if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + 'B';
-  if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + 'M';
-  if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(2) + 'K';
-  return n.toFixed(2);
-}
 
 // ── Daily Tab ────────────────────────────────────────────────────────
 
 let dailyData = {};
-let dailyChartB = null;
 const dailySparkCharts = {};
 
 function toDateKeyFromTimestamp(ts) {
@@ -1699,7 +1739,10 @@ async function loadDailyData() {
     }
 
     dailyData = loaded;
-    renderDailySchemes();
+    const activeTab = document.querySelector('.tab-btn.active')?.dataset.tab;
+    if (activeTab && activeTab.startsWith('daily-')) {
+        renderDailySchemes();
+    }
   } catch (e) {
     dailyData = {};
     renderDailySchemes();
@@ -1708,9 +1751,10 @@ async function loadDailyData() {
 }
 
 function destroyDailyCharts() {
-  if (dailyChartB) {
-    dailyChartB.destroy();
-    dailyChartB = null;
+  const dailyChart = window.allCharts['daily-chart-b'];
+  if (dailyChart) {
+    dailyChart.destroy();
+    delete window.allCharts['daily-chart-b'];
   }
   for (const key of Object.keys(dailySparkCharts)) {
     dailySparkCharts[key].destroy();
@@ -1736,18 +1780,19 @@ function renderDailySchemes() {
 
   renderSchemeA(dates);
 
+  const dailyChartContainer = document.getElementById('daily-scheme-b');
+  const dailyTableContainer = document.getElementById('daily-scheme-c');
+  
   if (document.getElementById('tab-daily-chart').classList.contains('active')) {
     renderSchemeB(dates);
   } else {
-    document.getElementById('daily-scheme-b').innerHTML =
-      '<div class="loading">Open Daily Chart tab to render the chart.</div>';
+    dailyChartContainer.innerHTML = '<div class="loading">Open Daily Chart tab to render the chart.</div>';
   }
 
   if (document.getElementById('tab-daily-table').classList.contains('active')) {
     renderSchemeC(dates);
   } else {
-    document.getElementById('daily-scheme-c').innerHTML =
-      '<div class="loading">Open Daily Table tab to render the table.</div>';
+    dailyTableContainer.innerHTML = '<div class="loading">Open Daily Table tab to render the table.</div>';
   }
 }
 
@@ -1773,18 +1818,21 @@ function renderSchemeA(dates) {
 }
 
 function renderSchemeB(dates) {
-  if (dailyChartB) {
-    dailyChartB.destroy();
-    dailyChartB = null;
+  const chartId = 'daily-chart-b';
+  if (window.allCharts[chartId]) {
+    window.allCharts[chartId].destroy();
   }
 
   const container = document.getElementById('daily-scheme-b');
-  container.innerHTML = '<div class="trend-chart-container" style="height:360px"><canvas id="daily-chart-b"></canvas></div>';
+  container.innerHTML = `<div class="daily-chart-container">
+    <button class="zoom-reset-btn" onclick="resetChartZoom('${chartId}')">↺ Reset</button>
+    <canvas id="${chartId}"></canvas>
+  </div>`;
 
   const dailyInflows = dates.map(d => dailyData[d].inflow);
   const dailyOutflows = dates.map(d => dailyData[d].outflow);
 
-  dailyChartB = new Chart(document.getElementById('daily-chart-b'), {
+  const chart = new Chart(document.getElementById(chartId), {
     type: 'bar',
     data: {
       labels: dates.map(d => d.slice(5)),
@@ -1801,21 +1849,13 @@ function renderSchemeB(dates) {
           position: 'top',
           labels: { font: { size: 12, family: "'DM Sans', sans-serif" }, usePointStyle: true, pointStyle: 'circle' }
         },
-        tooltip: {
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          titleColor: '#0F172A',
-          bodyColor: '#0F172A',
-          borderColor: '#E2E8F0',
-          borderWidth: 1,
-          padding: 12,
-        }
+        tooltip: TOOLTIP_OPTS,
+        zoom: ZOOM_OPTS,
       },
-      scales: {
-        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11, family: "'DM Sans', sans-serif" } } },
-        x: { grid: { display: false }, ticks: { font: { size: 11, family: "'DM Sans', sans-serif" } } }
-      }
+      scales: { ...AXIS_OPTS }
     }
   });
+  window.allCharts[chartId] = chart;
 }
 
 function renderSchemeC(dates) {
@@ -1841,12 +1881,13 @@ function renderSchemeC(dates) {
 
   for (const date of dates) {
     const canvas = document.getElementById(`spark-${date}`);
+    if (!canvas) continue;
     const hourly = dailyData[date].hourly.map(h => h.inflow - h.outflow);
     dailySparkCharts[date] = new Chart(canvas, {
       type: 'line',
       data: {
         labels: hourly.map((_, i) => i),
-        datasets: [{ data: hourly, borderColor: '#1D4ED8', borderWidth: 2, pointRadius: 0, tension: 0.3 }]
+        datasets: [{ data: hourly, borderColor: '#475569', borderWidth: 1.5, pointRadius: 0, tension: 0.3 }]
       },
       options: {
         responsive: false,
@@ -1857,6 +1898,8 @@ function renderSchemeC(dates) {
     });
   }
 }
+
+// ── Initial Load ─────────────────────────────────────────────────────
 
 loadData();
 loadDailyData();
