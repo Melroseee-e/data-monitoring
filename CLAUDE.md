@@ -122,6 +122,22 @@ All APIs have rate limits. The backfill script handles this with:
 - Exponential backoff on 429 errors
 - Fallback to individual calls on batch failures
 
+**Known Issues (2026-03-12)**:
+- Fixed batch size and delay don't adapt to API load
+- BIRB backfill encountered 137+ rate limit errors in 1 hour
+- Current speed: ~5000 tx/hour with frequent rate limiting
+
+**Planned Optimizations**:
+1. **Adaptive Batch Size**: Dynamically adjust batch size (10-100) based on success rate
+2. **Adaptive Delay**: Adjust sleep time (0.2-5.0s) based on rate limit frequency
+3. **Exponential Backoff**: Use exponential backoff with jitter for retries
+4. **Rate Limit Monitoring**: Track success rate over sliding window, slow down if < 80%
+
+**Expected Impact**:
+- Reduce rate limit errors by 70%
+- Increase throughput by 2-3x
+- PUMP backfill time: 33h → 10-15h
+
 ## Data Format
 
 ### History JSONL Structure
@@ -176,3 +192,98 @@ All APIs have rate limits. The backfill script handles this with:
 - Backfill runs can take hours - use background processes and monitoring
 - History files are committed to git - keep them under 50MB per file
 - Frontend is static HTML - no build step required
+
+## Backfill Status and Lessons Learned
+
+### Current Status (2026-03-12 12:50)
+
+**Completed Tokens (6/8)**:
+- UAI: 127 days (100%)
+- TRIA: 56 days (100%)
+- SKR: 51 days (100%)
+- GWEI: 36 days (100%)
+- SPACE: 43 days (100%)
+- AZTEC: 33/35 days (94.3%) - No exchange activity before 2026-02-06
+
+**In Progress (2/8)**:
+- BIRB: 5000/14250 tx (35%) - ETA 1.9 hours
+- PUMP: 0/167000 tx (0%) - ETA 33 hours (needs optimization)
+
+### Lessons Learned
+
+1. **Transaction Volume Varies Widely**:
+   - BIRB: 14,250 transactions
+   - PUMP: 167,000 transactions (11.7x more)
+   - Always check total signatures before estimating time
+
+2. **Rate Limiting is the Bottleneck**:
+   - Smart skip reduces processing by 99.4%
+   - But rate limits still occur frequently
+   - Need adaptive strategies, not fixed delays
+
+3. **Parallel Processing Risks**:
+   - Running BIRB + PUMP simultaneously doubles rate limit hits
+   - Better to run sequentially for large backfills
+   - Consider parallel only for small tokens
+
+4. **Frontend First Approach**:
+   - Show complete data immediately
+   - Display "Backfill in progress" for incomplete tokens
+   - Users can see progress without waiting for 100% completion
+
+5. **Monitoring is Critical**:
+   - Log files essential for debugging (e.g., `backfill_BIRB_*.log`)
+   - Progress indicators every 500 transactions
+   - Rate limit statistics help identify bottlenecks
+
+### Best Practices
+
+1. **Before Starting Backfill**:
+   - Check total signatures: `getSignaturesForAddress` with limit=1000
+   - Estimate time: transactions / 5000 per hour
+   - Verify smart skip is enabled
+
+2. **During Backfill**:
+   - Monitor log files: `tail -f backfill_*.log`
+   - Check rate limit frequency
+   - Don't interrupt if > 30% complete
+
+3. **After Backfill**:
+   - Verify data coverage: check date ranges
+   - Regenerate TGE chart data: `python scripts/generate_tge_chart_data.py`
+   - Push to GitHub and verify frontend
+
+4. **Rate Limit Management**:
+   - Start with conservative settings (batch=50, delay=0.5s)
+   - Monitor success rate in first 1000 transactions
+   - Adjust if rate limit errors > 10%
+
+## Monitoring Long-Running Tasks
+
+### Using /loop for Periodic Monitoring
+
+For long-running backfill tasks, use the `/loop` command to automatically check status at intervals:
+
+```bash
+# Check backfill status every 5 minutes
+/loop 5m ./check_backfill_status.sh
+
+# Default interval is 10 minutes if not specified
+/loop python scripts/monitor_backfill_progress.py
+```
+
+The `/loop` command will:
+- Run the specified command/script at regular intervals
+- Automatically send results back to the session
+- Continue until manually cancelled or task completes
+
+**Note**: This is different from cron jobs - `/loop` runs within the current Claude Code session and will stop when the session ends.
+
+### Quick Status Check Script
+
+`check_backfill_status.sh` provides a comprehensive status overview:
+- Running backfill processes (PID and token)
+- Latest progress from log files
+- Data written to disk
+
+Run manually: `./check_backfill_status.sh`
