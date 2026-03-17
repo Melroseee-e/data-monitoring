@@ -1,25 +1,5 @@
 [
   {
-    "timestamp": "2026-03-11T03:00:00Z",
-    "tokens": {
-      "AZTEC": {
-        "total_inflow": 0,
-        "total_outflow": 1176128.8693380002,
-        "net_flow": -1176128.8693380002
-      },
-      "BIRB": {
-        "total_inflow": 284942.792368,
-        "total_outflow": 221241.51972,
-        "net_flow": 63701.27264800001
-      },
-      "PUMP": {
-        "total_inflow": 9790138.234791,
-        "total_outflow": 0,
-        "net_flow": 9790138.234791
-      }
-    }
-  },
-  {
     "timestamp": "2026-03-11T03:59:52Z",
     "tokens": {
       "UAI": {
@@ -3686,6 +3666,51 @@
         "total_inflow": 293134696.1563,
         "total_outflow": 226797186.4961,
         "net_flow": 66337509.6602
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-17T16:54:44Z",
+    "tokens": {
+      "UAI": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "BIRB": {
+        "total_inflow": 20994.2302,
+        "total_outflow": 20994.2302,
+        "net_flow": 0.0
+      },
+      "AZTEC": {
+        "total_inflow": 723050.0,
+        "total_outflow": 0.0,
+        "net_flow": 723050.0
+      },
+      "TRIA": {
+        "total_inflow": 3113871.6762,
+        "total_outflow": 2010189.6922,
+        "net_flow": 1103681.984
+      },
+      "SKR": {
+        "total_inflow": 794075.8767,
+        "total_outflow": 1048051.5519,
+        "net_flow": -253975.6752
+      },
+      "GWEI": {
+        "total_inflow": 131812.8396,
+        "total_outflow": 0.0,
+        "net_flow": 131812.8396
+      },
+      "SPACE": {
+        "total_inflow": 220735.3852,
+        "total_outflow": 72815.9781,
+        "net_flow": 147919.4071
+      },
+      "PUMP": {
+        "total_inflow": 44278577.76,
+        "total_outflow": 57209739.9399,
+        "net_flow": -12931162.1799
       }
     }
   }
