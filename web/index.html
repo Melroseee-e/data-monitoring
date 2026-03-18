@@ -6,7 +6,7 @@
 <title>On-Chain Exchange Flow Monitor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
@@ -36,8 +36,8 @@
     --shadow-sm: none;
     --shadow-md: none;
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-    --font-heading: 'Plus Jakarta Sans', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
+    --font-heading: 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
     --glass-bg: rgba(10, 11, 13, 0.8);
     --glass-border: #2D3239;
@@ -615,6 +615,11 @@
     height: 6px;
   }
 
+  .token-selector::-webkit-scrollbar-track {
+    background: var(--bg);
+    border-radius: 3px;
+  }
+
   .token-selector::-webkit-scrollbar-thumb {
     background: var(--border);
     border-radius: 3px;
@@ -646,7 +651,6 @@
     border-color: var(--accent);
     color: #000;
   }
-  }
 
   .token-pill .token-chain {
     font-size: 10px;
@@ -663,17 +667,15 @@
     display: flex;
     justify-content: space-around;
     padding: 24px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid var(--glass-border);
+    background: #0A0B0D;
+    border-bottom: 1px solid var(--border);
     position: relative;
     z-index: 1;
   }
 
   .kpi-item {
     text-align: center;
-    border-right: 1px solid rgba(102, 126, 234, 0.15);
+    border-right: 1px solid var(--border);
     padding: 0 32px;
     flex: 1;
     transition: transform 0.3s ease;
@@ -708,10 +710,12 @@
 
   .kpi-value.positive {
     color: var(--net-positive);
+    text-shadow: 0 0 10px rgba(0, 255, 163, 0.4);
   }
 
   .kpi-value.negative {
     color: var(--net-negative);
+    text-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
   }
 
   .kpi-change {
@@ -733,13 +737,11 @@
   }
 
   .dashboard-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
     padding: 24px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
