@@ -1279,6 +1279,10 @@ function initTokenSelector() {
   const container = document.getElementById('token-selector');
   const tokens = Object.keys(rawData.tokens).sort();
 
+  if (!selectedToken && tokens.length > 0) {
+    selectedToken = tokens[0];
+  }
+
   container.innerHTML = tokens.map(tokenSymbol => {
     const data = rawData.tokens[tokenSymbol];
     const chain = data.deployments[0]?.chain || '';
