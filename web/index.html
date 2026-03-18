@@ -16,23 +16,30 @@
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
   :root {
-    --bg: #F0F4F8;
-    --bg-card: #FFFFFF;
-    --text: #0F172A;
-    --text-secondary: #475569;
-    --accent: #1E40AF;
-    --accent-light: #DBEAFE;
-    --border: #E2E8F0;
-    --inflow: #16A34A;
-    --outflow: #DC2626;
-    --net-positive: #1E40AF;
-    --net-negative: #DC2626;
-    --alert-bg: #FEE2E2;
-    --alert-border: #DC2626;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    /* Arkham-inspired color palette (non-black) */
+    --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-overlay: rgba(255, 255, 255, 0.05);
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-card-hover: rgba(255, 255, 255, 0.98);
+    --text: #1a1a2e;
+    --text-secondary: #4a5568;
+    --accent: #667eea;
+    --accent-secondary: #764ba2;
+    --accent-light: #e0e7ff;
+    --border: rgba(102, 126, 234, 0.15);
+    --inflow: #10b981;
+    --outflow: #ef4444;
+    --net-positive: #667eea;
+    --net-negative: #ef4444;
+    --alert-bg: #fef2f2;
+    --alert-border: #ef4444;
+    --shadow-sm: 0 2px 8px rgba(102, 126, 234, 0.08), 0 8px 24px rgba(118, 75, 162, 0.06);
+    --shadow-md: 0 4px 12px rgba(102, 126, 234, 0.12), 0 12px 32px rgba(118, 75, 162, 0.08);
+    --shadow-lg: 0 8px 24px rgba(102, 126, 234, 0.16), 0 16px 48px rgba(118, 75, 162, 0.12);
     --font-heading: 'Plus Jakarta Sans', sans-serif;
     --font-body: 'DM Sans', sans-serif;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.3);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,9 +47,25 @@
   body {
     font-family: var(--font-body);
     background: var(--bg);
+    background-attachment: fixed;
     color: var(--text);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
   }
 
   /* Header & Nav */
@@ -50,15 +73,16 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    padding: 12px 24px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 24px rgba(102, 126, 234, 0.08);
+    padding: 16px 24px;
   }
 
   .nav-content {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -74,36 +98,41 @@
   }
 
   .logo-dot {
-    width: 10px;
-    height: 10px;
-    background: var(--accent);
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
     border-radius: 50%;
     animation: pulse 2s infinite;
+    box-shadow: 0 0 12px rgba(102, 126, 234, 0.5);
   }
 
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(30, 64, 175, 0.4); }
-    70% { box-shadow: 0 0 0 6px rgba(30, 64, 175, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(30, 64, 175, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(102, 126, 234, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
   }
 
   h1 {
     font-family: var(--font-heading);
-    font-size: clamp(18px, 2vw, 22px);
+    font-size: clamp(18px, 2vw, 24px);
     font-weight: 700;
     letter-spacing: -0.5px;
-    color: var(--text);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .live-badge {
     font-size: 10px;
     font-weight: 700;
-    padding: 3px 8px;
+    padding: 4px 10px;
     border-radius: 99px;
-    background: #FEF2F2;
-    color: #DC2626;
-    border: 1px solid #FECACA;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: none;
     letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
   }
 
   .timestamp {
@@ -113,7 +142,7 @@
   }
 
   .container {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 32px 24px;
   }
@@ -566,14 +595,19 @@
 
   footer {
     text-align: center;
-    padding: 40px 20px;
-    color: var(--text-secondary);
-    font-size: 13px;
+    padding: 48px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
     font-weight: 600;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 60px;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     text-transform: uppercase;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: 768px) {
@@ -582,9 +616,405 @@
     .nav-content { flex-direction: column; align-items: flex-start; }
     .top-nav { position: relative; }
   }
+
+  /* ── Token Selector Pills ────────────────────────────────────────── */
+  .token-selector {
+    display: flex;
+    gap: 10px;
+    padding: 20px 24px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    position: relative;
+    z-index: 1;
+  }
+
+  .token-selector::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .token-selector::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    border-radius: 3px;
+  }
+
+  .token-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+  }
+
+  .token-pill:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+  }
+
+  .token-pill.active {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+  }
+  }
+
+  .token-pill .token-chain {
+    font-size: 10px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ── KPI Bar ─────────────────────────────────────────────────────── */
+  .kpi-bar {
+    display: flex;
+    justify-content: space-around;
+    padding: 24px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    position: relative;
+    z-index: 1;
+  }
+
+  .kpi-item {
+    text-align: center;
+    border-right: 1px solid rgba(102, 126, 234, 0.15);
+    padding: 0 32px;
+    flex: 1;
+    transition: transform 0.3s ease;
+  }
+
+  .kpi-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .kpi-item:last-child {
+    border-right: none;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 6px;
+    font-family: var(--font-heading);
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .kpi-value.positive {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .kpi-value.negative {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .kpi-change {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ── Dashboard Grid ──────────────────────────────────────────────── */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 32px 24px;
+    max-width: 1600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .dashboard-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .dashboard-card:hover::before {
+    opacity: 1;
+  }
+
+  .dashboard-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+  }
+
+  .card-header h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: var(--font-heading);
+    letter-spacing: -0.3px;
+  }
+
+  .expand-btn {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    transition: all 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 8px;
+    opacity: 0.7;
+  }
+
+  .expand-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  }
+
+  .card-content {
+    min-height: 300px;
+    position: relative;
+  }
+
+  .card-content canvas {
+    max-height: 280px;
+  }
+
+  /* Card-specific styles */
+  .exchange-table {
+    width: 100%;
+    font-size: 13px;
+    border-collapse: collapse;
+  }
+
+  .exchange-table thead tr {
+    border-bottom: 2px solid var(--border);
+  }
+
+  .exchange-table th {
+    text-align: left;
+    padding: 10px 8px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .exchange-table th:nth-child(2),
+  .exchange-table th:nth-child(3),
+  .exchange-table th:nth-child(4) {
+    text-align: right;
+  }
+
+  .exchange-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.15s ease;
+  }
+
+  .exchange-table tbody tr:hover {
+    background-color: var(--bg);
+  }
+
+  .exchange-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .exchange-table td {
+    padding: 10px 8px;
+  }
+
+  .exchange-table td:nth-child(2),
+  .exchange-table td:nth-child(3),
+  .exchange-table td:nth-child(4) {
+    text-align: right;
+  }
+
+  .card-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  .card-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .card-empty small {
+    opacity: 0.7;
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* Card Fullscreen */
+  .card-fullscreen {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    max-width: none !important;
+    animation: expandCard 0.2s ease-out;
+  }
+
+  .card-fullscreen .card-content {
+    min-height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+    overflow: auto;
+  }
+
+  .card-fullscreen .expand-btn::before {
+    content: '✕';
+  }
+
+  @keyframes expandCard {
+    from {
+      transform: scale(0.95);
+      opacity: 0.8;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 1280px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+    .kpi-bar {
+      flex-wrap: wrap;
+    }
+    .kpi-item {
+      flex: 1 1 45%;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    .kpi-item:last-child {
+      border-bottom: none;
+    }
+  }
+
+  /* Accessibility */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 0 0 4px 0;
+    font-weight: 600;
+    z-index: 1001;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <header class="top-nav">
   <div class="nav-content">
     <div class="nav-brand">
@@ -598,140 +1028,132 @@
   </div>
 </header>
 
-<main class="container">
-  <div class="summary-row" id="summary-row"></div>
+<main class="container" id="main-content">
+  <!-- Screen reader announcements -->
+  <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="sr-announcements"></div>
 
-  <div class="filters">
-    <div class="filter-group">
-      <label>Token</label>
-      <select id="filter-token"><option value="all">All Tokens</option></select>
+  <!-- Token Selector Pills -->
+  <div class="token-selector" id="token-selector"></div>
+
+  <!-- KPI Bar -->
+  <div class="kpi-bar" id="kpi-bar">
+    <div class="kpi-item">
+      <div class="kpi-label">Total Inflow</div>
+      <div class="kpi-value positive" id="kpi-inflow">-</div>
+      <div class="kpi-change" id="kpi-inflow-change"></div>
     </div>
-    <div class="filter-group">
-      <label>Exchange</label>
-      <select id="filter-exchange"><option value="all">All Exchanges</option></select>
+    <div class="kpi-item">
+      <div class="kpi-label">Total Outflow</div>
+      <div class="kpi-value negative" id="kpi-outflow">-</div>
+      <div class="kpi-change" id="kpi-outflow-change"></div>
     </div>
-  </div>
-
-  <!-- Tab navigation -->
-  <div class="tab-bar" role="tablist">
-    <button class="tab-btn active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
-    <button class="tab-btn" data-tab="sankey" role="tab" aria-selected="false">Flow Diagram</button>
-    <button class="tab-btn" data-tab="trend" role="tab" aria-selected="false">Trend</button>
-    <button class="tab-btn" data-tab="ranking" role="tab" aria-selected="false">Exchange Ranking</button>
-    <button class="tab-btn" data-tab="daily-heatmap" role="tab" aria-selected="false">Daily Heatmap</button>
-    <button class="tab-btn" data-tab="daily-chart" role="tab" aria-selected="false">Daily Chart</button>
-    <button class="tab-btn" data-tab="daily-table" role="tab" aria-selected="false">Daily Table</button>
-    <button class="tab-btn" data-tab="tge-chart" role="tab" aria-selected="false">TGE Net Flow</button>
-  </div>
-
-  <!-- Overview tab -->
-  <div class="tab-panel active" id="tab-overview">
-    <div class="token-grid" id="token-grid">
-      <div class="loading">Loading data...</div>
+    <div class="kpi-item">
+      <div class="kpi-label">Net Flow</div>
+      <div class="kpi-value" id="kpi-net">-</div>
+      <div class="kpi-change" id="kpi-net-change"></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">TGE Cumulative</div>
+      <div class="kpi-value" id="kpi-tge">-</div>
+      <div class="kpi-change" id="kpi-tge-days"></div>
     </div>
   </div>
 
-  <!-- Sankey tab -->
-  <div class="tab-panel" id="tab-sankey">
-    <div class="section-card sankey-section">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:16px;">
-        <h2>Token ↔ Exchange Flow</h2>
-        <div class="animation-switcher">
-          <button class="anim-btn active" data-anim="off">Off</button>
-          <button class="anim-btn" data-anim="flow">Flow</button>
-          <button class="anim-btn" data-anim="pulse">Pulse</button>
-          <button class="anim-btn" data-anim="particle">Particle</button>
+  <!-- Dashboard Grid (2x4 Layout) -->
+  <div class="dashboard-grid" id="dashboard-grid">
+    <!-- Card 1: Overview -->
+    <div class="dashboard-card" id="card-overview">
+      <div class="card-header">
+        <h3>Real-time Flow Overview</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
+      </div>
+      <div class="card-content" id="content-overview">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Card 2: Trend -->
+    <div class="dashboard-card" id="card-trend">
+      <div class="card-header">
+        <h3>24h Trend</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
+      </div>
+      <div class="card-content" id="content-trend">
+        <canvas id="trend-chart-mini"></canvas>
+      </div>
+    </div>
+
+    <!-- Card 3: Heatmap -->
+    <div class="dashboard-card" id="card-heatmap">
+      <div class="card-header">
+        <h3>Historical Heatmap</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
+      </div>
+      <div class="card-content" id="content-heatmap">
+        <div id="heatmap-mini"></div>
+      </div>
+    </div>
+
+    <!-- Card 4: Daily Bar -->
+    <div class="dashboard-card" id="card-daily-bar">
+      <div class="card-header">
+        <h3>Daily Bar Chart</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
+      </div>
+      <div class="card-content" id="content-daily-bar">
+        <canvas id="daily-bar-mini"></canvas>
+      </div>
+    </div>
+
+    <!-- Card 5: TGE Chart -->
+    <div class="dashboard-card" id="card-tge">
+      <div class="card-header">
+        <h3>TGE Cumulative Net Flow</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
+      </div>
+      <div class="card-content" id="content-tge">
+        <canvas id="tge-chart-mini"></canvas>
+      </div>
+    </div>
+
+    <!-- Card 6: Sankey -->
+    <div class="dashboard-card" id="card-sankey">
+      <div class="card-header">
+        <h3>Flow Diagram</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
+      </div>
+      <div class="card-content" id="content-sankey">
+        <div id="sankey-mini"></div>
+      </div>
+    </div>
+
+    <!-- Card 7: Ranking -->
+    <div class="dashboard-card" id="card-ranking">
+      <div class="card-header">
+        <h3>Exchange Ranking</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
+      </div>
+      <div class="card-content" id="content-ranking">
+        <div style="overflow-x:auto">
+          <table class="ranking-table" id="ranking-table-mini">
+            <thead>
+              <tr><th>#</th><th>Exchange</th><th>Inflow</th><th>Outflow</th><th>Net</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
       </div>
-      <div id="sankey-chart"></div>
-      <canvas id="particle-canvas"></canvas>
     </div>
-  </div>
 
-  <!-- Trend tab -->
-  <div class="tab-panel" id="tab-trend">
-    <div class="section-card">
-      <h2>Historical Trend (Last 7 Days)</h2>
-      <div class="trend-chart-container">
-        <button class="zoom-reset-btn" onclick="resetChartZoom('trend-chart')">↺ Reset</button>
-        <canvas id="trend-chart" aria-label="Historical trend chart"></canvas>
+    <!-- Card 8: Daily Table -->
+    <div class="dashboard-card" id="card-daily-table">
+      <div class="card-header">
+        <h3>Daily Data Table</h3>
+        <button class="expand-btn" title="Expand">⛶</button>
       </div>
-      <div id="trend-no-data" class="no-data" style="display:none">
-        No history data available yet. Data accumulates over time as the collector runs hourly.
+      <div class="card-content" id="content-daily-table">
+        <div id="daily-table-mini"></div>
       </div>
-    </div>
-  </div>
-
-  <!-- Ranking tab -->
-  <div class="tab-panel" id="tab-ranking">
-    <div class="section-card">
-      <h2>Exchange Ranking (by Volume)</h2>
-      <div style="overflow-x:auto">
-      <table class="ranking-table" id="ranking-table">
-        <thead>
-          <tr><th>#</th><th class="sortable" data-col="exchange">Exchange</th><th class="sortable" data-col="inflow">Inflow</th><th class="sortable" data-col="outflow">Outflow</th><th class="sortable" data-col="net">Net Flow</th><th class="sortable" data-col="txns">Txns</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Daily Heatmap tab -->
-  <div class="tab-panel" id="tab-daily-heatmap">
-    <div class="section-card">
-      <h2>Daily Heatmap</h2>
-      <div id="daily-scheme-a" class="daily-scheme"></div>
-    </div>
-  </div>
-
-  <!-- Daily Chart tab -->
-  <div class="tab-panel" id="tab-daily-chart">
-    <div class="section-card">
-      <h2>Daily Chart</h2>
-      <div id="daily-scheme-b" class="daily-scheme"></div>
-    </div>
-  </div>
-
-  <!-- Daily Table tab -->
-  <div class="tab-panel" id="tab-daily-table">
-    <div class="section-card">
-      <h2>Daily Table</h2>
-      <div id="daily-scheme-c" class="daily-scheme"></div>
-    </div>
-  </div>
-
-  <!-- TGE Net Flow tab -->
-  <div class="tab-panel" id="tab-tge-chart">
-    <div class="section-card">
-      <h2>Cumulative Net Flow Since TGE</h2>
-      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">
-        Cumulative exchange net flow (inflow − outflow) for each token from its TGE date to today.<br>
-        <strong style="color:var(--net-positive)">Positive</strong> = more tokens flowing into exchanges (selling pressure).
-        <strong style="color:var(--net-negative)">Negative</strong> = more tokens leaving exchanges (accumulation).
-      </p>
-      <div class="filters" style="margin-bottom:24px;">
-        <div class="filter-group">
-          <label>Token</label>
-          <select id="tge-token-filter">
-            <option value="all">All Tokens</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Scale</label>
-          <select id="tge-scale-filter">
-            <option value="linear">Linear</option>
-            <option value="log">Log</option>
-          </select>
-        </div>
-      </div>
-      <div id="tge-no-data" class="no-data" style="display:none">No TGE chart data available yet.</div>
-      <div class="tge-chart-container">
-        <button class="zoom-reset-btn" onclick="resetChartZoom('tge-cumulative-chart')">↺ Reset</button>
-        <canvas id="tge-cumulative-chart" aria-label="TGE cumulative net flow chart"></canvas>
-      </div>
-      <div id="tge-summary-table" style="margin-top:32px;"></div>
-      <div id="tge-pending-tokens" style="margin-top:16px;font-size:13px;color:var(--text-secondary);font-weight:500;"></div>
     </div>
   </div>
 </main>
@@ -744,6 +1166,7 @@
 // ── Shared Config & Globals ──────────────────────────────────────────
 const DATA_URL = '../data/latest_data.json';
 const HISTORY_URL = '../data/history_summary.json';
+const DAILY_SUMMARY_URL = '../data/daily_summary.json';
 const HISTORY_DIR_URL = '../data/history';
 const TGE_NETFLOWS_URL = '../data/tge_netflows.json';
 const TGE_CHART_DATA_URL = '../data/tge_chart_data.json';
@@ -754,6 +1177,7 @@ window.allCharts = {};
 
 let rawData = null;
 let historyData = null;
+let dailySummaryData = null;
 let tgeNetflows = null;
 let tgeChartData = null;
 
@@ -814,6 +1238,8 @@ function resetChartZoom(chartId) {
 
 // ── Tab switching ────────────────────────────────────────────────────
 
+// DEPRECATED: Old tab system - replaced by Dashboard Grid
+/*
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
@@ -868,6 +1294,811 @@ function handleTabActivated(tabName) {
     }
   }, 100);
 }
+*/
+
+
+// ── Token Dashboard System ───────────────────────────────────────────
+
+let selectedToken = null;
+let renderTimeout = null;
+let chartsRendered = new Set();
+
+function initTokenSelector() {
+  const container = document.getElementById('token-selector');
+  const tokens = Object.keys(rawData.tokens).sort();
+
+  container.innerHTML = tokens.map(tokenSymbol => {
+    const data = rawData.tokens[tokenSymbol];
+    const chain = data.deployments[0]?.chain || '';
+    const netFlow = data.net_flow || 0;
+    const netFlowClass = netFlow >= 0 ? 'positive' : 'negative';
+    const netFlowIcon = netFlow >= 0 ? '↑' : '↓';
+
+    return `
+      <button class="token-pill ${tokenSymbol === selectedToken ? 'active' : ''}"
+              data-token="${tokenSymbol}"
+              title="${tokenSymbol} - Net Flow: ${netFlow >= 0 ? '+' : ''}${formatNumber(netFlow)}">
+        <span class="token-name">${tokenSymbol}</span>
+        <span class="token-chain">${chain}</span>
+        <span class="token-net" style="font-size:10px;opacity:0.8;margin-left:4px;color:${netFlow >= 0 ? 'var(--inflow)' : 'var(--outflow)'};">
+          ${netFlowIcon}${Math.abs(netFlow) > 1000 ? formatNumber(Math.abs(netFlow)) : ''}
+        </span>
+      </button>
+    `;
+  }).join('');
+
+  // Bind click events
+  container.querySelectorAll('.token-pill').forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      selectedToken = btn.dataset.token;
+      renderTokenDashboard(selectedToken);
+
+      // Update active state
+      container.querySelectorAll('.token-pill').forEach(b =>
+        b.classList.toggle('active', b.dataset.token === selectedToken)
+      );
+    });
+
+    // Keyboard navigation
+    btn.addEventListener('keydown', (e) => {
+      const pills = Array.from(container.querySelectorAll('.token-pill'));
+      const currentIndex = pills.indexOf(btn);
+
+      if (e.key === 'ArrowRight' && currentIndex < pills.length - 1) {
+        pills[currentIndex + 1].focus();
+        pills[currentIndex + 1].click();
+      } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        pills[currentIndex - 1].focus();
+        pills[currentIndex - 1].click();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+
+    // Make focusable
+    btn.setAttribute('tabindex', index === 0 ? '0' : '-1');
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', btn.dataset.token === selectedToken ? 'true' : 'false');
+  });
+}
+
+function renderTokenDashboard(token) {
+  if (!rawData || !token) return;
+
+  // Update timestamp
+  document.getElementById('timestamp').textContent =
+    `Last updated: ${new Date(rawData.timestamp).toLocaleString()}`;
+
+  // Announce to screen readers
+  const srAnnounce = document.getElementById('sr-announcements');
+  if (srAnnounce) {
+    srAnnounce.textContent = `Loading dashboard for ${token}`;
+  }
+
+  // Show loading state for all cards
+  const cardContents = [
+    'content-overview', 'content-trend', 'content-heatmap',
+    'content-daily-bar', 'content-tge',
+    'content-ranking', 'content-daily-table'
+  ];
+
+  cardContents.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.querySelector('canvas') && !el.querySelector('table')) {
+      el.innerHTML = '<div class="card-loading"><div class="loading"></div></div>';
+    }
+  });
+
+  // Don't set loading state for sankey - it has a special div structure
+
+  // Render all components with slight delay for smooth transition
+  setTimeout(() => {
+    try {
+      renderKpiBar(token);
+      renderOverviewCard(token);
+      renderTrendCard(token);
+      renderHeatmapCard(token);
+      renderDailyBarCard(token);
+      renderTgeCard(token);
+      renderSankeyCard(token);
+      renderRankingCard(token);
+      renderDailyTableCard(token);
+
+      // Announce completion
+      if (srAnnounce) {
+        srAnnounce.textContent = `Dashboard loaded for ${token}`;
+      }
+    } catch (error) {
+      console.error('Error rendering dashboard:', error);
+      // Show error in first card
+      document.getElementById('content-overview').innerHTML =
+        '<div class="card-empty" style="color:var(--alert-border);">Error loading data<small>Please refresh the page</small></div>';
+
+      if (srAnnounce) {
+        srAnnounce.textContent = `Error loading dashboard for ${token}`;
+      }
+    }
+  }, 50);
+}
+
+function renderKpiBar(token) {
+  const data = rawData.tokens[token];
+  if (!data) return;
+
+  const deployment = data.deployments[0];
+  const flows = deployment?.exchange_flows || {};
+
+  let totalInflow = 0, totalOutflow = 0;
+  for (const [ex, f] of Object.entries(flows)) {
+    totalInflow += f.inflow || 0;
+    totalOutflow += f.outflow || 0;
+  }
+  const netFlow = totalInflow - totalOutflow;
+
+  // Update KPI values
+  document.getElementById('kpi-inflow').textContent = formatNumber(totalInflow);
+  document.getElementById('kpi-outflow').textContent = formatNumber(totalOutflow);
+  document.getElementById('kpi-net').textContent = (netFlow >= 0 ? '+' : '') + formatNumber(netFlow);
+  document.getElementById('kpi-net').className = `kpi-value ${netFlow >= 0 ? 'positive' : 'negative'}`;
+
+  // TGE cumulative (if available)
+  if (tgeNetflows && tgeNetflows[token]) {
+    const tgeData = tgeNetflows[token];
+    const tgeCumulative = tgeData.cumulative_net_flow || 0;
+    const tgeDays = tgeData.days_since_tge || 0;
+    document.getElementById('kpi-tge').textContent = (tgeCumulative >= 0 ? '+' : '') + formatNumber(tgeCumulative);
+    document.getElementById('kpi-tge').className = `kpi-value ${tgeCumulative >= 0 ? 'positive' : 'negative'}`;
+    document.getElementById('kpi-tge-days').textContent = `${tgeDays} days since TGE`;
+  } else {
+    document.getElementById('kpi-tge').textContent = 'N/A';
+    document.getElementById('kpi-tge').className = 'kpi-value';
+    document.getElementById('kpi-tge-days').textContent = '';
+  }
+}
+
+function renderOverviewCard(token) {
+  const data = rawData.tokens[token];
+  if (!data) return;
+
+  const deployment = data.deployments[0];
+  const flows = deployment?.exchange_flows || {};
+
+  if (Object.keys(flows).length === 0) {
+    document.getElementById('content-overview').innerHTML = '<div class="card-empty">No exchange flows detected<small>No transactions in the last hour</small></div>';
+    return;
+  }
+
+  let html = `
+    <table class="exchange-table">
+      <thead>
+        <tr>
+          <th>Exchange</th>
+          <th>Inflow</th>
+          <th>Outflow</th>
+          <th>Net</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  const sortedExchanges = Object.entries(flows).sort((a, b) => {
+    const netA = (a[1].inflow || 0) - (a[1].outflow || 0);
+    const netB = (b[1].inflow || 0) - (b[1].outflow || 0);
+    return Math.abs(netB) - Math.abs(netA);
+  });
+
+  for (const [ex, f] of sortedExchanges.slice(0, 10)) {
+    const net = (f.inflow || 0) - (f.outflow || 0);
+    html += `
+      <tr>
+        <td style="font-weight:600;">${ex}</td>
+        <td style="color:var(--inflow);">${formatNumber(f.inflow)}</td>
+        <td style="color:var(--outflow);">${formatNumber(f.outflow)}</td>
+        <td style="color:${net >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'};">
+          ${net >= 0 ? '+' : ''}${formatNumber(net)}
+        </td>
+      </tr>
+    `;
+  }
+
+  html += '</tbody></table>';
+  document.getElementById('content-overview').innerHTML = html;
+}
+
+function renderTrendCard(token) {
+  const canvas = document.getElementById('trend-chart-mini');
+  if (!canvas) return;
+
+  if (!historyData || historyData.length === 0) {
+    document.getElementById('content-trend').innerHTML = `
+      <div class="card-empty">
+        <div style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;">📉</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">No Historical Data</div>
+        <small style="opacity: 0.7;">
+          Data will appear as the system collects hourly snapshots
+        </small>
+      </div>
+    `;
+    return;
+  }
+
+  try {
+    const labels = [];
+    const inflowData = [];
+    const outflowData = [];
+
+    // Get last 24 hours of data
+    const last24h = historyData.slice(-24);
+
+    for (const entry of last24h) {
+      labels.push(new Date(entry.timestamp));
+      let inflow = 0, outflow = 0;
+      const tokenData = entry.tokens?.[token];
+      if (tokenData) {
+        inflow = tokenData.total_inflow || 0;
+        outflow = tokenData.total_outflow || 0;
+      }
+      inflowData.push(inflow);
+      outflowData.push(outflow);
+    }
+
+    const chartId = 'trend-chart-mini';
+    const ctx = canvas.getContext('2d');
+    if (window.allCharts[chartId]) {
+      window.allCharts[chartId].destroy();
+    }
+
+    window.allCharts[chartId] = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Inflow',
+            data: inflowData,
+            borderColor: '#16A34A',
+            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 1,
+            borderWidth: 2
+          },
+          {
+            label: 'Outflow',
+            data: outflowData,
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 1,
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              font: { size: 11, family: "'DM Sans', sans-serif" },
+              usePointStyle: true,
+              boxWidth: 6,
+              boxHeight: 6
+            }
+          },
+          tooltip: TOOLTIP_OPTS
+        },
+        scales: {
+          x: {
+            type: 'time',
+            time: { unit: 'hour' },
+            ticks: { maxTicksLimit: 6, font: { size: 10 } },
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: { size: 10 },
+              callback: function(value) {
+                return formatNumber(value);
+              }
+            },
+            grid: { color: 'rgba(0,0,0,0.05)' }
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error rendering trend chart:', error);
+    document.getElementById('content-trend').innerHTML = `
+      <div class="card-empty" style="color:var(--alert-border);">
+        <div style="font-weight: 600; margin-bottom: 8px;">Chart Error</div>
+        <small>Unable to render chart. Please refresh the page.</small>
+      </div>
+    `;
+  }
+}
+
+function renderHeatmapCard(token) {
+  if (!dailySummaryData || dailySummaryData.length === 0) {
+    document.getElementById('content-heatmap').innerHTML = `
+      <div class="card-empty">
+        <div style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;">📊</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">Historical Heatmap</div>
+        <small style="opacity: 0.7;">
+          No daily data available yet
+        </small>
+      </div>
+    `;
+    return;
+  }
+
+  // Filter data for selected token and last 30 days
+  const tokenData = dailySummaryData
+    .filter(d => d.tokens && d.tokens[token])
+    .slice(-30);
+
+  if (tokenData.length === 0) {
+    document.getElementById('content-heatmap').innerHTML = `
+      <div class="card-empty">
+        <div style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;">📊</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">No Data for ${token}</div>
+        <small style="opacity: 0.7;">
+          Daily data will appear as it's collected
+        </small>
+      </div>
+    `;
+    return;
+  }
+
+  // Create simple heatmap visualization
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:4px;">';
+
+  tokenData.forEach(d => {
+    const data = d.tokens[token];
+    const net = data.net_flow || 0;
+    const intensity = Math.min(Math.abs(net) / 100000, 1);
+    const color = net >= 0
+      ? `rgba(220, 38, 38, ${0.2 + intensity * 0.8})`
+      : `rgba(29, 78, 216, ${0.2 + intensity * 0.8})`;
+
+    html += `
+      <div style="
+        background:${color};
+        padding:8px 4px;
+        border-radius:4px;
+        text-align:center;
+        font-size:10px;
+        font-weight:600;
+        cursor:help;
+      " title="${d.date}: ${net >= 0 ? '+' : ''}${formatNumber(net)}">
+        ${d.date.slice(8)}
+      </div>
+    `;
+  });
+
+  html += '</div>';
+  html += `
+    <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;font-size:11px;">
+      <span style="display:flex;align-items:center;gap:4px;">
+        <span style="width:12px;height:12px;background:rgba(29,78,216,0.8);border-radius:2px;"></span>
+        Outflow (Accumulation)
+      </span>
+      <span style="display:flex;align-items:center;gap:4px;">
+        <span style="width:12px;height:12px;background:rgba(220,38,38,0.8);border-radius:2px;"></span>
+        Inflow (Selling)
+      </span>
+    </div>
+  `;
+
+  document.getElementById('content-heatmap').innerHTML = html;
+}
+
+function renderDailyBarCard(token) {
+  const canvas = document.getElementById('daily-bar-mini');
+  if (!canvas) return;
+
+  if (!dailySummaryData || dailySummaryData.length === 0) {
+    document.getElementById('content-daily-bar').innerHTML = `
+      <div class="card-empty">
+        <div style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;">📈</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">Daily Bar Chart</div>
+        <small style="opacity: 0.7;">
+          No daily data available yet
+        </small>
+      </div>
+    `;
+    return;
+  }
+
+  // Filter data for selected token and last 14 days
+  const tokenData = dailySummaryData
+    .filter(d => d.tokens && d.tokens[token])
+    .slice(-14);
+
+  if (tokenData.length === 0) {
+    document.getElementById('content-daily-bar').innerHTML = `
+      <div class="card-empty">
+        <div style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;">📈</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">No Data for ${token}</div>
+        <small style="opacity: 0.7;">
+          Daily data will appear as it's collected
+        </small>
+      </div>
+    `;
+    return;
+  }
+
+  try {
+    const labels = tokenData.map(d => d.date);
+    const inflowData = tokenData.map(d => d.tokens[token].total_inflow || 0);
+    const outflowData = tokenData.map(d => d.tokens[token].total_outflow || 0);
+
+    const chartId = 'daily-bar-mini';
+    const ctx = canvas.getContext('2d');
+    if (window.allCharts[chartId]) {
+      window.allCharts[chartId].destroy();
+    }
+
+    window.allCharts[chartId] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Inflow',
+            data: inflowData,
+            backgroundColor: 'rgba(22, 163, 74, 0.8)',
+            borderColor: '#16A34A',
+            borderWidth: 1
+          },
+          {
+            label: 'Outflow',
+            data: outflowData,
+            backgroundColor: 'rgba(220, 38, 38, 0.8)',
+            borderColor: '#DC2626',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              font: { size: 11, family: "'DM Sans', sans-serif" },
+              usePointStyle: true,
+              boxWidth: 6,
+              boxHeight: 6
+            }
+          },
+          tooltip: TOOLTIP_OPTS
+        },
+        scales: {
+          x: {
+            ticks: { font: { size: 10 } },
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: { size: 10 },
+              callback: function(value) {
+                return formatNumber(value);
+              }
+            },
+            grid: { color: 'rgba(0,0,0,0.05)' }
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error rendering daily bar chart:', error);
+    document.getElementById('content-daily-bar').innerHTML = `
+      <div class="card-empty" style="color:var(--alert-border);">
+        <div style="font-weight: 600; margin-bottom: 8px;">Chart Error</div>
+        <small>Unable to render chart</small>
+      </div>
+    `;
+  }
+}
+
+function renderTgeCard(token) {
+  const canvas = document.getElementById('tge-chart-mini');
+  if (!canvas) return;
+
+  if (!tgeChartData || !tgeChartData.tokens || !tgeChartData.tokens[token]) {
+    document.getElementById('content-tge').innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-secondary);">No TGE data available</div>';
+    return;
+  }
+
+  const tokenData = tgeChartData.tokens[token];
+
+  // Support both data formats
+  let labels, cumulativeData;
+  if (tokenData.dates && tokenData.cumulative_net_flow) {
+    // Format 1: dates + cumulative_net_flow arrays
+    labels = tokenData.dates.map(d => new Date(d));
+    cumulativeData = tokenData.cumulative_net_flow;
+  } else if (tokenData.series && Array.isArray(tokenData.series)) {
+    // Format 2: series array with date + cumulative_net
+    labels = tokenData.series.map(s => new Date(s.date));
+    cumulativeData = tokenData.series.map(s => s.cumulative_net);
+  } else {
+    document.getElementById('content-tge').innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-secondary);">No TGE data available</div>';
+    return;
+  }
+
+  const chartId = 'tge-chart-mini';
+  const ctx = canvas.getContext('2d');
+  if (window.allCharts[chartId]) {
+    window.allCharts[chartId].destroy();
+  }
+
+  const TOKEN_COLORS = {
+    'UAI': '#667eea', 'BIRB': '#10b981', 'AZTEC': '#8b5cf6',
+    'TRIA': '#f59e0b', 'SKR': '#06b6d4', 'GWEI': '#ec4899',
+    'SPACE': '#14b8a6', 'PUMP': '#f97316',
+  };
+
+  const color = TOKEN_COLORS[token] || '#475569';
+
+  window.allCharts[chartId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: `${token} Cumulative Net Flow`,
+        data: cumulativeData,
+        borderColor: color,
+        backgroundColor: color + '20',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 0,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          ...TOOLTIP_OPTS,
+          callbacks: {
+            label: function(context) {
+              const value = context.parsed.y;
+              return `Net Flow: ${value >= 0 ? '+' : ''}${formatNumber(value)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'time',
+          time: { unit: 'day' },
+          ticks: { maxTicksLimit: 5, font: { size: 10 } },
+          grid: { display: false }
+        },
+        y: {
+          ticks: {
+            font: { size: 10 },
+            callback: function(value) {
+              return formatNumber(value);
+            }
+          },
+          grid: { color: 'rgba(0,0,0,0.05)' }
+        }
+      }
+    }
+  });
+}
+
+function renderSankeyCard(token) {
+  const data = rawData.tokens[token];
+  if (!data) return;
+
+  const deployment = data.deployments[0];
+  const flows = deployment?.exchange_flows || {};
+
+  // Build Sankey data
+  const nodes = [{ name: token }];
+  const links = [];
+  let nodeIndex = 1;
+
+  for (const [ex, f] of Object.entries(flows)) {
+    nodes.push({ name: ex });
+    if (f.inflow > 0) {
+      links.push({
+        source: nodeIndex,
+        target: 0,
+        value: f.inflow,
+        color: 'rgba(22, 163, 74, 0.4)'
+      });
+    }
+    if (f.outflow > 0) {
+      links.push({
+        source: 0,
+        target: nodeIndex,
+        value: f.outflow,
+        color: 'rgba(220, 38, 38, 0.4)'
+      });
+    }
+    nodeIndex++;
+  }
+
+  if (links.length === 0) {
+    const container = document.getElementById('content-sankey');
+    if (container) {
+      container.innerHTML = '<div class="card-empty">No flow data available<small>No transactions in the last hour</small></div>';
+    }
+    return;
+  }
+
+  const plotData = [{
+    type: 'sankey',
+    node: {
+      pad: 15,
+      thickness: 20,
+      line: { color: 'white', width: 0.5 },
+      label: nodes.map(n => n.name),
+      color: nodes.map((n, i) => i === 0 ? '#667eea' : '#8b5cf6')
+    },
+    link: {
+      source: links.map(l => l.source),
+      target: links.map(l => l.target),
+      value: links.map(l => l.value),
+      color: links.map(l => l.color)
+    }
+  }];
+
+  const layout = {
+    font: { size: 10, family: "'DM Sans', sans-serif" },
+    margin: { l: 10, r: 10, t: 10, b: 10 },
+    height: 280
+  };
+
+  // Only look for sankey element if we have data to render
+  let sankeyElement = document.getElementById('sankey-mini');
+  if (!sankeyElement) {
+    // Recreate the sankey-mini div if it was removed
+    const container = document.getElementById('content-sankey');
+    if (container) {
+      container.innerHTML = '<div id="sankey-mini"></div>';
+      sankeyElement = document.getElementById('sankey-mini');
+    }
+  }
+
+  if (!sankeyElement) {
+    console.error('Failed to find or create sankey element');
+    return;
+  }
+
+  Plotly.newPlot(sankeyElement, plotData, layout, { displayModeBar: false, responsive: true });
+}
+
+function renderRankingCard(token) {
+  const data = rawData.tokens[token];
+  if (!data) return;
+
+  const deployment = data.deployments[0];
+  const flows = deployment?.exchange_flows || {};
+
+  if (Object.keys(flows).length === 0) {
+    document.getElementById('ranking-table-mini').querySelector('tbody').innerHTML =
+      '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-secondary);">No exchange data available</td></tr>';
+    return;
+  }
+
+  const rankings = Object.entries(flows).map(([ex, f]) => ({
+    exchange: ex,
+    inflow: f.inflow || 0,
+    outflow: f.outflow || 0,
+    net: (f.inflow || 0) - (f.outflow || 0),
+    volume: (f.inflow || 0) + (f.outflow || 0)
+  })).sort((a, b) => b.volume - a.volume);
+
+  const maxVolume = rankings[0]?.volume || 1;
+
+  let html = '<tbody>';
+  rankings.slice(0, 10).forEach((r, i) => {
+    const volumePercent = (r.volume / maxVolume * 100).toFixed(1);
+    html += `
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:8px;text-align:center;font-weight:700;color:${i < 3 ? 'var(--accent)' : 'var(--text-secondary)'};">${i + 1}</td>
+        <td style="padding:8px;">
+          <div style="font-weight:600;">${r.exchange}</div>
+          <div style="height:4px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden;">
+            <div style="height:100%;background:var(--accent);width:${volumePercent}%;transition:width 0.3s ease;"></div>
+          </div>
+        </td>
+        <td style="padding:8px;text-align:right;color:var(--inflow);font-size:12px;">${formatNumber(r.inflow)}</td>
+        <td style="padding:8px;text-align:right;color:var(--outflow);font-size:12px;">${formatNumber(r.outflow)}</td>
+        <td style="padding:8px;text-align:right;color:${r.net >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'};font-weight:600;font-size:12px;">
+          ${r.net >= 0 ? '+' : ''}${formatNumber(r.net)}
+        </td>
+      </tr>
+    `;
+  });
+  html += '</tbody>';
+
+  document.getElementById('ranking-table-mini').querySelector('tbody').innerHTML = html;
+}
+
+function renderDailyTableCard(token) {
+  if (!dailySummaryData || dailySummaryData.length === 0) {
+    document.getElementById('content-daily-table').innerHTML = `
+      <div class="card-empty">
+        <div style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;">📋</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">Daily Data Table</div>
+        <small style="opacity: 0.7;">
+          No daily data available yet
+        </small>
+      </div>
+    `;
+    return;
+  }
+
+  // Filter data for selected token and last 10 days
+  const tokenData = dailySummaryData
+    .filter(d => d.tokens && d.tokens[token])
+    .slice(-10)
+    .reverse(); // Most recent first
+
+  if (tokenData.length === 0) {
+    document.getElementById('content-daily-table').innerHTML = `
+      <div class="card-empty">
+        <div style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;">📋</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">No Data for ${token}</div>
+        <small style="opacity: 0.7;">
+          Daily data will appear as it's collected
+        </small>
+      </div>
+    `;
+    return;
+  }
+
+  let html = `
+    <table class="exchange-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Inflow</th>
+          <th>Outflow</th>
+          <th>Net Flow</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  tokenData.forEach(d => {
+    const data = d.tokens[token];
+    const net = data.net_flow || 0;
+    html += `
+      <tr>
+        <td style="font-weight:600;">${d.date}</td>
+        <td style="color:var(--inflow);">${formatNumber(data.total_inflow || 0)}</td>
+        <td style="color:var(--outflow);">${formatNumber(data.total_outflow || 0)}</td>
+        <td style="color:${net >= 0 ? 'var(--net-positive)' : 'var(--net-negative)'};font-weight:600;">
+          ${net >= 0 ? '+' : ''}${formatNumber(net)}
+        </td>
+      </tr>
+    `;
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('content-daily-table').innerHTML = html;
+}
 
 
 // ── Data loading ─────────────────────────────────────────────────────
@@ -877,11 +2108,17 @@ async function loadData() {
     const resp = await fetch(DATA_URL);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     rawData = await resp.json();
-    populateFilters();
-    render();
+    initTokenSelector();
+    // Select first token by default
+    const firstToken = Object.keys(rawData.tokens)[0];
+    if (firstToken) {
+      selectedToken = firstToken;
+      // Don't render dashboard yet, wait for all data to load
+    }
   } catch (e) {
-    document.getElementById('token-grid').innerHTML =
+    document.getElementById('dashboard-grid').innerHTML =
       `<div class="no-data">Data temporarily unavailable. Please check back later.<br><small style="opacity:0.6">${e.message}</small></div>`;
+    return; // Exit early on error
   }
 
   // Load history (non-blocking)
@@ -889,9 +2126,6 @@ async function loadData() {
     const hResp = await fetch(HISTORY_URL);
     if (hResp.ok) {
       historyData = await hResp.json();
-      if (document.getElementById('tab-trend').classList.contains('active')) {
-        renderTrendChart();
-      }
     }
   } catch (_) { /* history not available yet */ }
 
@@ -900,7 +2134,6 @@ async function loadData() {
     const tgeResp = await fetch(TGE_NETFLOWS_URL);
     if (tgeResp.ok) {
       tgeNetflows = await tgeResp.json();
-      render(); // Re-render to show TGE data
     }
   } catch (_) { /* TGE data not available yet */ }
 
@@ -909,14 +2142,25 @@ async function loadData() {
     const tgeChartResp = await fetch(TGE_CHART_DATA_URL);
     if (tgeChartResp.ok) {
       tgeChartData = await tgeChartResp.json();
-      populateTgeTokenFilter();
-      if (document.getElementById('tab-tge-chart').classList.contains('active')) {
-        renderTgeCumulativeChart();
-      }
     }
   } catch (_) { /* TGE chart data not available yet */ }
+
+  // Load daily summary (non-blocking)
+  try {
+    const dailyResp = await fetch(DAILY_SUMMARY_URL);
+    if (dailyResp.ok) {
+      dailySummaryData = await dailyResp.json();
+    }
+  } catch (_) { /* daily summary not available yet */ }
+
+  // Now render dashboard with all data loaded
+  if (selectedToken) {
+    renderTokenDashboard(selectedToken);
+  }
 }
 
+// DEPRECATED: Old filter system - replaced by Token Selector
+/*
 function populateFilters() {
   const tokenSelect = document.getElementById('filter-token');
   const exchangeSelect = document.getElementById('filter-exchange');
@@ -945,9 +2189,12 @@ function populateFilters() {
   tokenSelect.addEventListener('change', render);
   exchangeSelect.addEventListener('change', render);
 }
+*/
 
 // ── Main render ──────────────────────────────────────────────────────
 
+// DEPRECATED: Old render system - replaced by renderTokenDashboard
+/*
 function render() {
   if (!rawData) return;
 
@@ -1005,6 +2252,7 @@ function render() {
   renderSankeyChart(filteredTokens);
   renderExchangeRanking(filteredTokens);
 }
+*/
 
 // ── Token cards ──────────────────────────────────────────────────────
 
@@ -2019,10 +3267,45 @@ function renderSchemeC(dates) {
   }
 }
 
+// ── Card Expand Functionality ────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Add expand functionality to all expand buttons
+  document.querySelectorAll('.expand-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const card = e.target.closest('.dashboard-card');
+      if (!card) return;
+
+      // Toggle fullscreen class
+      if (card.classList.contains('card-fullscreen')) {
+        card.classList.remove('card-fullscreen');
+        document.body.style.overflow = '';
+      } else {
+        // Remove fullscreen from other cards
+        document.querySelectorAll('.card-fullscreen').forEach(c => {
+          c.classList.remove('card-fullscreen');
+        });
+        card.classList.add('card-fullscreen');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+
+  // Close fullscreen on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.card-fullscreen').forEach(card => {
+        card.classList.remove('card-fullscreen');
+      });
+      document.body.style.overflow = '';
+    }
+  });
+});
+
 // ── Initial Load ─────────────────────────────────────────────────────
 
 loadData();
-loadDailyData();
+// loadDailyData(); // DEPRECATED: Old tab system, replaced by dashboard grid
 </script>
 </body>
 </html>
