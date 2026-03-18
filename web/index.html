@@ -6,7 +6,7 @@
 <title>On-Chain Exchange Flow Monitor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
@@ -16,30 +16,31 @@
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
   :root {
-    /* Arkham-inspired color palette (non-black) */
-    --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --bg-overlay: rgba(255, 255, 255, 0.05);
-    --bg-card: rgba(255, 255, 255, 0.95);
-    --bg-card-hover: rgba(255, 255, 255, 0.98);
-    --text: #1a1a2e;
-    --text-secondary: #4a5568;
-    --accent: #667eea;
-    --accent-secondary: #764ba2;
-    --accent-light: #e0e7ff;
-    --border: rgba(102, 126, 234, 0.15);
-    --inflow: #10b981;
-    --outflow: #ef4444;
-    --net-positive: #667eea;
-    --net-negative: #ef4444;
-    --alert-bg: #fef2f2;
-    --alert-border: #ef4444;
-    --shadow-sm: 0 2px 8px rgba(102, 126, 234, 0.08), 0 8px 24px rgba(118, 75, 162, 0.06);
-    --shadow-md: 0 4px 12px rgba(102, 126, 234, 0.12), 0 12px 32px rgba(118, 75, 162, 0.08);
-    --shadow-lg: 0 8px 24px rgba(102, 126, 234, 0.16), 0 16px 48px rgba(118, 75, 162, 0.12);
+    /* Arkham-inspired color palette (Dark Mode) */
+    --bg: #050505;
+    --bg-overlay: rgba(255, 255, 255, 0.02);
+    --bg-card: #121418;
+    --bg-card-hover: #16181C;
+    --text: #F8F9FA;
+    --text-secondary: #8A8D93;
+    --accent: #3B82F6;
+    --accent-secondary: #00E5FF;
+    --accent-light: rgba(59, 130, 246, 0.1);
+    --border: #1F2226;
+    --inflow: #00FFA3;
+    --outflow: #FF4D4D;
+    --net-positive: #00FFA3;
+    --net-negative: #FF4D4D;
+    --alert-bg: rgba(255, 77, 77, 0.1);
+    --alert-border: #FF4D4D;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
     --font-heading: 'Plus Jakarta Sans', sans-serif;
     --font-body: 'DM Sans', sans-serif;
-    --glass-bg: rgba(255, 255, 255, 0.85);
-    --glass-border: rgba(255, 255, 255, 0.3);
+    --font-mono: 'Roboto Mono', monospace;
+    --glass-bg: rgba(10, 11, 13, 0.8);
+    --glass-border: #2D3239;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,20 +55,6 @@
     position: relative;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-      radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
   /* Header & Nav */
   .top-nav {
     position: sticky;
@@ -77,7 +64,6 @@
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 4px 24px rgba(102, 126, 234, 0.08);
     padding: 16px 24px;
   }
 
@@ -98,41 +84,37 @@
   }
 
   .logo-dot {
-    width: 12px;
-    height: 12px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    width: 8px;
+    height: 8px;
+    background: var(--inflow);
     border-radius: 50%;
     animation: pulse 2s infinite;
-    box-shadow: 0 0 12px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 8px var(--inflow);
   }
 
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.6); }
-    70% { box-shadow: 0 0 0 8px rgba(102, 126, 234, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(0, 255, 163, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0); }
   }
 
   h1 {
     font-family: var(--font-heading);
-    font-size: clamp(18px, 2vw, 24px);
+    font-size: clamp(16px, 2vw, 20px);
     font-weight: 700;
-    letter-spacing: -0.5px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: 0;
+    color: var(--text);
   }
 
   .live-badge {
     font-size: 10px;
     font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 99px;
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
-    border: none;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--outflow);
+    border: 1px solid var(--outflow);
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
   }
 
   .timestamp {
@@ -159,16 +141,15 @@
   .filter-group {
     display: flex;
     align-items: center;
-    background: var(--bg-card);
+    background: transparent;
     border: 1px solid var(--border);
-    border-radius: 99px;
+    border-radius: 4px;
     padding: 6px 16px 6px 14px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    transition: box-shadow 0.2s;
+    transition: border-color 0.2s;
   }
 
   .filter-group:hover {
-    box-shadow: var(--shadow-sm);
+    border-color: var(--accent);
   }
 
   .filter-group label {
@@ -191,10 +172,15 @@
     outline: none;
     appearance: none;
     padding-right: 18px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238A8D93'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right center;
     background-size: 14px;
+  }
+
+  .filter-group select option {
+    background: var(--bg-card);
+    color: var(--text);
   }
 
   /* Summary Cards */
@@ -208,29 +194,16 @@
   .summary-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: var(--shadow-sm);
-    position: relative;
-    overflow: hidden;
+    border-radius: 8px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    transition: border-color 0.2s;
   }
 
-  .summary-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 5px;
-    background: var(--border);
+  .summary-card:hover {
+    border-color: var(--accent);
   }
-
-  .summary-card:nth-child(1)::before { background: var(--inflow); }
-  .summary-card:nth-child(2)::before { background: var(--outflow); }
-  .summary-card:nth-child(3)::before { background: var(--accent); }
-  .summary-card:nth-child(4)::before { background: var(--text-secondary); }
 
   .summary-card .label {
     font-size: 13px;
@@ -238,17 +211,18 @@
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 6px;
   }
 
   .summary-card .value {
-    font-family: var(--font-heading);
+    font-family: var(--font-mono);
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -0.5px;
+    color: var(--text);
   }
 
   .summary-card .value.positive { color: var(--net-positive); }
@@ -257,39 +231,37 @@
   /* Tabs */
   .tab-bar {
     display: flex;
-    gap: 8px;
+    gap: 24px;
     margin-bottom: 32px;
-    background: #E2E8F0;
-    padding: 6px;
-    border-radius: 12px;
+    border-bottom: 1px solid var(--border);
+    padding: 0;
     overflow-x: auto;
     scrollbar-width: none;
   }
   .tab-bar::-webkit-scrollbar { display: none; }
 
   .tab-btn {
-    padding: 10px 20px;
+    padding: 12px 0;
     font-size: 14px;
     font-weight: 600;
     font-family: var(--font-body);
     border: none;
     background: transparent;
     color: var(--text-secondary);
-    border-radius: 8px;
+    border-bottom: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s;
     white-space: nowrap;
+    margin-bottom: -1px;
   }
 
   .tab-btn:hover {
     color: var(--text);
-    background: rgba(255,255,255,0.4);
   }
 
   .tab-btn.active {
     color: var(--accent);
-    background: var(--bg-card);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-bottom-color: var(--accent);
   }
 
   .tab-panel {
@@ -322,45 +294,42 @@
   .token-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.2s, transform 0.2s;
+    border-radius: 8px;
+    padding: 20px;
+    transition: border-color 0.2s;
     cursor: pointer;
   }
 
   .token-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    border-color: var(--accent);
   }
 
   .token-card.alert {
     border-color: var(--alert-border);
-    box-shadow: 0 0 0 1px var(--alert-border), var(--shadow-sm);
   }
 
   .token-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     border-bottom: 1px solid var(--border);
     padding-bottom: 16px;
   }
 
   .token-name {
     font-family: var(--font-heading);
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
-    letter-spacing: -0.5px;
+    letter-spacing: 0;
   }
 
   .token-chain {
     font-size: 11px;
     font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 6px;
+    padding: 2px 8px;
+    border-radius: 4px;
     background: var(--bg);
     border: 1px solid var(--border);
     color: var(--text-secondary);
@@ -373,8 +342,8 @@
   .alert-badge {
     display: inline-block;
     font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 6px;
+    padding: 2px 8px;
+    border-radius: 4px;
     background: var(--alert-bg);
     border: 1px solid var(--alert-border);
     color: var(--alert-border);
@@ -386,9 +355,9 @@
   }
 
   .token-net {
-    font-family: var(--font-heading);
+    font-family: var(--font-mono);
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 500;
     display: block;
     margin-bottom: 4px;
   }
@@ -404,20 +373,24 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .exchange-table th, .ranking-table th, .daily-table th {
-    text-align: left;
+    text-align: right;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--text-secondary);
-    padding: 12px 16px;
-    border-bottom: 2px solid var(--border);
-    background: var(--bg);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
     transition: background 0.2s;
+  }
+  
+  .exchange-table th:first-child, .ranking-table th:first-child, .daily-table th:first-child {
+    text-align: left;
   }
 
   .exchange-table th.sortable, .ranking-table th.sortable, .daily-table th.sortable {
@@ -443,18 +416,25 @@
   }
 
   .exchange-table td, .ranking-table td, .daily-table td {
-    padding: 14px 16px;
+    padding: 8px 12px;
     border-bottom: 1px solid var(--border);
     font-weight: 500;
     color: var(--text);
+    text-align: right;
+    font-family: var(--font-mono);
+  }
+  
+  .exchange-table td:first-child, .ranking-table td:first-child, .daily-table td:first-child {
+    text-align: left;
+    font-family: var(--font-body);
   }
 
   .exchange-table tr:nth-child(even) td, .ranking-table tr:nth-child(even) td, .daily-table tr:nth-child(even) td {
-    background-color: #F8FAFC;
+    background-color: transparent;
   }
 
   .exchange-table tr:hover td, .ranking-table tr:hover td, .daily-table tr:hover td {
-    background-color: #F1F5F9;
+    background-color: var(--bg-card-hover);
   }
 
   .exchange-table tr:last-child td, .ranking-table tr:last-child td, .daily-table tr:last-child td {
@@ -468,10 +448,9 @@
   .section-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px;
+    border-radius: 8px;
+    padding: 24px;
     margin-bottom: 24px;
-    box-shadow: var(--shadow-sm);
   }
 
   /* Sankey */
@@ -637,7 +616,7 @@
   }
 
   .token-selector::-webkit-scrollbar-thumb {
-    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    background: var(--border);
     border-radius: 3px;
   }
 
@@ -645,33 +624,27 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 18px;
-    border: 1.5px solid var(--border);
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: transparent;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s;
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--text);
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
   }
 
   .token-pill:hover {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--bg-card-hover);
     border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
   }
 
   .token-pill.active {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
-    border-color: transparent;
-    color: white;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
-    transform: translateY(-2px);
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
   }
   }
 
@@ -728,26 +701,17 @@
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     margin-bottom: 6px;
-    font-family: var(--font-heading);
+    font-family: var(--font-mono);
     transition: all 0.3s ease;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text);
   }
 
   .kpi-value.positive {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--net-positive);
   }
 
   .kpi-value.negative {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--net-negative);
   }
 
   .kpi-change {
@@ -787,8 +751,8 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    height: 1px;
+    background: var(--accent);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -798,8 +762,7 @@
   }
 
   .dashboard-card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
+    border-color: var(--accent);
   }
 
   .card-header {
@@ -808,32 +771,31 @@
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    border-bottom: 1px solid var(--border);
   }
 
   .card-header h3 {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text);
     font-family: var(--font-heading);
-    letter-spacing: -0.3px;
+    letter-spacing: 0;
   }
 
   .expand-btn {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
-    border: none;
+    background: transparent;
+    border: 1px solid var(--border);
     cursor: pointer;
-    font-size: 16px;
-    color: white;
-    transition: all 0.3s ease;
-    padding: 6px 10px;
-    border-radius: 8px;
-    opacity: 0.7;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
   }
 
   .expand-btn:hover {
-    opacity: 1;
-    transform: scale(1.1);
+    border-color: var(--accent);
+    color: var(--accent);
   }
   }
 
@@ -1175,6 +1137,12 @@ const DAILY_DAYS_TO_LOAD = 30;
 
 window.allCharts = {};
 
+// Arkham Global Chart Styles
+Chart.defaults.color = '#8A8D93';
+Chart.defaults.font.family = "'Roboto Mono', monospace";
+Chart.defaults.scale.grid.color = '#1F2226';
+Chart.defaults.scale.grid.borderColor = 'transparent';
+
 let rawData = null;
 let historyData = null;
 let dailySummaryData = null;
@@ -1197,12 +1165,14 @@ const ZOOM_OPTS = {
 
 const TOOLTIP_OPTS = {
   mode: 'index', intersect: false,
-  backgroundColor: 'rgba(15,23,42,0.92)',
-  titleColor: '#F1F5F9', bodyColor: '#CBD5E1',
-  padding: 12, cornerRadius: 8,
-  titleFont: { size: 12, weight: '600' },
-  bodyFont: { size: 13 },
+  backgroundColor: '#050505',
+  titleColor: '#F8F9FA', bodyColor: '#8A8D93',
+  borderColor: '#1F2226', borderWidth: 1,
+  padding: 12, cornerRadius: 4,
+  titleFont: { size: 12, family: "'Roboto Mono', monospace" },
+  bodyFont: { size: 13, family: "'Roboto Mono', monospace" },
   usePointStyle: true,
+  boxPadding: 6,
   callbacks: {
     label: function(context) {
       let label = context.dataset.label || '';
@@ -1557,22 +1527,24 @@ function renderTrendCard(token) {
           {
             label: 'Inflow',
             data: inflowData,
-            borderColor: '#16A34A',
-            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+            borderColor: '#00FFA3',
+            backgroundColor: 'rgba(0, 255, 163, 0.1)',
             fill: true,
-            tension: 0.3,
-            pointRadius: 1,
-            borderWidth: 2
+            tension: 0,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            borderWidth: 1.5
           },
           {
             label: 'Outflow',
             data: outflowData,
-            borderColor: '#DC2626',
-            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+            borderColor: '#FF4D4D',
+            backgroundColor: 'rgba(255, 77, 77, 0.1)',
             fill: true,
-            tension: 0.3,
-            pointRadius: 1,
-            borderWidth: 2
+            tension: 0,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            borderWidth: 1.5
           }
         ]
       },
@@ -1663,8 +1635,8 @@ function renderHeatmapCard(token) {
     const net = data.net_flow || 0;
     const intensity = Math.min(Math.abs(net) / 100000, 1);
     const color = net >= 0
-      ? `rgba(220, 38, 38, ${0.2 + intensity * 0.8})`
-      : `rgba(29, 78, 216, ${0.2 + intensity * 0.8})`;
+      ? `rgba(255, 77, 77, ${0.2 + intensity * 0.8})`
+      : `rgba(0, 255, 163, ${0.2 + intensity * 0.8})`;
 
     html += `
       <div style="
@@ -1689,7 +1661,7 @@ function renderHeatmapCard(token) {
         Outflow (Accumulation)
       </span>
       <span style="display:flex;align-items:center;gap:4px;">
-        <span style="width:12px;height:12px;background:rgba(220,38,38,0.8);border-radius:2px;"></span>
+        <span style="width:12px;height:12px;background:rgba(255,77,77,0.8);border-radius:2px;"></span>
         Inflow (Selling)
       </span>
     </div>
@@ -1752,15 +1724,15 @@ function renderDailyBarCard(token) {
           {
             label: 'Inflow',
             data: inflowData,
-            backgroundColor: 'rgba(22, 163, 74, 0.8)',
-            borderColor: '#16A34A',
+            backgroundColor: '#00FFA3',
+            borderColor: '#00FFA3',
             borderWidth: 1
           },
           {
             label: 'Outflow',
             data: outflowData,
-            backgroundColor: 'rgba(220, 38, 38, 0.8)',
-            borderColor: '#DC2626',
+            backgroundColor: '#FF4D4D',
+            borderColor: '#FF4D4D',
             borderWidth: 1
           }
         ]
@@ -1860,7 +1832,7 @@ function renderTgeCard(token) {
         borderColor: color,
         backgroundColor: color + '20',
         fill: true,
-        tension: 0.3,
+        tension: 0,
         pointRadius: 0,
         borderWidth: 2
       }]
@@ -1923,7 +1895,7 @@ function renderSankeyCard(token) {
         source: nodeIndex,
         target: 0,
         value: f.inflow,
-        color: 'rgba(22, 163, 74, 0.4)'
+        color: 'rgba(0, 255, 163, 0.4)'
       });
     }
     if (f.outflow > 0) {
@@ -1931,7 +1903,7 @@ function renderSankeyCard(token) {
         source: 0,
         target: nodeIndex,
         value: f.outflow,
-        color: 'rgba(220, 38, 38, 0.4)'
+        color: 'rgba(255, 77, 77, 0.4)'
       });
     }
     nodeIndex++;
@@ -2332,8 +2304,8 @@ function renderTokenCards(filteredTokens) {
         data: {
           labels: exchangeNames,
           datasets: [
-            { label: 'Inflow', data: exchangeNames.map(ex => flows[ex].inflow), backgroundColor: 'rgba(22, 163, 74, 0.8)', borderColor: '#16A34A', borderWidth: 1 },
-            { label: 'Outflow', data: exchangeNames.map(ex => flows[ex].outflow), backgroundColor: 'rgba(220, 38, 38, 0.8)', borderColor: '#DC2626', borderWidth: 1 },
+            { label: 'Inflow', data: exchangeNames.map(ex => flows[ex].inflow), backgroundColor: '#00FFA3', borderColor: '#00FFA3', borderWidth: 1 },
+            { label: 'Outflow', data: exchangeNames.map(ex => flows[ex].outflow), backgroundColor: '#FF4D4D', borderColor: '#FF4D4D', borderWidth: 1 },
           ]
         },
         options: {
@@ -2414,22 +2386,22 @@ function renderSankeyChart(filteredTokens) {
       const tokenLabel = dep.chain === tdata.deployments[0]?.chain && tdata.deployments.length === 1
         ? token
         : `${token} (${dep.chain})`;
-      const tokenIdx = getNodeIdx(tokenLabel, '#1E40AF');
+      const tokenIdx = getNodeIdx(tokenLabel, '#3B82F6');
 
       for (const [exchange, flows] of Object.entries(dep.exchange_flows)) {
-        const exIdx = getNodeIdx(exchange, '#16A34A');
+        const exIdx = getNodeIdx(exchange, '#2D3239');
 
         if (flows.inflow > 0) {
           linkSources.push(tokenIdx);
           linkTargets.push(exIdx);
           linkValues.push(flows.inflow);
-          linkColors.push('rgba(22, 163, 74, 0.35)');
+          linkColors.push('rgba(0, 255, 163, 0.35)');
         }
         if (flows.outflow > 0) {
           linkSources.push(exIdx);
           linkTargets.push(tokenIdx);
           linkValues.push(flows.outflow);
-          linkColors.push('rgba(220, 38, 38, 0.35)');
+          linkColors.push('rgba(255, 77, 77, 0.35)');
         }
       }
     }
@@ -2606,7 +2578,7 @@ class ParticleSystem {
       this.particles.push({
         x, y, targetX, targetY,
         progress: 0,
-        color: Math.random() > 0.5 ? '#1E40AF' : '#16A34A'
+        color: Math.random() > 0.5 ? '#3B82F6' : '#00FFA3'
       });
     }
 
@@ -2691,9 +2663,9 @@ function renderTrendChart() {
     data: {
       labels,
       datasets: [
-        { label: 'Inflow', data: inflowData, borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
-        { label: 'Outflow', data: outflowData, borderColor: '#DC2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
-        { label: 'Net', data: netData, borderColor: '#475569', borderDash: [5, 5], tension: 0.3, pointRadius: 0, borderWidth: 2, fill: false },
+        { label: 'Inflow', data: inflowData, borderColor: '#00FFA3', backgroundColor: 'rgba(0, 255, 163, 0.1)', fill: true, tension: 0, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5 },
+        { label: 'Outflow', data: outflowData, borderColor: '#FF4D4D', backgroundColor: 'rgba(255, 77, 77, 0.1)', fill: true, tension: 0, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5 },
+        { label: 'Net', data: netData, borderColor: '#3B82F6', borderDash: [5, 5], tension: 0, pointRadius: 0, borderWidth: 1.5, fill: false },
       ]
     },
     options: {
@@ -2741,7 +2713,7 @@ function updateSortIndicators(tableEl, sortState) {
 // ── TGE Cumulative Net Flow Chart ────────────────────────────────────
 
 const TOKEN_COLORS = {
-  'UAI':   '#1D4ED8', 'BIRB':  '#16A34A', 'AZTEC': '#7C3AED',
+  'UAI':   '#3B82F6', 'BIRB':  '#00FFA3', 'AZTEC': '#7C3AED',
   'TRIA':  '#D97706', 'SKR':   '#0284C7', 'GWEI':  '#DB2777',
   'SPACE': '#059669', 'PUMP':  '#EA580C',
 };
@@ -3158,13 +3130,13 @@ function renderSchemeA(dates) {
   let html = `<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:12px;font-weight:600;color:var(--text-secondary)">
     <span>Color legend:</span>
     <span style="display:flex;align-items:center;gap:6px">
-      <span style="width:16px;height:16px;border-radius:4px;background:rgba(29,78,216,0.75);display:inline-block"></span>Net Outflow (accumulation)
+      <span style="width:16px;height:16px;border-radius:4px;background:rgba(0,255,163,0.75);display:inline-block"></span>Net Outflow (accumulation)
     </span>
     <span style="display:flex;align-items:center;gap:6px">
-      <span style="width:16px;height:16px;border-radius:4px;background:#F8FAFC;border:1px solid #E2E8F0;display:inline-block"></span>Neutral
+      <span style="width:16px;height:16px;border-radius:4px;background:var(--border);border:1px solid #E2E8F0;display:inline-block"></span>Neutral
     </span>
     <span style="display:flex;align-items:center;gap:6px">
-      <span style="width:16px;height:16px;border-radius:4px;background:rgba(220,38,38,0.75);display:inline-block"></span>Net Inflow (selling pressure)
+      <span style="width:16px;height:16px;border-radius:4px;background:rgba(255,77,77,0.75);display:inline-block"></span>Net Inflow (selling pressure)
     </span>
   </div>`;
   html += '<div class="daily-heatmap">';
@@ -3175,8 +3147,8 @@ function renderSchemeA(dates) {
     const intensity = Math.max(0.15, Math.min(Math.abs(net) / 5000000, 1));
     // Diverging color: Red for net inflow (selling pressure), Blue for net outflow (accumulation)
     const color = net >= 0
-      ? `rgba(220, 38, 38, ${intensity})`
-      : `rgba(29, 78, 216, ${intensity})`;
+      ? `rgba(255, 77, 77, ${intensity})`
+      : `rgba(0, 255, 163, ${intensity})`;
 
     html += `<div class="heatmap-cell" style="background:${color}" title="${date}: ${net >= 0 ? '+' : ''}${formatNumber(net)}">
       ${date.slice(8)}
@@ -3206,8 +3178,8 @@ function renderSchemeB(dates) {
     data: {
       labels: dates.map(d => d.slice(2)),
       datasets: [
-        { label: 'Daily Inflow', data: dailyInflows, backgroundColor: 'rgba(22, 163, 74, 0.8)', borderWidth: 1, borderColor: '#16A34A' },
-        { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: 'rgba(220, 38, 38, 0.8)', borderWidth: 1, borderColor: '#DC2626' }
+        { label: 'Daily Inflow', data: dailyInflows, backgroundColor: '#00FFA3', borderWidth: 1, borderColor: '#00FFA3' },
+        { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: '#FF4D4D', borderWidth: 1, borderColor: '#FF4D4D' }
       ]
     },
     options: {
@@ -3255,7 +3227,7 @@ function renderSchemeC(dates) {
       type: 'line',
       data: {
         labels: hourly.map((_, i) => i),
-        datasets: [{ data: hourly, borderColor: '#475569', borderWidth: 1.5, pointRadius: 0, tension: 0.3 }]
+        datasets: [{ data: hourly, borderColor: '#475569', borderWidth: 1.5, pointRadius: 0, tension: 0 }]
       },
       options: {
         responsive: false,
