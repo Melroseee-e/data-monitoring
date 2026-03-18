@@ -16,31 +16,31 @@
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
   :root {
-    /* Arkham-inspired color palette (Dark Mode) */
-    --bg: #050505;
-    --bg-overlay: rgba(255, 255, 255, 0.02);
-    --bg-card: #121418;
-    --bg-card-hover: #16181C;
-    --text: #F8F9FA;
-    --text-secondary: #8A8D93;
-    --accent: #3B82F6;
-    --accent-secondary: #00E5FF;
-    --accent-light: rgba(59, 130, 246, 0.1);
-    --border: #1F2226;
-    --inflow: #00FFA3;
-    --outflow: #FF4D4D;
-    --net-positive: #00FFA3;
-    --net-negative: #FF4D4D;
-    --alert-bg: rgba(255, 77, 77, 0.1);
-    --alert-border: #FF4D4D;
+    /* Arkham-inspired color palette (Light Mode) */
+    --bg: #F9FAFB;
+    --bg-overlay: rgba(0, 0, 0, 0.02);
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #F3F4F6;
+    --text: #111827;
+    --text-secondary: #6B7280;
+    --accent: #2563EB;
+    --accent-secondary: #1D4ED8;
+    --accent-light: rgba(37, 99, 235, 0.1);
+    --border: #E5E7EB;
+    --inflow: #10B981;
+    --outflow: #EF4444;
+    --net-positive: #10B981;
+    --net-negative: #EF4444;
+    --alert-bg: #FEF2F2;
+    --alert-border: #EF4444;
     --shadow-sm: none;
     --shadow-md: none;
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.05);
     --font-heading: 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
-    --glass-bg: rgba(10, 11, 13, 0.8);
-    --glass-border: #2D3239;
+    --glass-bg: #FFFFFF;
+    --glass-border: #E5E7EB;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -93,9 +93,9 @@
   }
 
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.4); }
-    70% { box-shadow: 0 0 0 6px rgba(0, 255, 163, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
   }
 
   h1 {
@@ -649,7 +649,7 @@
   .token-pill.active {
     background: var(--accent);
     border-color: var(--accent);
-    color: #000;
+    color: #FFF;
   }
 
   .token-pill .token-chain {
@@ -667,7 +667,7 @@
     display: flex;
     justify-content: space-around;
     padding: 24px;
-    background: #0A0B0D;
+    background: var(--bg-card);
     border-bottom: 1px solid var(--border);
     position: relative;
     z-index: 1;
@@ -710,12 +710,10 @@
 
   .kpi-value.positive {
     color: var(--net-positive);
-    text-shadow: 0 0 10px rgba(0, 255, 163, 0.4);
   }
 
   .kpi-value.negative {
     color: var(--net-negative);
-    text-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
   }
 
   .kpi-change {
@@ -1140,9 +1138,9 @@ const DAILY_DAYS_TO_LOAD = 30;
 window.allCharts = {};
 
 // Arkham Global Chart Styles
-Chart.defaults.color = '#8A8D93';
+Chart.defaults.color = '#6B7280';
 Chart.defaults.font.family = "'Roboto Mono', monospace";
-Chart.defaults.scale.grid.color = '#1F2226';
+Chart.defaults.scale.grid.color = '#F3F4F6';
 Chart.defaults.scale.grid.borderColor = 'transparent';
 
 let rawData = null;
@@ -1167,9 +1165,9 @@ const ZOOM_OPTS = {
 
 const TOOLTIP_OPTS = {
   mode: 'index', intersect: false,
-  backgroundColor: '#050505',
-  titleColor: '#F8F9FA', bodyColor: '#8A8D93',
-  borderColor: '#1F2226', borderWidth: 1,
+  backgroundColor: '#FFFFFF',
+  titleColor: '#111827', bodyColor: '#4B5563',
+  borderColor: '#E5E7EB', borderWidth: 1,
   padding: 12, cornerRadius: 4,
   titleFont: { size: 12, family: "'Roboto Mono', monospace" },
   bodyFont: { size: 13, family: "'Roboto Mono', monospace" },
@@ -1533,8 +1531,8 @@ function renderTrendCard(token) {
           {
             label: 'Inflow',
             data: inflowData,
-            borderColor: '#00FFA3',
-            backgroundColor: 'rgba(0, 255, 163, 0.1)',
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
             fill: true,
             tension: 0,
             pointRadius: 0,
@@ -1544,8 +1542,8 @@ function renderTrendCard(token) {
           {
             label: 'Outflow',
             data: outflowData,
-            borderColor: '#FF4D4D',
-            backgroundColor: 'rgba(255, 77, 77, 0.1)',
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
             fill: true,
             tension: 0,
             pointRadius: 0,
@@ -1641,8 +1639,8 @@ function renderHeatmapCard(token) {
     const net = data.net_flow || 0;
     const intensity = Math.min(Math.abs(net) / 100000, 1);
     const color = net >= 0
-      ? `rgba(255, 77, 77, ${0.2 + intensity * 0.8})`
-      : `rgba(0, 255, 163, ${0.2 + intensity * 0.8})`;
+      ? `rgba(239, 68, 68, ${0.2 + intensity * 0.8})`
+      : `rgba(16, 185, 129, ${0.2 + intensity * 0.8})`;
 
     html += `
       <div style="
@@ -1730,15 +1728,15 @@ function renderDailyBarCard(token) {
           {
             label: 'Inflow',
             data: inflowData,
-            backgroundColor: '#00FFA3',
-            borderColor: '#00FFA3',
+            backgroundColor: '#10B981',
+            borderColor: '#10B981',
             borderWidth: 1
           },
           {
             label: 'Outflow',
             data: outflowData,
-            backgroundColor: '#FF4D4D',
-            borderColor: '#FF4D4D',
+            backgroundColor: '#EF4444',
+            borderColor: '#EF4444',
             borderWidth: 1
           }
         ]
@@ -1821,9 +1819,9 @@ function renderTgeCard(token) {
   }
 
   const TOKEN_COLORS = {
-    'UAI': '#667eea', 'BIRB': '#10b981', 'AZTEC': '#8b5cf6',
-    'TRIA': '#f59e0b', 'SKR': '#06b6d4', 'GWEI': '#ec4899',
-    'SPACE': '#14b8a6', 'PUMP': '#f97316',
+    'UAI': '#2563EB', 'BIRB': '#10B981', 'AZTEC': '#7C3AED',
+    'TRIA': '#D97706', 'SKR': '#0284C7', 'GWEI': '#DB2777',
+    'SPACE': '#059669', 'PUMP': '#EA580C',
   };
 
   const color = TOKEN_COLORS[token] || '#475569';
@@ -1901,7 +1899,7 @@ function renderSankeyCard(token) {
         source: nodeIndex,
         target: 0,
         value: f.inflow,
-        color: 'rgba(0, 255, 163, 0.4)'
+        color: 'rgba(16, 185, 129, 0.4)'
       });
     }
     if (f.outflow > 0) {
@@ -1909,7 +1907,7 @@ function renderSankeyCard(token) {
         source: 0,
         target: nodeIndex,
         value: f.outflow,
-        color: 'rgba(255, 77, 77, 0.4)'
+        color: 'rgba(239, 68, 68, 0.4)'
       });
     }
     nodeIndex++;
@@ -1930,7 +1928,7 @@ function renderSankeyCard(token) {
       thickness: 20,
       line: { color: 'white', width: 0.5 },
       label: nodes.map(n => n.name),
-      color: nodes.map((n, i) => i === 0 ? '#667eea' : '#8b5cf6')
+      color: nodes.map((n, i) => i === 0 ? '#2563EB' : '#6B7280')
     },
     link: {
       source: links.map(l => l.source),
@@ -2310,8 +2308,8 @@ function renderTokenCards(filteredTokens) {
         data: {
           labels: exchangeNames,
           datasets: [
-            { label: 'Inflow', data: exchangeNames.map(ex => flows[ex].inflow), backgroundColor: '#00FFA3', borderColor: '#00FFA3', borderWidth: 1 },
-            { label: 'Outflow', data: exchangeNames.map(ex => flows[ex].outflow), backgroundColor: '#FF4D4D', borderColor: '#FF4D4D', borderWidth: 1 },
+            { label: 'Inflow', data: exchangeNames.map(ex => flows[ex].inflow), backgroundColor: '#10B981', borderColor: '#10B981', borderWidth: 1 },
+            { label: 'Outflow', data: exchangeNames.map(ex => flows[ex].outflow), backgroundColor: '#EF4444', borderColor: '#EF4444', borderWidth: 1 },
           ]
         },
         options: {
@@ -2392,22 +2390,22 @@ function renderSankeyChart(filteredTokens) {
       const tokenLabel = dep.chain === tdata.deployments[0]?.chain && tdata.deployments.length === 1
         ? token
         : `${token} (${dep.chain})`;
-      const tokenIdx = getNodeIdx(tokenLabel, '#3B82F6');
+      const tokenIdx = getNodeIdx(tokenLabel, '#2563EB');
 
       for (const [exchange, flows] of Object.entries(dep.exchange_flows)) {
-        const exIdx = getNodeIdx(exchange, '#2D3239');
+        const exIdx = getNodeIdx(exchange, '#6B7280');
 
         if (flows.inflow > 0) {
           linkSources.push(tokenIdx);
           linkTargets.push(exIdx);
           linkValues.push(flows.inflow);
-          linkColors.push('rgba(0, 255, 163, 0.35)');
+          linkColors.push('rgba(16, 185, 129, 0.35)');
         }
         if (flows.outflow > 0) {
           linkSources.push(exIdx);
           linkTargets.push(tokenIdx);
           linkValues.push(flows.outflow);
-          linkColors.push('rgba(255, 77, 77, 0.35)');
+          linkColors.push('rgba(239, 68, 68, 0.35)');
         }
       }
     }
@@ -2584,7 +2582,7 @@ class ParticleSystem {
       this.particles.push({
         x, y, targetX, targetY,
         progress: 0,
-        color: Math.random() > 0.5 ? '#3B82F6' : '#00FFA3'
+        color: Math.random() > 0.5 ? '#2563EB' : '#10B981'
       });
     }
 
@@ -2669,9 +2667,9 @@ function renderTrendChart() {
     data: {
       labels,
       datasets: [
-        { label: 'Inflow', data: inflowData, borderColor: '#00FFA3', backgroundColor: 'rgba(0, 255, 163, 0.1)', fill: true, tension: 0, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5 },
-        { label: 'Outflow', data: outflowData, borderColor: '#FF4D4D', backgroundColor: 'rgba(255, 77, 77, 0.1)', fill: true, tension: 0, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5 },
-        { label: 'Net', data: netData, borderColor: '#3B82F6', borderDash: [5, 5], tension: 0, pointRadius: 0, borderWidth: 1.5, fill: false },
+        { label: 'Inflow', data: inflowData, borderColor: '#10B981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5 },
+        { label: 'Outflow', data: outflowData, borderColor: '#EF4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5 },
+        { label: 'Net', data: netData, borderColor: '#2563EB', borderDash: [5, 5], tension: 0, pointRadius: 0, borderWidth: 1.5, fill: false },
       ]
     },
     options: {
@@ -2719,7 +2717,7 @@ function updateSortIndicators(tableEl, sortState) {
 // ── TGE Cumulative Net Flow Chart ────────────────────────────────────
 
 const TOKEN_COLORS = {
-  'UAI':   '#3B82F6', 'BIRB':  '#00FFA3', 'AZTEC': '#7C3AED',
+  'UAI':   '#2563EB', 'BIRB':  '#10B981', 'AZTEC': '#7C3AED',
   'TRIA':  '#D97706', 'SKR':   '#0284C7', 'GWEI':  '#DB2777',
   'SPACE': '#059669', 'PUMP':  '#EA580C',
 };
@@ -3153,8 +3151,8 @@ function renderSchemeA(dates) {
     const intensity = Math.max(0.15, Math.min(Math.abs(net) / 5000000, 1));
     // Diverging color: Red for net inflow (selling pressure), Blue for net outflow (accumulation)
     const color = net >= 0
-      ? `rgba(255, 77, 77, ${intensity})`
-      : `rgba(0, 255, 163, ${intensity})`;
+      ? `rgba(239, 68, 68, ${intensity})`
+      : `rgba(16, 185, 129, ${intensity})`;
 
     html += `<div class="heatmap-cell" style="background:${color}" title="${date}: ${net >= 0 ? '+' : ''}${formatNumber(net)}">
       ${date.slice(8)}
@@ -3184,8 +3182,8 @@ function renderSchemeB(dates) {
     data: {
       labels: dates.map(d => d.slice(2)),
       datasets: [
-        { label: 'Daily Inflow', data: dailyInflows, backgroundColor: '#00FFA3', borderWidth: 1, borderColor: '#00FFA3' },
-        { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: '#FF4D4D', borderWidth: 1, borderColor: '#FF4D4D' }
+        { label: 'Daily Inflow', data: dailyInflows, backgroundColor: '#10B981', borderWidth: 1, borderColor: '#10B981' },
+        { label: 'Daily Outflow', data: dailyOutflows, backgroundColor: '#EF4444', borderWidth: 1, borderColor: '#EF4444' }
       ]
     },
     options: {
