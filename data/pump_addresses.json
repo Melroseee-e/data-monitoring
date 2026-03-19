@@ -1,0 +1,484 @@
+{
+  "metadata": {
+    "created_at": "2026-03-18T00:00:00Z",
+    "last_updated": "2026-03-19T00:00:00Z",
+    "pump_contract": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+    "chain": "solana",
+    "total_supply": 1000000000000,
+    "description": "PUMP token address label database - comprehensive on-chain verified"
+  },
+  "addresses": {
+    "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi": {
+      "label": "Pump.fun Buyback Wallet",
+      "type": "buyback",
+      "verified": true,
+      "source": "Solscan public label + Dune dashboard",
+      "first_seen": "2025-07-16",
+      "notes": "Executes market purchases using platform fees. Reported $310M+ cumulative buyback as of 2026-03. Sends purchased PUMP to G8CcfRff treasury.",
+      "balance": 62.311512,
+      "last_checked": "2026-03-18"
+    },
+    "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm": {
+      "label": "Pump.fun Buyback Treasury (Squads Vault - Coin 2 SOL4)",
+      "type": "treasury",
+      "verified": true,
+      "source": "Dune Analytics + BubbleMaps + Helius RPC",
+      "notes": "Receives all buyback tokens from 3vkpy5YH. Squads multisig. Holds ~104B PUMP accumulated via buybacks (NOT from Token Custodian directly). 60% burn, 40% staking.",
+      "balance": 103962589290,
+      "last_checked": "2026-03-18",
+      "bubblemaps_label": "pump.fun Squads Vault Coin 2 SOL4"
+    },
+    "Cfq1ts1iFr1eUWWBm8eFxUzm5R3YA3UvMZznwiShbgZt": {
+      "label": "Pump.fun Token Custodian (Main Lock)",
+      "type": "token_custodian",
+      "verified": true,
+      "source": "Solscan + Orb Markets + BubbleMaps + Helius RPC",
+      "notes": "MAIN LOCK. Received all 1000B PUMP on 2025-07-10. Distributed 634.54B to all buckets. Currently holds 365.46B (36.5% total supply = Team+Investor+Community remainder). All token unlocks originate from this address. Token account: 7AN6avKCJPMkXkW8kPwMuHmaWvJeHH69e8rKpLf9rdfk",
+      "balance": 365461857223,
+      "last_checked": "2026-03-19",
+      "bubblemaps_label": "pump.fun - Squads Vault",
+      "token_account": "7AN6avKCJPMkXkW8kPwMuHmaWvJeHH69e8rKpLf9rdfk"
+    },
+    "8UhbNoBXmGoxJr2TeWW8wmSMoWmjS2rTT2tVJxzuTogC": {
+      "label": "Pump.fun Community/Ecosystem Reserve (Squads Vault - Coin 2 SOL5)",
+      "type": "treasury",
+      "verified": true,
+      "source": "BubbleMaps + Helius RPC - on-chain confirmed",
+      "notes": "Received 80B PUMP from Token Custodian on 2025-07-14. Still holds 80B (fully intact). Likely Community & Ecosystem reserve fund. pump_fun entity in BubbleMaps.",
+      "balance": 80000000000,
+      "received_from_custodian": 80000000000,
+      "received_date": "2025-07-14",
+      "last_checked": "2026-03-19",
+      "bubblemaps_label": "pump.fun Squads Vault Coin 2 SOL5"
+    },
+    "AvqFxKNrYZNvxsj2oWhLW8det68HzCXBqswshoD2TdT6": {
+      "label": "Pump.fun Operational Vault (Squads Vault - Token Hot SOL3)",
+      "type": "treasury",
+      "verified": true,
+      "source": "BubbleMaps - on-chain confirmed",
+      "notes": "Received 24B PUMP from Token Custodian on 2025-07-14. Still holds 24B (fully intact). pump_fun entity. Likely operational/hot wallet for protocol use.",
+      "balance": 24000000000,
+      "received_from_custodian": 24000000000,
+      "received_date": "2025-07-14",
+      "last_checked": "2026-03-19",
+      "bubblemaps_label": "pump.fun Squads Vault Token Hot SOL3"
+    },
+    "2WHL4XiNGKW9NgSwsJeG7WG2kD35Bi44rZoLrXHEz3dw": {
+      "label": "Pump.fun Operational Wallet (unlabeled)",
+      "type": "treasury",
+      "verified": true,
+      "source": "Helius RPC on-chain - in BubbleMaps Top500",
+      "notes": "Received 10B PUMP from Token Custodian on 2025-07-14. Still holds 10B (fully intact). No BubbleMaps label but in Top500. Likely ecosystem/operational allocation.",
+      "balance": 10000000000,
+      "received_from_custodian": 10000000000,
+      "received_date": "2025-07-14",
+      "last_checked": "2026-03-19"
+    },
+    "77DsB9kw8u8eKesicT44hGirsj5A2SicGdFPQZZEzPXe": {
+      "label": "Pump.fun Team Wallet #1 (CONFIRMED)",
+      "type": "team",
+      "verified": true,
+      "source": "Token Custodian TX trace + Onchain Lens + Lookonchain + CryptoRank",
+      "first_seen": "2025-07-14",
+      "notes": "FULL ADDRESS CONFIRMED. Received 3.75B PUMP from Token Custodian on 2025-07-14. Held ~7 months. Then FULLY LIQUIDATED Feb 16-21, 2026 (100% sell rate, balance now 0). 6-day sale: 0.942B to Wintermute OTC, 2.261B via DEX swaps, 0.547B to unknown wallets.",
+      "balance": 0,
+      "received_from_custodian": 3750000000,
+      "received_date": "2025-07-14",
+      "selling_activity": [
+        {
+          "date": "2026-02-16",
+          "amount": 543300000,
+          "method": "Wintermute+DEX"
+        },
+        {
+          "date": "2026-02-17",
+          "amount": 329100000,
+          "method": "Wintermute+DEX"
+        },
+        {
+          "date": "2026-02-18",
+          "amount": 1201100000,
+          "method": "Wintermute+DEX"
+        },
+        {
+          "date": "2026-02-19",
+          "amount": 731800000,
+          "method": "Wintermute+DEX"
+        },
+        {
+          "date": "2026-02-20",
+          "amount": 571200000,
+          "method": "Wintermute+DEX"
+        },
+        {
+          "date": "2026-02-21",
+          "amount": 373500000,
+          "method": "Wintermute+DEX"
+        }
+      ],
+      "sell_breakdown": {
+        "wintermute_otc_B": 0.942,
+        "dex_swaps_B": 2.261,
+        "other_wallets_B": 0.547
+      },
+      "last_checked": "2026-03-19"
+    },
+    "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN": {
+      "label": "PUMP Investor Wallet #1 (CONFIRMED)",
+      "type": "investor",
+      "verified": true,
+      "source": "CryptoAdventure + BitcoinWorld + Binance Square + Token Custodian TX trace",
+      "first_seen": "2025-07-14",
+      "notes": "Received 20B PUMP from Token Custodian on 2025-07-14. Deposited 11.2B PUMP ($21.22M) to Kraken on 2026-02-26. Estimated ~8.8B remaining.",
+      "received_from_custodian": 20000000000,
+      "received_date": "2025-07-14",
+      "major_transfers": [
+        {
+          "date": "2026-02-26",
+          "amount": 11200000000,
+          "value_usd": 21220000,
+          "destination": "Kraken"
+        }
+      ]
+    },
+    "8UHpWBnhYNeAQURWjAABp8vSrzfYa69o7sfi65vYLC42": {
+      "label": "PUMP Official Allocation Multisig #2 (CONFIRMED - 20B allocation 2025-07-14)",
+      "type": "official_allocation",
+      "verified": true,
+      "source": "Token Custodian TX trace + Solscan (isOnCurve=False, Multisig=True)",
+      "notes": "CONFIRMED official allocation. Received exactly 20B PUMP from Token Custodian (Cfq1ts1...) on 2025-07-14 \u2014 same batch as Team Wallet #1 (77DsB9kw, 3.75B) and Investor Wallet #1 (9Ucygiam, 20B). Multisig wallet (isOnCurve=False, Squads-style). CONFIRMED: 0.869B distributed as staking/ecosystem rewards (NOT CEX selling). Flow: Multisig \u2192 7Qao1Sqh1mdKVKskFTuQe7ivy4f7Q3rrwzE4QrzMDJKV (0.796B) \u2192 HaYTWK3nQuHuGrydBR4Gkc8tRzqDQ7swq8Fnf45DppQi (rewards hub, distributed to ~80+ wallets in 0.001-0.033B micro-amounts Oct-Nov 2025). Also \u2192 8S3BjPnAygsmbGnxpLUNympLoeEnRJhyqHkpuxY6aMdC (rolling monthly micro-distributions to multiple wallets). Zero CEX deposits. Likely Foundation or Community Ecosystem rewards allocation.",
+      "balance": 19131000000,
+      "received_from_custodian": 20000000000,
+      "received_date": "2025-07-14",
+      "last_checked": "2026-03-19",
+      "distribution_investigation": {
+        "investigated_date": "2026-03-19",
+        "intermediate_wallet_1": "7Qao1Sqh1mdKVKskFTuQe7ivy4f7Q3rrwzE4QrzMDJKV",
+        "intermediate_wallet_2": "8S3BjPnAygsmbGnxpLUNympLoeEnRJhyqHkpuxY6aMdC",
+        "rewards_hub": "HaYTWK3nQuHuGrydBR4Gkc8tRzqDQ7swq8Fnf45DppQi",
+        "final_recipients": "~80+ small wallets, 0.001-0.033B each",
+        "cex_deposits": "NONE",
+        "conclusion": "STAKING/ECOSYSTEM REWARDS DISTRIBUTION"
+      }
+    },
+    "9pkFKCR1mdS31JxjKdtmWg2awZUg6vJUYVY722DAcXzv": {
+      "label": "PUMP Team/Investor Squads Vault #1 (LOCKED)",
+      "type": "vesting",
+      "verified": true,
+      "source": "BubbleMaps Top500 + Token Custodian TX trace",
+      "notes": "Received 35B PUMP from Token Custodian on 2025-07-14. Still holds 35B (100% locked). Squads Vault. No PUMP outflows detected. Likely Team allocation awaiting Jul 2026 cliff. Token account: GGNKqK95ZFFyKem9Gqx7uvc7De4cBTjxYMJYssHWVaAM",
+      "balance": 35000000000,
+      "received_from_custodian": 35000000000,
+      "received_date": "2025-07-14",
+      "bubblemaps_label": "Squads Vault",
+      "last_checked": "2026-03-19"
+    },
+    "BBvQteuawKB2UtExfevL8HYLjWWsgmWXsp922vFbvCfT": {
+      "label": "PUMP Team/Investor Squads Vault #2 (LOCKED)",
+      "type": "vesting",
+      "verified": true,
+      "source": "BubbleMaps Top500 + Token Custodian TX trace",
+      "notes": "Received 25B PUMP from Token Custodian on 2025-07-14. Still holds 25B (100% locked). Squads Vault. No PUMP outflows detected. Token account: FapAcxVZBeeyQYMH5uyFmWM8i9HKvAfPqYAe2yYmAQao",
+      "balance": 25000000000,
+      "received_from_custodian": 25000000000,
+      "received_date": "2025-07-14",
+      "bubblemaps_label": "Squads Vault",
+      "last_checked": "2026-03-19"
+    },
+    "GTeSSwovPiVirpvWJpThUWiLDSLsuApmJw621Yom3MhB": {
+      "label": "PUMP Team/Investor Squads Vault #3 SOLANA 3 (LOCKED)",
+      "type": "vesting",
+      "verified": true,
+      "source": "BubbleMaps Top500 + Token Custodian TX trace",
+      "notes": "Received 25B PUMP from Token Custodian on 2025-07-14. Still holds 25B (100% locked). BubbleMaps label: 'Squads Vault SOLANA 3'. No PUMP outflows detected. Token account: HXVBCbgfPaUaQguWtdxQ3MSDF61oW22P1F7gKceWcZYv",
+      "balance": 25000000000,
+      "received_from_custodian": 25000000000,
+      "received_date": "2025-07-14",
+      "bubblemaps_label": "Squads Vault SOLANA 3",
+      "last_checked": "2026-03-19"
+    },
+    "GhFaBi8sy3M5mgG97YguQ6J3f7XH4JwV5CoW8MbzRgAU": {
+      "label": "PUMP Team/Investor Squads Vault #4 MF III (PARTIAL)",
+      "type": "vesting",
+      "verified": true,
+      "source": "BubbleMaps Top500 + Token Custodian TX trace",
+      "notes": "Received 18.75B PUMP from Token Custodian on 2025-07-14. Currently holds 15.63B (3.12B distributed). BubbleMaps label: 'Squads Vault MF III'. Some monthly linear releases ongoing. Token account: AxdaGT5QdFJzcwh7GcxhSbdpKJmpH9dw1LvmM6A8cQv8",
+      "balance": 15630000000,
+      "received_from_custodian": 18750000000,
+      "received_date": "2025-07-14",
+      "distributed": 3120000000,
+      "bubblemaps_label": "Squads Vault MF III",
+      "last_checked": "2026-03-19"
+    },
+    "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE": {
+      "label": "PUMP Team/Investor Squads Vault #5 Wallet A (ACTIVE SELLING)",
+      "type": "vesting",
+      "verified": true,
+      "source": "BubbleMaps Top500 + Token Custodian TX trace + on-chain outflow trace",
+      "notes": "Received 18.75B PUMP from Token Custodian on 2025-07-14. Currently holds 6.89B (11.86B distributed). BubbleMaps label: 'Squads Vault Wallet A'. CONFIRMED: ALL March 2026 distributions went to Bitget: 1.758B (Mar-06), 2.461B (Mar-10), 2.953B (Mar-13+16). Total 7.172B sent to Bitget in March 2026. This CONFIRMS the news report of 'team wallet deposited 1.757B PUMP to Bitget on 2026-03-05'. Pattern: Vault #5 sends to pass-through wallet -> pass-through immediately sends to Bitget (same day). Bitget address: A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR.",
+      "balance": 6890000000,
+      "received_from_custodian": 18750000000,
+      "received_date": "2025-07-14",
+      "distributed": 11860000000,
+      "bitget_deposits_march_2026": {
+        "total_B": 7.172,
+        "events": [
+          {
+            "date": "2026-03-06",
+            "amount_B": 1.758,
+            "destination": "Bitget"
+          },
+          {
+            "date": "2026-03-10",
+            "amount_B": 2.461,
+            "destination": "Bitget"
+          },
+          {
+            "date": "2026-03-13",
+            "amount_B": 1.5,
+            "destination": "Bitget"
+          },
+          {
+            "date": "2026-03-16",
+            "amount_B": 1.453,
+            "destination": "Bitget"
+          }
+        ]
+      },
+      "bubblemaps_label": "Squads Vault Wallet A",
+      "last_checked": "2026-03-19"
+    },
+    "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS": {
+      "label": "PUMP Investor/Strategic Wallet Aug21 #1 (LOCKED - 30B)",
+      "type": "vesting",
+      "verified": true,
+      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
+      "notes": "Received 30B PUMP from Token Custodian on 2025-08-21 (~40 days post-TGE). ZERO PUMP outflows ever. Still holds 30B (100%). Active in Feb 2026 (SOL transfers only - shared activity pattern with 96HiV4cG and ERRGqu3d). Likely strategic investor pre-positioning before Jul 2026 cliff. In BubbleMaps Top500 with no label.",
+      "balance": 30000000000,
+      "received_from_custodian": 30000000000,
+      "received_date": "2025-08-21",
+      "last_checked": "2026-03-19"
+    },
+    "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9": {
+      "label": "PUMP Investor/Strategic Wallet Aug21 #2 (LOCKED - 23B)",
+      "type": "vesting",
+      "verified": true,
+      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
+      "notes": "Received 23B PUMP from Token Custodian on 2025-08-21. ZERO PUMP outflows ever. Still holds 23B (100%). Shares activity pattern with 85WTujfJ and ERRGqu3d (same SOL senders in Feb 2026 - likely same entity managing all three). In BubbleMaps Top500 with no label.",
+      "balance": 23000000000,
+      "received_from_custodian": 23000000000,
+      "received_date": "2025-08-21",
+      "last_checked": "2026-03-19"
+    },
+    "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa": {
+      "label": "PUMP Investor/Strategic Wallet Aug21 #3 (LOCKED - 17B)",
+      "type": "vesting",
+      "verified": true,
+      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
+      "notes": "Received 17B PUMP from Token Custodian on 2025-08-21. ZERO PUMP outflows ever. Still holds 17B (100%). Shares activity pattern with 85WTujfJ and 96HiV4cG. Likely same entity/group managing all three Aug21 wallets (70B total). In BubbleMaps Top500 with no label.",
+      "balance": 17000000000,
+      "received_from_custodian": 17000000000,
+      "received_date": "2025-08-21",
+      "last_checked": "2026-03-19"
+    },
+    "5D95TQGUmg71zrM7CJZiTYBVCPxrjCrrahEHegEPL2oj": {
+      "label": "PUMP ICO Distribution Contract (PDA - Defunct)",
+      "type": "ico_distribution",
+      "verified": true,
+      "source": "Helius RPC on-chain - Token Custodian TX trace",
+      "notes": "PDA (isOnCurve=False) - Program Derived Address, not a wallet. Received 112.125B PUMP from Token Custodian on 2025-07-12 (TGE day). Executed ~2000 distribution TXs to on-chain ICO buyers. Now holds ~$51 (essentially empty). This is the on-chain ICO settlement contract.",
+      "balance": 0,
+      "received_from_custodian": 112125000000,
+      "received_date": "2025-07-12",
+      "is_pda": true,
+      "last_checked": "2026-03-19"
+    },
+    "9SLPTL41SPsYkgdsMzdfJsxymEANKr5bYoBsQzJyKpKS": {
+      "label": "Hyperunit: Hot Wallet",
+      "type": "whale",
+      "verified": true,
+      "source": "Solscan public label",
+      "balance": 10539000000,
+      "notes": "DeFi protocol hot wallet (Hyperunit). Publicly labeled on Solscan. Holds 10.5B PUMP + 299K SOL (M) + 108M Fartcoin. Very active (1000+ txs/3 days). Likely market maker or liquidity provider holding PUMP inventory. Minimal PUMP outflow (4.82% sell rate)."
+    },
+    "4GZwzZgqSwwTTRVgBoxTDeH3EwDye84dCPb9fALAZFjF": {
+      "label": "Coinbase-Connected PUMP Holder",
+      "type": "whale",
+      "verified": false,
+      "source": "Solscan: funded by Coinbase Hot Wallet 4",
+      "balance": 7189000000,
+      "notes": "Received PUMP in Jan 2026 from multiple transfers from Coinbase Hot Wallet 4. Holds 7.189B PUMP. Zero outflows \u2014 pure holder. Also held some Bubblegum NFTs. Likely Coinbase institutional custody account or whale who acquired via Coinbase OTC."
+    }
+  },
+  "address_groups": {
+    "buyback": [
+      "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi"
+    ],
+    "treasury": [
+      "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm",
+      "Cfq1ts1iFr1eUWWBm8eFxUzm5R3YA3UvMZznwiShbgZt",
+      "8UhbNoBXmGoxJr2TeWW8wmSMoWmjS2rTT2tVJxzuTogC",
+      "AvqFxKNrYZNvxsj2oWhLW8det68HzCXBqswshoD2TdT6",
+      "2WHL4XiNGKW9NgSwsJeG7WG2kD35Bi44rZoLrXHEz3dw"
+    ],
+    "team": [
+      "77DsB9kw8u8eKesicT44hGirsj5A2SicGdFPQZZEzPXe"
+    ],
+    "investor": [
+      "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN",
+      "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS",
+      "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9",
+      "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa"
+    ],
+    "vesting": [
+      "9pkFKCR1mdS31JxjKdtmWg2awZUg6vJUYVY722DAcXzv",
+      "BBvQteuawKB2UtExfevL8HYLjWWsgmWXsp922vFbvCfT",
+      "GTeSSwovPiVirpvWJpThUWiLDSLsuApmJw621Yom3MhB",
+      "GhFaBi8sy3M5mgG97YguQ6J3f7XH4JwV5CoW8MbzRgAU",
+      "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE",
+      "8UHpWBnhYNeAQURWjAABp8vSrzfYa69o7sfi65vYLC42"
+    ],
+    "ico_distribution": [
+      "5D95TQGUmg71zrM7CJZiTYBVCPxrjCrrahEHegEPL2oj"
+    ],
+    "exchanges": []
+  },
+  "supply_accounting": {
+    "as_of": "2026-03-19",
+    "total_supply": 1000000000000,
+    "token_custodian_balance": 365460000000,
+    "reported_circulating": 634540000000,
+    "hard_locked_sub_vaults": {
+      "team_squads_vaults_5x": 107520000000,
+      "aug21_investor_trio": 70000000000,
+      "official_multisig_2": 19130000000,
+      "subtotal": 196650000000
+    },
+    "pump_fun_operational": {
+      "community_reserve_8UhbNoBX": 80000000000,
+      "token_hot_sol3_AvqFxKNr": 24000000000,
+      "other_2WHL4XiN": 10000000000,
+      "buyback_treasury_G8CcfRff": 103962000000,
+      "subtotal": 217962000000
+    },
+    "true_free_float_estimate": 220000000000,
+    "notes": "Reported circulating = total_supply - token_custodian. True free float excludes all hard-locked sub-vaults and operational vaults."
+  },
+  "tokenomics_alignment": {
+    "as_of": "2026-03-19",
+    "months_post_tge": 8,
+    "expected_custodian_balance": 410000000000,
+    "actual_custodian_balance": 365460000000,
+    "gap_explanation": "44.54B pre-positioned to sub-vaults (team Squads vaults + Aug21 investor trio) but not yet freely circulating",
+    "buckets": {
+      "ICO_330B": {
+        "official": 330000000000,
+        "identified_onchain": "PDA(112.1B) + direct large wallets(~180B) + small ICO buyers(~38B)",
+        "status": "FULLY_DISTRIBUTED",
+        "match": true
+      },
+      "Team_200B": {
+        "official": 200000000000,
+        "in_squads_vaults_received": 122500000000,
+        "confirmed_team_wallet": 3750000000,
+        "still_in_custodian_estimate": 74000000000,
+        "match": "PARTIAL - ~126B identified, ~74B still in Custodian"
+      },
+      "Investor_130B": {
+        "official": 130000000000,
+        "confirmed_investor_9Ucygiam": 20000000000,
+        "probable_aug21_trio": 70000000000,
+        "still_in_custodian_estimate": 40000000000,
+        "match": "PARTIAL - ~90B identified, ~40B still in Custodian"
+      },
+      "Community_240B": {
+        "official": 240000000000,
+        "tge_release": 120000000000,
+        "monthly_linear_8mo": 40000000000,
+        "community_reserve_vaults": 114000000000,
+        "match": "ALIGNED - 8UhbNoBX(80B)+AvqFxKNr(24B)+2WHL4XiN(10B)=114B as reserve"
+      },
+      "Other_100B": {
+        "official": 100000000000,
+        "status": "DISTRIBUTED at TGE (Live Streaming 30B + Liquidity 26B + Ecosystem 24B + Foundation 20B)",
+        "match": true
+      }
+    }
+  },
+  "news_reported_events": [
+    {
+      "date": "2026-03-06",
+      "event": "Squads Vault #5 deposited to Bitget (tranche 1 of 4)",
+      "amount": 1758000000,
+      "value_usd": 3540000,
+      "exchange": "Bitget",
+      "wallet": "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE",
+      "via_passthrough": "3VfiFskwmVe58FypFL5ZEVe6CL4fkogsdxVJmpz4ZeEN",
+      "bitget_address": "A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR",
+      "verified": true,
+      "notes": "CONFIRMED on-chain. News reported date 2026-03-05 (likely UTC-4 timezone). Originates from Squads Vault #5 (Wallet A), not a personal team wallet."
+    },
+    {
+      "date": "2026-03-10",
+      "event": "Squads Vault #5 deposited to Bitget (tranche 2 of 4)",
+      "amount": 2461000000,
+      "value_usd": null,
+      "exchange": "Bitget",
+      "wallet": "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE",
+      "via_passthrough": "HJoMZJ14TpXThzuiMJxLhVSZeUQCTkUmQJbgY6zWGqVW",
+      "bitget_address": "A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR",
+      "verified": true,
+      "notes": "CONFIRMED on-chain. Part of ongoing Vault #5 -> Bitget distribution pattern."
+    },
+    {
+      "date": "2026-03-13",
+      "event": "Squads Vault #5 deposited to Bitget (tranche 3 of 4)",
+      "amount": 1500000000,
+      "value_usd": null,
+      "exchange": "Bitget",
+      "wallet": "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE",
+      "via_passthrough": "7EMWYeNJfdLuQZ64YNJptKpjGBYjn2NBvHfXUcmvJjML",
+      "bitget_address": "A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR",
+      "verified": true,
+      "notes": "CONFIRMED on-chain."
+    },
+    {
+      "date": "2026-03-16",
+      "event": "Squads Vault #5 deposited to Bitget (tranche 4 of 4)",
+      "amount": 1453000000,
+      "value_usd": null,
+      "exchange": "Bitget",
+      "wallet": "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE",
+      "via_passthrough": "7EMWYeNJfdLuQZ64YNJptKpjGBYjn2NBvHfXUcmvJjML",
+      "bitget_address": "A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR",
+      "verified": true,
+      "notes": "CONFIRMED on-chain. Same pass-through as tranche 3 (split delivery from single Squads tx)."
+    },
+    {
+      "date": "2026-02-26",
+      "event": "Investor wallet deposited to Kraken",
+      "amount": 11200000000,
+      "value_usd": 21200000,
+      "exchange": "Kraken",
+      "wallet": "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN",
+      "verified": true,
+      "sources": [
+        "https://cryptoadventure.com/pump-fun-linked-wallet-sends-11-2b-pump-to-kraken-as-vesting-talk-spreads/",
+        "https://bitcoinworld.co.in/pump-token-kraken-deposit-analysis/"
+      ]
+    },
+    {
+      "date": "2026-02-17-21",
+      "event": "Team wallet 77DsB9kw sold PUMP (3 events)",
+      "amount": 3376000000,
+      "value_usd": 7230000,
+      "wallet": "77DsB9kw8u8eKesicT44hGirsj5A2SicGdFPQZZEzPXe",
+      "verified": true,
+      "sources": [
+        "Lookonchain",
+        "Onchain Lens",
+        "CryptoRank"
+      ]
+    }
+  ]
+}
