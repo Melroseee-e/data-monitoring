@@ -67,8 +67,8 @@
       "owner": "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS",
       "token_account": "aBL2UafVZeTDHBa5Y74z2dpBSUMHckkBEhuQLzxda7s",
       "balance_B": 29.9999,
-      "category": "official",
-      "label": "Aug21 Investor #1"
+      "category": "insider",
+      "label": "Aug21 Insider #1 (Co-founder Cluster, LOCKED)"
     },
     {
       "rank": 7,
@@ -99,8 +99,8 @@
       "owner": "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9",
       "token_account": "HKmnRgxMUHwpHqzVKPzF5SyrerioM2tYnBnSFDb7iESV",
       "balance_B": 23.0,
-      "category": "official",
-      "label": "Aug21 Investor #2"
+      "category": "insider",
+      "label": "Aug21 Insider #2 (Co-founder Cluster, LOCKED)"
     },
     {
       "rank": 11,
@@ -115,8 +115,8 @@
       "owner": "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa",
       "token_account": "A474GPKH2fYYWMpJrv4ZsTw2AsRa2UkyMv6MvDW14GG7",
       "balance_B": 17.0,
-      "category": "official",
-      "label": "Aug21 Investor #3"
+      "category": "insider",
+      "label": "Aug21 Insider #3 (Co-founder Cluster, LOCKED)"
     },
     {
       "rank": 13,
@@ -234,7 +234,7 @@
       "activity": "DISTRIBUTING",
       "received_from_custodian": true,
       "received_date": "2025-07-14",
-      "notes": "Received exactly 20B PUMP from Token Custodian (Cfq1ts1...) on 2025-07-14 — same batch as Team Wallet #1 and Investor Wallet #1. Multisig wallet (isOnCurve=False, Squads-style). CONFIRMED: 0.869B distributed as staking/ecosystem rewards — NOT selling. Flow: Multisig → 7Qao1Sqh1 (0.796B) → HaYTWK3n (rewards hub, 826 txs) → distributed to ~80+ small wallets in 0.001-0.033B amounts (Oct-Nov 2025). Also → 8S3BjPnAy (0.073B + additional from 7Qao1Sqh1) → rolling monthly micro-distributions to multiple wallets. Zero CEX deposits confirmed. Likely Foundation or Community Ecosystem rewards allocation."
+      "notes": "Received exactly 20B PUMP from Token Custodian (Cfq1ts1...) on 2025-07-14 \u2014 same batch as Team Wallet #1 and Investor Wallet #1. Multisig wallet (isOnCurve=False, Squads-style). CONFIRMED: 0.869B distributed as staking/ecosystem rewards \u2014 NOT selling. Flow: Multisig \u2192 7Qao1Sqh1 (0.796B) \u2192 HaYTWK3n (rewards hub, 826 txs) \u2192 distributed to ~80+ small wallets in 0.001-0.033B amounts (Oct-Nov 2025). Also \u2192 8S3BjPnAy (0.073B + additional from 7Qao1Sqh1) \u2192 rolling monthly micro-distributions to multiple wallets. Zero CEX deposits confirmed. Likely Foundation or Community Ecosystem rewards allocation."
     },
     "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN": {
       "label": "Investor Wallet #1 (Squads/Kraken)",
@@ -250,34 +250,40 @@
       "category": "investor"
     },
     "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS": {
-      "label": "Aug21 Investor #1 (LOCKED)",
+      "label": "Aug21 Insider #1 (Co-founder Cluster, LOCKED)",
       "balance_B": 30.0,
       "current_balance_B": 30.0,
       "total_pump_out_B": 0.0,
       "to_cex_B": 0.0,
       "sell_rate_pct": 0.0,
       "activity": "HOLDING",
-      "category": "investor"
+      "category": "insider",
+      "cluster_funder": "3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i",
+      "cluster_attribution": "@a1lon9 (Alon, Pump.fun co-founder) - community research"
     },
     "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9": {
-      "label": "Aug21 Investor #2 (LOCKED)",
+      "label": "Aug21 Insider #2 (Co-founder Cluster, LOCKED)",
       "balance_B": 23.0,
       "current_balance_B": 23.0,
       "total_pump_out_B": 0.0,
       "to_cex_B": 0.0,
       "sell_rate_pct": 0.0,
       "activity": "HOLDING",
-      "category": "investor"
+      "category": "insider",
+      "cluster_funder": "3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i",
+      "cluster_attribution": "@a1lon9 (Alon, Pump.fun co-founder) - community research"
     },
     "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa": {
-      "label": "Aug21 Investor #3 (LOCKED)",
+      "label": "Aug21 Insider #3 (Co-founder Cluster, LOCKED)",
       "balance_B": 17.0,
       "current_balance_B": 17.0,
       "total_pump_out_B": 0.0,
       "to_cex_B": 0.0,
       "sell_rate_pct": 0.0,
       "activity": "HOLDING",
-      "category": "investor"
+      "category": "insider",
+      "cluster_funder": "3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i",
+      "cluster_attribution": "@a1lon9 (Alon, Pump.fun co-founder) - community research"
     }
   }
 }

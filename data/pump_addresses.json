@@ -277,37 +277,46 @@
       }
     },
     "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS": {
-      "label": "PUMP Investor/Strategic Wallet Aug21 #1 (LOCKED - 30B)",
-      "type": "vesting",
+      "label": "PUMP Insider/Co-founder Cluster Aug21 #1 (LOCKED - 30B)",
+      "type": "insider",
       "verified": true,
-      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
-      "notes": "Received 30B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. Still holding full balance. Likely ICO or early round investor with specific distribution date.",
+      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500 + community research",
+      "notes": "Received 30B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. All three Aug21 wallets (#1, #2, #3) funded by same funder wallet 3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i, linked by community research to @a1lon9 (Alon, Pump.fun co-founder). Combined cluster: 70B PUMP (7% total supply, ~$137.6M). Classification: Insider/co-founder allocation, NOT external ICO investors.",
       "balance": 30000000000,
       "received_from_custodian": 30000000000,
       "received_date": "2025-08-21",
-      "last_checked": "2026-03-19"
+      "last_checked": "2026-03-19",
+      "cluster_funder": "3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i",
+      "cluster_attribution": "@a1lon9 (Alon, Pump.fun co-founder) - community research",
+      "cluster_total_B": 70
     },
     "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9": {
-      "label": "PUMP Investor/Strategic Wallet Aug21 #2 (LOCKED - 23B)",
-      "type": "vesting",
+      "label": "PUMP Insider/Co-founder Cluster Aug21 #2 (LOCKED - 23B)",
+      "type": "insider",
       "verified": true,
-      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
-      "notes": "Received 23B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. Still holding full balance. Likely ICO or early round investor with specific distribution date.",
+      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500 + community research",
+      "notes": "Received 23B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. All three Aug21 wallets (#1, #2, #3) funded by same funder wallet 3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i, linked by community research to @a1lon9 (Alon, Pump.fun co-founder). Combined cluster: 70B PUMP (7% total supply, ~$137.6M). Classification: Insider/co-founder allocation, NOT external ICO investors.",
       "balance": 23000000000,
       "received_from_custodian": 23000000000,
       "received_date": "2025-08-21",
-      "last_checked": "2026-03-19"
+      "last_checked": "2026-03-19",
+      "cluster_funder": "3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i",
+      "cluster_attribution": "@a1lon9 (Alon, Pump.fun co-founder) - community research",
+      "cluster_total_B": 70
     },
     "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa": {
-      "label": "PUMP Investor/Strategic Wallet Aug21 #3 (LOCKED - 17B)",
-      "type": "vesting",
+      "label": "PUMP Insider/Co-founder Cluster Aug21 #3 (LOCKED - 17B)",
+      "type": "insider",
       "verified": true,
-      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
-      "notes": "Received 17B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. Still holding full balance. Likely ICO or early round investor with specific distribution date.",
+      "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500 + community research",
+      "notes": "Received 17B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. All three Aug21 wallets (#1, #2, #3) funded by same funder wallet 3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i, linked by community research to @a1lon9 (Alon, Pump.fun co-founder). Combined cluster: 70B PUMP (7% total supply, ~$137.6M). Classification: Insider/co-founder allocation, NOT external ICO investors.",
       "balance": 17000000000,
       "received_from_custodian": 17000000000,
       "received_date": "2025-08-21",
-      "last_checked": "2026-03-19"
+      "last_checked": "2026-03-19",
+      "cluster_funder": "3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i",
+      "cluster_attribution": "@a1lon9 (Alon, Pump.fun co-founder) - community research",
+      "cluster_total_B": 70
     },
     "5D95TQGUmg71zrM7CJZiTYBVCPxrjCrrahEHegEPL2oj": {
       "label": "PUMP ICO Distribution Contract (PDA - Defunct)",
@@ -353,10 +362,7 @@
       "77DsB9kw8u8eKesicT44hGirsj5A2SicGdFPQZZEzPXe"
     ],
     "investor": [
-      "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN",
-      "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS",
-      "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9",
-      "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa"
+      "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN"
     ],
     "vesting": [
       "9pkFKCR1mdS31JxjKdtmWg2awZUg6vJUYVY722DAcXzv",
@@ -369,7 +375,12 @@
     "ico_distribution": [
       "5D95TQGUmg71zrM7CJZiTYBVCPxrjCrrahEHegEPL2oj"
     ],
-    "exchanges": []
+    "exchanges": [],
+    "insider": [
+      "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS",
+      "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9",
+      "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa"
+    ]
   },
   "supply_accounting": {
     "as_of": "2026-03-19",
@@ -380,7 +391,8 @@
       "team_squads_vaults_5x": 107520000000,
       "aug21_investor_trio": 70000000000,
       "official_multisig_2": 19130000000,
-      "subtotal": 196650000000
+      "subtotal": 196650000000,
+      "aug21_insider_trio_note": "Reclassified from 'investor' to 'insider' - all funded by same funder linked to @a1lon9 (Pump.fun co-founder)"
     },
     "pump_fun_operational": {
       "community_reserve_8UhbNoBX": 80000000000,

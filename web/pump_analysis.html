@@ -496,7 +496,8 @@ tbody tr:hover { background: rgba(255,255,255,0.03); }
         • <b>Vault #5 (5v7ZZg1D):</b> 18.75B received 2025-07-14. Sent <b>11.859B → Bitget in total</b>: 4.6875B (Sep 2025) + 7.172B (Mar 2026 via 4 tranches). Only 6.89B remaining.<br>
         • <b>Vault #4 (GhFaBi8s):</b> 18.75B received 2025-07-14. Sent <b>3.125B → OKX on 2025-10-06</b> (2×1.5625B via pass-through). 15.625B remaining.<br>
         • Vaults #1, #2, #3 (9pkFKCR1, BBvQteua, GTeSSwov): FULLY LOCKED — zero outflows confirmed.<br>
-        All distributions via Squads V4 execution: Vault → fresh pass-through wallet → CEX hot wallet (same-day).
+        • <b style="color:#FFB800">⚠ Aug21 Trio Reclassified:</b> Wallets 85WTujf (30B), 96HiV4c (23B), ERRGqu3 (17B) — <b>all funded by same wallet 3cBqg6k7g</b> linked by community research to <b>@a1lon9 (Alon, Pump.fun co-founder)</b>. Combined: 70B PUMP (7% supply). These are insider/co-founder holdings, NOT external investors.<br>
+        All vault distributions via Squads V4 execution: Vault → fresh pass-through wallet → CEX hot wallet (same-day).
       </div>
     </div>
   </section>
@@ -805,7 +806,7 @@ function renderTeamWallets(teamData, addresses) {
 
   document.getElementById('wallet-cards').innerHTML = [
     { label: 'Total Tracked Wallets', value: wallets.length.toString(), sub: 'Team + investor (confirmed on-chain)' },
-    { label: 'Total Currently Held', value: fmtB(totalHeld), sub: 'Aug21 trio (70B) fully intact' },
+    { label: 'Total Currently Held', value: fmtB(totalHeld), sub: 'Aug21 insider trio (70B) fully intact' },
     { label: 'Total Sent to CEX/OTC', value: fmtB(totalSent), sub: 'Team: Wintermute+DEX · Investor: Kraken' },
     { label: 'Team Wallet Status', value: '0B', sub: '77DsB9kw — FULLY LIQUIDATED Feb 16-21, 2026' },
   ].map(c => `
@@ -885,7 +886,7 @@ function renderVesting(addresses) {
   const lockedItems = [
     { wallet: 'Token Custodian (Cfq1ts1i)', balance: '365.46B', unlock: 'Jul 2026 + linear', type: 'MAIN LOCK' },
     { wallet: '5 Team Squads Vaults', balance: '107.52B (orig 122.5B)', unlock: 'Jul 2026 cliff — ⚠ V4+V5 already selling', type: 'Team/Investor' },
-    { wallet: 'Aug 21 Investor Trio', balance: '70.00B', unlock: '🔒 Locked (received 2025-08-21)', type: 'Investor' },
+    { wallet: 'Aug 21 Insider Trio (⚠ Co-founder cluster)', balance: '70.00B', unlock: '🔒 Locked — @a1lon9 linked funder', type: 'Insider' },
     { wallet: 'Team Wallet #1 (77DsB9kw)', balance: '0B (fully distributed Feb 2026)', unlock: '✅ 3.75B → Grants/Market Making (Feb 2026)', type: 'Official' },
     { wallet: '8UHpWBnh (Official Multisig #2)', balance: '19.13B', unlock: '✅ 0.87B → Staking Rewards (Oct 2025)', type: 'Official' },
     { wallet: 'Community Reserve (8UhbNoBX)', balance: '80.00B', unlock: 'Protocol use', type: 'Operational' },
@@ -934,7 +935,7 @@ function renderWhales(whaleData) {
     { label: 'Buyback Treasury', value: (supply.buyback_treasury_B || 0).toFixed(1) + 'B', sub: 'Squads V4 · G8CcfRff', color: '#00E5FF' },
     { label: 'CEX Hot Wallets (Top 20)', value: totalCex.toFixed(1) + 'B', sub: 'Binance + Bybit + OKX on-chain', color: '#F59E0B' },
     { label: 'Vesting Contracts', value: (supply.vesting_locked_B || 0).toFixed(1) + 'B', sub: '5 Squads vaults · Jul 2026 cliff', color: '#10B981' },
-    { label: 'Known Investors', value: (supply.known_investors_B || 0).toFixed(1) + 'B', sub: 'Investor #1 + Aug21 Trio (70B) + Multisig #2 (20B)', color: '#F59E0B' },
+    { label: 'Known Investors', value: (supply.known_investors_B || 0).toFixed(1) + 'B', sub: 'Investor #1 + Aug21 Insider Trio (70B) + Multisig #2 (20B)', color: '#F59E0B' },
     { label: 'Independent Whales', value: totalWhale.toFixed(1) + 'B', sub: 'Unlabeled large holders in top 20', color: '#EC4899' },
   ].map(c => `
     <div class="card">
