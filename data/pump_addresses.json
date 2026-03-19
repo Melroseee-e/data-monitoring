@@ -198,31 +198,58 @@
       "last_checked": "2026-03-19"
     },
     "GhFaBi8sy3M5mgG97YguQ6J3f7XH4JwV5CoW8MbzRgAU": {
-      "label": "PUMP Team/Investor Squads Vault #4 MF III (PARTIAL)",
+      "label": "PUMP Team/Investor Squads Vault #4 (SELLING \u2192 OKX)",
       "type": "vesting",
       "verified": true,
       "source": "BubbleMaps Top500 + Token Custodian TX trace",
-      "notes": "Received 18.75B PUMP from Token Custodian on 2025-07-14. Currently holds 15.63B (3.12B distributed). BubbleMaps label: 'Squads Vault MF III'. Some monthly linear releases ongoing. Token account: AxdaGT5QdFJzcwh7GcxhSbdpKJmpH9dw1LvmM6A8cQv8",
+      "notes": "Received 18.75B PUMP from Token Custodian on 2025-07-14. CONFIRMED: 3.125B distributed as 2\u00d71.5625B to OKX on 2025-10-06 via pass-through FfGLiWhCDH3FqQho5hMopReTmYAwXArJtJ23wKxrG47A (17 txs, same-day, Squads V4 execution pattern). Current balance: 15.625B.",
       "balance": 15630000000,
       "received_from_custodian": 18750000000,
       "received_date": "2025-07-14",
       "distributed": 3120000000,
       "bubblemaps_label": "Squads Vault MF III",
-      "last_checked": "2026-03-19"
+      "last_checked": "2026-03-19",
+      "okx_deposits_oct_2025": {
+        "total_B": 3.125,
+        "events": [
+          {
+            "date": "2025-10-06",
+            "amount_B": 1.5625,
+            "destination": "OKX",
+            "pass_through": "FfGLiWhCDH3FqQho5hMopReTmYAwXArJtJ23wKxrG47A"
+          },
+          {
+            "date": "2025-10-06",
+            "amount_B": 1.5625,
+            "destination": "OKX",
+            "pass_through": "FfGLiWhCDH3FqQho5hMopReTmYAwXArJtJ23wKxrG47A"
+          }
+        ]
+      }
     },
     "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE": {
       "label": "PUMP Team/Investor Squads Vault #5 Wallet A (ACTIVE SELLING)",
       "type": "vesting",
       "verified": true,
       "source": "BubbleMaps Top500 + Token Custodian TX trace + on-chain outflow trace",
-      "notes": "Received 18.75B PUMP from Token Custodian on 2025-07-14. Currently holds 6.89B (11.86B distributed). BubbleMaps label: 'Squads Vault Wallet A'. CONFIRMED: ALL March 2026 distributions went to Bitget: 1.758B (Mar-06), 2.461B (Mar-10), 2.953B (Mar-13+16). Total 7.172B sent to Bitget in March 2026. This CONFIRMS the news report of 'team wallet deposited 1.757B PUMP to Bitget on 2026-03-05'. Pattern: Vault #5 sends to pass-through wallet -> pass-through immediately sends to Bitget (same day). Bitget address: A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR.",
+      "notes": "Received 18.75B PUMP from Token Custodian on 2025-07-14. CONFIRMED: ALL outflows went to Bitget. Sep 2025: 4.6875B \u2192 pass-through 3K9vhQSaRtkoZbvj5bzRdqdYZLRmG2Cj9qN5sVFjmVru \u2192 DNuUdE9on7cVcnZ9DGN89pfmd23DeBFYWupyUjeK7QGp \u2192 Bitget. Mar 2026: 7.172B \u2192 Bitget via 3 more pass-throughs. TOTAL to Bitget: ~11.859B. Current balance: 6.891B.",
       "balance": 6890000000,
       "received_from_custodian": 18750000000,
       "received_date": "2025-07-14",
       "distributed": 11860000000,
-      "bitget_deposits_march_2026": {
-        "total_B": 7.172,
+      "bubblemaps_label": "Squads Vault Wallet A",
+      "last_checked": "2026-03-19",
+      "bitget_deposits_all": {
+        "total_B": 11.859,
+        "sep_2025_B": 4.6875,
+        "mar_2026_B": 7.172,
         "events": [
+          {
+            "date": "2025-09-07",
+            "amount_B": 4.6875,
+            "destination": "Bitget",
+            "pass_through": "3K9vhQSaRtkoZbvj5bzRdqdYZLRmG2Cj9qN5sVFjmVru"
+          },
           {
             "date": "2026-03-06",
             "amount_B": 1.758,
@@ -244,9 +271,7 @@
             "destination": "Bitget"
           }
         ]
-      },
-      "bubblemaps_label": "Squads Vault Wallet A",
-      "last_checked": "2026-03-19"
+      }
     },
     "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS": {
       "label": "PUMP Investor/Strategic Wallet Aug21 #1 (LOCKED - 30B)",

@@ -492,12 +492,11 @@ tbody tr:hover { background: rgba(255,255,255,0.03); }
         </table>
       </div>
       <div style="margin-top:14px;padding:12px;background:rgba(255,77,77,0.07);border:1px solid rgba(255,77,77,0.25);border-radius:8px;font-size:12px;line-height:1.6;color:var(--text-secondary)">
-        <span style="color:#FF4D4D;font-weight:700">⚠ KEY FINDING (2026-03-19):</span>
-        <b>Squads Vault #5 (Wallet A, 5v7ZZg1D)</b> sent <b>7.172B PUMP → Bitget</b> in March 2026 via 4 tranches:
-        1.758B (Mar-06) + 2.461B (Mar-10) + 1.500B (Mar-13) + 1.453B (Mar-16).
-        All routed via fresh pass-through wallets to Bitget hot wallet <code>A77HErqtfN1...</code>.
-        Confirms news report of "team wallet deposited 1.757B PUMP ($3.54M) to Bitget on 2026-03-05."
-        This vault received 18.75B from Token Custodian on 2025-07-14 and now holds only 6.89B.
+        <span style="color:#FF4D4D;font-weight:700">⚠ KEY FINDINGS (2026-03-19):</span><br>
+        • <b>Vault #5 (5v7ZZg1D):</b> 18.75B received 2025-07-14. Sent <b>11.859B → Bitget in total</b>: 4.6875B (Sep 2025) + 7.172B (Mar 2026 via 4 tranches). Only 6.89B remaining.<br>
+        • <b>Vault #4 (GhFaBi8s):</b> 18.75B received 2025-07-14. Sent <b>3.125B → OKX on 2025-10-06</b> (2×1.5625B via pass-through). 15.625B remaining.<br>
+        • Vaults #1, #2, #3 (9pkFKCR1, BBvQteua, GTeSSwov): FULLY LOCKED — zero outflows confirmed.<br>
+        All distributions via Squads V4 execution: Vault → fresh pass-through wallet → CEX hot wallet (same-day).
       </div>
     </div>
   </section>
@@ -885,7 +884,7 @@ function renderVesting(addresses) {
   // Locked supply table
   const lockedItems = [
     { wallet: 'Token Custodian (Cfq1ts1i)', balance: '365.46B', unlock: 'Jul 2026 + linear', type: 'MAIN LOCK' },
-    { wallet: '5 Team Squads Vaults', balance: '107.52B', unlock: 'Jul 2026 cliff', type: 'Team/Investor' },
+    { wallet: '5 Team Squads Vaults', balance: '107.52B (orig 122.5B)', unlock: 'Jul 2026 cliff — ⚠ V4+V5 already selling', type: 'Team/Investor' },
     { wallet: 'Aug 21 Investor Trio', balance: '70.00B', unlock: 'Jul 2026 cliff (est.)', type: 'Investor' },
     { wallet: '8UHpWBnh (Official Multisig #2)', balance: '19.13B', unlock: '✅ 0.87B → Staking Rewards (Oct 2025)', type: 'Official' },
     { wallet: 'Community Reserve (8UhbNoBX)', balance: '80.00B', unlock: 'Protocol use', type: 'Operational' },
@@ -1039,7 +1038,9 @@ function renderVaults(addresses) {
         <td style="color:${dist > 0 ? 'var(--accent-yellow)' : 'var(--text-muted)'};font-family:var(--font-mono)">${dist > 0 ? fmtB(dist) : '—'}</td>
         <td style="font-size:12px;color:var(--text-muted)">${
           key === '5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE'
-            ? '<span style="color:#FF4D4D;font-weight:700">⚠ SELLING → Bitget (7.17B in Mar 2026)</span>'
+            ? '<span style="color:#FF4D4D;font-weight:700">⚠ SELLING → Bitget (11.86B total: 4.69B Sep-25 + 7.17B Mar-26)</span>'
+            : key === 'GhFaBi8sy3M5mgG97YguQ6J3f7XH4JwV5CoW8MbzRgAU'
+            ? '<span style="color:#FF4D4D;font-weight:700">⚠ SELLING → OKX (3.125B Oct 2025)</span>'
             : a.distributed > 0 ? 'Partial releases' : '🔒 2026-07-12'
         }</td>
       </tr>
