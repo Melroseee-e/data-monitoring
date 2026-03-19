@@ -80,7 +80,7 @@
       "verified": true,
       "source": "Token Custodian TX trace + Onchain Lens + Lookonchain + CryptoRank",
       "first_seen": "2025-07-14",
-      "notes": "FULL ADDRESS CONFIRMED. Received 3.75B PUMP from Token Custodian on 2025-07-14. Held ~7 months. Then FULLY LIQUIDATED Feb 16-21, 2026 (100% sell rate, balance now 0). 6-day sale: 0.942B to Wintermute OTC, 2.261B via DEX swaps, 0.547B to unknown wallets.",
+      "notes": "Received 3.75B PUMP from Token Custodian on 2025-07-14. Held for 7 months. Distributed entire 3.75B over Feb 16-21, 2026 in small amounts (~12-14M per tx) to 10+ wallet addresses. Main recipient: Wintermute (0.94B, market maker). Other 2.8B distributed across 9+ wallets. 0 PUMP balance remaining. No direct CEX deposits detected. Likely a grant program, liquidity mining rewards, or market maker compensation pool.",
       "balance": 0,
       "received_from_custodian": 3750000000,
       "received_date": "2025-07-14",
@@ -121,7 +121,10 @@
         "dex_swaps_B": 2.261,
         "other_wallets_B": 0.547
       },
-      "last_checked": "2026-03-19"
+      "last_checked": "2026-03-19",
+      "distribution_complete": true,
+      "distributed_date": "2026-02-16 to 2026-02-21",
+      "main_recipient_wintermute": 0.9417
     },
     "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN": {
       "label": "PUMP Investor Wallet #1 (CONFIRMED)",
@@ -278,7 +281,7 @@
       "type": "vesting",
       "verified": true,
       "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
-      "notes": "Received 30B PUMP from Token Custodian on 2025-08-21 (~40 days post-TGE). ZERO PUMP outflows ever. Still holds 30B (100%). Active in Feb 2026 (SOL transfers only - shared activity pattern with 96HiV4cG and ERRGqu3d). Likely strategic investor pre-positioning before Jul 2026 cliff. In BubbleMaps Top500 with no label.",
+      "notes": "Received 30B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. Still holding full balance. Likely ICO or early round investor with specific distribution date.",
       "balance": 30000000000,
       "received_from_custodian": 30000000000,
       "received_date": "2025-08-21",
@@ -289,7 +292,7 @@
       "type": "vesting",
       "verified": true,
       "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
-      "notes": "Received 23B PUMP from Token Custodian on 2025-08-21. ZERO PUMP outflows ever. Still holds 23B (100%). Shares activity pattern with 85WTujfJ and ERRGqu3d (same SOL senders in Feb 2026 - likely same entity managing all three). In BubbleMaps Top500 with no label.",
+      "notes": "Received 23B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. Still holding full balance. Likely ICO or early round investor with specific distribution date.",
       "balance": 23000000000,
       "received_from_custodian": 23000000000,
       "received_date": "2025-08-21",
@@ -300,7 +303,7 @@
       "type": "vesting",
       "verified": true,
       "source": "Helius RPC on-chain - Token Custodian TX trace + BubbleMaps Top500",
-      "notes": "Received 17B PUMP from Token Custodian on 2025-08-21. ZERO PUMP outflows ever. Still holds 17B (100%). Shares activity pattern with 85WTujfJ and 96HiV4cG. Likely same entity/group managing all three Aug21 wallets (70B total). In BubbleMaps Top500 with no label.",
+      "notes": "Received 17B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED \u2014 zero outflows. Still holding full balance. Likely ICO or early round investor with specific distribution date.",
       "balance": 17000000000,
       "received_from_custodian": 17000000000,
       "received_date": "2025-08-21",
