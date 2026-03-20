@@ -411,24 +411,31 @@ function updateDashboard() {
   netEl.innerText = (d.net_flow >= 0 ? '+' : '') + formatNum(d.net_flow);
   netEl.className = 'kpi-mini-val ' + (d.net_flow >= 0 ? 'pos' : 'neg');
   
+  // Initial render with cumulative data
   updateExchangeTable(d);
-  updateTrendChart(selectedToken);
   updateSankey(d);
+  updateTrendChart(selectedToken);
 }
 
 function updateExchangeTable(data) {
   const tbody = document.querySelector('#exchangeTable tbody');
   
-  // Aggregate across deployments
-  const agg = {};
-  data.deployments.forEach(dep => {
-    Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
-      if(!agg[ex]) agg[ex] = {in:0, out:0, net:0};
-      agg[ex].in += flows.inflow;
-      agg[ex].out += flows.outflow;
-      agg[ex].net += (flows.inflow - flows.outflow);
+  // Aggregation logic: handles both rawData format and custom aggregated format
+  let agg = {};
+  if (data.deployments) {
+    // rawData format
+    data.deployments.forEach(dep => {
+      Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
+        if(!agg[ex]) agg[ex] = {in:0, out:0, net:0};
+        agg[ex].in += flows.inflow;
+        agg[ex].out += flows.outflow;
+        agg[ex].net += (flows.inflow - flows.outflow);
+      });
     });
-  });
+  } else if (data.exchanges) {
+    // aggregated format from dailyData
+    agg = data.exchanges;
+  }
   
   const sortedEx = Object.entries(agg).sort((a,b) => Math.abs(b[1].net) - Math.abs(a[1].net));
   
@@ -436,9 +443,9 @@ function updateExchangeTable(data) {
     const isPos = flows.net >= 0;
     return `<tr>
       <td style="font-family:var(--font-ui); font-weight:500;">${ex}</td>
-      <td class="pos">${formatNum(flows.in)}</td>
-      <td class="neg">${formatNum(flows.out)}</td>
-      <td class="${isPos ? 'pos' : 'neg'}">${isPos ? '+' : ''}${formatNum(flows.net)}</td>
+      <td class="pos">${formatNum(flows.in || flows.inflow || 0)}</td>
+      <td class="neg">${formatNum(flows.out || flows.outflow || 0)}</td>
+      <td class="${isPos ? 'pos' : 'neg'}">${isPos ? '+' : ''}${formatNum(flows.net || flows.net_flow || 0)}</td>
     </tr>`;
   }).join('');
 }
@@ -470,9 +477,7 @@ function updateTrendChart(token) {
   const nets = [];
   
   tokenDataList.forEach(entry => {
-    // Plotly handles ISO strings well natively
     const d = entry.date || entry.timestamp; if(!d) return; dates.push(d);
-
     const tData = entry.tokens?.[token];
     if(tData) {
       inflows.push(tData.total_inflow || 0);
@@ -490,47 +495,18 @@ function updateTrendChart(token) {
   const outflowColor = isLight ? '#DC2626' : '#FF4D4D';
   const netColor = '#3B82F6';
 
-  const traceInflow = {
-    x: dates,
-    y: inflows,
-    name: 'Inflow',
-    type: 'bar',
-    marker: { color: inflowColor },
-    hoverinfo: 'y+name'
-  };
-
-  const traceOutflow = {
-    x: dates,
-    y: outflows.map(v => -v), // point downwards
-    name: 'Outflow',
-    type: 'bar',
-    marker: { color: outflowColor },
-    hoverinfo: 'y+name'
-  };
-
-  const traceNet = {
-    x: dates,
-    y: nets,
-    name: 'Net Flow',
-    type: 'scatter',
-    mode: 'lines',
-    line: { color: netColor, width: 2 },
-    hoverinfo: 'y+name'
-  };
+  const traceInflow = { x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor }, hoverinfo: 'y+name' };
+  const traceOutflow = { x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor }, hoverinfo: 'y+name' };
+  const traceNet = { x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 }, hoverinfo: 'y+name' };
 
   const layout = {
-    autosize: true,
-    barmode: 'relative',
-    paper_bgcolor: 'transparent',
-    plot_bgcolor: 'transparent',
+    autosize: true, barmode: 'relative', paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
     font: { family: "'JetBrains Mono', monospace", color: textColor, size: 11 },
     margin: { l: 60, r: 20, t: 20, b: 20 },
     legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
     hovermode: 'x unified',
     xaxis: {
-      type: 'date',
-      gridcolor: gridColor,
-      zerolinecolor: gridColor,
+      type: 'date', gridcolor: gridColor, zerolinecolor: gridColor,
       rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 },
       rangeselector: {
         buttons: [
@@ -539,42 +515,53 @@ function updateTrendChart(token) {
           { count: 1, label: '1M', step: 'month', stepmode: 'backward' },
           { step: 'all', label: 'ALL' }
         ],
-        bgcolor: isLight ? '#FFFFFF' : '#18181B',
-        activecolor: isLight ? '#E4E4E7' : '#27272A'
+        bgcolor: isLight ? '#FFFFFF' : '#18181B', activecolor: isLight ? '#E4E4E7' : '#27272A'
       }
     },
-    yaxis: {
-      gridcolor: gridColor,
-      zerolinecolor: gridColor,
-      tickformat: '.2s',
-      autorange: true,
-      fixedrange: false
-    }
+    yaxis: { gridcolor: gridColor, zerolinecolor: gridColor, tickformat: '.2s', autorange: true, fixedrange: false }
   };
 
   const chartDiv = document.getElementById('trendChart');
   chartDiv.innerHTML = ''; 
   Plotly.newPlot(chartDiv, [traceInflow, traceOutflow, traceNet], layout, {displayModeBar: false, responsive: true});
 
-  // Dynamic Y-axis scaling logic
+  // Dynamic Scaling & Sync Logic
   chartDiv.on('plotly_relayout', function(eventData) {
     let start, end;
     if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
       start = new Date(eventData['xaxis.range[0]']);
       end = new Date(eventData['xaxis.range[1]']);
     } else if (eventData['xaxis.autorange']) {
-      // If user resets zoom or clicks "ALL"
       Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
+      updateExchangeTable(rawData.tokens[selectedToken]);
+      updateSankey(rawData.tokens[selectedToken]);
       return;
-    } else {
-      return;
+    } else { return; }
+
+    // 1. Sync Table & Sankey
+    const aggregated = { exchanges: {} };
+    // Use the same sourceData we used for the chart to ensure consistency
+    sourceData.forEach(day => {
+      const dDate = new Date(day.date || day.timestamp);
+      if (dDate >= start && dDate <= end && day.tokens[selectedToken]) {
+        const t = day.tokens[selectedToken];
+        Object.entries(t.exchanges || {}).forEach(([ex, flows]) => {
+          if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
+          aggregated.exchanges[ex].in += flows.inflow;
+          aggregated.exchanges[ex].out += flows.outflow;
+          aggregated.exchanges[ex].net += flows.net_flow;
+        });
+      }
+    });
+    
+    // Fallback if no exchange data found in range (for tokens only in historyData)
+    if (Object.keys(aggregated.exchanges).length > 0) {
+      updateExchangeTable(aggregated);
+      updateSankey(aggregated);
     }
 
-    // Find visible indices
-    const visibleInflows = [];
-    const visibleOutflows = [];
-    const visibleNets = [];
-    
+    // 2. Dynamic Y-axis
+    const visibleInflows = [], visibleOutflows = [], visibleNets = [];
     dates.forEach((d, i) => {
       const date = new Date(d);
       if (date >= start && date <= end) {
@@ -587,12 +574,9 @@ function updateTrendChart(token) {
     if (visibleInflows.length > 0) {
       const maxVal = Math.max(...visibleInflows, ...visibleNets);
       const minVal = Math.min(...visibleOutflows.map(v => -v), ...visibleNets);
-      const padding = (maxVal - minVal) * 0.1;
-      
-      Plotly.relayout(chartDiv, {
-        'yaxis.range': [minVal - padding, maxVal + padding],
-        'yaxis.autorange': false
-      });
+      const span = maxVal - minVal;
+      const padding = span === 0 ? 1 : span * 0.15;
+      Plotly.relayout(chartDiv, { 'yaxis.range': [minVal - padding, maxVal + padding], 'yaxis.autorange': false });
     }
   });
 }
@@ -611,29 +595,29 @@ function updateSankey(data) {
   
   let nodeIdx = 1;
 
-  data.deployments.forEach(dep => {
-    Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
+  // Supports both rawData (deployments) and aggregated format
+  if (data.deployments) {
+    data.deployments.forEach(dep => {
+      Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
+        nodeLabels.push(ex);
+        nodeColors.push(sankeyNodeColor);
+        if(flows.inflow > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(flows.inflow); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
+        if(flows.outflow > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(flows.outflow); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
+        nodeIdx++;
+      });
+    });
+  } else if (data.exchanges) {
+    Object.entries(data.exchanges).forEach(([ex, flows]) => {
       nodeLabels.push(ex);
       nodeColors.push(sankeyNodeColor);
-      
-      if(flows.inflow > 0) {
-        linkSources.push(nodeIdx);
-        linkTargets.push(0);
-        linkValues.push(flows.inflow);
-        linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)');
-      }
-      if(flows.outflow > 0) {
-        linkSources.push(0);
-        linkTargets.push(nodeIdx);
-        linkValues.push(flows.outflow);
-        linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)');
-      }
+      if(flows.in > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(flows.in); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
+      if(flows.out > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(flows.out); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
       nodeIdx++;
     });
-  });
+  }
 
   if(linkValues.length === 0) {
-    document.getElementById('sankeyChart').innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available</div>`;
+    document.getElementById('sankeyChart').innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available for this range</div>`;
     return;
   }
 
@@ -641,8 +625,8 @@ function updateSankey(data) {
     type: 'sankey',
     orientation: 'h',
     node: {
-      pad: 80, // Significantly increased padding
-      thickness: 12, // Thinner nodes
+      pad: 80, 
+      thickness: 12, 
       line: { color: 'transparent', width: 0 },
       label: nodeLabels,
       color: nodeColors
