@@ -36,6 +36,7 @@
     --accent: #2563EB;
     --inflow: #059669;
     --outflow: #DC2626;
+    background-image: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.02) 0%, transparent 80%);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -153,6 +154,7 @@
     min-height: 0;
   }
   .pane-row.top {
+    flex: 1.4;
     border-bottom: 1px solid var(--border-color);
   }
   .pane {
@@ -196,6 +198,11 @@
   th { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 500; border-bottom: 1px solid var(--border-color); }
   td { font-family: var(--font-mono); font-size: 12px; }
   tr:hover td { background: var(--bg-hover); }
+
+  #sankeyChart {
+    max-height: 400px;
+    margin: auto;
+  }
 
 </style>
 </head>
@@ -634,8 +641,8 @@ function updateSankey(data) {
     type: 'sankey',
     orientation: 'h',
     node: {
-      pad: 30, // Increased padding to prevent giant blocks
-      thickness: 15,
+      pad: 60, // Significantly increased padding
+      thickness: 12, // Thinner nodes
       line: { color: 'transparent', width: 0 },
       label: nodeLabels,
       color: nodeColors
@@ -653,7 +660,7 @@ function updateSankey(data) {
     font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent',
-    margin: { l: 20, r: 20, t: 40, b: 40 }
+    margin: { l: 40, r: 40, t: 60, b: 60 }
   };
 
   document.getElementById('sankeyChart').innerHTML = ''; 
