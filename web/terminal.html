@@ -658,9 +658,19 @@ function updateTrendChart(token) {
   chartDiv.innerHTML = ''; 
   Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true});
   setTimeout(() => { isUpdatingToken = false; }, 100);
+  // Force a full-data refresh of sub-charts to ensure single-click works
+  updateExchangeTable(rawData.tokens[token]);
+  updateSankey(rawData.tokens[token]);
+  
+  // Reset scroll position of token list item into view if needed
+  const activeItem = document.querySelector('.token-item.active');
+  if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
 
   // Dynamic Scaling & Sync Logic
+  const currentInstanceToken = selectedToken;
   chartDiv.on('plotly_relayout', function(eventData) {
+    if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
     if (isUpdatingToken) return;
     let start, end;
     if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
