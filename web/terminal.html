@@ -465,6 +465,46 @@ function renderTokenList(filter = '') {
   updateDashboard();
 }
 
+
+    function aggregateRangeData(start, end) {
+      const aggregated = { exchanges: {} };
+      const startTime = start ? start.getTime() : -Infinity;
+      const endTime = end ? end.getTime() : Infinity;
+      const searchSources = [dailyData, historyData].filter(s => Array.isArray(s));
+      
+      searchSources.forEach(source => {
+        source.forEach(entry => {
+          const dDate = new Date(entry.date || entry.timestamp);
+          const dTime = dDate.getTime();
+          if (dTime >= startTime && dTime <= endTime && entry.tokens && entry.tokens[selectedToken]) {
+            const t = entry.tokens[selectedToken];
+            
+            // Handle dailyData format
+            if (t.exchanges) {
+              Object.entries(t.exchanges).forEach(([ex, flows]) => {
+                if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
+                aggregated.exchanges[ex].inflow += (flows.inflow || flows.in || 0);
+                aggregated.exchanges[ex].outflow += (flows.outflow || flows.out || 0);
+                aggregated.exchanges[ex].net_flow += (flows.net_flow || flows.net || 0);
+              });
+            } 
+            // Handle historyData / raw format
+            else if (t.deployments) {
+              t.deployments.forEach(dep => {
+                Object.entries(dep.exchange_flows || {}).forEach(([ex, flows]) => {
+                  if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
+                  aggregated.exchanges[ex].inflow += (flows.inflow || 0);
+                  aggregated.exchanges[ex].outflow += (flows.outflow || 0);
+                  aggregated.exchanges[ex].net_flow += (flows.net_flow || 0);
+                });
+              });
+            }
+          }
+        });
+      });
+      return aggregated;
+    }
+
 function updateDashboard() {
   isUpdatingToken = true;
   if(!rawData || !selectedToken) return;
@@ -472,7 +512,7 @@ function updateDashboard() {
   if(!d) return;
   
   // Header
-  document.getElementById('headerTitle').innerHTML = `${selectedToken} <span class="badge">${d.deployments[0]?.chain || ''}</span>`;
+  document.getElementById('headerTitle').innerHTML = `${selectedToken} <span class="badge">${d.deployments ? (d.deployments[0]?.chain || '') : ''}</span>`;
   document.getElementById('kpiInflow').innerText = formatNum(d.total_inflow);
   document.getElementById('kpiOutflow').innerText = formatNum(d.total_outflow);
   
@@ -480,31 +520,15 @@ function updateDashboard() {
   netEl.innerText = (d.net_flow >= 0 ? '+' : '') + formatNum(d.net_flow);
   netEl.className = 'kpi-mini-val ' + (d.net_flow >= 0 ? 'pos' : 'neg');
   
-    // Initial render with cumulative data
-  // Clear old state displays
+  // Initial render with ALL-TIME aggregated data (from start of time)
   document.getElementById('timeRangeDisplay').style.display = 'none';
+  const fullHistory = aggregateRangeData(null, null);
   
-  // Aggregate ALL historical exchange data for the initial view
-  const aggregated = { exchanges: {} };
-  const sources = [dailyData, historyData].filter(s => Array.isArray(s));
-  sources.forEach(src => {
-    src.forEach(day => {
-      const t = day.tokens[selectedToken];
-      if (t && t.exchanges) {
-        Object.entries(t.exchanges).forEach(([ex, flows]) => {
-          if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
-          aggregated.exchanges[ex].in += (flows.in || flows.total_inflow || 0);
-          aggregated.exchanges[ex].out += (flows.out || flows.total_outflow || 0);
-          aggregated.exchanges[ex].net += (flows.net || flows.net_flow || 0);
-        });
-      }
-    });
-  });
-
-  if (Object.keys(aggregated.exchanges).length > 0) {
-    updateExchangeTable(aggregated);
-    updateSankey(aggregated);
+  if (Object.keys(fullHistory.exchanges).length > 0) {
+    updateExchangeTable(fullHistory);
+    updateSankey(fullHistory);
   } else {
+    // Last resort fallback
     updateExchangeTable(d);
     updateSankey(d);
   }
