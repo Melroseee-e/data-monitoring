@@ -26,6 +26,18 @@
     --font-mono: 'JetBrains Mono', monospace;
   }
 
+  body.theme-light {
+    --bg-base: #FAF8F5; /* Cosmic Latte base */
+    --bg-panel: #FFFFFF;
+    --bg-hover: #F4F4F5;
+    --border-color: #E4E4E7;
+    --text-main: #09090B;
+    --text-muted: #71717A;
+    --accent: #2563EB;
+    --inflow: #059669;
+    --outflow: #DC2626;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
   body {
@@ -95,7 +107,7 @@
     align-items: center;
   }
   .token-item:hover { background: var(--bg-hover); }
-  .token-item.active { background: #18181B; border-left: 2px solid var(--accent); padding-left: 14px; }
+  .token-item.active { background: var(--bg-hover); border-left: 2px solid var(--accent); padding-left: 14px; }
   .token-info { display: flex; flex-direction: column; gap: 2px; }
   .token-symbol { font-weight: 600; font-size: 13px; }
   .token-chain { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
@@ -121,7 +133,7 @@
   }
   .top-bar-left { display: flex; align-items: center; gap: 20px; }
   .active-token-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-  .active-token-title .badge { font-size: 10px; padding: 2px 6px; background: #27272A; border-radius: 4px; }
+  .active-token-title .badge { font-size: 10px; padding: 2px 6px; background: var(--border-color); border-radius: 4px; }
   
   .kpi-mini-group { display: flex; gap: 24px; }
   .kpi-mini { display: flex; flex-direction: column; }
@@ -179,7 +191,7 @@
   
   /* TABLES */
   table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 8px 4px; text-align: right; border-bottom: 1px solid #18181B; }
+  th, td { padding: 8px 4px; text-align: right; border-bottom: 1px solid var(--border-color); }
   th:first-child, td:first-child { text-align: left; }
   th { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 500; border-bottom: 1px solid var(--border-color); }
   td { font-family: var(--font-mono); font-size: 12px; }
@@ -220,7 +232,10 @@
         </div>
       </div>
     </div>
-    <div style="font-size:11px; color:var(--text-muted);" id="lastUpdated">Loading...</div>
+    <div class="top-bar-right" style="display: flex; align-items: center; gap: 16px;">
+      <div style="font-size:11px; color:var(--text-muted);" id="lastUpdated">Loading...</div>
+      <button id="themeToggle" style="background:transparent; border:1px solid var(--border-color); color:var(--text-main); padding:4px 8px; border-radius:4px; cursor:pointer; font-family:var(--font-ui); font-size:11px;">☀️ Light</button>
+    </div>
   </div>
 
   <div class="panes-container">
@@ -256,10 +271,10 @@
           </table>
         </div>
       </div>
-      <div class="pane">
+      <div class="pane" style="display: flex; flex-direction: column;">
         <div class="pane-header">Funds Routing (Sankey)</div>
-        <div class="pane-body" id="sankeyWrapper" style="padding:0; overflow:hidden;">
-          <div id="sankeyChart" style="flex: 1; min-height: 0; width: 100%;"></div>
+        <div class="pane-body" id="sankeyWrapper" style="padding:0; overflow:hidden; flex: 1; display: flex; align-items: stretch; justify-content: stretch;">
+          <div id="sankeyChart" style="flex: 1; min-width: 0; min-height: 0;"></div>
         </div>
       </div>
     </div>
@@ -289,7 +304,28 @@ function formatNum(n) {
   return n.toFixed(2);
 }
 
+function initTheme() {
+  const toggleBtn = document.getElementById('themeToggle');
+  const body = document.body;
+  
+  // Check local storage
+  const savedTheme = localStorage.getItem('terminalTheme');
+  if (savedTheme === 'light') {
+    body.classList.add('theme-light');
+    toggleBtn.innerText = '🌙 Dark';
+  }
+  
+  toggleBtn.addEventListener('click', () => {
+    body.classList.toggle('theme-light');
+    const isLight = body.classList.contains('theme-light');
+    localStorage.setItem('terminalTheme', isLight ? 'light' : 'dark');
+    toggleBtn.innerText = isLight ? '🌙 Dark' : '☀️ Light';
+    updateDashboard(); // Re-render charts with new theme colors
+  });
+}
+
 async function init() {
+  initTheme();
   try {
     const [dRes, dailyRes] = await Promise.all([
       fetch(DATA_URL).catch(()=>null),
@@ -423,6 +459,19 @@ function updateTrendChart(token) {
   const ctx = document.getElementById('trendChart').getContext('2d');
   if(charts.trend) charts.trend.destroy();
   
+  const isLight = document.body.classList.contains('theme-light');
+  const tooltipBg = isLight ? '#FFFFFF' : '#09090B';
+  const tooltipBorder = isLight ? '#E4E4E7' : '#27272A';
+  const tooltipTitle = isLight ? '#09090B' : '#FFFFFF';
+  const tooltipBody = isLight ? '#71717A' : '#A1A1AA';
+  const gridColor = isLight ? '#F4F4F5' : '#18181B';
+  const chartTextColor = isLight ? '#71717A' : '#A1A1AA';
+  const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
+  const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
+
+  Chart.defaults.color = chartTextColor;
+  Chart.defaults.scale.grid.color = gridColor;
+
   charts.trend = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -474,11 +523,13 @@ function updateTrendChart(token) {
       plugins: {
         legend: { position: 'top', align: 'end', labels: { boxWidth: 10 } },
         tooltip: {
-          backgroundColor: '#09090B',
-          borderColor: '#27272A',
+          backgroundColor: tooltipBg,
+          borderColor: tooltipBorder,
           borderWidth: 1,
           titleFont: { family: 'Inter' },
+          titleColor: tooltipTitle,
           bodyFont: { family: 'JetBrains Mono' },
+          bodyColor: tooltipBody,
           callbacks: {
             label: function(context) {
               let label = context.dataset.label || '';
@@ -517,6 +568,10 @@ function updateTrendChart(token) {
 }
 
 function updateSankey(data) {
+  const isLight = document.body.classList.contains('theme-light');
+  const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
+  const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
+
   const nodeLabels = [selectedToken];
   const nodeColors = ['#3B82F6'];
   const linkSources = [];
@@ -529,7 +584,7 @@ function updateSankey(data) {
   data.deployments.forEach(dep => {
     Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
       nodeLabels.push(ex);
-      nodeColors.push('#27272A');
+      nodeColors.push(sankeyNodeColor);
       
       if(flows.inflow > 0) {
         linkSources.push(nodeIdx);
@@ -548,7 +603,7 @@ function updateSankey(data) {
   });
 
   if(linkValues.length === 0) {
-    document.getElementById('sankeyChart').innerHTML = '<div style="padding:20px;color:#A1A1AA;text-align:center;">No flow data available</div>';
+    document.getElementById('sankeyChart').innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available</div>`;
     return;
   }
 
@@ -558,7 +613,7 @@ function updateSankey(data) {
     node: {
       pad: 15,
       thickness: 20,
-      line: { color: '#000', width: 0 },
+      line: { color: 'transparent', width: 0 },
       label: nodeLabels,
       color: nodeColors
     },
@@ -572,7 +627,7 @@ function updateSankey(data) {
 
   const layout = {
     autosize: true,
-    font: { size: 11, color: '#A1A1AA', family: "'Inter', sans-serif" },
+    font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent',
     margin: { l: 20, r: 20, t: 20, b: 20 }
