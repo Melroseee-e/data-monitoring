@@ -317,6 +317,7 @@ let selectedToken = null;
 let charts = {};
 let currentTrendView = 'daily';
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
+let lastNonEmptyFlowData = null;
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
@@ -491,6 +492,54 @@ function renderTokenList(filter = '') {
       });
       return aggregated;
     }
+
+function hasRenderableFlowData(data) {
+  if (!data) return false;
+  if (data.deployments) {
+    return data.deployments.some(dep =>
+      Object.values(dep.exchange_flows || {}).some(flows =>
+        (Number(flows.inflow ?? flows.in ?? 0) > 0) ||
+        (Number(flows.outflow ?? flows.out ?? 0) > 0)
+      )
+    );
+  }
+  if (data.exchanges) {
+    return Object.values(data.exchanges).some(flows =>
+      (Number(flows.inflow ?? flows.in ?? 0) > 0) ||
+      (Number(flows.outflow ?? flows.out ?? 0) > 0)
+    );
+  }
+  return false;
+}
+
+function syncFlowPanels(data, options = {}) {
+  const { allowSnapshotFallback = false } = options;
+
+  if (hasRenderableFlowData(data)) {
+    lastNonEmptyFlowData = data;
+    updateExchangeTable(data);
+    updateSankey(data);
+    return;
+  }
+
+  if (allowSnapshotFallback && rawData?.tokens?.[selectedToken] && hasRenderableFlowData(rawData.tokens[selectedToken])) {
+    const snapshot = rawData.tokens[selectedToken];
+    lastNonEmptyFlowData = snapshot;
+    updateExchangeTable(snapshot);
+    updateSankey(snapshot);
+    return;
+  }
+
+  if (lastNonEmptyFlowData && hasRenderableFlowData(lastNonEmptyFlowData)) {
+    updateExchangeTable(lastNonEmptyFlowData);
+    updateSankey(lastNonEmptyFlowData);
+    return;
+  }
+
+  // Final fallback: render empty state explicitly.
+  updateExchangeTable(data || { exchanges: {} });
+  updateSankey(data || { exchanges: {} });
+}
     
 
 function updateDashboard() {
@@ -511,15 +560,7 @@ function updateDashboard() {
   // Initial render with ALL-TIME aggregated data (from start of time)
   document.getElementById('timeRangeDisplay').style.display = 'none';
   const fullHistory = aggregateRangeData(null, null);
-  
-  if (Object.keys(fullHistory.exchanges).length > 0) {
-     updateExchangeTable(fullHistory);
-    updateSankey(fullHistory);
-  } else {
-    // Last resort fallback
-    updateExchangeTable(d);
-    updateSankey(d);
-  }
+  syncFlowPanels(fullHistory, { allowSnapshotFallback: true });
   
   updateTrendChart(selectedToken);
 }
@@ -532,24 +573,32 @@ function updateExchangeTable(data) {
     data.deployments.forEach(dep => {
       Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
         if(!agg[ex]) agg[ex] = {inflow:0, outflow:0, net_flow:0};
-        agg[ex].inflow += (flows.inflow || 0);
-        agg[ex].outflow += (flows.outflow || 0);
-        agg[ex].net_flow += (flows.inflow - flows.outflow);
+        const inf = Number(flows.inflow ?? flows.in ?? 0);
+        const outf = Number(flows.outflow ?? flows.out ?? 0);
+        const net = Number(flows.net_flow ?? flows.net ?? (inf - outf));
+        agg[ex].inflow += inf;
+        agg[ex].outflow += outf;
+        agg[ex].net_flow += net;
       });
     });
   } else if (data.exchanges) {
-    agg = data.exchanges;
+    Object.entries(data.exchanges).forEach(([ex, flows]) => {
+      const inf = Number(flows.inflow ?? flows.in ?? 0);
+      const outf = Number(flows.outflow ?? flows.out ?? 0);
+      const net = Number(flows.net_flow ?? flows.net ?? (inf - outf));
+      agg[ex] = { inflow: inf, outflow: outf, net_flow: net };
+    });
   }
   
   const sortedEx = Object.entries(agg).sort((a,b) => Math.abs(b[1].net_flow || 0) - Math.abs(a[1].net_flow || 0));
   
    tbody.innerHTML = sortedEx.map(([ex, flows]) => {
-    const net = flows.net_flow || 0;
+    const net = Number(flows.net_flow ?? flows.net ?? 0);
     const isPos = net >= 0;
     return `<tr>
       <td style="font-family:var(--font-ui); font-weight:500;">${ex}</td>
-      <td class="pos">${formatNum(flows.inflow || 0)}</td>
-      <td class="neg">${formatNum(flows.outflow || 0)}</td>
+      <td class="pos">${formatNum(Number(flows.inflow ?? flows.in ?? 0))}</td>
+      <td class="neg">${formatNum(Number(flows.outflow ?? flows.out ?? 0))}</td>
       <td class="${isPos ? 'pos' : 'neg'}">${isPos ? '+' : ''}${formatNum(net)}</td>
     </tr>`;
   }).join('');
@@ -686,8 +735,7 @@ function updateTrendChart(token) {
       Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
       document.getElementById('timeRangeDisplay').style.display = 'none';
       const fullAgg = aggregateRangeData(null, null);
-      updateExchangeTable(fullAgg);
-      updateSankey(fullAgg);
+      syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
       return;
     } else { return; }
 
@@ -699,8 +747,7 @@ function updateTrendChart(token) {
 
     // 1. Sync Table & Sankey (use canonical aggregator to keep field names consistent)
     const aggregated = aggregateRangeData(start, end);
-    updateExchangeTable(aggregated);
-    updateSankey(aggregated);
+    syncFlowPanels(aggregated, { allowSnapshotFallback: true });
 
     // 2. Dynamic Y-axis
     const visibleInflows = [], visibleOutflows = [], visibleNets = [], visibleCums = [];
@@ -749,8 +796,10 @@ function updateSankey(data) {
       Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
         nodeLabels.push(ex);
         nodeColors.push(sankeyNodeColor);
-        if(flows.inflow > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(flows.inflow); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
-        if(flows.outflow > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(flows.outflow); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
+        const inf = Number(flows.inflow ?? flows.in ?? 0);
+        const outf = Number(flows.outflow ?? flows.out ?? 0);
+        if(inf > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(inf); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
+        if(outf > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(outf); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
         nodeIdx++;
       });
     });
@@ -758,8 +807,8 @@ function updateSankey(data) {
     Object.entries(data.exchanges).forEach(([ex, flows]) => {
       nodeLabels.push(ex);
       nodeColors.push(sankeyNodeColor);
-      const inf = flows.inflow || 0;
-      const outf = flows.outflow || 0;
+      const inf = Number(flows.inflow ?? flows.in ?? 0);
+      const outf = Number(flows.outflow ?? flows.out ?? 0);
       if(inf > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(inf); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
       if(outf > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(outf); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
       nodeIdx++;
