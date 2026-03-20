@@ -444,13 +444,22 @@ function renderTokenList(filter = '') {
     </div>`;
   }).join('');
   
-  document.querySelectorAll('.token-item').forEach(el => {
-    el.addEventListener('click', () => {
-      selectedToken = el.dataset.token;
-      renderTokenList(filter); // Re-render to update active state
-      updateDashboard();
-    });
-  });
+  // Use a single delegated listener on the list instead of individual listeners that get destroyed
+  list.onclick = (e) => {
+    const item = e.target.closest('.token-item');
+    if (!item) return;
+    
+    const targetToken = item.dataset.token;
+    if (selectedToken === targetToken) return;
+    
+    selectedToken = targetToken;
+    
+    // Update active class manually
+    list.querySelectorAll('.token-item').forEach(el => el.classList.remove('active'));
+    item.classList.add('active');
+    
+    updateDashboard();
+  };
   
   updateDashboard();
 }
@@ -785,8 +794,8 @@ function updateSankey(data) {
   };
 
   // Skip clearing innerHTML if we want instant update
-  // document.getElementById('sankeyChart').innerHTML = ''; 
-  Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true}); setTimeout(() => Plotly.Plots.resize('sankeyChart'), 500);
+  // Plotly.purge('sankeyChart'); 
+  Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true, staticPlot: false}); setTimeout(() => Plotly.Plots.resize('sankeyChart'), 500);
 }
 
 // Ensure both charts resize correctly
