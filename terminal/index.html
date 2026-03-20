@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pro Terminal | Flow Monitor</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
 <style>
@@ -21,13 +19,12 @@
     --accent: #3B82F6;
     --inflow: #00FFA3;
     --outflow: #FF4D4D;
-    
     --font-ui: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
 
   body.theme-light {
-    --bg-base: #FAF8F5; /* Cosmic Latte base */
+    --bg-base: #FAF8F5;
     --bg-panel: #FFFFFF;
     --bg-hover: #F4F4F5;
     --border-color: #E4E4E7;
@@ -36,7 +33,6 @@
     --accent: #2563EB;
     --inflow: #059669;
     --outflow: #DC2626;
-    background-color: #FAF8F5;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,12 +48,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg-base); }
-  ::-webkit-scrollbar-thumb { background: #3F3F46; border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: #52525B; }
-
-  /* SIDEBAR (DefiLlama style navigation + Token List) */
+  /* SIDEBAR */
   .sidebar {
     width: 260px;
     border-right: 1px solid var(--border-color);
@@ -68,790 +59,345 @@
   .brand {
     padding: 16px;
     border-bottom: 1px solid var(--border-color);
-    font-weight: 700;
+    font-weight: 800;
     font-size: 14px;
     letter-spacing: 0.5px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .brand::before {
-    content: ''; width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
-  }
-  .search-box {
-    padding: 12px;
-    border-bottom: 1px solid var(--border-color);
-  }
-  .search-box input {
-    width: 100%;
-    background: var(--bg-base);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-family: var(--font-ui);
-    outline: none;
-    font-size: 12px;
-  }
-  .search-box input:focus { border-color: var(--accent); }
+  .brand::before { content: ''; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
   
-  .token-list {
-    flex: 1;
-    overflow-y: auto;
+  .search-box { padding: 12px; border-bottom: 1px solid var(--border-color); }
+  .search-box input {
+    width: 100%; background: var(--bg-base); border: 1px solid var(--border-color);
+    color: var(--text-main); padding: 8px 12px; border-radius: 4px; font-size: 12px; outline: none;
   }
+  
+  .token-list { flex: 1; overflow-y: auto; }
   .token-item {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 10px 16px; border-bottom: 1px solid var(--border-color);
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
   }
   .token-item:hover { background: var(--bg-hover); }
-  .token-item.active { background: var(--bg-hover); border-left: 2px solid var(--accent); padding-left: 14px; }
-  .token-info { display: flex; flex-direction: column; gap: 2px; }
-  .token-symbol { font-weight: 600; font-size: 13px; }
-  .token-chain { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
-  .token-net { font-family: var(--font-mono); font-size: 12px; text-align: right; }
+  .token-item.active { background: var(--bg-hover); border-left: 3px solid var(--accent); padding-left: 13px; }
+  .token-symbol { font-weight: 700; font-size: 13px; }
+  .token-net { font-family: var(--font-mono); font-size: 12px; }
 
-  /* MAIN CONTENT (Bloomberg / Arkham Terminal Style) */
-  .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-  }
+  /* MAIN CONTENT */
+  .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   
-  /* HEADER BAR */
   .top-bar {
-    height: 52px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    justify-content: space-between;
-    background: var(--bg-panel);
+    height: 52px; border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; padding: 0 20px;
+    justify-content: space-between; background: var(--bg-panel);
   }
   .top-bar-left { display: flex; align-items: center; gap: 20px; }
-  .active-token-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-  .active-token-title .badge { font-size: 10px; padding: 2px 6px; background: var(--border-color); border-radius: 4px; }
+  .active-token-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
   
   #timeRangeDisplay {
-    font-size: 11px;
-    font-family: var(--font-mono);
-    color: var(--accent);
-    background: rgba(37, 99, 235, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-    display: none;
+    font-size: 11px; font-family: var(--font-mono); color: var(--accent);
+    background: rgba(37, 99, 235, 0.1); padding: 2px 8px; border-radius: 4px; font-weight: 700;
   }
   
   .kpi-mini-group { display: flex; gap: 24px; }
   .kpi-mini { display: flex; flex-direction: column; }
-  .kpi-mini-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
-  .kpi-mini-val { font-family: var(--font-mono); font-weight: 600; font-size: 14px; }
+  .kpi-mini-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+  .kpi-mini-val { font-family: var(--font-mono); font-weight: 700; font-size: 14px; }
 
-  /* PANES */
-  .panes-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .pane-row {
-    display: flex;
-    flex: 1;
-    min-height: 0;
-  }
-  .pane-row.top {
-    flex: 1.4;
-    border-bottom: 1px solid var(--border-color);
-  }
-  .pane {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-  }
+  .panes-container { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .pane-row { display: flex; flex: 1; min-height: 0; }
+  .pane-row.top { flex: 1.5; border-bottom: 1px solid var(--border-color); }
+  .pane { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   .pane.left { border-right: 1px solid var(--border-color); }
   
-  .pane-header { color: var(--text-main) !important; font-weight: 800 !important; font-size: 13px !important; 
-    padding: 10px 16px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-main);
-    border-bottom: 1px solid var(--border-color);
-    background: var(--bg-panel);
-    display: flex;
-    justify-content: space-between;
-    letter-spacing: 0.5px;
+  .pane-header {
+    padding: 10px 16px; font-size: 13px; font-weight: 800; text-transform: uppercase;
+    color: var(--text-main); border-bottom: 1px solid var(--border-color);
+    background: var(--bg-panel); display: flex; justify-content: space-between; letter-spacing: 0.5px;
   }
-  .pane-body {
-    flex: 1;
-    padding: 16px;
-    background: var(--bg-base);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow-y: auto;
-  }
+  .pane-body { flex: 1; padding: 16px; background: var(--bg-base); position: relative; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; }
 
-  /* UTILS */
   .pos { color: var(--inflow); }
   .neg { color: var(--outflow); }
   
-  /* TABLES */
   table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 8px 4px; text-align: right; border-bottom: 1px solid var(--border-color); }
+  th, td { padding: 10px 8px; text-align: right; border-bottom: 1px solid var(--border-color); }
   th:first-child, td:first-child { text-align: left; }
-  th { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 500; border-bottom: 1px solid var(--border-color); }
-  td { font-family: var(--font-mono); font-size: 12px; }
+  th { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; background: rgba(0,0,0,0.02); }
+  td { font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
   tr:hover td { background: var(--bg-hover); }
 
-  #sankeyChart {
-    width: 100%;
-    margin: auto;
+  #themeToggle {
+    background: transparent; border: 1px solid var(--border-color); color: var(--text-main);
+    padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;
   }
-
 </style>
 </head>
 <body>
 
 <div class="sidebar">
   <div class="brand">INTELLIGENCE TERMINAL</div>
-  <div class="search-box">
-    <input type="text" id="tokenSearch" placeholder="Search tokens..." autocomplete="off">
-  </div>
-  <div class="token-list" id="tokenList">
-    <!-- Populated by JS -->
-  </div>
+  <div class="search-box"><input type="text" id="tokenSearch" placeholder="Search tokens..."></div>
+  <div class="token-list" id="tokenList"></div>
 </div>
 
 <div class="main-content">
   <div class="top-bar">
     <div class="top-bar-left">
-      <div class="active-token-title" id="headerTitle">
-        --- <span class="badge">---</span>
-      </div>
-      <div id="timeRangeDisplay"></div>
+      <div class="active-token-title" id="headerTitle">---</div>
+      <div id="timeRangeDisplay" style="display:none;"></div>
       <div class="kpi-mini-group">
-        <div class="kpi-mini">
-          <span class="kpi-mini-label">Total Inflow</span>
-          <span class="kpi-mini-val pos" id="kpiInflow">0.00</span>
-        </div>
-        <div class="kpi-mini">
-          <span class="kpi-mini-label">Total Outflow</span>
-          <span class="kpi-mini-val neg" id="kpiOutflow">0.00</span>
-        </div>
-        <div class="kpi-mini">
-          <span class="kpi-mini-label">Net Flow</span>
-          <span class="kpi-mini-val" id="kpiNet">0.00</span>
-        </div>
+        <div class="kpi-mini"><span class="kpi-mini-label">Inflow</span><span class="kpi-mini-val pos" id="kpiInflow">0</span></div>
+        <div class="kpi-mini"><span class="kpi-mini-label">Outflow</span><span class="kpi-mini-val neg" id="kpiOutflow">0</span></div>
+        <div class="kpi-mini"><span class="kpi-mini-label">Net</span><span class="kpi-mini-val" id="kpiNet">0</span></div>
       </div>
     </div>
-    <div class="top-bar-right" style="display: flex; align-items: center; gap: 16px;">
-      <div style="font-size:11px; color:var(--text-muted);" id="lastUpdated">Loading...</div>
-      <button id="themeToggle" style="background:transparent; border:1px solid var(--border-color); color:var(--text-main); padding:4px 8px; border-radius:4px; cursor:pointer; font-family:var(--font-ui); font-size:11px;">☀️ Light</button>
-    </div>
+    <button id="themeToggle">☀️ Light</button>
   </div>
 
   <div class="panes-container">
-    <!-- TOP ROW: Time Series Chart -->
     <div class="pane-row top">
       <div class="pane">
-        <div class="pane-header" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <span class="trend-tab active" data-view="daily" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid var(--accent);">Flow History</span>
-            <span class="trend-tab" data-view="cumulative" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid transparent; color: var(--text-muted);">Cumulative (TGE)</span>
-            <small style='color:var(--text-muted); font-weight:normal; margin-left:8px; text-transform:none;'>(Scroll / Pinch to Zoom)</small>
+        <div class="pane-header">
+          <div style="display: flex; gap: 16px;">
+            <span class="trend-tab active" data-view="daily" style="cursor:pointer; border-bottom: 2px solid var(--accent);">Flow History</span>
+            <span class="trend-tab" data-view="cumulative" style="cursor:pointer; color: var(--text-muted);">Cumulative (TGE)</span>
           </div>
         </div>
-        <div class="pane-body">
-          <div style="flex: 1; position: relative; min-height: 0;">
-            <div id="trendChart" style="width:100%; height:100%;"></div>
-          </div>
-        </div>
+        <div class="pane-body"><div id="trendChart" style="flex:1;"></div></div>
       </div>
     </div>
-    
-    <!-- BOTTOM ROW: Table & Sankey -->
     <div class="pane-row">
-      <div class="pane left" style="flex: 0.6;">
-        <div class="pane-header">Exchange Flows Breakdown</div>
-        <div class="pane-body" style="padding:0;">
-          <table id="exchangeTable">
-            <thead>
-              <tr>
-                <th>Exchange</th>
-                <th>Inflow</th>
-                <th>Outflow</th>
-                <th>Net Flow</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+      <div class="pane left" style="flex: 0.7;">
+        <div class="pane-header">Exchange Breakdown</div>
+        <div class="pane-body" style="padding:0;"><table><thead><tr><th>Exchange</th><th>Inflow</th><th>Outflow</th><th>Net</th></tr></thead><tbody id="exchangeTableBody"></tbody></table></div>
       </div>
-      <div class="pane" style="display: flex; flex-direction: column;">
-        <div class="pane-header">Funds Routing (Sankey)</div>
-        <div class="pane-body" id="sankeyWrapper" style="padding:0; overflow:hidden; flex: 1; display: flex; align-items: stretch; justify-content: stretch;">
-          <div id="sankeyChart" style="flex: 1; min-width: 0; min-height: 0;"></div>
-        </div>
+      <div class="pane">
+        <div class="pane-header">Funds Routing</div>
+        <div class="pane-body" style="padding:0; overflow:hidden;"><div id="sankeyChart" style="flex:1;"></div></div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-const DATA_URL = '../data/latest_data.json?v=' + Date.now();
-const DAILY_URL = '../data/daily_summary.json?v=' + Date.now();
-const HISTORY_URL = '../data/history_summary.json?v=' + Date.now();
+const DATA_URL = '../data/latest_data.json?cb=' + Date.now();
+const DAILY_URL = '../data/daily_summary.json?cb=' + Date.now();
+const HISTORY_URL = '../data/history_summary.json?cb=' + Date.now();
 
-let rawData = null;
-let dailyData = null;
-let historyData = null;
-let selectedToken = null;
-let charts = {};
+let rawData, dailyData, historyData, selectedToken;
 let currentTrendView = 'daily';
-let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
-
-// Chart JS Defaults for Terminal
-Chart.defaults.color = '#A1A1AA';
-Chart.defaults.font.family = "'JetBrains Mono', monospace";
-Chart.defaults.scale.grid.color = '#18181B';
-Chart.defaults.scale.grid.borderColor = 'transparent';
-
-function initTrendTabs() {
-  document.querySelectorAll('.trend-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.trend-tab').forEach(t => {
-        t.classList.remove('active');
-        t.style.borderBottomColor = 'transparent';
-        t.style.color = 'var(--text-muted)';
-      });
-      tab.classList.add('active');
-      tab.style.borderBottomColor = 'var(--accent)';
-      tab.style.color = 'var(--text-main)';
-      currentTrendView = tab.dataset.view;
-      if (selectedToken) updateTrendChart(selectedToken);
-    });
-  });
-}
+let isUpdating = false;
 
 function formatNum(n) {
-  if (n === null || n === undefined) return '0';
-  if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + 'B';
-  if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + 'M';
-  if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(2) + 'K';
-  return n.toFixed(2);
+  if (!n || isNaN(n)) return '0.00';
+  const a = Math.abs(n);
+  if (a >= 1e9) return (n/1e9).toFixed(2)+'B';
+  if (a >= 1e6) return (n/1e6).toFixed(2)+'M';
+  if (a >= 1e3) return (n/1e3).toFixed(2)+'K';
+  return n.toLocaleString(undefined, {minimumFractionDigits:2});
 }
 
-function initTheme() {
-  const toggleBtn = document.getElementById('themeToggle');
-  const body = document.body;
+function aggregateRangeData(start, end) {
+  const agg = { exchanges: {} };
+  const sT = start ? start.getTime() : -Infinity;
+  const eT = end ? end.getTime() : Infinity;
+  const sources = [dailyData, historyData].filter(Array.isArray);
   
-  // Check local storage
-  const savedTheme = localStorage.getItem('terminalTheme');
-  if (savedTheme === 'light') {
-    body.classList.add('theme-light');
-    toggleBtn.innerText = '🌙 Dark';
-  }
-  
-  toggleBtn.addEventListener('click', () => {
-    body.classList.toggle('theme-light');
-    const isLight = body.classList.contains('theme-light');
-    localStorage.setItem('terminalTheme', isLight ? 'light' : 'dark');
-    toggleBtn.innerText = isLight ? '🌙 Dark' : '☀️ Light';
-    if (selectedToken) { updateDashboard(); }
-  });
-}
-
-async function init() {
-  initTheme();
-  initTrendTabs();
-  try {
-    const [dRes, dailyRes, hRes] = await Promise.all([
-      fetch(DATA_URL).catch(()=>null),
-      fetch(DAILY_URL).catch(()=>null),
-      fetch(HISTORY_URL).catch(()=>null)
-    ]);
-    if(dRes && dRes.ok) rawData = await dRes.json();
-    if(dailyRes && dailyRes.ok) dailyData = await dailyRes.json();
-    if(hRes && hRes.ok) historyData = await hRes.json();
-    
-    // Pre-calculate cumulative stats for all tokens to fix 0.00 displays
-    if (rawData && rawData.tokens && dailyData) {
-      Object.keys(rawData.tokens).forEach(symbol => {
-        let totalIn = 0, totalOut = 0;
-        dailyData.forEach(day => {
-          const t = day.tokens[symbol];
-          if (t) {
-            totalIn += (t.total_inflow || 0);
-            totalOut += (t.total_outflow || 0);
-          }
+  sources.forEach(src => {
+    src.forEach(day => {
+      const dT = new Date(day.date || day.timestamp).getTime();
+      if (dT >= sT && dT <= eT && day.tokens?.[selectedToken]) {
+        const t = day.tokens[selectedToken];
+        const flows = t.exchanges || {};
+        Object.entries(flows).forEach(([ex, f]) => {
+          if (!agg.exchanges[ex]) agg.exchanges[ex] = { inflow:0, outflow:0, net_flow:0 };
+          agg.exchanges[ex].inflow += (f.inflow || f.in || 0);
+          agg.exchanges[ex].outflow += (f.outflow || f.out || 0);
+          agg.exchanges[ex].net_flow += (f.net_flow || f.net || 0);
         });
-        if (totalIn > rawData.tokens[symbol].total_inflow) {
-          rawData.tokens[symbol].total_inflow = totalIn;
-          rawData.tokens[symbol].total_outflow = totalOut;
-          rawData.tokens[symbol].net_flow = totalIn - totalOut;
-        }
-      });
-    }
-    
-    if(rawData && rawData.metadata) {
-      document.getElementById('lastUpdated').innerText = 'UPDATED: ' + rawData.metadata.last_updated;
-    }
-    
-    renderTokenList();
-    
-    document.getElementById('tokenSearch').addEventListener('input', (e) => {
-      renderTokenList(e.target.value.toLowerCase());
-    });
-    
-  } catch(e) {
-    console.error("Init error", e);
-  }
-}
-
-function renderTokenList(filter = '') {
-  if(!rawData) return;
-  const list = document.getElementById('tokenList');
-  let tokens = Object.keys(rawData.tokens).sort();
-  if(filter) {
-    tokens = tokens.filter(t => t.toLowerCase().includes(filter));
-  }
-  
-  if(!selectedToken && tokens.length > 0) {
-    selectedToken = tokens[0];
-  }
-  
-  list.innerHTML = tokens.map(t => {
-    const d = rawData.tokens[t];
-    const net = d.net_flow || 0;
-    const isPos = net >= 0;
-    const chain = d.deployments[0]?.chain || '';
-    
-    return `<div class="token-item ${t === selectedToken ? 'active' : ''}" data-token="${t}">
-      <div class="token-info">
-        <span class="token-symbol">${t}</span>
-        <span class="token-chain">${chain}</span>
-      </div>
-      <div class="token-net ${isPos ? 'pos' : 'neg'}">
-        ${isPos ? '+' : ''}${formatNum(net)}
-      </div>
-    </div>`;
-  }).join('');
-  
-  // Use a single delegated listener on the list instead of individual listeners that get destroyed
-  list.onclick = (e) => {
-    const item = e.target.closest('.token-item');
-    if (!item) return;
-    
-    const targetToken = item.dataset.token;
-    if (selectedToken === targetToken) return;
-    
-    selectedToken = targetToken;
-    
-    // Update active class manually
-    list.querySelectorAll('.token-item').forEach(el => el.classList.remove('active'));
-    item.classList.add('active');
-    
-    updateDashboard();
-  };
-  
-  updateDashboard();
-}
-
-
-    
-    function aggregateRangeData(start, end) {
-      const aggregated = { exchanges: {} };
-      const startTime = start ? start.getTime() : -Infinity;
-      const endTime = end ? end.getTime() : Infinity;
-      const searchSources = [dailyData, historyData].filter(s => Array.isArray(s));
-      
-      let foundAny = false;
-
-      searchSources.forEach(source => {
-        source.forEach(entry => {
-          const dDate = new Date(entry.date || entry.timestamp);
-          const dTime = dDate.getTime();
-          if (dTime >= startTime && dTime <= endTime && entry.tokens && entry.tokens[selectedToken]) {
-            const t = entry.tokens[selectedToken];
-            const exData = t.exchanges || {};
-            
-            // If the source is historyData, it might use 'deployments'
-            if (t.deployments) {
-              t.deployments.forEach(dep => {
-                Object.entries(dep.exchange_flows || {}).forEach(([ex, flows]) => {
-                  if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
-                  aggregated.exchanges[ex].inflow += (flows.inflow || 0);
-                  aggregated.exchanges[ex].outflow += (flows.outflow || 0);
-                  aggregated.exchanges[ex].net_flow += (flows.net_flow || 0);
-                  foundAny = true;
-                });
-              });
-            } else {
-              Object.entries(exData).forEach(([ex, flows]) => {
-                if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
-                aggregated.exchanges[ex].inflow += (flows.inflow || flows.in || 0);
-                aggregated.exchanges[ex].outflow += (flows.outflow || flows.out || 0);
-                aggregated.exchanges[ex].net_flow += (flows.net_flow || flows.net || 0);
-                foundAny = true;
-              });
-            }
-          }
-        });
-      });
-
-      // LAST RESORT FALLBACK: If range is "All Time" and aggregator found nothing, use the latest snapshot
-      if (!foundAny && (!start || startTime === -Infinity) && rawData.tokens[selectedToken]) {
-        const d = rawData.tokens[selectedToken];
-        if (d.deployments) {
-          d.deployments.forEach(dep => {
-            Object.entries(dep.exchange_flows || {}).forEach(([ex, flows]) => {
-              if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
-              aggregated.exchanges[ex].inflow += (flows.inflow || 0);
-              aggregated.exchanges[ex].outflow += (flows.outflow || 0);
-              aggregated.exchanges[ex].net_flow += (flows.net_flow || 0);
+        if (t.deployments) {
+          t.deployments.forEach(d => {
+            Object.entries(d.exchange_flows || {}).forEach(([ex, f]) => {
+              if (!agg.exchanges[ex]) agg.exchanges[ex] = { inflow:0, outflow:0, net_flow:0 };
+              agg.exchanges[ex].inflow += (f.inflow || 0);
+              agg.exchanges[ex].outflow += (f.outflow || 0);
+              agg.exchanges[ex].net_flow += (f.net_flow || 0);
             });
           });
         }
       }
-
-      return aggregated;
-    }
-    
-
-function updateDashboard() {
-  isUpdatingToken = true;
-  if(!rawData || !selectedToken) return;
-  const d = rawData.tokens[selectedToken];
-  if(!d) return;
-  
-  // Header
-  document.getElementById('headerTitle').innerHTML = `${selectedToken} <span class="badge">${d.deployments ? (d.deployments[0]?.chain || '') : ''}</span>`;
-  document.getElementById('kpiInflow').innerText = formatNum(d.total_inflow);
-  document.getElementById('kpiOutflow').innerText = formatNum(d.total_outflow);
-  
-  const netEl = document.getElementById('kpiNet');
-  netEl.innerText = (d.net_flow >= 0 ? '+' : '') + formatNum(d.net_flow);
-  netEl.className = 'kpi-mini-val ' + (d.net_flow >= 0 ? 'pos' : 'neg');
-  
-  // Initial render with ALL-TIME aggregated data (from start of time)
-  document.getElementById('timeRangeDisplay').style.display = 'none';
-  const fullHistory = aggregateRangeData(null, null);
-  
-  if (Object.keys(fullHistory.exchanges).length > 0) {
-     updateExchangeTable(fullHistory);
-    updateSankey(fullHistory);
-  } else {
-    // Last resort fallback
-    updateExchangeTable(d);
-    updateSankey(d);
-  }
-  
-  updateTrendChart(selectedToken);
+    });
+  });
+  return agg;
 }
 
 function updateExchangeTable(data) {
-  const tbody = document.querySelector('#exchangeTable tbody');
-  let agg = {};
-  
-  if (data.deployments) {
-    data.deployments.forEach(dep => {
-      Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
-        if(!agg[ex]) agg[ex] = {inflow:0, outflow:0, net_flow:0};
-        agg[ex].inflow += (flows.inflow || 0);
-        agg[ex].outflow += (flows.outflow || 0);
-        agg[ex].net_flow += (flows.inflow - flows.outflow);
-      });
-    });
-  } else if (data.exchanges) {
-    agg = data.exchanges;
-  }
-  
-  const sortedEx = Object.entries(agg).sort((a,b) => Math.abs(b[1].net_flow || 0) - Math.abs(a[1].net_flow || 0));
-  
-   tbody.innerHTML = sortedEx.map(([ex, flows]) => {
-    const net = flows.net_flow || 0;
-    const isPos = net >= 0;
-    return `<tr>
-      <td style="font-family:var(--font-ui); font-weight:500;">${ex}</td>
-      <td class="pos">${formatNum(flows.inflow || 0)}</td>
-      <td class="neg">${formatNum(flows.outflow || 0)}</td>
-      <td class="${isPos ? 'pos' : 'neg'}">${isPos ? '+' : ''}${formatNum(net)}</td>
-    </tr>`;
-  }).join('');
-}
-
-function updateTrendChart(token) {
-  let sourceData = dailyData;
-  let hasDataInDaily = dailyData && dailyData.some(d => d.tokens?.[token] && (d.tokens[token].total_inflow > 0 || d.tokens[token].total_outflow > 0));
-  
-  if (!hasDataInDaily && historyData && Array.isArray(historyData)) {
-    sourceData = historyData;
-  }
-
-  if(!sourceData || !Array.isArray(sourceData)) return;
-  
-  let startIndex = 0;
-  for (let i = 0; i < sourceData.length; i++) {
-    const tData = sourceData[i].tokens?.[token];
-    if (tData && (Math.abs(tData.total_inflow) > 0.01 || Math.abs(tData.total_outflow) > 0.01)) {
-      startIndex = i;
-      break;
-    }
-  }
-  
-  const tokenDataList = sourceData.slice(startIndex);
-
-  const dates = [];
-  const inflows = [];
-  const outflows = [];
-  const nets = [];
-  const cumulative = [];
-  let runningNet = 0;
-  
-  tokenDataList.forEach(entry => {
-    const d = entry.date || entry.timestamp; if(!d) return; dates.push(d);
-    const tData = entry.tokens?.[token];
-    const inf = tData ? (tData.total_inflow || 0) : 0;
-    const outf = tData ? (tData.total_outflow || 0) : 0;
-    const net = inf - outf;
-    
-    inflows.push(inf);
-    outflows.push(outf);
-    nets.push(net);
-    
-    runningNet += net;
-    cumulative.push(runningNet);
-  });
-
-  const isLight = document.body.classList.contains('theme-light');
-  const textColor = isLight ? '#71717A' : '#A1A1AA';
-  const gridColor = isLight ? '#E4E4E7' : '#18181B';
-  const inflowColor = isLight ? '#059669' : '#00FFA3';
-  const outflowColor = isLight ? '#DC2626' : '#FF4D4D';
-  const netColor = '#3B82F6';
-
-  const hoverTemp = `<b>%{x}</b><br>%{symbol}: %{y:,.2f}<extra></extra>`;
-
-  let plotTraces = [];
-  
-  if (currentTrendView === 'daily') {
-    plotTraces = [
-      { 
-        x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor },
-        hovertemplate: `<b>%{x}</b><br>Inflow: %{y:.3s}<extra></extra>`
-      },
-      { 
-        x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor },
-        hovertemplate: `<b>%{x}</b><br>Outflow: %{y:.3s}<extra></extra>`
-      },
-      { 
-        x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 },
-        hovertemplate: `<b>%{x}</b><br>Net Flow: %{y:.3s}<extra></extra>`
-      }
-    ];
-  } else {
-    plotTraces = [
-      { 
-        x: dates, y: cumulative, name: 'Cumulative Net Flow', type: 'scatter', mode: 'lines', 
-        fill: 'tozeroy', line: { color: netColor, width: 3 },
-        fillcolor: isLight ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.2)',
-        hovertemplate: `<b>%{x}</b><br>Cumulative: %{y:.3s}<extra></extra>`
-      }
-    ];
-  }
-
-  const layout = {
-    autosize: true, barmode: 'relative', paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
-    font: { family: "'JetBrains Mono', monospace", color: textColor, size: 11 },
-    margin: { l: 60, r: 20, t: 20, b: 20 },
-    legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
-    hovermode: 'x unified',
-    hoverlabel: {
-      bgcolor: isLight ? '#FFFFFF' : '#09090B',
-      bordercolor: isLight ? '#E4E4E7' : '#27272A',
-      font: { family: "'JetBrains Mono', monospace", size: 12, color: isLight ? '#09090B' : '#F4F4F5' }
-    },
-    xaxis: {
-      type: 'date', gridcolor: gridColor, zerolinecolor: gridColor,
-      hoverformat: '%Y-%m-%d %H:%M',
-      rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 },
-      rangeselector: {
-        buttons: [
-          { count: 1, label: '1D', step: 'day', stepmode: 'backward' },
-          { count: 7, label: '1W', step: 'day', stepmode: 'backward' },
-          { count: 1, label: '1M', step: 'month', stepmode: 'backward' },
-          { step: 'all', label: 'ALL' }
-        ],
-        bgcolor: isLight ? '#FFFFFF' : '#18181B', activecolor: isLight ? '#E4E4E7' : '#27272A'
-      }
-    },
-    yaxis: { gridcolor: gridColor, zerolinecolor: gridColor, tickformat: '.2s', autorange: true, fixedrange: false },
-    transition: { duration: 0 }
-  };
-
-  const chartDiv = document.getElementById('trendChart');
-  chartDiv.innerHTML = ''; 
-  Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true});
-  setTimeout(() => { isUpdatingToken = false; }, 100);
-  
-  // Reset scroll position of token list item into view if needed
-  const activeItem = document.querySelector('.token-item.active');
-  if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-
-  // Dynamic Scaling & Sync Logic
-  const currentInstanceToken = selectedToken;
-  chartDiv.on('plotly_relayout', function(eventData) {
-    if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
-    if (isUpdatingToken) return;
-    let start, end;
-    if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
-      start = new Date(eventData['xaxis.range[0]']);
-      end = new Date(eventData['xaxis.range[1]']);
-    } else if (eventData['xaxis.autorange']) {
-      Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
-      document.getElementById('timeRangeDisplay').style.display = 'none';
-      updateExchangeTable(rawData.tokens[selectedToken]);
-      updateSankey(rawData.tokens[selectedToken]);
-      return;
-    } else { return; }
-
-    // Update Time Range Display
-    const rangeDisplay = document.getElementById('timeRangeDisplay');
-    const fmt = d => d.toISOString().split('T')[0];
-    rangeDisplay.innerText = `${fmt(start)} → ${fmt(end)}`;
-    rangeDisplay.style.display = 'block';
-
-        // 1. Sync Table & Sankey
-    const aggregated = { exchanges: {} };
-    const searchSources = [dailyData, historyData].filter(s => Array.isArray(s));
-    
-    const startTime = start.getTime();
-    const endTime = end.getTime();
-
-    searchSources.forEach(source => {
-      source.forEach(day => {
-        const dDate = new Date(day.date || day.timestamp);
-        const dTime = dDate.getTime();
-        
-        if (dTime >= startTime && dTime <= endTime && day.tokens[selectedToken]) {
-          const t = day.tokens[selectedToken];
-          const exData = t.exchanges || {}; 
-          // If no .exchanges, check if it's from historyData which has no exchange breakdown
-          // but we prioritize showing what we have.
-          Object.entries(exData).forEach(([ex, flows]) => {
-            if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
-            aggregated.exchanges[ex].in += (flows.inflow || flows.in || 0);
-            aggregated.exchanges[ex].out += (flows.outflow || flows.out || 0);
-            aggregated.exchanges[ex].net += (flows.net_flow || flows.net || 0);
-          });
-        }
-      });
-    });
-
-    // 2. Dynamic Y-axis
-    const visibleInflows = [], visibleOutflows = [], visibleNets = [], visibleCums = [];
-    dates.forEach((d, i) => {
-      const date = new Date(d);
-      if (date >= start && date <= end) {
-        visibleInflows.push(inflows[i] || 0);
-        visibleOutflows.push(outflows[i] || 0);
-        visibleNets.push(nets[i] || 0);
-        visibleCums.push(cumulative[i] || 0);
-      }
-    });
-
-    if (visibleInflows.length > 0) {
-      let maxVal, minVal;
-      if (currentTrendView === 'daily') {
-        maxVal = Math.max(...visibleInflows, ...visibleNets);
-        minVal = Math.min(...visibleOutflows.map(v => -v), ...visibleNets);
-      } else {
-        maxVal = Math.max(...visibleCums);
-        minVal = Math.min(...visibleCums);
-      }
-      const span = maxVal - minVal;
-      const padding = span === 0 ? 1 : span * 0.15;
-      Plotly.relayout(chartDiv, { 'yaxis.range': [minVal - padding, maxVal + padding], 'yaxis.autorange': false });
-    }
-  });
+  const b = document.getElementById('exchangeTableBody');
+  const agg = data.exchanges || {};
+  const sorted = Object.entries(agg).sort((a,b) => Math.abs(b[1].net_flow) - Math.abs(a[1].net_flow));
+  b.innerHTML = sorted.map(([ex, f]) => `<tr>
+    <td>${ex}</td><td class="pos">${formatNum(f.inflow)}</td><td class="neg">${formatNum(f.outflow)}</td>
+    <td class="${f.net_flow>=0?'pos':'neg'}">${f.net_flow>=0?'+':''}${formatNum(f.net_flow)}</td>
+  </tr>`).join('');
 }
 
 function updateSankey(data) {
-  const isLight = document.body.classList.contains('theme-light');
-  const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
-  const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
-
-  const nodeLabels = [selectedToken];
-  const nodeColors = ['#3B82F6'];
-  const linkSources = [];
-  const linkTargets = [];
-  const linkValues = [];
-  const linkColors = [];
+  const div = document.getElementById('sankeyChart');
+  const isL = document.body.classList.contains('theme-light');
+  const agg = data.exchanges || {};
+  const nodes = [selectedToken], sources=[], targets=[], values=[], colors=[];
   
-  let nodeIdx = 1;
+  Object.entries(agg).forEach(([ex, f]) => {
+    if (Math.abs(f.inflow) > 0 || Math.abs(f.outflow) > 0) {
+      nodes.push(ex);
+      const idx = nodes.length - 1;
+      if (f.inflow > 0) { sources.push(idx); targets.push(0); values.push(f.inflow); colors.push('rgba(5,150,105,0.4)'); }
+      if (f.outflow > 0) { sources.push(0); targets.push(idx); values.push(f.outflow); colors.push('rgba(220,38,38,0.4)'); }
+    }
+  });
 
-  if (data.deployments) {
-    data.deployments.forEach(dep => {
-      Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
-        nodeLabels.push(ex);
-        nodeColors.push(sankeyNodeColor);
-        if(flows.inflow > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(flows.inflow); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
-        if(flows.outflow > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(flows.outflow); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
-        nodeIdx++;
-      });
-    });
-  } else if (data.exchanges) {
-    Object.entries(data.exchanges).forEach(([ex, flows]) => {
-      nodeLabels.push(ex);
-      nodeColors.push(sankeyNodeColor);
-      const inf = flows.inflow || 0;
-      const outf = flows.outflow || 0;
-      if(inf > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(inf); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
-      if(outf > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(outf); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
-      nodeIdx++;
-    });
-  }
-
-  if(linkValues.length === 0) {
-    Plotly.purge('sankeyChart');
-    document.getElementById('sankeyChart').innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available for this range</div>`;
-    return;
-  }
-
+  if (!values.length) { div.innerHTML = '<div style="padding:20px;text-align:center;">No flow data</div>'; return; }
+  
   const plotData = [{
     type: 'sankey', orientation: 'h',
-    node: { pad: 80, thickness: 12, line: { color: 'transparent', width: 0 }, label: nodeLabels, color: nodeColors },
-    link: { source: linkSources, target: linkTargets, value: linkValues, color: linkColors }
+    node: { pad: Math.max(20, 300/nodes.length), thickness: 12, label: nodes, color: nodes.map((_,i)=>i==0?'#3B82F6':(isL?'#E4E4E7':'#27272A')) },
+    link: { source: sources, target: targets, value: values, color: colors }
   }];
-
   const layout = {
-    autosize: true, font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
+    autosize: true, height: Math.max(300, Math.min(500, nodes.length*35)),
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
-    margin: { l: 40, r: 40, t: 60, b: 60 },
-    height: Math.max(300, Math.min(600, nodeIdx * 40)),
-    transition: { duration: 0 }
+    font: { color: isL?'#71717A':'#A1A1AA', size: 11 }, margin: { l:40, r:40, t:20, b:20 }
   };
-
-  document.getElementById('sankeyChart').innerHTML = ''; 
-  Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true});
-  setTimeout(() => Plotly.Plots.resize('sankeyChart'), 500);
+  Plotly.react(div, plotData, layout, {displayModeBar: false, responsive: true});
 }
 
-// Ensure both charts resize correctly
-window.addEventListener('resize', () => {
-  if (document.getElementById('sankeyChart').data) Plotly.Plots.resize('sankeyChart');
-  if (document.getElementById('trendChart').data) Plotly.Plots.resize('trendChart');
-});
+function updateTrendChart(token) {
+  const sources = [dailyData, historyData].filter(Array.isArray);
+  let master = [];
+  sources.forEach(s => {
+    s.forEach(day => {
+      if (day.tokens?.[token]) master.push(day);
+    });
+  });
+  master.sort((a,b) => new Date(a.date||a.timestamp) - new Date(b.date||b.timestamp));
+  
+  // Find first data point
+  let startIdx = master.findIndex(d => (d.tokens[token].total_inflow || 0) > 0 || (d.tokens[token].total_outflow || 0) > 0);
+  if (startIdx === -1) startIdx = 0;
+  const filtered = master.slice(startIdx);
 
+  const dates = filtered.map(d => d.date || d.timestamp);
+  const inflows = filtered.map(d => d.tokens[token].total_inflow || 0);
+  const outflows = filtered.map(d => d.tokens[token].total_outflow || 0);
+  const nets = filtered.map(d => (d.tokens[token].total_inflow||0) - (d.tokens[token].total_outflow||0));
+  
+  let cum = 0;
+  const cumulative = nets.map(n => cum += n);
+
+  const isL = document.body.classList.contains('theme-light');
+  const traces = currentTrendView === 'daily' ? [
+    { x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: isL?'#059669':'#00FFA3' }, hovertemplate: '%{y:.3s}<extra></extra>' },
+    { x: dates, y: outflows.map(v=>-v), name: 'Outflow', type: 'bar', marker: { color: isL?'#DC2626':'#FF4D4D' }, hovertemplate: '%{y:.3s}<extra></extra>' },
+    { x: dates, y: nets, name: 'Net', type: 'scatter', mode: 'lines', line: { color: '#3B82F6', width: 2 } }
+  ] : [
+    { x: dates, y: cumulative, name: 'Cumulative', type: 'scatter', mode: 'lines', fill: 'tozeroy', line: { color: '#3B82F6', width: 3 } }
+  ];
+
+  const layout = {
+    autosize: true, barmode: 'relative', paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
+    font: { family: 'JetBrains Mono', color: isL?'#71717A':'#A1A1AA', size: 11 },
+    margin: { l:60, r:20, t:20, b:20 }, hovermode: 'x unified',
+    xaxis: { type: 'date', rangeslider: { visible: true, thickness: 0.05 }, rangeselector: { buttons: [ {count:7, label:'1W', step:'day'}, {count:1, label:'1M', step:'month'}, {step:'all', label:'ALL'} ] } },
+    yaxis: { autorange: true, fixedrange: false, tickformat: '.2s', gridcolor: isL?'#E4E4E7':'#18181B' }
+  };
+
+  const div = document.getElementById('trendChart');
+  Plotly.react(div, traces, layout, {displayModeBar: false, responsive: true});
+
+  div.on('plotly_relayout', (ed) => {
+    if (isUpdating) return;
+    let s, e;
+    if (ed['xaxis.range[0]']) { s = new Date(ed['xaxis.range[0]']); e = new Date(ed['xaxis.range[1]']); }
+    else { s = null; e = null; }
+    
+    if (s) {
+      document.getElementById('timeRangeDisplay').innerText = s.toISOString().split('T')[0] + ' - ' + e.toISOString().split('T')[0];
+      document.getElementById('timeRangeDisplay').style.display = 'block';
+    } else {
+      document.getElementById('timeRangeDisplay').style.display = 'none';
+    }
+    
+    const agg = aggregateRangeData(s, e);
+    updateExchangeTable(agg);
+    updateSankey(agg);
+    
+    // Auto-scale Y
+    if (s) {
+      const vis = filtered.filter(d => { const t = new Date(d.date||d.timestamp); return t >= s && t <= e; });
+      if (vis.length) {
+        const vals = currentTrendView === 'daily' ? 
+          vis.flatMap(d => [d.tokens[token].total_inflow, -(d.tokens[token].total_outflow||0)]) :
+          filtered.map((d,i) => ({t:new Date(d.date||d.timestamp), v:cumulative[i]})).filter(x => x.t >= s && x.t <= e).map(x=>x.v);
+        const max = Math.max(...vals), min = Math.min(...vals), pad = (max-min)*0.1;
+        Plotly.relayout(div, { 'yaxis.range': [min-pad, max+pad] });
+      }
+    }
+  });
+}
+
+function updateDashboard() {
+  if (!selectedToken || !rawData) return;
+  isUpdating = true;
+  const d = rawData.tokens[selectedToken];
+  document.getElementById('headerTitle').innerText = selectedToken;
+  document.getElementById('kpiInflow').innerText = formatNum(d.total_inflow);
+  document.getElementById('kpiOutflow').innerText = formatNum(d.total_outflow);
+  document.getElementById('kpiNet').innerText = formatNum(d.net_flow);
+  
+  const full = aggregateRangeData(null, null);
+  updateExchangeTable(full);
+  updateSankey(full);
+  updateTrendChart(selectedToken);
+  setTimeout(() => isUpdating = false, 500);
+}
+
+function renderTokenList(f = '') {
+  const l = document.getElementById('tokenList');
+  const toks = Object.keys(rawData.tokens).sort().filter(t => t.toLowerCase().includes(f.toLowerCase()));
+  l.innerHTML = toks.map(t => `<div class="token-item ${t==selectedToken?'active':''}" data-token="${t}">
+    <span class="token-symbol">${t}</span>
+    <span class="token-net ${rawData.tokens[t].net_flow>=0?'pos':'neg'}">${formatNum(rawData.tokens[t].net_flow)}</span>
+  </div>`).join('');
+  l.onclick = (e) => {
+    const i = e.target.closest('.token-item');
+    if (i) { selectedToken = i.dataset.token; renderTokenList(f); updateDashboard(); }
+  };
+  if (!selectedToken && toks.length) { selectedToken = toks[0]; updateDashboard(); }
+}
+
+async function init() {
+  const body = document.body;
+  if (localStorage.getItem('theme') === 'light') body.classList.add('theme-light');
+  document.getElementById('themeToggle').onclick = () => {
+    body.classList.toggle('theme-light');
+    localStorage.setItem('theme', body.classList.contains('theme-light') ? 'light' : 'dark');
+    updateDashboard();
+  };
+  
+  document.querySelectorAll('.trend-tab').forEach(t => t.onclick = () => {
+    document.querySelectorAll('.trend-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentTrendView = t.dataset.view;
+    updateTrendChart(selectedToken);
+  });
+
+  const [r, d, h] = await Promise.all([ fetch(DATA_URL), fetch(DAILY_URL), fetch(HISTORY_URL) ].map(p => p.then(res => res.json()).catch(()=>null)));
+  rawData = r; dailyData = d; historyData = h;
+  renderTokenList();
+  document.getElementById('tokenSearch').oninput = (e) => renderTokenList(e.target.value);
+}
 
 init();
 </script>
