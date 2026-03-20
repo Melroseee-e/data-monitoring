@@ -547,7 +547,7 @@ function updateTrendChart(token) {
   let startIndex = 0;
   for (let i = 0; i < sourceData.length; i++) {
     const tData = sourceData[i].tokens?.[token];
-    if (tData && (tData.total_inflow > 0 || tData.total_outflow > 0)) {
+    if (tData && (Math.abs(tData.total_inflow) > 0.01 || Math.abs(tData.total_outflow) > 0.01)) {
       startIndex = i;
       break;
     }
@@ -666,31 +666,32 @@ function updateTrendChart(token) {
     rangeDisplay.innerText = `${fmt(start)} → ${fmt(end)}`;
     rangeDisplay.style.display = 'block';
 
-    // 1. Sync Table & Sankey
+        // 1. Sync Table & Sankey
     const aggregated = { exchanges: {} };
     const searchSources = [dailyData, historyData].filter(s => Array.isArray(s));
     
+    const startTime = start.getTime();
+    const endTime = end.getTime();
+
     searchSources.forEach(source => {
       source.forEach(day => {
         const dDate = new Date(day.date || day.timestamp);
-        if (dDate >= start && dDate <= end && day.tokens[selectedToken]) {
+        const dTime = dDate.getTime();
+        
+        if (dTime >= startTime && dTime <= endTime && day.tokens[selectedToken]) {
           const t = day.tokens[selectedToken];
-          if (t.exchanges) {
-            Object.entries(t.exchanges).forEach(([ex, flows]) => {
-              if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
-              aggregated.exchanges[ex].in += (flows.in || flows.total_inflow || 0);
-              aggregated.exchanges[ex].out += (flows.out || flows.total_outflow || 0);
-              aggregated.exchanges[ex].net += (flows.net || flows.net_flow || 0);
-            });
-          }
+          const exData = t.exchanges || {}; 
+          // If no .exchanges, check if it's from historyData which has no exchange breakdown
+          // but we prioritize showing what we have.
+          Object.entries(exData).forEach(([ex, flows]) => {
+            if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
+            aggregated.exchanges[ex].in += (flows.inflow || flows.in || 0);
+            aggregated.exchanges[ex].out += (flows.outflow || flows.out || 0);
+            aggregated.exchanges[ex].net += (flows.net_flow || flows.net || 0);
+          });
         }
       });
     });
-    
-    if (Object.keys(aggregated.exchanges).length > 0) {
-      updateExchangeTable(aggregated);
-      updateSankey(aggregated);
-    }
 
     // 2. Dynamic Y-axis
     const visibleInflows = [], visibleOutflows = [], visibleNets = [], visibleCums = [];
