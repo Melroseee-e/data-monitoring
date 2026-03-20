@@ -446,12 +446,35 @@ function updateDashboard() {
   netEl.innerText = (d.net_flow >= 0 ? '+' : '') + formatNum(d.net_flow);
   netEl.className = 'kpi-mini-val ' + (d.net_flow >= 0 ? 'pos' : 'neg');
   
-  // Initial render with cumulative data
+    // Initial render with cumulative data
   // Clear old state displays
   document.getElementById('timeRangeDisplay').style.display = 'none';
   
-  updateExchangeTable(d);
-  updateSankey(d);
+  // Aggregate ALL historical exchange data for the initial view
+  const aggregated = { exchanges: {} };
+  const sources = [dailyData, historyData].filter(s => Array.isArray(s));
+  sources.forEach(src => {
+    src.forEach(day => {
+      const t = day.tokens[selectedToken];
+      if (t && t.exchanges) {
+        Object.entries(t.exchanges).forEach(([ex, flows]) => {
+          if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
+          aggregated.exchanges[ex].in += (flows.in || flows.total_inflow || 0);
+          aggregated.exchanges[ex].out += (flows.out || flows.total_outflow || 0);
+          aggregated.exchanges[ex].net += (flows.net || flows.net_flow || 0);
+        });
+      }
+    });
+  });
+
+  if (Object.keys(aggregated.exchanges).length > 0) {
+    updateExchangeTable(aggregated);
+    updateSankey(aggregated);
+  } else {
+    updateExchangeTable(d);
+    updateSankey(d);
+  }
+  
   updateTrendChart(selectedToken);
 }
 
