@@ -639,7 +639,8 @@ function updateTrendChart(token) {
         bgcolor: isLight ? '#FFFFFF' : '#18181B', activecolor: isLight ? '#E4E4E7' : '#27272A'
       }
     },
-    yaxis: { gridcolor: gridColor, zerolinecolor: gridColor, tickformat: '.2s', autorange: true, fixedrange: false }
+    yaxis: { gridcolor: gridColor, zerolinecolor: gridColor, tickformat: '.2s', autorange: true, fixedrange: false },
+    transition: { duration: 0 }
   };
 
   const chartDiv = document.getElementById('trendChart');
@@ -779,10 +780,12 @@ function updateSankey(data) {
     paper_bgcolor: 'transparent', 
     plot_bgcolor: 'transparent',
     margin: { l: 40, r: 40, t: 60, b: 60 },
-    height: Math.max(300, Math.min(600, nodeIdx * 40)) // Dynamic height
+    height: Math.max(300, Math.min(600, nodeIdx * 40)), // Dynamic height
+    transition: { duration: 0 }
   };
 
-  document.getElementById('sankeyChart').innerHTML = '<div style="padding:20px;text-align:center;">Loading Routing Data...</div>'; 
+  // Skip clearing innerHTML if we want instant update
+  // document.getElementById('sankeyChart').innerHTML = ''; 
   Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true}); setTimeout(() => Plotly.Plots.resize('sankeyChart'), 500);
 }
 
