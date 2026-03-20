@@ -165,9 +165,12 @@
   .pane-body {
     flex: 1;
     padding: 16px;
-    overflow-y: auto;
     background: var(--bg-base);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
   }
 
   /* UTILS */
@@ -228,7 +231,9 @@
           <span>Flow History (All Time) <small style='color:var(--text-muted); font-weight:normal; margin-left:8px;'>(Scroll / Pinch to Zoom)</small></span>
         </div>
         <div class="pane-body">
-          <canvas id="trendChart"></canvas>
+          <div style="flex: 1; position: relative; min-height: 0;">
+            <canvas id="trendChart"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -253,8 +258,8 @@
       </div>
       <div class="pane">
         <div class="pane-header">Funds Routing (Sankey)</div>
-        <div class="pane-body" id="sankeyWrapper" style="padding:0;">
-          <div id="sankeyChart" style="width:100%; height:100%;"></div>
+        <div class="pane-body" id="sankeyWrapper" style="padding:0; overflow:hidden;">
+          <div id="sankeyChart" style="flex: 1; min-height: 0; width: 100%;"></div>
         </div>
       </div>
     </div>
@@ -565,13 +570,20 @@ function updateSankey(data) {
   }];
 
   const layout = {
+    autosize: true,
     font: { size: 11, color: '#A1A1AA', family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent',
     margin: { l: 20, r: 20, t: 20, b: 20 }
   };
 
+  document.getElementById('sankeyChart').innerHTML = ''; // Clear empty state text
   Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true});
+  
+  // Ensure it resizes correctly
+  window.addEventListener('resize', () => {
+    Plotly.Plots.resize('sankeyChart');
+  });
 }
 
 init();
