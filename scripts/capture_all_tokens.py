@@ -2,7 +2,6 @@ import os
 import sys
 from pathlib import Path
 import time
-import subprocess
 
 os.environ['PLAYWRIGHT_PYTHON_DISABLE_ASYNC_CHECK'] = '1'
 from playwright.sync_api import sync_playwright
@@ -16,8 +15,9 @@ def capture_all_tokens():
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(viewport={'width': 1920, 'height': 1080})
         page = context.new_page()
+        page.on("console", lambda msg: print(f"Browser Console: {msg.text}"))
 
-        print("🌐 Loading http://localhost:8899/web/terminal.html ...")
+        print(f"🌐 Loading http://localhost:8899/web/terminal.html ...")
         page.goto("http://localhost:8899/web/terminal.html", wait_until='networkidle')
         page.wait_for_timeout(3000)
 
@@ -26,20 +26,14 @@ def capture_all_tokens():
         print(f"Found {len(token_elements)} tokens.")
 
         for i in range(len(token_elements)):
-            # Re-fetch elements to avoid stale references
             tokens = page.query_selector_all('.token-item')
-            if i >= len(tokens):
-                break
-                
+            if i >= len(tokens): break
             token = tokens[i]
             token_name = token.get_attribute('data-token')
             print(f"📸 Capturing {token_name} ...")
-            
             token.click()
-            page.wait_for_timeout(1500) # Wait for chart to render
-            
-            screenshot_path = SCREENSHOT_DIR / f"{token_name}.png"
-            page.screenshot(path=str(screenshot_path))
+            page.wait_for_timeout(2000) 
+            page.screenshot(path=str(SCREENSHOT_DIR / f"{token_name}.png"))
             
         print("✅ Done!")
         browser.close()

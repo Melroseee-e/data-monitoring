@@ -1,0 +1,280 @@
+{
+  "report_metadata": {
+    "generated_at": "2026-03-18T01:56:03Z",
+    "research_agent": "Research Agent",
+    "project": "PUMP Token Research - Phase 7",
+    "methodology": "Exa Deep Research + Web Search + Official Source Verification"
+  },
+
+  "executive_summary": {
+    "verification_status": "PARTIALLY VERIFIED",
+    "confidence_level": "MEDIUM-HIGH",
+    "key_findings": [
+      "Buyback wallet 3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi confirmed with high confidence",
+      "Team allocation (20%, 200B) and vesting schedule verified from multiple sources",
+      "No official vesting contract addresses found on Solana blockchain",
+      "Team wallet 77DsB confirmed with selling activity (~$7.2M sold)",
+      "Kraken 11.2B deposit verified, Bitget 1.757B deposit NOT verified",
+      "Treasury wallet G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm mentioned but not verified"
+    ],
+    "data_gaps": [
+      "No official whitepaper or documentation found on pump.fun website",
+      "No public vesting smart contract addresses",
+      "Limited official announcements about wallet addresses",
+      "Bitget 1.757B deposit claim could not be verified"
+    ]
+  },
+
+  "exa_research_findings": {
+    "topic_1_buyback_mechanism": {
+      "confidence": "HIGH",
+      "key_findings": {
+        "buyback_wallet": "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+        "mechanism": "100% of daily platform revenue allocated to buybacks",
+        "frequency": "Daily automatic buybacks",
+        "cumulative_amount": "$310-328M (as of March 2026)",
+        "supply_removed": "27.10-29.52% of circulating supply",
+        "weekly_buyback_amount": "$8-9.19M",
+        "token_disposition": "Burned (permanently removed from circulation)"
+      },
+      "sources": [
+        "https://cryptorank.io/news/feed/5bb97-pump-fun-token-buyback-analysis-2",
+        "https://tokenomics.com/articles/pumpfun-tokenomics-how-pump-distributes-45m-monthly-to-holders",
+        "https://solscan.io/account/3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+        "https://www.dune.com/asxn_research/pump-buybacks",
+        "https://www.panewslab.com/en/articles/019cb152-6135-7119-b2d7-5392395dcecd"
+      ],
+      "verification_notes": "Multiple independent sources confirm the buyback wallet address and mechanism. Dune Analytics dashboard tracks buybacks in real-time."
+    },
+
+    "topic_2_team_wallets": {
+      "confidence": "MEDIUM-HIGH",
+      "key_findings": {
+        "team_allocation": "20% (200B PUMP)",
+        "vesting_schedule": "12-month cliff, then 25% unlock, followed by 36-month linear vesting",
+        "cliff_date": "2026-07-12 (12 months after TGE 2025-07-12)",
+        "team_linked_wallet": "77DsB... (starts with 77DsB)",
+        "full_address_candidates": [
+          "77DsBxxx... (multiple sources reference this prefix)"
+        ],
+        "selling_activity": {
+          "total_sold": "3.376B PUMP (~$7.2M)",
+          "transactions": [
+            "2.07B PUMP sold for $4.55M (Feb 19, 2026)",
+            "543.23M PUMP sold for $1.2M (Feb 17, 2026)",
+            "Additional 833M PUMP sold (Feb 21, 2026)"
+          ],
+          "remaining_balance": "373.49M PUMP (~$788K as of Feb 21, 2026)"
+        },
+        "original_allocation": "3.75B PUMP received from Token Custodian (July 2025)"
+      },
+      "sources": [
+        "https://cryptorank.io/news/feed/55bfb-pump-fun-team-token-sale",
+        "https://blockchain.news/flashnews/wallet-linked-to-pumpfun-sells-3-376b-pump-for-usdc",
+        "https://www.kucoin.com/news/flash/pump-fun-team-linked-address-sells-543-23m-pump-tokens-worth-over-1-2m",
+        "https://www.bee.com/38130.html",
+        "https://token.unlocks.app/pump-fun",
+        "https://dropstab.com/coins/pump-fun/vesting"
+      ],
+      "verification_notes": "Team wallet 77DsB confirmed by multiple blockchain analytics firms (Onchain Lens, Lookonchain). Selling activity tracked on-chain. However, full address not consistently reported."
+    },
+
+    "topic_3_vesting_contracts": {
+      "confidence": "LOW",
+      "key_findings": {
+        "smart_contract_addresses": "NONE FOUND",
+        "vesting_mechanism": "Time-based vesting (reported by third-party trackers)",
+        "team_vesting": "12-month cliff + 36-month linear (200B PUMP)",
+        "investor_vesting": "12-month cliff + 36-month linear (130B PUMP)",
+        "community_vesting": "50% at TGE, 12-month linear (240B PUMP)",
+        "tge_date": "2025-07-12",
+        "next_major_unlock": "2026-07-12 (team & investor cliff ends)"
+      },
+      "sources": [
+        "https://dropstab.com/coins/pump-fun/vesting",
+        "https://web3.bitget.com/en/academy/pump-token-unlock-schedule-key-dates-vesting-periods-and-price-impact",
+        "https://audit.tokenomics.com/tokenomics/pump-fun"
+      ],
+      "verification_notes": "No public vesting smart contract addresses found. Vesting schedules reported by third-party analytics platforms (DropsTab, Tokenomist, Bitget) but not verifiable on-chain. This is unusual for a major token launch."
+    },
+
+    "topic_4_whale_addresses": {
+      "confidence": "MEDIUM",
+      "key_findings": {
+        "whale_concentration": "60% of tokens held by whales (top 340 buyers)",
+        "notable_transfers": [
+          {
+            "amount": "11.2B PUMP ($21.22M)",
+            "destination": "Kraken",
+            "source_wallet": "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN",
+            "date": "February 26, 2026",
+            "purpose": "Likely vesting distribution",
+            "verification": "CONFIRMED by multiple sources"
+          },
+          {
+            "amount": "13B PUMP ($74.24M)",
+            "destination": "Kraken",
+            "source": "pump.fun official wallet",
+            "date": "September 11, 2025",
+            "purpose": "Liquidity addition",
+            "verification": "CONFIRMED"
+          },
+          {
+            "amount": "2.5B PUMP ($9.19M)",
+            "destination": "OKX",
+            "source": "pumpdotfun distribution wallet",
+            "date": "August 18, 2025",
+            "verification": "CONFIRMED"
+          }
+        ],
+        "bitget_deposit_claim": {
+          "amount": "1.757B PUMP",
+          "verification": "NOT FOUND",
+          "notes": "No credible sources found for this specific deposit amount"
+        }
+      },
+      "sources": [
+        "https://blockchain.news/flashnews/massive-13b-pump-74-24m-deposit-to-kraken-by-pump-fun-signals-added-liquidity-on-chain-data-shows",
+        "https://bitcoinworld.co.in/pump-token-kraken-deposit-analysis/",
+        "https://cryptoadventure.com/pump-fun-linked-wallet-sends-11-2b-pump-to-kraken-as-vesting-talk-spreads/",
+        "https://research.nansen.ai/articles/the-pump-fun-ico"
+      ],
+      "verification_notes": "Kraken 11.2B deposit verified by Onchain Lens, AmberCN, and Lookonchain. Bitget 1.757B deposit NOT verified - no credible sources found."
+    }
+  },
+
+  "twitter_verification": {
+    "official_account": "@pumpdotfun",
+    "verified_announcements": [
+      {
+        "topic": "Buyback Program",
+        "findings": "Weekly buyback announcements confirmed",
+        "example": "$9.19M buyback announced (March 3, 2026)",
+        "confidence": "HIGH"
+      },
+      {
+        "topic": "Automated Buyback System",
+        "findings": "New AI agent buyback system launched (March 14, 2026)",
+        "confidence": "HIGH"
+      },
+      {
+        "topic": "Team Wallet Addresses",
+        "findings": "No official announcements found disclosing team wallet addresses",
+        "confidence": "N/A"
+      },
+      {
+        "topic": "Vesting Schedule",
+        "findings": "Tokenomics announced July 9, 2025, but no specific wallet addresses disclosed",
+        "confidence": "MEDIUM"
+      }
+    ],
+    "wallet_addresses_mentioned": [
+      "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi (buyback wallet - community identified)"
+    ],
+    "notes": "Official Twitter account focuses on product announcements and buyback statistics. Does not publicly disclose team or treasury wallet addresses."
+  },
+
+  "official_website_research": {
+    "website": "https://pump.fun",
+    "findings": {
+      "whitepaper": "NOT FOUND",
+      "documentation": "Minimal - only basic platform usage guides",
+      "tokenomics_page": "NOT FOUND on main website",
+      "wallet_addresses": "NOT DISCLOSED",
+      "blog_posts": "Limited content, no detailed tokenomics documentation"
+    },
+    "available_resources": [
+      "Privacy policy",
+      "Terms of service",
+      "Fees page",
+      "Revenue page",
+      "Tech updates page"
+    ],
+    "notes": "Pump.fun website is primarily a token launchpad interface. No comprehensive tokenomics documentation or official wallet address disclosures found."
+  },
+
+  "cross_verification": {
+    "total_supply": {
+      "claimed": "1,000,000,000,000 PUMP",
+      "verified": "CONFIRMED by multiple sources",
+      "confidence": "HIGH"
+    },
+    "team_allocation": {
+      "claimed": "20% (200B PUMP)",
+      "verified": "CONFIRMED by DropsTab, Tokenomist, Bitget, Audit.Tokenomics",
+      "confidence": "HIGH"
+    },
+    "investor_allocation": {
+      "claimed": "13% (130B PUMP)",
+      "verified": "CONFIRMED by multiple sources",
+      "confidence": "HIGH"
+    },
+    "tge_date": {
+      "claimed": "2025-07-12",
+      "verified": "CONFIRMED",
+      "confidence": "HIGH"
+    },
+    "team_cliff": {
+      "claimed": "12 months (unlock 2026-07-12)",
+      "verified": "CONFIRMED by vesting trackers",
+      "confidence": "HIGH"
+    },
+    "buyback_wallet": {
+      "claimed": "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+      "verified": "CONFIRMED by Dune Analytics, Solscan, multiple news sources",
+      "confidence": "HIGH"
+    },
+    "treasury_wallet": {
+      "claimed": "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm",
+      "verified": "NOT VERIFIED - no sources found",
+      "confidence": "LOW"
+    }
+  },
+
+  "discrepancies_and_concerns": [
+    {
+      "issue": "No Public Vesting Contracts",
+      "severity": "MEDIUM",
+      "description": "Despite claims of time-based vesting, no smart contract addresses are publicly disclosed or verifiable on Solana blockchain",
+      "implications": "Cannot independently verify vesting enforcement"
+    },
+    {
+      "issue": "Team Wallet Selling Activity",
+      "severity": "MEDIUM",
+      "description": "Team-linked wallet 77DsB sold $7.2M worth of PUMP before cliff unlock date",
+      "implications": "Suggests tokens may not be fully locked or wallet may not be subject to vesting"
+    },
+    {
+      "issue": "Limited Official Documentation",
+      "severity": "LOW",
+      "description": "No whitepaper, detailed tokenomics page, or official wallet address disclosures",
+      "implications": "Reliance on third-party analytics for verification"
+    },
+    {
+      "issue": "Bitget Deposit Unverified",
+      "severity": "LOW",
+      "description": "Claimed 1.757B PUMP deposit to Bitget could not be verified",
+      "implications": "May be misinformation or misreported amount"
+    }
+  ],
+
+  "confidence_scores": {
+    "buyback_mechanism": 0.95,
+    "buyback_wallet_address": 0.95,
+    "team_allocation_percentage": 0.90,
+    "vesting_schedule_timeline": 0.85,
+    "team_wallet_identification": 0.75,
+    "vesting_contract_addresses": 0.10,
+    "treasury_wallet_address": 0.20,
+    "whale_transfer_events": 0.85,
+    "overall_verification": 0.70
+  },
+
+  "recommendations": [
+    "Request official disclosure of vesting contract addresses from pump.fun team",
+    "Monitor team wallet 77DsB for continued selling activity",
+    "Verify treasury wallet G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm through on-chain analysis",
+    "Cross-reference whale addresses with exchange deposit addresses",
+    "Track upcoming July 12, 2026 cliff unlock event for team and investor tokens"
+  ]
+}

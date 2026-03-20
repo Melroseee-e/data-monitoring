@@ -678,7 +678,6 @@ function updateTrendChart(token) {
   const currentInstanceToken = selectedToken;
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
-    if (isUpdatingToken) return;
     let start, end;
     if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
       start = new Date(eventData['xaxis.range[0]']);
@@ -698,32 +697,10 @@ function updateTrendChart(token) {
     rangeDisplay.innerText = `${fmt(start)} → ${fmt(end)}`;
     rangeDisplay.style.display = 'block';
 
-        // 1. Sync Table & Sankey
-    const aggregated = { exchanges: {} };
-    const searchSources = [dailyData, historyData].filter(s => Array.isArray(s));
-    
-    const startTime = start.getTime();
-    const endTime = end.getTime();
-
-    searchSources.forEach(source => {
-      source.forEach(day => {
-        const dDate = new Date(day.date || day.timestamp);
-        const dTime = dDate.getTime();
-        
-        if (dTime >= startTime && dTime <= endTime && day.tokens[selectedToken]) {
-          const t = day.tokens[selectedToken];
-          const exData = t.exchanges || {}; 
-          // If no .exchanges, check if it's from historyData which has no exchange breakdown
-          // but we prioritize showing what we have.
-          Object.entries(exData).forEach(([ex, flows]) => {
-            if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
-            aggregated.exchanges[ex].in += (flows.inflow || flows.in || 0);
-            aggregated.exchanges[ex].out += (flows.outflow || flows.out || 0);
-            aggregated.exchanges[ex].net += (flows.net_flow || flows.net || 0);
-          });
-        }
-      });
-    });
+    // 1. Sync Table & Sankey (use canonical aggregator to keep field names consistent)
+    const aggregated = aggregateRangeData(start, end);
+    updateExchangeTable(aggregated);
+    updateSankey(aggregated);
 
     // 2. Dynamic Y-axis
     const visibleInflows = [], visibleOutflows = [], visibleNets = [], visibleCums = [];

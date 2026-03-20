@@ -1,0 +1,24 @@
+{
+  "name": "data-monitoring(chen)",
+  "version": "1.0.0",
+  "description": "实时监控代币在中心化交易所的流入流出数据。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Melroseee-e/data-monitoring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Melroseee-e/data-monitoring/issues"
+  },
+  "homepage": "https://github.com/Melroseee-e/data-monitoring#readme",
+  "dependencies": {
+    "playwright": "^1.58.2"
+  }
+}
