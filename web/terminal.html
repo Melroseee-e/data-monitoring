@@ -561,13 +561,24 @@ function updateTrendChart(token) {
   const outflowColor = isLight ? '#DC2626' : '#FF4D4D';
   const netColor = '#3B82F6';
 
+  const hoverTemp = `<b>%{x}</b><br>%{symbol}: %{y:,.2f}<extra></extra>`;
+
   let plotTraces = [];
   
   if (currentTrendView === 'daily') {
     plotTraces = [
-      { x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor }, hoverinfo: 'y+name' },
-      { x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor }, hoverinfo: 'y+name' },
-      { x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 }, hoverinfo: 'y+name' }
+      { 
+        x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor },
+        hovertemplate: `<b>%{x}</b><br>Inflow: %{y:.3s}<extra></extra>`
+      },
+      { 
+        x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor },
+        hovertemplate: `<b>%{x}</b><br>Outflow: %{y:.3s}<extra></extra>`
+      },
+      { 
+        x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 },
+        hovertemplate: `<b>%{x}</b><br>Net Flow: %{y:.3s}<extra></extra>`
+      }
     ];
   } else {
     plotTraces = [
@@ -575,7 +586,7 @@ function updateTrendChart(token) {
         x: dates, y: cumulative, name: 'Cumulative Net Flow', type: 'scatter', mode: 'lines', 
         fill: 'tozeroy', line: { color: netColor, width: 3 },
         fillcolor: isLight ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.2)',
-        hoverinfo: 'y+name' 
+        hovertemplate: `<b>%{x}</b><br>Cumulative: %{y:.3s}<extra></extra>`
       }
     ];
   }
@@ -586,8 +597,14 @@ function updateTrendChart(token) {
     margin: { l: 60, r: 20, t: 20, b: 20 },
     legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
     hovermode: 'x unified',
+    hoverlabel: {
+      bgcolor: isLight ? '#FFFFFF' : '#09090B',
+      bordercolor: isLight ? '#E4E4E7' : '#27272A',
+      font: { family: "'JetBrains Mono', monospace", size: 12, color: isLight ? '#09090B' : '#F4F4F5' }
+    },
     xaxis: {
       type: 'date', gridcolor: gridColor, zerolinecolor: gridColor,
+      hoverformat: '%Y-%m-%d %H:%M',
       rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 },
       rangeselector: {
         buttons: [
