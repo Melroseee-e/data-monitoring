@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUMP 大户余额历史</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .header { padding: 20px 24px 12px; border-bottom: 1px solid #21262d; }
+  .header h1 { font-size: 20px; font-weight: 600; color: #f0f6fc; }
+  .header p { font-size: 13px; color: #8b949e; margin-top: 4px; }
+  .controls { display: flex; gap: 12px; padding: 14px 24px; border-bottom: 1px solid #21262d; flex-wrap: wrap; align-items: center; }
+  .btn-group { display: flex; gap: 6px; }
+  button { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+  button:hover { background: #30363d; border-color: #8b949e; }
+  button.active { background: #1f6feb; border-color: #388bfd; color: #fff; }
+  .search-box { background: #161b22; border: 1px solid #30363d; color: #c9d1d9; padding: 6px 12px; border-radius: 6px; font-size: 13px; width: 200px; }
+  .search-box:focus { outline: none; border-color: #388bfd; }
+  .stats-bar { display: flex; gap: 24px; padding: 10px 24px; background: #161b22; border-bottom: 1px solid #21262d; font-size: 12px; color: #8b949e; }
+  .stat { display: flex; gap: 6px; }
+  .stat-val { color: #58a6ff; font-weight: 600; }
+  .chart-container { padding: 16px 24px; }
+  #mainChart { width: 100%; height: 480px; }
+  .table-section { padding: 0 24px 24px; }
+  .table-title { font-size: 14px; font-weight: 600; color: #f0f6fc; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #161b22; color: #8b949e; padding: 8px 12px; text-align: left; border-bottom: 1px solid #21262d; font-weight: 500; cursor: pointer; user-select: none; }
+  th:hover { color: #c9d1d9; }
+  td { padding: 7px 12px; border-bottom: 1px solid #161b22; color: #c9d1d9; }
+  tr:hover td { background: #161b22; }
+  .addr { font-family: monospace; font-size: 11px; color: #8b949e; }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+  .badge-holding { background: #1a3a1a; color: #3fb950; border: 1px solid #238636; }
+  .badge-sold { background: #3a1a1a; color: #f85149; border: 1px solid #da3633; }
+  .badge-partial { background: #3a2a1a; color: #d29922; border: 1px solid #9e6a03; }
+  .bar-bg { background: #21262d; border-radius: 3px; height: 6px; width: 100px; display: inline-block; vertical-align: middle; }
+  .bar-fill { background: #1f6feb; border-radius: 3px; height: 6px; }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+  .tab-bar { display: flex; gap: 0; padding: 0 24px; border-bottom: 1px solid #21262d; }
+  .tab { padding: 10px 18px; font-size: 13px; color: #8b949e; cursor: pointer; border-bottom: 2px solid transparent; }
+  .tab.active { color: #f0f6fc; border-bottom-color: #1f6feb; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  #heatmapChart { width: 100%; height: 520px; }
+  #flowChart { width: 100%; height: 400px; }
+  .tooltip-custom { background: #1c2128; border: 1px solid #30363d; border-radius: 8px; padding: 10px 14px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>PUMP 大户余额历史</h1>
+  <p id="subtitle">加载中...</p>
+</div>
+
+<div class="controls">
+  <div class="btn-group" id="viewBtns">
+    <button class="active" onclick="setView('top10')">Top 10</button>
+    <button onclick="setView('top20')">Top 20</button>
+    <button onclick="setView('all')">全部 59</button>
+    <button onclick="setView('holding')">持仓中</button>
+  </div>
+  <input class="search-box" type="text" placeholder="搜索地址或标签..." id="searchInput" oninput="filterSeries()">
+  <div class="btn-group" id="chartTypeBtns">
+    <button class="active" onclick="setChartType('line')">折线</button>
+    <button onclick="setChartType('area')">面积</button>
+  </div>
+</div>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="switchTab('chart')">余额走势</div>
+  <div class="tab" onclick="switchTab('heatmap')">热力图</div>
+  <div class="tab" onclick="switchTab('table')">数据表格</div>
+</div>
+
+<div class="tab-content active" id="tab-chart">
+  <div class="chart-container">
+    <div id="mainChart"></div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-heatmap">
+  <div class="chart-container">
+    <div id="heatmapChart"></div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-table">
+  <div class="table-section">
+    <div class="table-title">大户持仓明细</div>
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable('rank')">排名</th>
+          <th onclick="sortTable('label')">标签</th>
+          <th onclick="sortTable('addr')">地址</th>
+          <th onclick="sortTable('peak_B')">峰值 (B)</th>
+          <th onclick="sortTable('current_B')">当前 (B)</th>
+          <th onclick="sortTable('change')">变化</th>
+          <th>状态</th>
+          <th>持仓比例</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+let chartData = null;
+let mainChart = null;
+let heatmapChart = null;
+let currentView = 'top10';
+let currentChartType = 'line';
+let sortKey = 'current_B';
+let sortAsc = false;
+
+const COLORS = [
+  '#58a6ff','#3fb950','#d29922','#f85149','#bc8cff',
+  '#79c0ff','#56d364','#e3b341','#ff7b72','#d2a8ff',
+  '#1f6feb','#238636','#9e6a03','#da3633','#8957e5',
+  '#388bfd','#2ea043','#bb8009','#cf222e','#6e40c9',
+  '#0969da','#1a7f37','#9a6700','#a40e26','#512a97'
+];
+
+async function loadData() {
+  const resp = await fetch('../data/pump_whale_chart_data.json');
+  chartData = await resp.json();
+
+  const dates = chartData.dates;
+  const series = chartData.series;
+  const holding = series.filter(s => s.current_B > 0.01).length;
+  const totalCurrent = series.reduce((a, s) => a + s.current_B, 0);
+  const totalPeak = series.reduce((a, s) => a + s.peak_B, 0);
+
+  document.getElementById('subtitle').textContent =
+    `${series.length} 个大户 · ${dates[0]} 至 ${dates[dates.length-1]} · 共 ${dates.length} 天`;
+
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat"><span>大户总数</span><span class="stat-val">${series.length}</span></div>
+    <div class="stat"><span>当前持仓</span><span class="stat-val">${holding} 个</span></div>
+    <div class="stat"><span>当前总持仓</span><span class="stat-val">${totalCurrent.toFixed(1)}B PUMP</span></div>
+    <div class="stat"><span>历史峰值总量</span><span class="stat-val">${totalPeak.toFixed(1)}B PUMP</span></div>
+    <div class="stat"><span>数据截止</span><span class="stat-val">${dates[dates.length-1]}</span></div>
+  `;
+
+  renderMainChart();
+  renderTable();
+}
+
+function getFilteredSeries() {
+  if (!chartData) return [];
+  let s = [...chartData.series];
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  if (q) s = s.filter(x => x.label.toLowerCase().includes(q) || x.addr.toLowerCase().includes(q));
+
+  if (currentView === 'top10') s = s.slice(0, 10);
+  else if (currentView === 'top20') s = s.slice(0, 20);
+  else if (currentView === 'holding') s = s.filter(x => x.current_B > 0.01);
+
+  return s;
+}
+
+function renderMainChart() {
+  if (!chartData) return;
+  if (!mainChart) mainChart = echarts.init(document.getElementById('mainChart'), 'dark');
+
+  const dates = chartData.dates;
+  const filtered = getFilteredSeries();
+
+  const seriesOpts = filtered.map((s, i) => ({
+    name: s.label + ' (' + s.addr_short + ')',
+    type: 'line',
+    data: s.values,
+    smooth: true,
+    symbol: 'none',
+    lineStyle: { width: currentChartType === 'area' ? 1.5 : 2 },
+    areaStyle: currentChartType === 'area' ? { opacity: 0.15 } : null,
+    itemStyle: { color: COLORS[i % COLORS.length] },
+    emphasis: { focus: 'series' }
+  }));
+
+  mainChart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'cross', lineStyle: { color: '#30363d' } },
+      backgroundColor: '#1c2128',
+      borderColor: '#30363d',
+      textStyle: { color: '#c9d1d9', fontSize: 12 },
+      formatter: function(params) {
+        let html = `<div style="font-weight:600;margin-bottom:6px">${params[0].axisValue}</div>`;
+        const sorted = params.filter(p => p.value > 0).sort((a,b) => b.value - a.value);
+        sorted.slice(0, 10).forEach(p => {
+          html += `<div style="display:flex;justify-content:space-between;gap:16px">
+            <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${p.color};margin-right:5px"></span>${p.seriesName.split('(')[0].trim()}</span>
+            <span style="font-weight:600">${p.value.toFixed(3)}B</span></div>`;
+        });
+        if (sorted.length > 10) html += `<div style="color:#8b949e;margin-top:4px">+${sorted.length-10} more</div>`;
+        return html;
+      }
+    },
+    legend: {
+      type: 'scroll',
+      bottom: 0,
+      textStyle: { color: '#8b949e', fontSize: 11 },
+      pageTextStyle: { color: '#8b949e' },
+      formatter: name => name.length > 25 ? name.slice(0,25)+'…' : name
+    },
+    grid: { top: 20, left: 60, right: 20, bottom: 80 },
+    xAxis: {
+      type: 'category',
+      data: dates,
+      axisLine: { lineStyle: { color: '#21262d' } },
+      axisLabel: { color: '#8b949e', fontSize: 11, interval: 29 },
+      splitLine: { show: false }
+    },
+    yAxis: {
+      type: 'value',
+      name: 'PUMP (B)',
+      nameTextStyle: { color: '#8b949e', fontSize: 11 },
+      axisLine: { show: false },
+      axisLabel: { color: '#8b949e', fontSize: 11, formatter: v => v.toFixed(1) + 'B' },
+      splitLine: { lineStyle: { color: '#21262d', type: 'dashed' } }
+    },
+    series: seriesOpts,
+    dataZoom: [
+      { type: 'inside', start: 0, end: 100 },
+      { type: 'slider', start: 0, end: 100, height: 24, bottom: 50,
+        fillerColor: 'rgba(31,111,235,0.15)', borderColor: '#30363d',
+        textStyle: { color: '#8b949e', fontSize: 10 } }
+    ]
+  }, true);
+}
+
+function renderHeatmap() {
+  if (!chartData) return;
+  if (!heatmapChart) heatmapChart = echarts.init(document.getElementById('heatmapChart'), 'dark');
+
+  const dates = chartData.dates;
+  const series = chartData.series.filter(s => s.peak_B > 0.5).slice(0, 30);
+
+  // Sample every 7 days for readability
+  const sampledDates = dates.filter((_, i) => i % 7 === 0);
+  const dateIdx = {};
+  sampledDates.forEach((d, i) => dateIdx[d] = i);
+
+  const heatData = [];
+  series.forEach((s, si) => {
+    sampledDates.forEach((d, di) => {
+      const origIdx = dates.indexOf(d);
+      const val = origIdx >= 0 ? s.values[origIdx] : 0;
+      heatData.push([di, si, val]);
+    });
+  });
+
+  const maxVal = Math.max(...heatData.map(d => d[2]));
+
+  heatmapChart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: {
+      formatter: p => {
+        const s = series[p.data[1]];
+        return `${s.label}<br>${sampledDates[p.data[0]]}<br><b>${p.data[2].toFixed(3)}B PUMP</b>`;
+      },
+      backgroundColor: '#1c2128', borderColor: '#30363d',
+      textStyle: { color: '#c9d1d9', fontSize: 12 }
+    },
+    grid: { top: 20, left: 160, right: 80, bottom: 60 },
+    xAxis: {
+      type: 'category', data: sampledDates,
+      axisLabel: { color: '#8b949e', fontSize: 10, rotate: 45, interval: 3 },
+      splitArea: { show: true, areaStyle: { color: ['#0d1117','#161b22'] } }
+    },
+    yAxis: {
+      type: 'category',
+      data: series.map(s => s.label.length > 18 ? s.label.slice(0,18)+'…' : s.label),
+      axisLabel: { color: '#8b949e', fontSize: 11 },
+      splitArea: { show: true, areaStyle: { color: ['#0d1117','#161b22'] } }
+    },
+    visualMap: {
+      min: 0, max: maxVal,
+      calculable: true,
+      orient: 'horizontal',
+      right: 0, bottom: 0,
+      textStyle: { color: '#8b949e', fontSize: 10 },
+      inRange: { color: ['#0d1117','#1f3a5f','#1f6feb','#58a6ff','#cae8ff'] }
+    },
+    series: [{
+      type: 'heatmap', data: heatData,
+      label: { show: false },
+      emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.5)' } }
+    }]
+  });
+}
+
+function renderTable() {
+  if (!chartData) return;
+  let series = [...chartData.series];
+
+  series.sort((a, b) => {
+    let va = a[sortKey] ?? 0, vb = b[sortKey] ?? 0;
+    if (sortKey === 'label' || sortKey === 'addr') {
+      va = String(va); vb = String(vb);
+      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    }
+    if (sortKey === 'change') {
+      va = a.current_B - a.peak_B; vb = b.current_B - b.peak_B;
+    }
+    return sortAsc ? va - vb : vb - va;
+  });
+
+  const maxPeak = Math.max(...series.map(s => s.peak_B));
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = series.map((s, i) => {
+    const change = s.current_B - s.peak_B;
+    const changePct = s.peak_B > 0 ? (change / s.peak_B * 100) : 0;
+    const barW = Math.round(s.current_B / maxPeak * 100);
+    let badge, status;
+    if (s.current_B < 0.01) { badge = 'badge-sold'; status = '已清仓'; }
+    else if (s.current_B >= s.peak_B * 0.95) { badge = 'badge-holding'; status = '持仓中'; }
+    else { badge = 'badge-partial'; status = '部分卖出'; }
+
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${s.label}</td>
+      <td class="addr"><a href="https://solscan.io/account/${s.addr}" target="_blank" style="color:#58a6ff;text-decoration:none">${s.addr_short}</a></td>
+      <td>${s.peak_B.toFixed(3)}</td>
+      <td>${s.current_B.toFixed(3)}</td>
+      <td style="color:${change >= 0 ? '#3fb950' : '#f85149'}">${change >= 0 ? '+' : ''}${change.toFixed(3)} (${changePct.toFixed(1)}%)</td>
+      <td><span class="badge ${badge}">${status}</span></td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:${barW}%"></div></div></td>
+    </tr>`;
+  }).join('');
+}
+
+function setView(v) {
+  currentView = v;
+  document.querySelectorAll('#viewBtns button').forEach((b, i) => {
+    b.classList.toggle('active', ['top10','top20','all','holding'][i] === v);
+  });
+  renderMainChart();
+}
+
+function setChartType(t) {
+  currentChartType = t;
+  document.querySelectorAll('#chartTypeBtns button').forEach((b, i) => {
+    b.classList.toggle('active', ['line','area'][i] === t);
+  });
+  renderMainChart();
+}
+
+function filterSeries() {
+  renderMainChart();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['chart','heatmap','table'][i] === tab);
+  });
+  document.querySelectorAll('.tab-content').forEach((c, i) => {
+    c.classList.toggle('active', ['tab-chart','tab-heatmap','tab-table'][i] === 'tab-'+tab);
+  });
+  if (tab === 'heatmap') renderHeatmap();
+  if (tab === 'table') renderTable();
+}
+
+function sortTable(key) {
+  if (sortKey === key) sortAsc = !sortAsc;
+  else { sortKey = key; sortAsc = false; }
+  renderTable();
+}
+
+window.addEventListener('resize', () => {
+  mainChart && mainChart.resize();
+  heatmapChart && heatmapChart.resize();
+});
+
+loadData();
+</script>
+</body>
+</html>
