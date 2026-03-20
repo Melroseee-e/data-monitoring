@@ -477,7 +477,7 @@ function renderTokenList(filter = '') {
           const dDate = new Date(entry.date || entry.timestamp);
           const dTime = dDate.getTime();
           if (dTime >= startTime && dTime <= endTime && entry.tokens && entry.tokens[selectedToken]) {
-            const t = entry.tokens[selectedToken]; if(t.exchanges) { console.log('Found exchanges for', selectedToken, Object.keys(t.exchanges).length); }
+            const t = entry.tokens[selectedToken]; if(t.exchanges) {  }
             
             // Handle dailyData format
             if (t.exchanges) {
@@ -525,7 +525,7 @@ function updateDashboard() {
   const fullHistory = aggregateRangeData(null, null);
   
   if (Object.keys(fullHistory.exchanges).length > 0) {
-    console.log('Updating table with fullHistory, keys:', Object.keys(fullHistory.exchanges).length); updateExchangeTable(fullHistory);
+     updateExchangeTable(fullHistory);
     updateSankey(fullHistory);
   } else {
     // Last resort fallback
@@ -555,7 +555,7 @@ function updateExchangeTable(data) {
   
   const sortedEx = Object.entries(agg).sort((a,b) => Math.abs(b[1].net_flow || 0) - Math.abs(a[1].net_flow || 0));
   
-  console.log('Rendering table rows:', sortedEx.length); tbody.innerHTML = sortedEx.map(([ex, flows]) => {
+   tbody.innerHTML = sortedEx.map(([ex, flows]) => {
     const net = flows.net_flow || 0;
     const isPos = net >= 0;
     return `<tr>
@@ -680,9 +680,6 @@ function updateTrendChart(token) {
   chartDiv.innerHTML = ''; 
   Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true});
   setTimeout(() => { isUpdatingToken = false; }, 100);
-  // Force a full-data refresh of sub-charts to ensure single-click works
-  updateExchangeTable(rawData.tokens[token]);
-  updateSankey(rawData.tokens[token]);
   
   // Reset scroll position of token list item into view if needed
   const activeItem = document.querySelector('.token-item.active');
