@@ -268,6 +268,7 @@
             <span class="trend-tab" data-view="cumulative" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid transparent; color: var(--text-muted);">Cumulative (TGE)</span>
             <small style='color:var(--text-muted); font-weight:normal; margin-left:8px; text-transform:none;'>(Scroll / Pinch to Zoom)</small>
           </div>
+          <button id="resetTimeframeBtn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-main); padding:4px 10px; border-radius:4px; cursor:pointer; font-family:var(--font-ui); font-size:11px;">Reset Timeframe</button>
         </div>
         <div class="pane-body">
           <div style="flex: 1; position: relative; min-height: 0;">
@@ -371,9 +372,19 @@ function initTheme() {
   });
 }
 
+function resetTrendTimeframe() {
+  const chartDiv = document.getElementById('trendChart');
+  if (!chartDiv || !chartDiv.data) return;
+  Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
+  document.getElementById('timeRangeDisplay').style.display = 'none';
+  const fullAgg = aggregateRangeData(null, null);
+  syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
+}
+
 async function init() {
   initTheme();
   initTrendTabs();
+  document.getElementById('resetTimeframeBtn')?.addEventListener('click', resetTrendTimeframe);
   try {
     const [dRes, dailyRes, hRes] = await Promise.all([
       fetch(DATA_URL).catch(()=>null),
@@ -717,7 +728,7 @@ function updateTrendChart(token) {
 
   const chartDiv = document.getElementById('trendChart');
   chartDiv.innerHTML = ''; 
-  Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true});
+  Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true, doubleClick: false});
   setTimeout(() => { isUpdatingToken = false; }, 100);
   
   // Reset scroll position of token list item into view if needed
@@ -730,18 +741,7 @@ function updateTrendChart(token) {
   // Prevent duplicated listeners after repeated token/theme/view re-renders.
   if (typeof chartDiv.removeAllListeners === 'function') {
     chartDiv.removeAllListeners('plotly_relayout');
-    chartDiv.removeAllListeners('plotly_doubleclick');
   }
-
-  chartDiv.on('plotly_doubleclick', function() {
-    // Run after Plotly internal reset to avoid race with its relayout sequence.
-    setTimeout(() => {
-      if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
-      document.getElementById('timeRangeDisplay').style.display = 'none';
-      const fullAgg = aggregateRangeData(null, null);
-      syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
-    }, 0);
-  });
 
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
