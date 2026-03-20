@@ -6,6 +6,8 @@
 <title>Pro Terminal | Flow Monitor</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
 <style>
@@ -223,7 +225,7 @@
     <div class="pane-row top">
       <div class="pane">
         <div class="pane-header">
-          <span>Flow History (30D)</span>
+          <span>Flow History (All Time) <small style='color:var(--text-muted); font-weight:normal; margin-left:8px;'>(Scroll / Pinch to Zoom)</small></span>
         </div>
         <div class="pane-body">
           <canvas id="trendChart"></canvas>
@@ -395,7 +397,8 @@ function updateExchangeTable(data) {
 function updateTrendChart(token) {
   if(!historyData || !historyData.daily_summary) return;
   
-  const dates = Object.keys(historyData.daily_summary).sort().slice(-30);
+  // Use all dates instead of slice(-30)
+  const dates = Object.keys(historyData.daily_summary).sort();
   const inflows = [];
   const outflows = [];
   const nets = [];
@@ -417,7 +420,7 @@ function updateTrendChart(token) {
   charts.trend = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: dates.map(d => d.slice(5)), // MM-DD
+      labels: dates, // Full YYYY-MM-DD
       datasets: [
         {
           type: 'line',
@@ -427,6 +430,7 @@ function updateTrendChart(token) {
           borderWidth: 2,
           tension: 0,
           pointRadius: 0,
+          pointHoverRadius: 4,
           fill: false,
           yAxisID: 'y'
         },
@@ -451,7 +455,10 @@ function updateTrendChart(token) {
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       scales: {
-        x: { stacked: true },
+        x: { 
+          stacked: true,
+          ticks: { maxTicksLimit: 12 } // Prevent overlapping x-axis labels
+        },
         y: { 
           stacked: true,
           position: 'right',
@@ -465,7 +472,38 @@ function updateTrendChart(token) {
           borderColor: '#27272A',
           borderWidth: 1,
           titleFont: { family: 'Inter' },
-          bodyFont: { family: 'JetBrains Mono' }
+          bodyFont: { family: 'JetBrains Mono' },
+          callbacks: {
+            label: function(context) {
+              let label = context.dataset.label || '';
+              if (label) { label += ': '; }
+              if (context.parsed.y !== null) { label += formatNum(Math.abs(context.parsed.y)); }
+              return label;
+            }
+          }
+        },
+        zoom: {
+          pan: {
+            enabled: true,
+            mode: 'x',
+            modifierKey: null,
+          },
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 0.1
+            },
+            pinch: {
+              enabled: true
+            },
+            mode: 'x',
+            drag: {
+              enabled: true,
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              borderColor: '#3B82F6',
+              borderWidth: 1
+            }
+          }
         }
       }
     }
