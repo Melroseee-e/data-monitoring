@@ -315,7 +315,8 @@ let dailyData = null;
 let historyData = null;
 let selectedToken = null;
 let charts = {};
-let currentTrendView = 'daily'; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
+let currentTrendView = 'daily';
+let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
@@ -465,6 +466,7 @@ function renderTokenList(filter = '') {
 }
 
 function updateDashboard() {
+  isUpdatingToken = true;
   if(!rawData || !selectedToken) return;
   const d = rawData.tokens[selectedToken];
   if(!d) return;
@@ -655,9 +657,11 @@ function updateTrendChart(token) {
   const chartDiv = document.getElementById('trendChart');
   chartDiv.innerHTML = ''; 
   Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true});
+  setTimeout(() => { isUpdatingToken = false; }, 100);
 
   // Dynamic Scaling & Sync Logic
   chartDiv.on('plotly_relayout', function(eventData) {
+    if (isUpdatingToken) return;
     let start, end;
     if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
       start = new Date(eventData['xaxis.range[0]']);
