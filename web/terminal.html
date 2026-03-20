@@ -719,8 +719,9 @@ function updateTrendChart(token) {
     } else if (eventData['xaxis.autorange']) {
       Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
       document.getElementById('timeRangeDisplay').style.display = 'none';
-      updateExchangeTable(rawData.tokens[selectedToken]);
-      updateSankey(rawData.tokens[selectedToken]);
+      const fullAgg = aggregateRangeData(null, null);
+      updateExchangeTable(fullAgg);
+      updateSankey(fullAgg);
       return;
     } else { return; }
 
@@ -832,7 +833,7 @@ function updateSankey(data) {
 
   const plotData = [{
     type: 'sankey', orientation: 'h',
-    node: { pad: dynamicPadding, thickness: 15, line: { color: 'transparent', width: 0 }, label: nodeLabels, color: nodeColors },
+    node: { pad: Math.min(dynamicPadding, 30), thickness: 18, line: { color: 'transparent', width: 0 }, label: nodeLabels, color: nodeColors },
     link: { source: linkSources, target: linkTargets, value: linkValues, color: linkColors }
   }];
 
@@ -845,7 +846,7 @@ function updateSankey(data) {
   };
 
   document.getElementById('sankeyChart').innerHTML = ''; 
-  Plotly.react('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true, config: {transition: {duration: 0}}});
+  Plotly.react('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true, hovermode: 'closest'});
   setTimeout(() => Plotly.Plots.resize('sankeyChart'), 100);
 }
 
