@@ -414,17 +414,6 @@ async function init() {
     console.error("Init error", e);
   }
 }
-    
-    renderTokenList();
-    
-    document.getElementById('tokenSearch').addEventListener('input', (e) => {
-      renderTokenList(e.target.value.toLowerCase());
-    });
-    
-  } catch(e) {
-    console.error("Init error", e);
-  }
-}
 
 function renderTokenList(filter = '') {
   if(!rawData) return;
