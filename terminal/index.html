@@ -262,13 +262,13 @@ function updateSankey(data) {
   
   const plotData = [{
     type: 'sankey', orientation: 'h',
-    node: { pad: Math.max(20, 300/nodes.length), thickness: 12, label: nodes, color: nodes.map((_,i)=>i==0?'#3B82F6':(isL?'#E4E4E7':'#27272A')) },
+    node: { pad: 15, thickness: 20, label: nodes, color: nodes.map((_,i)=>i==0?'#3B82F6':(isL?'#E4E4E7':'#27272A')) },
     link: { source: sources, target: targets, value: values, color: colors }
   }];
   const layout = {
     autosize: true, height: Math.max(300, Math.min(500, nodes.length*35)),
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
-    font: { color: isL?'#71717A':'#A1A1AA', size: 11 }, margin: { l:40, r:40, t:20, b:20 }
+    font: { color: isL?'#71717A':'#A1A1AA', size: 11 }, margin: { l: 10, r: 10, t: 30, b: 10 }
   };
   Plotly.react(div, plotData, layout, {displayModeBar: false, responsive: true});
 }
@@ -302,7 +302,7 @@ function updateTrendChart(token) {
     { x: dates, y: outflows.map(v=>-v), name: 'Outflow', type: 'bar', marker: { color: isL?'#DC2626':'#FF4D4D' }, hovertemplate: '%{y:.3s}<extra></extra>' },
     { x: dates, y: nets, name: 'Net', type: 'scatter', mode: 'lines', line: { color: '#3B82F6', width: 2 } }
   ] : [
-    { x: dates, y: cumulative, name: 'Cumulative', type: 'scatter', mode: 'lines', fill: 'tozeroy', line: { color: '#3B82F6', width: 3 } }
+    { x: dates, y: cumulative, name: 'Cumulative', type: 'scatter', mode: 'lines', fill: 'tozeroy', hovertemplate: '%{y:.3s}<extra></extra>', line: { color: '#3B82F6', width: 3 } }
   ];
 
   const layout = {
@@ -310,7 +310,7 @@ function updateTrendChart(token) {
     font: { family: 'JetBrains Mono', color: isL?'#71717A':'#A1A1AA', size: 11 },
     margin: { l:60, r:20, t:20, b:20 }, hovermode: 'x unified',
     xaxis: { type: 'date', rangeslider: { visible: true, thickness: 0.05 }, rangeselector: { buttons: [ {count:7, label:'1W', step:'day'}, {count:1, label:'1M', step:'month'}, {step:'all', label:'ALL'} ] } },
-    yaxis: { autorange: true, fixedrange: false, tickformat: '.2s', gridcolor: isL?'#E4E4E7':'#18181B' }
+    yaxis: { autorange: true, fixedrange: false, tickformat: '.2s', gridcolor: isL?'#E4E4E7':'#18181B', zeroline: true, zerolinecolor: isL?'#E4E4E7':'#27272A' }
   };
 
   const div = document.getElementById('trendChart');
