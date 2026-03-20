@@ -127,12 +127,60 @@ const COLORS = [
   '#0969da','#1a7f37','#9a6700','#a40e26','#512a97'
 ];
 
+function shortAddr(addr) {
+  if (!addr) return '';
+  return addr.slice(0, 6) + '...' + addr.slice(-4);
+}
+
+function normalizeChartData(raw) {
+  // Old format (already chart-ready)
+  if (raw && Array.isArray(raw.dates) && Array.isArray(raw.series)) {
+    return raw;
+  }
+
+  // Current format: { whales: [{ address, label, amount_B, history: {date: balance} }] }
+  const whales = (raw && Array.isArray(raw.whales)) ? raw.whales : [];
+  const dateSet = new Set();
+  whales.forEach(w => {
+    const history = (w && typeof w.history === 'object' && w.history) ? w.history : {};
+    Object.keys(history).forEach(d => dateSet.add(d));
+  });
+  const dates = Array.from(dateSet).sort();
+
+  const series = whales.map(w => {
+    const history = (w && typeof w.history === 'object' && w.history) ? w.history : {};
+    const values = dates.map(d => Number(history[d] ?? 0));
+    const peak_B = values.length ? Math.max(...values) : 0;
+    const current_B = values.length ? values[values.length - 1] : 0;
+    const addr = w.address || '';
+    return {
+      label: w.label || '无标签',
+      addr,
+      addr_short: shortAddr(addr),
+      values,
+      peak_B,
+      current_B
+    };
+  }).sort((a, b) => b.current_B - a.current_B);
+
+  return {
+    generated_at: raw?.generated_at || null,
+    tge_date: raw?.tge_date || null,
+    dates,
+    series
+  };
+}
+
 async function loadData() {
   const resp = await fetch('../data/pump_whale_chart_data.json');
-  chartData = await resp.json();
+  const rawData = await resp.json();
+  chartData = normalizeChartData(rawData);
 
   const dates = chartData.dates;
   const series = chartData.series;
+  if (!dates || !dates.length || !series || !series.length) {
+    throw new Error('No chart data available');
+  }
   const holding = series.filter(s => s.current_B > 0.01).length;
   const totalCurrent = series.reduce((a, s) => a + s.current_B, 0);
   const totalPeak = series.reduce((a, s) => a + s.peak_B, 0);
