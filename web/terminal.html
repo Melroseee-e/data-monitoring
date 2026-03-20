@@ -262,9 +262,12 @@
     <!-- TOP ROW: Time Series Chart -->
     <div class="pane-row top">
       <div class="pane">
-        <div class="pane-header" style="position: relative;">
-          <span>Flow History (All Time) <small style='color:var(--text-muted); font-weight:normal; margin-left:8px;'>(Scroll / Pinch to Zoom)</small></span>
-          
+        <div class="pane-header" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <span class="trend-tab active" data-view="daily" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid var(--accent);">Flow History</span>
+            <span class="trend-tab" data-view="cumulative" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid transparent; color: var(--text-muted);">Cumulative (TGE)</span>
+            <small style='color:var(--text-muted); font-weight:normal; margin-left:8px; text-transform:none;'>(Scroll / Pinch to Zoom)</small>
+          </div>
         </div>
         <div class="pane-body">
           <div style="flex: 1; position: relative; min-height: 0;">
@@ -310,12 +313,30 @@ let rawData = null;
 let dailyData = null;
 let selectedToken = null;
 let charts = {};
+let currentTrendView = 'daily'; // 'daily' or 'cumulative'
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
 Chart.defaults.font.family = "'JetBrains Mono', monospace";
 Chart.defaults.scale.grid.color = '#18181B';
 Chart.defaults.scale.grid.borderColor = 'transparent';
+
+function initTrendTabs() {
+  document.querySelectorAll('.trend-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.trend-tab').forEach(t => {
+        t.classList.remove('active');
+        t.style.borderBottomColor = 'transparent';
+        t.style.color = 'var(--text-muted)';
+      });
+      tab.classList.add('active');
+      tab.style.borderBottomColor = 'var(--accent)';
+      tab.style.color = 'var(--text-main)';
+      currentTrendView = tab.dataset.view;
+      if (selectedToken) updateTrendChart(selectedToken);
+    });
+  });
+}
 
 function formatNum(n) {
   if (n === null || n === undefined) return '0';
@@ -347,6 +368,7 @@ function initTheme() {
 
 async function init() {
   initTheme();
+  initTrendTabs();
   try {
     const [dRes, dailyRes] = await Promise.all([
       fetch(DATA_URL).catch(()=>null),
@@ -491,17 +513,22 @@ function updateTrendChart(token) {
   const inflows = [];
   const outflows = [];
   const nets = [];
+  const cumulative = [];
+  let runningNet = 0;
   
   tokenDataList.forEach(entry => {
     const d = entry.date || entry.timestamp; if(!d) return; dates.push(d);
     const tData = entry.tokens?.[token];
-    if(tData) {
-      inflows.push(tData.total_inflow || 0);
-      outflows.push(tData.total_outflow || 0);
-      nets.push((tData.total_inflow || 0) - (tData.total_outflow || 0));
-    } else {
-      inflows.push(0); outflows.push(0); nets.push(0);
-    }
+    const inf = tData ? (tData.total_inflow || 0) : 0;
+    const outf = tData ? (tData.total_outflow || 0) : 0;
+    const net = inf - outf;
+    
+    inflows.push(inf);
+    outflows.push(outf);
+    nets.push(net);
+    
+    runningNet += net;
+    cumulative.push(runningNet);
   });
 
   const isLight = document.body.classList.contains('theme-light');
@@ -511,9 +538,24 @@ function updateTrendChart(token) {
   const outflowColor = isLight ? '#DC2626' : '#FF4D4D';
   const netColor = '#3B82F6';
 
-  const traceInflow = { x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor }, hoverinfo: 'y+name' };
-  const traceOutflow = { x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor }, hoverinfo: 'y+name' };
-  const traceNet = { x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 }, hoverinfo: 'y+name' };
+  let plotTraces = [];
+  
+  if (currentTrendView === 'daily') {
+    plotTraces = [
+      { x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor }, hoverinfo: 'y+name' },
+      { x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor }, hoverinfo: 'y+name' },
+      { x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 }, hoverinfo: 'y+name' }
+    ];
+  } else {
+    plotTraces = [
+      { 
+        x: dates, y: cumulative, name: 'Cumulative Net Flow', type: 'scatter', mode: 'lines', 
+        fill: 'tozeroy', line: { color: netColor, width: 3 },
+        fillcolor: isLight ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.2)',
+        hoverinfo: 'y+name' 
+      }
+    ];
+  }
 
   const layout = {
     autosize: true, barmode: 'relative', paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
@@ -539,7 +581,7 @@ function updateTrendChart(token) {
 
   const chartDiv = document.getElementById('trendChart');
   chartDiv.innerHTML = ''; 
-  Plotly.newPlot(chartDiv, [traceInflow, traceOutflow, traceNet], layout, {displayModeBar: false, responsive: true});
+  Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true});
 
   // Dynamic Scaling & Sync Logic
   chartDiv.on('plotly_relayout', function(eventData) {
@@ -561,9 +603,8 @@ function updateTrendChart(token) {
     rangeDisplay.innerText = `${fmt(start)} → ${fmt(end)}`;
     rangeDisplay.style.display = 'block';
 
-        // 1. Sync Table & Sankey
+    // 1. Sync Table & Sankey
     const aggregated = { exchanges: {} };
-    // Search across ALL available data sources to find exchange info for the range
     const searchSources = [dailyData, historyData].filter(s => Array.isArray(s));
     
     searchSources.forEach(source => {
@@ -571,7 +612,6 @@ function updateTrendChart(token) {
         const dDate = new Date(day.date || day.timestamp);
         if (dDate >= start && dDate <= end && day.tokens[selectedToken]) {
           const t = day.tokens[selectedToken];
-          // Use exchanges if available (dailyData format) or deployments (rawData format)
           if (t.exchanges) {
             Object.entries(t.exchanges).forEach(([ex, flows]) => {
               if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net: 0, in: 0, out: 0 };
@@ -583,21 +623,33 @@ function updateTrendChart(token) {
         }
       });
     });
+    
+    if (Object.keys(aggregated.exchanges).length > 0) {
+      updateExchangeTable(aggregated);
+      updateSankey(aggregated);
+    }
 
     // 2. Dynamic Y-axis
-    const visibleInflows = [], visibleOutflows = [], visibleNets = [];
+    const visibleInflows = [], visibleOutflows = [], visibleNets = [], visibleCums = [];
     dates.forEach((d, i) => {
       const date = new Date(d);
       if (date >= start && date <= end) {
         visibleInflows.push(inflows[i] || 0);
         visibleOutflows.push(outflows[i] || 0);
         visibleNets.push(nets[i] || 0);
+        visibleCums.push(cumulative[i] || 0);
       }
     });
 
     if (visibleInflows.length > 0) {
-      const maxVal = Math.max(...visibleInflows, ...visibleNets);
-      const minVal = Math.min(...visibleOutflows.map(v => -v), ...visibleNets);
+      let maxVal, minVal;
+      if (currentTrendView === 'daily') {
+        maxVal = Math.max(...visibleInflows, ...visibleNets);
+        minVal = Math.min(...visibleOutflows.map(v => -v), ...visibleNets);
+      } else {
+        maxVal = Math.max(...visibleCums);
+        minVal = Math.min(...visibleCums);
+      }
       const span = maxVal - minVal;
       const padding = span === 0 ? 1 : span * 0.15;
       Plotly.relayout(chartDiv, { 'yaxis.range': [minVal - padding, maxVal + padding], 'yaxis.autorange': false });
