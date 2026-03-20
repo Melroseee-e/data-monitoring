@@ -318,6 +318,7 @@ let charts = {};
 let currentTrendView = 'daily';
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let lastNonEmptyFlowData = null;
+let lastSankeyToken = null;
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
@@ -455,6 +456,7 @@ function renderTokenList(filter = '') {
     if (selectedToken === targetToken) return;
     
     selectedToken = targetToken;
+    lastNonEmptyFlowData = null;
     
     // Update active class manually
     list.querySelectorAll('.token-item').forEach(el => el.classList.remove('active'));
@@ -778,6 +780,7 @@ function updateTrendChart(token) {
 }
 
 function updateSankey(data) {
+  const sankeyDiv = document.getElementById('sankeyChart');
   const isLight = document.body.classList.contains('theme-light');
   const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
   const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
@@ -816,8 +819,12 @@ function updateSankey(data) {
   }
 
   if(linkValues.length === 0) {
+    const hasExistingPlot = !!(sankeyDiv && sankeyDiv.data && sankeyDiv.data.length > 0);
+    // For the same token, keep previous Sankey on transient empty aggregation (common during double-click reset).
+    if (hasExistingPlot && lastSankeyToken === selectedToken) return;
     Plotly.purge('sankeyChart');
-    document.getElementById('sankeyChart').innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available for this range</div>`;
+    sankeyDiv.innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available for this range</div>`;
+    lastSankeyToken = selectedToken;
     return;
   }
 
@@ -838,8 +845,9 @@ function updateSankey(data) {
     transition: { duration: 0 }
   };
 
-  document.getElementById('sankeyChart').innerHTML = ''; 
+  sankeyDiv.innerHTML = ''; 
   Plotly.react('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true, hovermode: 'closest'});
+  lastSankeyToken = selectedToken;
   setTimeout(() => Plotly.Plots.resize('sankeyChart'), 100);
 }
 
