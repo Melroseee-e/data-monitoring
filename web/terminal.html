@@ -829,21 +829,21 @@ function updateSankey(data) {
 
   const plotData = [{
     type: 'sankey', orientation: 'h',
-    node: { pad: 80, thickness: 12, line: { color: 'transparent', width: 0 }, label: nodeLabels, color: nodeColors },
+    node: { pad: 100, thickness: 10, line: { color: 'transparent', width: 0 }, label: nodeLabels, color: nodeColors },
     link: { source: linkSources, target: linkTargets, value: linkValues, color: linkColors }
   }];
 
   const layout = {
     autosize: true, font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
-    margin: { l: 40, r: 40, t: 60, b: 60 },
-    height: Math.max(300, Math.min(600, nodeIdx * 40)),
+    margin: { l: 10, r: 10, t: 30, b: 10 },
+    height: Math.max(300, Math.min(450, nodeIdx * 45)),
     transition: { duration: 0 }
   };
 
   document.getElementById('sankeyChart').innerHTML = ''; 
-  Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true});
-  setTimeout(() => Plotly.Plots.resize('sankeyChart'), 500);
+  Plotly.react('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true, config: {transition: {duration: 0}}});
+  setTimeout(() => Plotly.Plots.resize('sankeyChart'), 100);
 }
 
 // Ensure both charts resize correctly
