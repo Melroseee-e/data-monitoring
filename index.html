@@ -262,7 +262,7 @@ function updateSankey(data) {
   
   const plotData = [{
     type: 'sankey', orientation: 'h',
-    node: { pad: 15, thickness: 20, label: nodes, color: nodes.map((_,i)=>i==0?'#3B82F6':(isL?'#E4E4E7':'#27272A')) },
+    node: { pad: 30, thickness: 10, label: nodes, color: nodes.map((_,i)=>i==0?'#3B82F6':(isL?'#E4E4E7':'#27272A')) },
     link: { source: sources, target: targets, value: values, color: colors }
   }];
   const layout = {
@@ -270,7 +270,7 @@ function updateSankey(data) {
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
     font: { color: isL?'#71717A':'#A1A1AA', size: 11 }, margin: { l: 10, r: 10, t: 30, b: 10 }
   };
-  Plotly.react(div, plotData, layout, {displayModeBar: false, responsive: true});
+  Plotly.react(div, plotData, layout, {displayModeBar: false, responsive: true, staticPlot: false, config: {transition: {duration: 0}}});
 }
 
 function updateTrendChart(token) {
@@ -314,7 +314,7 @@ function updateTrendChart(token) {
   };
 
   const div = document.getElementById('trendChart');
-  Plotly.react(div, traces, layout, {displayModeBar: false, responsive: true});
+  Plotly.react(div, traces, layout, {displayModeBar: false, responsive: true, config: {transition: {duration: 0}}});
 
   div.on('plotly_relayout', (ed) => {
     if (isUpdating) return;
