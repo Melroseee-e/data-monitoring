@@ -242,12 +242,13 @@
     <!-- TOP ROW: Time Series Chart -->
     <div class="pane-row top">
       <div class="pane">
-        <div class="pane-header">
+        <div class="pane-header" style="position: relative;">
           <span>Flow History (All Time) <small style='color:var(--text-muted); font-weight:normal; margin-left:8px;'>(Scroll / Pinch to Zoom)</small></span>
+          
         </div>
         <div class="pane-body">
           <div style="flex: 1; position: relative; min-height: 0;">
-            <canvas id="trendChart"></canvas>
+            <div id="trendChart" style="width:100%; height:100%;"></div>
           </div>
         </div>
       </div>
@@ -320,7 +321,7 @@ function initTheme() {
     const isLight = body.classList.contains('theme-light');
     localStorage.setItem('terminalTheme', isLight ? 'light' : 'dark');
     toggleBtn.innerText = isLight ? '🌙 Dark' : '☀️ Light';
-    updateDashboard(); // Re-render charts with new theme colors
+    if (selectedToken) { updateDashboard(); }
   });
 }
 
@@ -436,135 +437,114 @@ function updateExchangeTable(data) {
 }
 
 function updateTrendChart(token) {
-  if(!dailyData || !Array.isArray(dailyData)) return;
+  let sourceData = dailyData;
+  let hasDataInDaily = dailyData && dailyData.some(d => d.tokens?.[token] && (d.tokens[token].total_inflow > 0 || d.tokens[token].total_outflow > 0));
   
+  if (!hasDataInDaily && historyData && Array.isArray(historyData)) {
+    sourceData = historyData;
+  }
+
+  if(!sourceData || !Array.isArray(sourceData)) return;
+  
+  let startIndex = 0;
+  for (let i = 0; i < sourceData.length; i++) {
+    const tData = sourceData[i].tokens?.[token];
+    if (tData && (tData.total_inflow > 0 || tData.total_outflow > 0)) {
+      startIndex = i;
+      break;
+    }
+  }
+  
+  const tokenDataList = sourceData.slice(startIndex);
+
   const dates = [];
   const inflows = [];
   const outflows = [];
   const nets = [];
   
-  // dailyData is an array: [{ date: "YYYY-MM-DD", tokens: { "PUMP": { total_inflow, total_outflow, net_flow } } }]
-  dailyData.forEach(day => {
-    dates.push(day.date);
-    const tData = day.tokens[token];
+  tokenDataList.forEach(entry => {
+    // Plotly handles ISO strings well natively
+    dates.push(entry.date || entry.timestamp);
+
+    const tData = entry.tokens?.[token];
     if(tData) {
       inflows.push(tData.total_inflow || 0);
       outflows.push(tData.total_outflow || 0);
-      nets.push(tData.net_flow || 0);
+      nets.push((tData.total_inflow || 0) - (tData.total_outflow || 0));
     } else {
       inflows.push(0); outflows.push(0); nets.push(0);
     }
   });
 
-  const ctx = document.getElementById('trendChart').getContext('2d');
-  if(charts.trend) charts.trend.destroy();
-  
   const isLight = document.body.classList.contains('theme-light');
-  const tooltipBg = isLight ? '#FFFFFF' : '#09090B';
-  const tooltipBorder = isLight ? '#E4E4E7' : '#27272A';
-  const tooltipTitle = isLight ? '#09090B' : '#FFFFFF';
-  const tooltipBody = isLight ? '#71717A' : '#A1A1AA';
-  const gridColor = isLight ? '#F4F4F5' : '#18181B';
-  const chartTextColor = isLight ? '#71717A' : '#A1A1AA';
-  const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
-  const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
+  const textColor = isLight ? '#71717A' : '#A1A1AA';
+  const gridColor = isLight ? '#E4E4E7' : '#18181B';
+  const inflowColor = isLight ? '#059669' : '#00FFA3';
+  const outflowColor = isLight ? '#DC2626' : '#FF4D4D';
+  const netColor = '#3B82F6';
 
-  Chart.defaults.color = chartTextColor;
-  Chart.defaults.scale.grid.color = gridColor;
-
-  charts.trend = new Chart(ctx, {
+  const traceInflow = {
+    x: dates,
+    y: inflows,
+    name: 'Inflow',
     type: 'bar',
-    data: {
-      labels: dates, // Full YYYY-MM-DD
-      datasets: [
-        {
-          type: 'line',
-          label: 'Net Flow',
-          data: nets,
-          borderColor: '#3B82F6',
-          borderWidth: 2,
-          tension: 0,
-          pointRadius: 0,
-          pointHoverRadius: 4,
-          fill: false,
-          yAxisID: 'y'
-        },
-        {
-          type: 'bar',
-          label: 'Inflow',
-          data: inflows,
-          backgroundColor: '#00FFA3',
-          yAxisID: 'y'
-        },
-        {
-          type: 'bar',
-          label: 'Outflow',
-          data: outflows.map(v => -v), // display downwards
-          backgroundColor: '#FF4D4D',
-          yAxisID: 'y'
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      scales: {
-        x: { 
-          stacked: true,
-          ticks: { maxTicksLimit: 12 } // Prevent overlapping x-axis labels
-        },
-        y: { 
-          stacked: true,
-          position: 'right',
-          ticks: { callback: v => formatNum(v) }
-        }
-      },
-      plugins: {
-        legend: { position: 'top', align: 'end', labels: { boxWidth: 10 } },
-        tooltip: {
-          backgroundColor: tooltipBg,
-          borderColor: tooltipBorder,
-          borderWidth: 1,
-          titleFont: { family: 'Inter' },
-          titleColor: tooltipTitle,
-          bodyFont: { family: 'JetBrains Mono' },
-          bodyColor: tooltipBody,
-          callbacks: {
-            label: function(context) {
-              let label = context.dataset.label || '';
-              if (label) { label += ': '; }
-              if (context.parsed.y !== null) { label += formatNum(Math.abs(context.parsed.y)); }
-              return label;
-            }
-          }
-        },
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: 'x',
-            modifierKey: null,
-          },
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 0.1
-            },
-            pinch: {
-              enabled: true
-            },
-            mode: 'x',
-            drag: {
-              enabled: true,
-              backgroundColor: 'rgba(59, 130, 246, 0.2)',
-              borderColor: '#3B82F6',
-              borderWidth: 1
-            }
-          }
-        }
+    marker: { color: inflowColor },
+    hoverinfo: 'y+name'
+  };
+
+  const traceOutflow = {
+    x: dates,
+    y: outflows.map(v => -v), // point downwards
+    name: 'Outflow',
+    type: 'bar',
+    marker: { color: outflowColor },
+    hoverinfo: 'y+name'
+  };
+
+  const traceNet = {
+    x: dates,
+    y: nets,
+    name: 'Net Flow',
+    type: 'scatter',
+    mode: 'lines',
+    line: { color: netColor, width: 2 },
+    hoverinfo: 'y+name'
+  };
+
+  const layout = {
+    autosize: true,
+    barmode: 'relative',
+    paper_bgcolor: 'transparent',
+    plot_bgcolor: 'transparent',
+    font: { family: "'JetBrains Mono', monospace", color: textColor, size: 11 },
+    margin: { l: 50, r: 20, t: 20, b: 20 },
+    legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
+    hovermode: 'x unified',
+    xaxis: {
+      type: 'date',
+      gridcolor: gridColor,
+      zerolinecolor: gridColor,
+      rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B' },
+      rangeselector: {
+        buttons: [
+          { count: 1, label: '1D', step: 'day', stepmode: 'backward' },
+          { count: 7, label: '1W', step: 'day', stepmode: 'backward' },
+          { count: 1, label: '1M', step: 'month', stepmode: 'backward' },
+          { step: 'all', label: 'ALL' }
+        ],
+        bgcolor: isLight ? '#FFFFFF' : '#18181B',
+        activecolor: isLight ? '#E4E4E7' : '#27272A'
       }
+    },
+    yaxis: {
+      gridcolor: gridColor,
+      zerolinecolor: gridColor,
+      tickformat: '.2s'
     }
-  });
+  };
+
+  document.getElementById('trendChart').innerHTML = ''; // Clear old chart
+  Plotly.newPlot('trendChart', [traceInflow, traceOutflow, traceNet], layout, {displayModeBar: false, responsive: true});
 }
 
 function updateSankey(data) {
@@ -590,13 +570,13 @@ function updateSankey(data) {
         linkSources.push(nodeIdx);
         linkTargets.push(0);
         linkValues.push(flows.inflow);
-        linkColors.push('rgba(0, 255, 163, 0.4)');
+        linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)');
       }
       if(flows.outflow > 0) {
         linkSources.push(0);
         linkTargets.push(nodeIdx);
         linkValues.push(flows.outflow);
-        linkColors.push('rgba(255, 77, 77, 0.4)');
+        linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)');
       }
       nodeIdx++;
     });
@@ -611,8 +591,8 @@ function updateSankey(data) {
     type: 'sankey',
     orientation: 'h',
     node: {
-      pad: 15,
-      thickness: 20,
+      pad: 30, // Increased padding to prevent giant blocks
+      thickness: 15,
       line: { color: 'transparent', width: 0 },
       label: nodeLabels,
       color: nodeColors
@@ -630,17 +610,19 @@ function updateSankey(data) {
     font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent',
-    margin: { l: 20, r: 20, t: 20, b: 20 }
+    margin: { l: 20, r: 20, t: 40, b: 40 }
   };
 
-  document.getElementById('sankeyChart').innerHTML = ''; // Clear empty state text
+  document.getElementById('sankeyChart').innerHTML = ''; 
   Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true});
-  
-  // Ensure it resizes correctly
-  window.addEventListener('resize', () => {
-    Plotly.Plots.resize('sankeyChart');
-  });
 }
+
+// Ensure both charts resize correctly
+window.addEventListener('resize', () => {
+  if (document.getElementById('sankeyChart').data) Plotly.Plots.resize('sankeyChart');
+  if (document.getElementById('trendChart').data) Plotly.Plots.resize('trendChart');
+});
+
 
 init();
 </script>
