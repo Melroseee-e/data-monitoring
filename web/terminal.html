@@ -268,10 +268,10 @@
 
 <script>
 const DATA_URL = '../data/latest_data.json';
-const HISTORY_URL = '../data/history_summary.json';
+const DAILY_URL = '../data/daily_summary.json';
 
 let rawData = null;
-let historyData = null;
+let dailyData = null;
 let selectedToken = null;
 let charts = {};
 
@@ -291,12 +291,12 @@ function formatNum(n) {
 
 async function init() {
   try {
-    const [dRes, hRes] = await Promise.all([
+    const [dRes, dailyRes] = await Promise.all([
       fetch(DATA_URL).catch(()=>null),
-      fetch(HISTORY_URL).catch(()=>null)
+      fetch(DAILY_URL).catch(()=>null)
     ]);
     if(dRes && dRes.ok) rawData = await dRes.json();
-    if(hRes && hRes.ok) historyData = await hRes.json();
+    if(dailyRes && dailyRes.ok) dailyData = await dailyRes.json();
     
     if(rawData && rawData.metadata) {
       document.getElementById('lastUpdated').innerText = 'UPDATED: ' + rawData.metadata.last_updated;
@@ -400,20 +400,21 @@ function updateExchangeTable(data) {
 }
 
 function updateTrendChart(token) {
-  if(!historyData || !historyData.daily_summary) return;
+  if(!dailyData || !Array.isArray(dailyData)) return;
   
-  // Use all dates instead of slice(-30)
-  const dates = Object.keys(historyData.daily_summary).sort();
+  const dates = [];
   const inflows = [];
   const outflows = [];
   const nets = [];
   
-  dates.forEach(d => {
-    const dayData = historyData.daily_summary[d]?.tokens?.[token];
-    if(dayData) {
-      inflows.push(dayData.inflow || 0);
-      outflows.push(dayData.outflow || 0);
-      nets.push((dayData.inflow || 0) - (dayData.outflow || 0));
+  // dailyData is an array: [{ date: "YYYY-MM-DD", tokens: { "PUMP": { total_inflow, total_outflow, net_flow } } }]
+  dailyData.forEach(day => {
+    dates.push(day.date);
+    const tData = day.tokens[token];
+    if(tData) {
+      inflows.push(tData.total_inflow || 0);
+      outflows.push(tData.total_outflow || 0);
+      nets.push(tData.net_flow || 0);
     } else {
       inflows.push(0); outflows.push(0); nets.push(0);
     }
