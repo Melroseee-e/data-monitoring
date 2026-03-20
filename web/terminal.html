@@ -727,6 +727,22 @@ function updateTrendChart(token) {
 
   // Dynamic Scaling & Sync Logic
   const currentInstanceToken = selectedToken;
+  // Prevent duplicated listeners after repeated token/theme/view re-renders.
+  if (typeof chartDiv.removeAllListeners === 'function') {
+    chartDiv.removeAllListeners('plotly_relayout');
+    chartDiv.removeAllListeners('plotly_doubleclick');
+  }
+
+  chartDiv.on('plotly_doubleclick', function() {
+    // Run after Plotly internal reset to avoid race with its relayout sequence.
+    setTimeout(() => {
+      if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
+      document.getElementById('timeRangeDisplay').style.display = 'none';
+      const fullAgg = aggregateRangeData(null, null);
+      syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
+    }, 0);
+  });
+
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
     let start, end;
