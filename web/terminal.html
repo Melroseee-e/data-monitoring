@@ -176,7 +176,7 @@
   }
   .pane.left { border-right: 1px solid var(--border-color); }
   
-  .pane-header {
+  .pane-header { color: var(--text-main) !important; font-weight: 800 !important; font-size: 13px !important; 
     padding: 10px 16px;
     font-size: 12px;
     font-weight: 700;
@@ -526,10 +526,10 @@ function updateExchangeTable(data) {
   tbody.innerHTML = sortedEx.map(([ex, flows]) => {
     const isPos = flows.net >= 0;
     return `<tr>
-      <td style="font-family:var(--font-ui); font-weight:500;">${ex}</td>
-      <td class="pos">${formatNum(flows.in || flows.inflow || 0)}</td>
-      <td class="neg">${formatNum(flows.out || flows.outflow || 0)}</td>
-      <td class="${isPos ? 'pos' : 'neg'}">${isPos ? '+' : ''}${formatNum(flows.net || flows.net_flow || 0)}</td>
+            <td style="font-family:var(--font-ui); font-weight:500;">${ex}</td>
+      <td class="pos">${formatNum(flows.inflow || 0)}</td>
+      <td class="neg">${formatNum(flows.outflow || 0)}</td>
+      <td class="${isPos ? 'pos' : 'neg'}">${isPos ? '+' : ''}${formatNum(flows.net_flow || 0)}</td>
     </tr>`;
   }).join('');
 }
@@ -782,7 +782,7 @@ function updateSankey(data) {
     height: Math.max(300, Math.min(600, nodeIdx * 40)) // Dynamic height
   };
 
-  document.getElementById('sankeyChart').innerHTML = ''; 
+  document.getElementById('sankeyChart').innerHTML = '<div style="padding:20px;text-align:center;">Loading Routing Data...</div>'; 
   Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true}); setTimeout(() => Plotly.Plots.resize('sankeyChart'), 500);
 }
 
