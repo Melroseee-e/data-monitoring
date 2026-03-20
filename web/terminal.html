@@ -36,7 +36,7 @@
     --accent: #2563EB;
     --inflow: #059669;
     --outflow: #DC2626;
-    background-image: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.02) 0%, transparent 80%);
+    background-color: #FAF8F5;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -471,7 +471,7 @@ function updateTrendChart(token) {
   
   tokenDataList.forEach(entry => {
     // Plotly handles ISO strings well natively
-    dates.push(entry.date || entry.timestamp);
+    const d = entry.date || entry.timestamp; if(!d) return; dates.push(d);
 
     const tData = entry.tokens?.[token];
     if(tData) {
@@ -641,7 +641,7 @@ function updateSankey(data) {
     type: 'sankey',
     orientation: 'h',
     node: {
-      pad: 60, // Significantly increased padding
+      pad: 80, // Significantly increased padding
       thickness: 12, // Thinner nodes
       line: { color: 'transparent', width: 0 },
       label: nodeLabels,
@@ -664,7 +664,7 @@ function updateSankey(data) {
   };
 
   document.getElementById('sankeyChart').innerHTML = ''; 
-  Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true});
+  Plotly.newPlot('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true}); setTimeout(() => Plotly.Plots.resize('sankeyChart'), 500);
 }
 
 // Ensure both charts resize correctly
