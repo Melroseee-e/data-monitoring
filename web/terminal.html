@@ -517,14 +517,14 @@ function updateTrendChart(token) {
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent',
     font: { family: "'JetBrains Mono', monospace", color: textColor, size: 11 },
-    margin: { l: 50, r: 20, t: 20, b: 20 },
+    margin: { l: 60, r: 20, t: 20, b: 20 },
     legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
     hovermode: 'x unified',
     xaxis: {
       type: 'date',
       gridcolor: gridColor,
       zerolinecolor: gridColor,
-      rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B' },
+      rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 },
       rangeselector: {
         buttons: [
           { count: 1, label: '1D', step: 'day', stepmode: 'backward' },
@@ -539,12 +539,55 @@ function updateTrendChart(token) {
     yaxis: {
       gridcolor: gridColor,
       zerolinecolor: gridColor,
-      tickformat: '.2s'
+      tickformat: '.2s',
+      autorange: true,
+      fixedrange: false
     }
   };
 
-  document.getElementById('trendChart').innerHTML = ''; // Clear old chart
-  Plotly.newPlot('trendChart', [traceInflow, traceOutflow, traceNet], layout, {displayModeBar: false, responsive: true});
+  const chartDiv = document.getElementById('trendChart');
+  chartDiv.innerHTML = ''; 
+  Plotly.newPlot(chartDiv, [traceInflow, traceOutflow, traceNet], layout, {displayModeBar: false, responsive: true});
+
+  // Dynamic Y-axis scaling logic
+  chartDiv.on('plotly_relayout', function(eventData) {
+    let start, end;
+    if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
+      start = new Date(eventData['xaxis.range[0]']);
+      end = new Date(eventData['xaxis.range[1]']);
+    } else if (eventData['xaxis.autorange']) {
+      // If user resets zoom or clicks "ALL"
+      Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
+      return;
+    } else {
+      return;
+    }
+
+    // Find visible indices
+    const visibleInflows = [];
+    const visibleOutflows = [];
+    const visibleNets = [];
+    
+    dates.forEach((d, i) => {
+      const date = new Date(d);
+      if (date >= start && date <= end) {
+        visibleInflows.push(inflows[i] || 0);
+        visibleOutflows.push(outflows[i] || 0);
+        visibleNets.push(nets[i] || 0);
+      }
+    });
+
+    if (visibleInflows.length > 0) {
+      const maxVal = Math.max(...visibleInflows, ...visibleNets);
+      const minVal = Math.min(...visibleOutflows.map(v => -v), ...visibleNets);
+      const padding = (maxVal - minVal) * 0.1;
+      
+      Plotly.relayout(chartDiv, {
+        'yaxis.range': [minVal - padding, maxVal + padding],
+        'yaxis.autorange': false
+      });
+    }
+  });
 }
 
 function updateSankey(data) {
