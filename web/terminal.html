@@ -593,15 +593,6 @@ function getTrendDateBounds() {
   return { min: new Date(Math.min(...times)), max: new Date(Math.max(...times)) };
 }
 
-function getDefaultHourlyRangeFromChart() {
-  const bounds = getTrendDateBounds();
-  if (!bounds) return null;
-  const end = new Date(bounds.max);
-  const start = new Date(end);
-  start.setDate(start.getDate() - 3);
-  return { start, end };
-}
-
 function applyQuickRange(rangeKey) {
   const chartDiv = document.getElementById('trendChart');
   if (!chartDiv || !chartDiv.data) return;
@@ -718,28 +709,10 @@ function resetTrendTimeframe() {
   const chartDiv = document.getElementById('trendChart');
   if (!chartDiv || !chartDiv.data) return;
   manualResetUntil = Date.now() + 700;
-  if (currentTimeLevel === 'hourly') {
-    const range = getDefaultHourlyRangeFromChart();
-    setQuickRangeActive(null);
-    if (range) {
-      Plotly.relayout(chartDiv, {
-        'xaxis.range[0]': range.start.toISOString(),
-        'xaxis.range[1]': range.end.toISOString(),
-        'yaxis.autorange': true
-      });
-      setTimeRangeUi(range.start, range.end);
-      syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
-    } else {
-      Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
-      setTimeRangeUi(null, null);
-      syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
-    }
-    return;
-  }
   setQuickRangeActive('all');
   setTimeRangeUi(null, null);
   Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
-  syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
+  syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
 }
 
 async function init() {
@@ -1225,36 +1198,17 @@ function updateTrendChart(token) {
   chartDiv.on('plotly_doubleclick', function() {
     if (selectedToken !== currentInstanceToken) return;
     manualResetUntil = Date.now() + 700;
-    if (currentTimeLevel === 'hourly') {
-      if (!applyHourlyDefaultWindow()) {
-        setTimeRangeUi(null, null);
-        syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
-      }
-      return;
-    }
     setQuickRangeActive('all');
     setTimeRangeUi(null, null);
-    syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
+    syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
   });
 
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
     if (Date.now() < manualResetUntil) {
-      if (currentTimeLevel === 'hourly') {
-        const range = getHourlyDefaultRange();
-        setQuickRangeActive(null);
-        if (range) {
-          setTimeRangeUi(range.start, range.end);
-          syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
-        } else {
-          setTimeRangeUi(null, null);
-          syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
-        }
-      } else {
-        setQuickRangeActive('all');
-        setTimeRangeUi(null, null);
-        syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
-      }
+      setQuickRangeActive('all');
+      setTimeRangeUi(null, null);
+      syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
       return;
     }
 
@@ -1265,16 +1219,9 @@ function updateTrendChart(token) {
       setQuickRangeActive(null);
     } else if (eventData['xaxis.autorange']) {
       Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
-      if (currentTimeLevel === 'hourly') {
-        if (!applyHourlyDefaultWindow()) {
-          setTimeRangeUi(null, null);
-          syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
-        }
-      } else {
-        setQuickRangeActive('all');
-        setTimeRangeUi(null, null);
-        syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
-      }
+      setQuickRangeActive('all');
+      setTimeRangeUi(null, null);
+      syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
       return;
     } else { return; }
 
@@ -1346,6 +1293,8 @@ function updateSankey(data) {
   const isTruncated = !isSankeyExpanded && sortedEntries.length > maxNodesInCompact;
   const renderEntries = isTruncated ? sortedEntries.slice(0, maxNodesInCompact) : sortedEntries;
   updateSankeyModeUi(isTruncated, sortedEntries.length);
+  const leftNodeX = isSankeyExpanded ? 0.035 : 0.07;
+  const rightNodeX = isSankeyExpanded ? 0.965 : 0.93;
 
   const inflowEntries = renderEntries
     .filter(e => e.inflow > 0)
@@ -1394,7 +1343,7 @@ function updateSankey(data) {
   inflowPlaced.forEach((entry, idx) => {
     nodeLabels.push(entry.exchange);
     nodeColors.push(sankeyNodeColor);
-    nodeX.push(0.07);
+    nodeX.push(leftNodeX);
     nodeY.push(spreadY(idx, inflowPlaced.length));
 
     linkSources.push(nodeIdx);
@@ -1407,7 +1356,7 @@ function updateSankey(data) {
   outflowPlaced.forEach((entry, idx) => {
     nodeLabels.push(entry.exchange);
     nodeColors.push(sankeyNodeColor);
-    nodeX.push(0.93);
+    nodeX.push(rightNodeX);
     nodeY.push(spreadY(idx, outflowPlaced.length));
 
     linkSources.push(0);
@@ -1424,8 +1373,9 @@ function updateSankey(data) {
     return;
   }
 
+  const expandedContainerHeight = document.getElementById('sankeyWrapper')?.clientHeight || 0;
   const chartHeight = isSankeyExpanded
-    ? Math.max(500, Math.min(980, Math.max(inflowPlaced.length, outflowPlaced.length) * 46 + 200))
+    ? Math.max(620, expandedContainerHeight > 0 ? expandedContainerHeight - 12 : 900)
     : Math.max(300, Math.min(460, Math.max(inflowPlaced.length, outflowPlaced.length) * 36 + 140));
   const dynamicPadding = Math.max(10, Math.min(50, (chartHeight / (nodeIdx + 1))));
 
@@ -1447,7 +1397,7 @@ function updateSankey(data) {
   const layout = {
     autosize: true, font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
-    margin: { l: 26, r: 26, t: 34, b: 34 },
+    margin: { l: isSankeyExpanded ? 18 : 26, r: isSankeyExpanded ? 18 : 26, t: isSankeyExpanded ? 24 : 34, b: isSankeyExpanded ? 24 : 34 },
     height: chartHeight,
     transition: { duration: 0 }
   };
