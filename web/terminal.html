@@ -1179,6 +1179,8 @@ function updateTrendChart(token) {
     const range = getHourlyDefaultRange();
     if (!range) return false;
     setQuickRangeActive(null);
+    setTimeRangeUi(range.start, range.end);
+    syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
     Plotly.relayout(chartDiv, {
       'xaxis.range[0]': range.start.toISOString(),
       'xaxis.range[1]': range.end.toISOString(),
@@ -1192,6 +1194,10 @@ function updateTrendChart(token) {
     if (selectedToken !== currentInstanceToken) return;
     if (currentTimeLevel === 'hourly') {
       applyHourlyDefaultWindow();
+    } else {
+      setQuickRangeActive('all');
+      setTimeRangeUi(null, null);
+      syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
     }
   }, 120);
 
