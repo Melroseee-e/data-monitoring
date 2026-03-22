@@ -1347,8 +1347,12 @@ function updateSankey(data) {
   const renderEntries = isTruncated ? sortedEntries.slice(0, maxNodesInCompact) : sortedEntries;
   updateSankeyModeUi(isTruncated, sortedEntries.length);
 
-  const inflowEntries = renderEntries.filter(e => e.inflow > 0);
-  const outflowEntries = renderEntries.filter(e => e.outflow > 0);
+  const inflowEntries = renderEntries
+    .filter(e => e.inflow > 0)
+    .sort((a, b) => b.inflow - a.inflow);
+  const outflowEntries = renderEntries
+    .filter(e => e.outflow > 0)
+    .sort((a, b) => b.outflow - a.outflow);
   const nodeLabels = [selectedToken];
   const nodeColors = ['#3B82F6'];
   const nodeX = [0.5];
@@ -1361,15 +1365,37 @@ function updateSankey(data) {
 
   const spreadY = (index, total) => {
     if (total <= 1) return 0.5;
-    const step = 0.82 / (total - 1);
-    return 0.09 + (index * step);
+    const step = 0.64 / (total - 1);
+    return 0.18 + (index * step);
   };
+  const centeredOrder = (total) => {
+    const center = (total - 1) / 2;
+    return Array.from({ length: total }, (_, i) => i)
+      .sort((a, b) => {
+        const da = Math.abs(a - center);
+        const db = Math.abs(b - center);
+        if (da !== db) return da - db;
+        return a - b;
+      });
+  };
+  const placeByCenter = (entries) => {
+    if (entries.length <= 2) return entries;
+    const slots = new Array(entries.length);
+    const order = centeredOrder(entries.length);
+    entries.forEach((entry, rank) => {
+      const slot = order[rank];
+      slots[slot] = entry;
+    });
+    return slots.filter(Boolean);
+  };
+  const inflowPlaced = placeByCenter(inflowEntries);
+  const outflowPlaced = placeByCenter(outflowEntries);
 
-  inflowEntries.forEach((entry, idx) => {
+  inflowPlaced.forEach((entry, idx) => {
     nodeLabels.push(entry.exchange);
     nodeColors.push(sankeyNodeColor);
     nodeX.push(0.07);
-    nodeY.push(spreadY(idx, inflowEntries.length));
+    nodeY.push(spreadY(idx, inflowPlaced.length));
 
     linkSources.push(nodeIdx);
     linkTargets.push(0);
@@ -1378,11 +1404,11 @@ function updateSankey(data) {
     nodeIdx++;
   });
 
-  outflowEntries.forEach((entry, idx) => {
+  outflowPlaced.forEach((entry, idx) => {
     nodeLabels.push(entry.exchange);
     nodeColors.push(sankeyNodeColor);
     nodeX.push(0.93);
-    nodeY.push(spreadY(idx, outflowEntries.length));
+    nodeY.push(spreadY(idx, outflowPlaced.length));
 
     linkSources.push(0);
     linkTargets.push(nodeIdx);
@@ -1399,8 +1425,8 @@ function updateSankey(data) {
   }
 
   const chartHeight = isSankeyExpanded
-    ? Math.max(460, Math.min(980, Math.max(inflowEntries.length, outflowEntries.length) * 44 + 180))
-    : Math.max(260, Math.min(420, Math.max(inflowEntries.length, outflowEntries.length) * 34 + 120));
+    ? Math.max(500, Math.min(980, Math.max(inflowPlaced.length, outflowPlaced.length) * 46 + 200))
+    : Math.max(300, Math.min(460, Math.max(inflowPlaced.length, outflowPlaced.length) * 36 + 140));
   const dynamicPadding = Math.max(10, Math.min(50, (chartHeight / (nodeIdx + 1))));
 
   const plotData = [{
@@ -1408,7 +1434,7 @@ function updateSankey(data) {
     arrangement: 'fixed',
     node: {
       pad: Math.min(dynamicPadding, 30),
-      thickness: 16,
+      thickness: 14,
       line: { color: 'transparent', width: 0 },
       label: nodeLabels,
       color: nodeColors,
@@ -1421,7 +1447,7 @@ function updateSankey(data) {
   const layout = {
     autosize: true, font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
-    margin: { l: 26, r: 26, t: 20, b: 20 },
+    margin: { l: 26, r: 26, t: 34, b: 34 },
     height: chartHeight,
     transition: { duration: 0 }
   };
