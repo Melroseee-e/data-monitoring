@@ -318,9 +318,7 @@ let selectedToken = null;
 let charts = {};
 let currentTrendView = 'daily';
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
-let lastNonEmptyFlowData = null;
-let lastSankeyToken = null;
-let isManualTimeReset = false;
+let manualResetUntil = 0;
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
@@ -376,20 +374,10 @@ function initTheme() {
 function resetTrendTimeframe() {
   const chartDiv = document.getElementById('trendChart');
   if (!chartDiv || !chartDiv.data) return;
-  isManualTimeReset = true;
+  manualResetUntil = Date.now() + 700;
   Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
   document.getElementById('timeRangeDisplay').style.display = 'none';
-  const fullAgg = aggregateRangeData(null, null);
-  syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
-  // Safety net: if Sankey was dropped by any async race, restore from current snapshot.
-  setTimeout(() => {
-    const sankeyDiv = document.getElementById('sankeyChart');
-    const hasSankey = !!(sankeyDiv && sankeyDiv.data && sankeyDiv.data.length > 0);
-    if (!hasSankey) {
-      syncFlowPanels(rawData?.tokens?.[selectedToken] || fullAgg, { allowSnapshotFallback: true });
-    }
-  }, 120);
-  setTimeout(() => { isManualTimeReset = false; }, 180);
+  syncFlowPanels(getFullTokenFlowData(selectedToken));
 }
 
 async function init() {
@@ -478,7 +466,6 @@ function renderTokenList(filter = '') {
     if (selectedToken === targetToken) return;
     
     selectedToken = targetToken;
-    lastNonEmptyFlowData = null;
     
     // Update active class manually
     list.querySelectorAll('.token-item').forEach(el => el.classList.remove('active'));
@@ -536,33 +523,40 @@ function hasRenderableFlowData(data) {
   return false;
 }
 
-function syncFlowPanels(data, options = {}) {
-  const { allowSnapshotFallback = false } = options;
+function getTokenSnapshotFlowData(token) {
+  const t = rawData?.tokens?.[token];
+  const aggregated = { exchanges: {} };
+  if (!t?.deployments) return aggregated;
+  t.deployments.forEach(dep => {
+    Object.entries(dep.exchange_flows || {}).forEach(([ex, flows]) => {
+      if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { inflow: 0, outflow: 0, net_flow: 0 };
+      const inf = Number(flows.inflow ?? flows.in ?? 0);
+      const outf = Number(flows.outflow ?? flows.out ?? 0);
+      const net = Number(flows.net_flow ?? flows.net ?? (inf - outf));
+      aggregated.exchanges[ex].inflow += inf;
+      aggregated.exchanges[ex].outflow += outf;
+      aggregated.exchanges[ex].net_flow += net;
+    });
+  });
+  return aggregated;
+}
 
-  if (hasRenderableFlowData(data)) {
-    lastNonEmptyFlowData = data;
-    updateExchangeTable(data);
-    updateSankey(data);
-    return;
+function getFullTokenFlowData(token) {
+  const fullAgg = aggregateRangeData(null, null);
+  if (hasRenderableFlowData(fullAgg)) return fullAgg;
+  const snapshotAgg = getTokenSnapshotFlowData(token);
+  if (hasRenderableFlowData(snapshotAgg)) return snapshotAgg;
+  return fullAgg;
+}
+
+function syncFlowPanels(data) {
+  let resolved = data;
+  if (!hasRenderableFlowData(resolved)) {
+    const snapshotAgg = getTokenSnapshotFlowData(selectedToken);
+    if (hasRenderableFlowData(snapshotAgg)) resolved = snapshotAgg;
   }
-
-  if (allowSnapshotFallback && rawData?.tokens?.[selectedToken] && hasRenderableFlowData(rawData.tokens[selectedToken])) {
-    const snapshot = rawData.tokens[selectedToken];
-    lastNonEmptyFlowData = snapshot;
-    updateExchangeTable(snapshot);
-    updateSankey(snapshot);
-    return;
-  }
-
-  if (lastNonEmptyFlowData && hasRenderableFlowData(lastNonEmptyFlowData)) {
-    updateExchangeTable(lastNonEmptyFlowData);
-    updateSankey(lastNonEmptyFlowData);
-    return;
-  }
-
-  // Final fallback: render empty state explicitly.
-  updateExchangeTable(data || { exchanges: {} });
-  updateSankey(data || { exchanges: {} });
+  updateExchangeTable(resolved || { exchanges: {} });
+  updateSankey(resolved || { exchanges: {} });
 }
     
 
@@ -583,8 +577,7 @@ function updateDashboard() {
   
   // Initial render with ALL-TIME aggregated data (from start of time)
   document.getElementById('timeRangeDisplay').style.display = 'none';
-  const fullHistory = aggregateRangeData(null, null);
-  syncFlowPanels(fullHistory, { allowSnapshotFallback: true });
+  syncFlowPanels(getFullTokenFlowData(selectedToken));
   
   updateTrendChart(selectedToken);
 }
@@ -710,6 +703,7 @@ function updateTrendChart(token) {
 
   const layout = {
     autosize: true, barmode: 'relative', paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
+    dragmode: 'zoom',
     font: { family: "'JetBrains Mono', monospace", color: textColor, size: 11 },
     margin: { l: 60, r: 20, t: 20, b: 20 },
     legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
@@ -739,12 +733,7 @@ function updateTrendChart(token) {
 
   const chartDiv = document.getElementById('trendChart');
   chartDiv.innerHTML = ''; 
-  Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true, doubleClick: false});
-  // Use custom double-click reset to avoid Plotly's internal reset race with sub-panel sync.
-  chartDiv.ondblclick = (event) => {
-    event.preventDefault();
-    resetTrendTimeframe();
-  };
+  Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true, doubleClick: 'reset+autosize'});
   setTimeout(() => { isUpdatingToken = false; }, 100);
   
   // Reset scroll position of token list item into view if needed
@@ -757,14 +746,21 @@ function updateTrendChart(token) {
   // Prevent duplicated listeners after repeated token/theme/view re-renders.
   if (typeof chartDiv.removeAllListeners === 'function') {
     chartDiv.removeAllListeners('plotly_relayout');
+    chartDiv.removeAllListeners('plotly_doubleclick');
   }
+
+  chartDiv.on('plotly_doubleclick', function() {
+    if (selectedToken !== currentInstanceToken) return;
+    manualResetUntil = Date.now() + 700;
+    document.getElementById('timeRangeDisplay').style.display = 'none';
+    syncFlowPanels(getFullTokenFlowData(selectedToken));
+  });
 
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
-    if (isManualTimeReset) {
+    if (Date.now() < manualResetUntil) {
       document.getElementById('timeRangeDisplay').style.display = 'none';
-      const fullAgg = aggregateRangeData(null, null);
-      syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
+      syncFlowPanels(getFullTokenFlowData(selectedToken));
       return;
     }
     let start, end;
@@ -774,8 +770,7 @@ function updateTrendChart(token) {
     } else if (eventData['xaxis.autorange']) {
       Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
       document.getElementById('timeRangeDisplay').style.display = 'none';
-      const fullAgg = aggregateRangeData(null, null);
-      syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
+      syncFlowPanels(getFullTokenFlowData(selectedToken));
       return;
     } else { return; }
 
@@ -787,7 +782,7 @@ function updateTrendChart(token) {
 
     // 1. Sync Table & Sankey (use canonical aggregator to keep field names consistent)
     const aggregated = aggregateRangeData(start, end);
-    syncFlowPanels(aggregated, { allowSnapshotFallback: true });
+    syncFlowPanels(aggregated);
 
     // 2. Dynamic Y-axis
     const visibleInflows = [], visibleOutflows = [], visibleNets = [], visibleCums = [];
@@ -857,12 +852,8 @@ function updateSankey(data) {
   }
 
   if(linkValues.length === 0) {
-    const hasExistingPlot = !!(sankeyDiv && sankeyDiv.data && sankeyDiv.data.length > 0);
-    // For the same token, keep previous Sankey on transient empty aggregation (common during double-click reset).
-    if (hasExistingPlot && lastSankeyToken === selectedToken) return;
     Plotly.purge('sankeyChart');
     sankeyDiv.innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available for this range</div>`;
-    lastSankeyToken = selectedToken;
     return;
   }
 
@@ -885,7 +876,6 @@ function updateSankey(data) {
 
   sankeyDiv.innerHTML = ''; 
   Plotly.react('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true, hovermode: 'closest'});
-  lastSankeyToken = selectedToken;
   setTimeout(() => Plotly.Plots.resize('sankeyChart'), 100);
 }
 
