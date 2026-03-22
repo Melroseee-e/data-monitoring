@@ -1042,15 +1042,6 @@ function buildDailyTrendSeries(token) {
   if (!hasDataInDaily && Array.isArray(historyData)) sourceData = historyData;
   if (!sourceData || !sourceData.length) return null;
 
-  let startIndex = 0;
-  for (let i = 0; i < sourceData.length; i++) {
-    const tData = sourceData[i].tokens?.[token];
-    if (tData && (Math.abs(tData.total_inflow || 0) > 0.01 || Math.abs(tData.total_outflow || 0) > 0.01)) {
-      startIndex = i;
-      break;
-    }
-  }
-
   const dates = [];
   const inflows = [];
   const outflows = [];
@@ -1058,20 +1049,36 @@ function buildDailyTrendSeries(token) {
   const cumulative = [];
   let runningNet = 0;
 
-  sourceData.slice(startIndex).forEach(entry => {
+  const dailyBuckets = new Map();
+  let minDay = null;
+  let maxDay = null;
+  sourceData.forEach(entry => {
     const d = parsePointTime(entry.date || entry.timestamp);
     if (!d) return;
+    const day = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
+    const key = day.getTime();
+    if (!dailyBuckets.has(key)) dailyBuckets.set(key, { inflow: 0, outflow: 0 });
     const tData = entry.tokens?.[token];
-    const inf = Number(tData?.total_inflow || 0);
-    const outf = Number(tData?.total_outflow || 0);
+    dailyBuckets.get(key).inflow += Number(tData?.total_inflow || 0);
+    dailyBuckets.get(key).outflow += Number(tData?.total_outflow || 0);
+    if (minDay === null || key < minDay) minDay = key;
+    if (maxDay === null || key > maxDay) maxDay = key;
+  });
+  if (minDay === null || maxDay === null) return null;
+
+  for (let ts = minDay; ts <= maxDay; ts += 24 * 60 * 60 * 1000) {
+    const day = new Date(ts);
+    const flows = dailyBuckets.get(ts) || { inflow: 0, outflow: 0 };
+    const inf = Number(flows.inflow || 0);
+    const outf = Number(flows.outflow || 0);
     const net = inf - outf;
-    dates.push(d);
+    dates.push(day);
     inflows.push(inf);
     outflows.push(outf);
     nets.push(net);
     runningNet += net;
     cumulative.push(runningNet);
-  });
+  }
 
   return { dates, inflows, outflows, nets, cumulative };
 }
@@ -1095,6 +1102,8 @@ function buildHourlyTrendSeries(token) {
 
   const sortedHours = Array.from(buckets.keys()).sort((a, b) => a - b);
   if (sortedHours.length === 0) return null;
+  const firstHour = sortedHours[0];
+  const lastHour = sortedHours[sortedHours.length - 1];
 
   const dates = [];
   const inflows = [];
@@ -1103,8 +1112,8 @@ function buildHourlyTrendSeries(token) {
   const cumulative = [];
   let runningNet = 0;
 
-  sortedHours.forEach(hour => {
-    const flows = buckets.get(hour);
+  for (let hour = firstHour; hour <= lastHour; hour += 60 * 60 * 1000) {
+    const flows = buckets.get(hour) || { inflow: 0, outflow: 0 };
     const inf = Number(flows?.inflow || 0);
     const outf = Number(flows?.outflow || 0);
     const net = inf - outf;
@@ -1114,7 +1123,7 @@ function buildHourlyTrendSeries(token) {
     nets.push(net);
     runningNet += net;
     cumulative.push(runningNet);
-  });
+  }
 
   return { dates, inflows, outflows, nets, cumulative };
 }
