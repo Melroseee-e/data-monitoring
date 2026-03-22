@@ -526,11 +526,22 @@ def generate_history_summary():
                         "tokens": {},
                     }
                     for symbol, tdata in record.get("tokens", {}).items():
-                        entry["tokens"][symbol] = {
+                        token_entry = {
                             "total_inflow": tdata.get("total_inflow", 0),
                             "total_outflow": tdata.get("total_outflow", 0),
                             "net_flow": tdata.get("net_flow", 0),
                         }
+                        exchange_summary = {}
+                        for dep in tdata.get("deployments", []):
+                            for ex, flows in dep.get("exchange_flows", {}).items():
+                                if ex not in exchange_summary:
+                                    exchange_summary[ex] = {"inflow": 0, "outflow": 0, "net_flow": 0}
+                                exchange_summary[ex]["inflow"] += flows.get("inflow", 0)
+                                exchange_summary[ex]["outflow"] += flows.get("outflow", 0)
+                                exchange_summary[ex]["net_flow"] += flows.get("net_flow", 0)
+                        if exchange_summary:
+                            token_entry["exchanges"] = exchange_summary
+                        entry["tokens"][symbol] = token_entry
                     summary.append(entry)
                 except (json.JSONDecodeError, KeyError):
                     continue

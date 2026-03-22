@@ -1258,9 +1258,49 @@ function updateTrendChart(token) {
 function updateSankey(data) {
   const sankeyDiv = document.getElementById('sankeyChart');
   const isLight = document.body.classList.contains('theme-light');
-  const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
-  const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
+  const sankeyTextColor = isLight ? '#4B5563' : '#D1D5DB';
   const maxNodesInCompact = 6;
+  const exchangePalette = ['#3B82F6', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#F97316', '#14B8A6', '#E11D48', '#84CC16'];
+  const exchangeIconMap = {
+    Binance: 'BN',
+    Coinbase: 'CB',
+    'Gate.io': 'GT',
+    KuCoin: 'KC',
+    HTX: 'HTX',
+    MEXC: 'MX',
+    Bybit: 'BB',
+    Bitget: 'BG',
+    OKX: 'OKX',
+    CoinEx: 'CX',
+    Wintermute: 'WM'
+  };
+  const hashString = (s) => {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = ((h << 5) - h) + s.charCodeAt(i);
+    return Math.abs(h);
+  };
+  const hexToRgba = (hex, alpha) => {
+    const h = hex.replace('#', '');
+    const bigint = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+  const exchangeColor = (name, alpha = 0.85) => {
+    const hex = exchangePalette[hashString(name) % exchangePalette.length];
+    return hexToRgba(hex, alpha);
+  };
+  const formatExchangeLabel = (name) => {
+    const badge = exchangeIconMap[name];
+    return badge ? `${badge} ${name}` : name;
+  };
+
+  let renderData = data;
+  if (!hasRenderableFlowData(renderData)) {
+    const snapshotAgg = getTokenSnapshotFlowData(selectedToken);
+    if (hasRenderableFlowData(snapshotAgg)) renderData = snapshotAgg;
+  }
 
   const exchangeMap = {};
   const appendExchange = (exchange, flows) => {
@@ -1273,12 +1313,12 @@ function updateSankey(data) {
     exchangeMap[exchange].net_flow += net;
   };
 
-  if (data.deployments) {
-    data.deployments.forEach(dep => {
+  if (renderData.deployments) {
+    renderData.deployments.forEach(dep => {
       Object.entries(dep.exchange_flows || {}).forEach(([exchange, flows]) => appendExchange(exchange, flows));
     });
-  } else if (data.exchanges) {
-    Object.entries(data.exchanges).forEach(([exchange, flows]) => appendExchange(exchange, flows));
+  } else if (renderData.exchanges) {
+    Object.entries(renderData.exchanges).forEach(([exchange, flows]) => appendExchange(exchange, flows));
   }
 
   const sortedEntries = Object.entries(exchangeMap)
@@ -1341,8 +1381,8 @@ function updateSankey(data) {
   const outflowPlaced = placeByCenter(outflowEntries);
 
   inflowPlaced.forEach((entry, idx) => {
-    nodeLabels.push(entry.exchange);
-    nodeColors.push(sankeyNodeColor);
+    nodeLabels.push(formatExchangeLabel(entry.exchange));
+    nodeColors.push(exchangeColor(entry.exchange, isLight ? 0.90 : 0.78));
     nodeX.push(leftNodeX);
     nodeY.push(spreadY(idx, inflowPlaced.length));
 
@@ -1354,8 +1394,8 @@ function updateSankey(data) {
   });
 
   outflowPlaced.forEach((entry, idx) => {
-    nodeLabels.push(entry.exchange);
-    nodeColors.push(sankeyNodeColor);
+    nodeLabels.push(formatExchangeLabel(entry.exchange));
+    nodeColors.push(exchangeColor(entry.exchange, isLight ? 0.90 : 0.78));
     nodeX.push(rightNodeX);
     nodeY.push(spreadY(idx, outflowPlaced.length));
 
@@ -1385,7 +1425,7 @@ function updateSankey(data) {
     node: {
       pad: Math.min(dynamicPadding, 30),
       thickness: 14,
-      line: { color: 'transparent', width: 0 },
+      line: { color: isLight ? 'rgba(255,255,255,0.8)' : 'rgba(15,23,42,0.9)', width: 0.8 },
       label: nodeLabels,
       color: nodeColors,
       x: nodeX,
@@ -1395,7 +1435,7 @@ function updateSankey(data) {
   }];
 
   const layout = {
-    autosize: true, font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
+    autosize: true, font: { size: 12, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
     margin: { l: isSankeyExpanded ? 18 : 26, r: isSankeyExpanded ? 18 : 26, t: isSankeyExpanded ? 24 : 34, b: isSankeyExpanded ? 24 : 34 },
     height: chartHeight,
