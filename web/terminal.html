@@ -155,6 +155,31 @@
     flex-wrap: wrap;
   }
 
+  .time-level-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 2px;
+    margin-left: 6px;
+  }
+  .time-level-btn {
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: var(--font-ui);
+    line-height: 1;
+  }
+  .time-level-btn.active {
+    color: var(--text-main);
+    background: rgba(37, 99, 235, 0.15);
+  }
+
   .range-btn {
     background: transparent;
     border: 1px solid var(--border-color);
@@ -375,6 +400,10 @@
           <div style="display: flex; align-items: center; gap: 16px;">
             <span class="trend-tab active" data-view="daily" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid var(--accent);">Flow History</span>
             <span class="trend-tab" data-view="cumulative" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid transparent; color: var(--text-muted);">Cumulative (TGE)</span>
+            <div id="timeLevelSwitch" class="time-level-switch">
+              <button class="time-level-btn active" data-level="daily">Daily</button>
+              <button class="time-level-btn" data-level="hourly">Hourly</button>
+            </div>
             <small style='color:var(--text-muted); font-weight:normal; margin-left:8px; text-transform:none;'>(Scroll / Pinch to Zoom)</small>
           </div>
           <div class="chart-controls">
@@ -463,6 +492,7 @@ let historyData = null;
 let selectedToken = null;
 let charts = {};
 let currentTrendView = 'daily';
+let currentTimeLevel = 'daily'; // 'daily' or 'hourly'
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let manualResetUntil = 0;
 let isSankeyExpanded = false;
@@ -486,6 +516,29 @@ function initTrendTabs() {
       tab.style.borderBottomColor = 'var(--accent)';
       tab.style.color = 'var(--text-main)';
       currentTrendView = tab.dataset.view;
+      if (selectedToken) updateTrendChart(selectedToken);
+    });
+  });
+}
+
+function initTimeLevelSwitch() {
+  document.querySelectorAll('.time-level-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nextLevel = btn.dataset.level;
+      if (!nextLevel || nextLevel === currentTimeLevel) return;
+      currentTimeLevel = nextLevel;
+      document.querySelectorAll('.time-level-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Time level switch resets display window policy:
+      // daily -> all-time; hourly -> auto to latest 3 days.
+      if (currentTimeLevel === 'daily') {
+        setQuickRangeActive('all');
+        setTimeRangeUi(null, null);
+      } else {
+        setQuickRangeActive(null);
+      }
+
       if (selectedToken) updateTrendChart(selectedToken);
     });
   });
@@ -538,6 +591,15 @@ function getTrendDateBounds() {
   const times = xData.map(x => new Date(x).getTime()).filter(v => Number.isFinite(v));
   if (!times.length) return null;
   return { min: new Date(Math.min(...times)), max: new Date(Math.max(...times)) };
+}
+
+function getDefaultHourlyRangeFromChart() {
+  const bounds = getTrendDateBounds();
+  if (!bounds) return null;
+  const end = new Date(bounds.max);
+  const start = new Date(end);
+  start.setDate(start.getDate() - 3);
+  return { start, end };
 }
 
 function applyQuickRange(rangeKey) {
@@ -656,15 +718,34 @@ function resetTrendTimeframe() {
   const chartDiv = document.getElementById('trendChart');
   if (!chartDiv || !chartDiv.data) return;
   manualResetUntil = Date.now() + 700;
+  if (currentTimeLevel === 'hourly') {
+    const range = getDefaultHourlyRangeFromChart();
+    setQuickRangeActive(null);
+    if (range) {
+      Plotly.relayout(chartDiv, {
+        'xaxis.range[0]': range.start.toISOString(),
+        'xaxis.range[1]': range.end.toISOString(),
+        'yaxis.autorange': true
+      });
+      setTimeRangeUi(range.start, range.end);
+      syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
+    } else {
+      Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
+      setTimeRangeUi(null, null);
+      syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
+    }
+    return;
+  }
   setQuickRangeActive('all');
   setTimeRangeUi(null, null);
   Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
-  syncFlowPanels(getFullTokenFlowData(selectedToken));
+  syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
 }
 
 async function init() {
   initTheme();
   initTrendTabs();
+  initTimeLevelSwitch();
   initRangeControls();
   updateSankeyModeUi(true, 0);
   document.getElementById('resetTimeframeBtn')?.addEventListener('click', resetTrendTimeframe);
@@ -765,32 +846,39 @@ function renderTokenList(filter = '') {
   updateDashboard();
 }
 
+function getRangeDataSources(level = currentTimeLevel) {
+  const hasDaily = Array.isArray(dailyData) && dailyData.length > 0;
+  const hasHistory = Array.isArray(historyData) && historyData.length > 0;
+  if (level === 'hourly') return hasHistory ? [historyData] : [];
+  if (hasDaily) return [dailyData];
+  if (hasHistory) return [historyData];
+  return [];
+}
 
-    
-        function aggregateRangeData(start, end) {
-      const aggregated = { exchanges: {} };
-      const startTime = start ? new Date(start).getTime() : -Infinity;
-      const endTime = end ? new Date(end).getTime() : Infinity;
-      const searchSources = [dailyData, historyData].filter(s => Array.isArray(s));
-      
-      searchSources.forEach(source => {
-        source.forEach(entry => {
-          const dDate = new Date(entry.date || entry.timestamp);
-          const dTime = dDate.getTime();
-          if (dTime >= startTime && dTime <= endTime && entry.tokens && entry.tokens[selectedToken]) {
-            const t = entry.tokens[selectedToken];
-            const exData = t.exchanges || t.exchange_flows || {};
-            Object.entries(exData).forEach(([ex, flows]) => {
-              if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
-              aggregated.exchanges[ex].inflow += (flows.inflow || flows.in || 0);
-              aggregated.exchanges[ex].outflow += (flows.outflow || flows.out || 0);
-              aggregated.exchanges[ex].net_flow += (flows.net_flow || flows.net || 0);
-            });
-          }
+function aggregateRangeData(start, end, level = currentTimeLevel) {
+  const aggregated = { exchanges: {} };
+  const startTime = start ? new Date(start).getTime() : -Infinity;
+  const endTime = end ? new Date(end).getTime() : Infinity;
+  const searchSources = getRangeDataSources(level);
+  
+  searchSources.forEach(source => {
+    source.forEach(entry => {
+      const dDate = new Date(entry.date || entry.timestamp);
+      const dTime = dDate.getTime();
+      if (dTime >= startTime && dTime <= endTime && entry.tokens && entry.tokens[selectedToken]) {
+        const t = entry.tokens[selectedToken];
+        const exData = t.exchanges || t.exchange_flows || {};
+        Object.entries(exData).forEach(([ex, flows]) => {
+          if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
+          aggregated.exchanges[ex].inflow += (flows.inflow || flows.in || 0);
+          aggregated.exchanges[ex].outflow += (flows.outflow || flows.out || 0);
+          aggregated.exchanges[ex].net_flow += (flows.net_flow || flows.net || 0);
         });
-      });
-      return aggregated;
-    }
+      }
+    });
+  });
+  return aggregated;
+}
 
 function hasRenderableFlowData(data) {
   if (!data) return false;
@@ -829,8 +917,8 @@ function getTokenSnapshotFlowData(token) {
   return aggregated;
 }
 
-function getFullTokenFlowData(token) {
-  const fullAgg = aggregateRangeData(null, null);
+function getFullTokenFlowData(token, level = currentTimeLevel) {
+  const fullAgg = aggregateRangeData(null, null, level);
   if (hasRenderableFlowData(fullAgg)) return fullAgg;
   const snapshotAgg = getTokenSnapshotFlowData(token);
   if (hasRenderableFlowData(snapshotAgg)) return snapshotAgg;
@@ -865,9 +953,9 @@ function updateDashboard() {
   netEl.className = 'kpi-mini-val ' + (d.net_flow >= 0 ? 'pos' : 'neg');
   
   // Initial render with ALL-TIME aggregated data (from start of time)
-  setQuickRangeActive('all');
+  setQuickRangeActive(currentTimeLevel === 'hourly' ? null : 'all');
   setTimeRangeUi(null, null);
-  syncFlowPanels(getFullTokenFlowData(selectedToken));
+  syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
   
   updateTrendChart(selectedToken);
 }
@@ -942,26 +1030,22 @@ function updateExchangeOverall(totals) {
   directionEl.className = `value ${net > 0 ? 'pos' : (net < 0 ? 'neg' : '')}`.trim();
 }
 
-function updateTrendChart(token) {
-  let sourceData = dailyData;
-  let hasDataInDaily = dailyData && dailyData.some(d => d.tokens?.[token] && (d.tokens[token].total_inflow > 0 || d.tokens[token].total_outflow > 0));
-  
-  if (!hasDataInDaily && historyData && Array.isArray(historyData)) {
-    sourceData = historyData;
-  }
+function buildDailyTrendSeries(token) {
+  let sourceData = Array.isArray(dailyData) ? dailyData : null;
+  const hasDataInDaily = Array.isArray(dailyData) && dailyData.some(
+    d => d.tokens?.[token] && ((d.tokens[token].total_inflow || 0) > 0 || (d.tokens[token].total_outflow || 0) > 0)
+  );
+  if (!hasDataInDaily && Array.isArray(historyData)) sourceData = historyData;
+  if (!sourceData || !sourceData.length) return null;
 
-  if(!sourceData || !Array.isArray(sourceData)) return;
-  
   let startIndex = 0;
   for (let i = 0; i < sourceData.length; i++) {
     const tData = sourceData[i].tokens?.[token];
-    if (tData && (Math.abs(tData.total_inflow) > 0.01 || Math.abs(tData.total_outflow) > 0.01)) {
+    if (tData && (Math.abs(tData.total_inflow || 0) > 0.01 || Math.abs(tData.total_outflow || 0) > 0.01)) {
       startIndex = i;
       break;
     }
   }
-  
-  const tokenDataList = sourceData.slice(startIndex);
 
   const dates = [];
   const inflows = [];
@@ -969,52 +1053,104 @@ function updateTrendChart(token) {
   const nets = [];
   const cumulative = [];
   let runningNet = 0;
-  
-  tokenDataList.forEach(entry => {
-    const d = entry.date || entry.timestamp; if(!d) return; dates.push(d);
+
+  sourceData.slice(startIndex).forEach(entry => {
+    const d = entry.date || entry.timestamp;
+    if (!d) return;
     const tData = entry.tokens?.[token];
-    const inf = tData ? (tData.total_inflow || 0) : 0;
-    const outf = tData ? (tData.total_outflow || 0) : 0;
+    const inf = Number(tData?.total_inflow || 0);
+    const outf = Number(tData?.total_outflow || 0);
     const net = inf - outf;
-    
+    dates.push(d);
     inflows.push(inf);
     outflows.push(outf);
     nets.push(net);
-    
     runningNet += net;
     cumulative.push(runningNet);
   });
 
+  return { dates, inflows, outflows, nets, cumulative };
+}
+
+function buildHourlyTrendSeries(token) {
+  if (!Array.isArray(historyData) || historyData.length === 0) return null;
+  const buckets = new Map();
+
+  historyData.forEach(entry => {
+    const rawTs = entry.timestamp || entry.date;
+    const tData = entry.tokens?.[token];
+    if (!rawTs || !tData) return;
+    const d = new Date(rawTs);
+    if (!Number.isFinite(d.getTime())) return;
+    d.setMinutes(0, 0, 0);
+    const key = d.toISOString();
+    if (!buckets.has(key)) buckets.set(key, { inflow: 0, outflow: 0 });
+    buckets.get(key).inflow += Number(tData.total_inflow || 0);
+    buckets.get(key).outflow += Number(tData.total_outflow || 0);
+  });
+
+  const sortedHours = Array.from(buckets.keys()).sort((a, b) => new Date(a) - new Date(b));
+  if (sortedHours.length === 0) return null;
+
+  const dates = [];
+  const inflows = [];
+  const outflows = [];
+  const nets = [];
+  const cumulative = [];
+  let runningNet = 0;
+
+  sortedHours.forEach(hour => {
+    const flows = buckets.get(hour);
+    const inf = Number(flows?.inflow || 0);
+    const outf = Number(flows?.outflow || 0);
+    const net = inf - outf;
+    dates.push(hour);
+    inflows.push(inf);
+    outflows.push(outf);
+    nets.push(net);
+    runningNet += net;
+    cumulative.push(runningNet);
+  });
+
+  return { dates, inflows, outflows, nets, cumulative };
+}
+
+function updateTrendChart(token) {
+  const series = (currentTimeLevel === 'hourly')
+    ? buildHourlyTrendSeries(token)
+    : buildDailyTrendSeries(token);
+  if (!series || !series.dates.length) return;
+
+  const { dates, inflows, outflows, nets, cumulative } = series;
   const isLight = document.body.classList.contains('theme-light');
   const textColor = isLight ? '#71717A' : '#A1A1AA';
   const gridColor = isLight ? '#E4E4E7' : '#18181B';
   const inflowColor = isLight ? '#059669' : '#00FFA3';
   const outflowColor = isLight ? '#DC2626' : '#FF4D4D';
   const netColor = '#3B82F6';
-
-  const hoverTemp = `<b>%{x}</b><br>%{symbol}: %{y:,.2f}<extra></extra>`;
+  const xHoverFormat = currentTimeLevel === 'hourly' ? '%Y-%m-%d %H:%M' : '%Y-%m-%d';
+  const xTickFormat = currentTimeLevel === 'hourly' ? '%m-%d %H:%M' : '%Y-%m-%d';
 
   let plotTraces = [];
-  
   if (currentTrendView === 'daily') {
     plotTraces = [
-      { 
+      {
         x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor },
         hovertemplate: `<b>%{x}</b><br>Inflow: %{y:.3s}<extra></extra>`
       },
-      { 
+      {
         x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor },
         hovertemplate: `<b>%{x}</b><br>Outflow: %{y:.3s}<extra></extra>`
       },
-      { 
+      {
         x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 },
         hovertemplate: `<b>%{x}</b><br>Net Flow: %{y:.3s}<extra></extra>`
       }
     ];
   } else {
     plotTraces = [
-      { 
-        x: dates, y: cumulative, name: 'Cumulative Net Flow', type: 'scatter', mode: 'lines', 
+      {
+        x: dates, y: cumulative, name: 'Cumulative Net Flow', type: 'scatter', mode: 'lines',
         fill: 'tozeroy', line: { color: netColor, width: 3 },
         fillcolor: isLight ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.2)',
         hovertemplate: `<b>%{x}</b><br>Cumulative: %{y:.3s}<extra></extra>`
@@ -1036,7 +1172,8 @@ function updateTrendChart(token) {
     },
     xaxis: {
       type: 'date', gridcolor: gridColor, zerolinecolor: gridColor,
-      hoverformat: '%Y-%m-%d %H:%M',
+      hoverformat: xHoverFormat,
+      tickformat: xTickFormat,
       rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 }
     },
     yaxis: { gridcolor: gridColor, zerolinecolor: gridColor, tickformat: '.2s', autorange: true, fixedrange: false },
@@ -1044,39 +1181,83 @@ function updateTrendChart(token) {
   };
 
   const chartDiv = document.getElementById('trendChart');
-  chartDiv.innerHTML = ''; 
-  Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true, doubleClick: 'reset+autosize'});
-  setTimeout(() => { isUpdatingToken = false; }, 100);
-  
-  // Reset scroll position of token list item into view if needed
+  chartDiv.innerHTML = '';
+  Plotly.newPlot(chartDiv, plotTraces, layout, { displayModeBar: false, responsive: true, doubleClick: 'reset+autosize' });
+
   const activeItem = document.querySelector('.token-item.active');
   if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-
-  // Dynamic Scaling & Sync Logic
   const currentInstanceToken = selectedToken;
-  // Prevent duplicated listeners after repeated token/theme/view re-renders.
   if (typeof chartDiv.removeAllListeners === 'function') {
     chartDiv.removeAllListeners('plotly_relayout');
     chartDiv.removeAllListeners('plotly_doubleclick');
   }
 
+  const getHourlyDefaultRange = () => {
+    if (currentTimeLevel !== 'hourly' || !dates.length) return null;
+    const end = new Date(dates[dates.length - 1]);
+    if (!Number.isFinite(end.getTime())) return null;
+    const start = new Date(end);
+    start.setDate(start.getDate() - 3);
+    return { start, end };
+  };
+
+  const applyHourlyDefaultWindow = () => {
+    const range = getHourlyDefaultRange();
+    if (!range) return false;
+    setQuickRangeActive(null);
+    Plotly.relayout(chartDiv, {
+      'xaxis.range[0]': range.start.toISOString(),
+      'xaxis.range[1]': range.end.toISOString(),
+      'yaxis.autorange': true
+    });
+    return true;
+  };
+
+  setTimeout(() => {
+    isUpdatingToken = false;
+    if (selectedToken !== currentInstanceToken) return;
+    if (currentTimeLevel === 'hourly') {
+      applyHourlyDefaultWindow();
+    }
+  }, 120);
+
   chartDiv.on('plotly_doubleclick', function() {
     if (selectedToken !== currentInstanceToken) return;
     manualResetUntil = Date.now() + 700;
+    if (currentTimeLevel === 'hourly') {
+      if (!applyHourlyDefaultWindow()) {
+        setTimeRangeUi(null, null);
+        syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
+      }
+      return;
+    }
     setQuickRangeActive('all');
     setTimeRangeUi(null, null);
-    syncFlowPanels(getFullTokenFlowData(selectedToken));
+    syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
   });
 
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
     if (Date.now() < manualResetUntil) {
-      setQuickRangeActive('all');
-      setTimeRangeUi(null, null);
-      syncFlowPanels(getFullTokenFlowData(selectedToken));
+      if (currentTimeLevel === 'hourly') {
+        const range = getHourlyDefaultRange();
+        setQuickRangeActive(null);
+        if (range) {
+          setTimeRangeUi(range.start, range.end);
+          syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
+        } else {
+          setTimeRangeUi(null, null);
+          syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
+        }
+      } else {
+        setQuickRangeActive('all');
+        setTimeRangeUi(null, null);
+        syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
+      }
       return;
     }
+
     let start, end;
     if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
       start = new Date(eventData['xaxis.range[0]']);
@@ -1084,19 +1265,22 @@ function updateTrendChart(token) {
       setQuickRangeActive(null);
     } else if (eventData['xaxis.autorange']) {
       Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
-      setQuickRangeActive('all');
-      setTimeRangeUi(null, null);
-      syncFlowPanels(getFullTokenFlowData(selectedToken));
+      if (currentTimeLevel === 'hourly') {
+        if (!applyHourlyDefaultWindow()) {
+          setTimeRangeUi(null, null);
+          syncFlowPanels(getFullTokenFlowData(selectedToken, 'hourly'));
+        }
+      } else {
+        setQuickRangeActive('all');
+        setTimeRangeUi(null, null);
+        syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
+      }
       return;
     } else { return; }
 
     setTimeRangeUi(start, end);
+    syncFlowPanels(aggregateRangeData(start, end, currentTimeLevel));
 
-    // 1. Sync Table & Sankey (use canonical aggregator to keep field names consistent)
-    const aggregated = aggregateRangeData(start, end);
-    syncFlowPanels(aggregated);
-
-    // 2. Dynamic Y-axis
     const visibleInflows = [], visibleOutflows = [], visibleNets = [], visibleCums = [];
     dates.forEach((d, i) => {
       const date = new Date(d);
