@@ -874,8 +874,14 @@ function updateSankey(data) {
     transition: { duration: 0 }
   };
 
-  sankeyDiv.innerHTML = ''; 
-  Plotly.react('sankeyChart', plotData, layout, {displayModeBar: false, responsive: true, hovermode: 'closest'});
+  // Do not clear innerHTML before Plotly.react.
+  // Clearing can leave the graph div with data but without rebuilt SVG after relayout races.
+  const hasExistingPlot = !!sankeyDiv.querySelector('.plot-container');
+  if (hasExistingPlot) {
+    Plotly.react(sankeyDiv, plotData, layout, {displayModeBar: false, responsive: true, hovermode: 'closest'});
+  } else {
+    Plotly.newPlot(sankeyDiv, plotData, layout, {displayModeBar: false, responsive: true, hovermode: 'closest'});
+  }
   setTimeout(() => Plotly.Plots.resize('sankeyChart'), 100);
 }
 
