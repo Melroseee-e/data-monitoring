@@ -236,6 +236,26 @@
     text-transform: none;
     letter-spacing: 0;
   }
+
+  #sankeyPane.fullscreen {
+    position: fixed !important;
+    inset: 12px;
+    z-index: 4000;
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  }
+  #sankeyPane.fullscreen .pane-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  #sankeyPane.fullscreen .pane-body {
+    padding: 8px !important;
+  }
+  #sankeyPane.fullscreen #sankeyChart {
+    min-height: calc(100vh - 120px) !important;
+  }
   
   .kpi-mini-group { display: flex; gap: 24px; }
   .kpi-mini { display: flex; flex-direction: column; }
@@ -416,11 +436,11 @@
           </table>
         </div>
       </div>
-      <div class="pane" style="display: flex; flex-direction: column;">
+      <div class="pane" id="sankeyPane" style="display: flex; flex-direction: column;">
         <div class="pane-header">
           <span>Funds Routing (Sankey)</span>
           <div class="sankey-controls">
-            <span id="sankeyHint" class="sankey-hint">Expand to view more</span>
+            <span id="sankeyHint" class="sankey-hint">Expand to fullscreen</span>
             <button id="toggleSankeyDetailBtn" class="range-btn">Expand</button>
           </div>
         </div>
@@ -588,23 +608,28 @@ function initRangeControls() {
 function updateSankeyModeUi(isTruncated, totalRoutes) {
   const toggleBtn = document.getElementById('toggleSankeyDetailBtn');
   const hint = document.getElementById('sankeyHint');
-  if (toggleBtn) toggleBtn.innerText = isSankeyExpanded ? 'Collapse' : 'Expand';
+  if (toggleBtn) toggleBtn.innerText = isSankeyExpanded ? 'Exit Fullscreen' : 'Expand';
   if (!hint) return;
 
   if (isSankeyExpanded) {
-    hint.innerText = totalRoutes > 0 ? `Detailed view (${totalRoutes} routes)` : 'Detailed view';
+    hint.innerText = totalRoutes > 0 ? `Fullscreen detailed view (${totalRoutes} exchanges)` : 'Fullscreen detailed view';
     return;
   }
-  hint.innerText = isTruncated ? 'Expand to view more' : 'Showing main routes';
+  hint.innerText = isTruncated ? 'Expand to fullscreen for full routes' : 'Expand to fullscreen';
 }
 
 function toggleSankeyDetail() {
   isSankeyExpanded = !isSankeyExpanded;
+  const sankeyPane = document.getElementById('sankeyPane');
+  if (sankeyPane) sankeyPane.classList.toggle('fullscreen', isSankeyExpanded);
   if (lastFlowPanelData) {
     updateSankey(lastFlowPanelData);
   } else {
     updateSankeyModeUi(false, 0);
   }
+  setTimeout(() => {
+    if (document.getElementById('sankeyChart').data) Plotly.Plots.resize('sankeyChart');
+  }, 50);
 }
 
 function initTheme() {
@@ -644,6 +669,9 @@ async function init() {
   updateSankeyModeUi(true, 0);
   document.getElementById('resetTimeframeBtn')?.addEventListener('click', resetTrendTimeframe);
   document.getElementById('toggleSankeyDetailBtn')?.addEventListener('click', toggleSankeyDetail);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isSankeyExpanded) toggleSankeyDetail();
+  });
   try {
     const [dRes, dailyRes, hRes] = await Promise.all([
       fetch(DATA_URL).catch(()=>null),
@@ -1101,7 +1129,7 @@ function updateSankey(data) {
   const isLight = document.body.classList.contains('theme-light');
   const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
   const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
-  const maxNodesInCompact = 7;
+  const maxNodesInCompact = 6;
 
   const exchangeMap = {};
   const appendExchange = (exchange, flows) => {
@@ -1133,33 +1161,51 @@ function updateSankey(data) {
 
   const isTruncated = !isSankeyExpanded && sortedEntries.length > maxNodesInCompact;
   const renderEntries = isTruncated ? sortedEntries.slice(0, maxNodesInCompact) : sortedEntries;
+  updateSankeyModeUi(isTruncated, sortedEntries.length);
 
+  const inflowEntries = renderEntries.filter(e => e.inflow > 0);
+  const outflowEntries = renderEntries.filter(e => e.outflow > 0);
   const nodeLabels = [selectedToken];
   const nodeColors = ['#3B82F6'];
+  const nodeX = [0.5];
+  const nodeY = [0.5];
   const linkSources = [];
   const linkTargets = [];
   const linkValues = [];
   const linkColors = [];
   let nodeIdx = 1;
 
-  renderEntries.forEach(({ exchange, inflow, outflow }) => {
-    nodeLabels.push(exchange);
+  const spreadY = (index, total) => {
+    if (total <= 1) return 0.5;
+    const step = 0.82 / (total - 1);
+    return 0.09 + (index * step);
+  };
+
+  inflowEntries.forEach((entry, idx) => {
+    nodeLabels.push(entry.exchange);
     nodeColors.push(sankeyNodeColor);
-    if (inflow > 0) {
-      linkSources.push(nodeIdx);
-      linkTargets.push(0);
-      linkValues.push(inflow);
-      linkColors.push(isLight ? 'rgba(5, 150, 105, 0.45)' : 'rgba(0, 255, 163, 0.45)');
-    }
-    if (outflow > 0) {
-      linkSources.push(0);
-      linkTargets.push(nodeIdx);
-      linkValues.push(outflow);
-      linkColors.push(isLight ? 'rgba(220, 38, 38, 0.45)' : 'rgba(255, 77, 77, 0.45)');
-    }
+    nodeX.push(0.07);
+    nodeY.push(spreadY(idx, inflowEntries.length));
+
+    linkSources.push(nodeIdx);
+    linkTargets.push(0);
+    linkValues.push(entry.inflow);
+    linkColors.push(isLight ? 'rgba(5, 150, 105, 0.5)' : 'rgba(0, 255, 163, 0.5)');
     nodeIdx++;
   });
-  updateSankeyModeUi(isTruncated, sortedEntries.length);
+
+  outflowEntries.forEach((entry, idx) => {
+    nodeLabels.push(entry.exchange);
+    nodeColors.push(sankeyNodeColor);
+    nodeX.push(0.93);
+    nodeY.push(spreadY(idx, outflowEntries.length));
+
+    linkSources.push(0);
+    linkTargets.push(nodeIdx);
+    linkValues.push(entry.outflow);
+    linkColors.push(isLight ? 'rgba(220, 38, 38, 0.5)' : 'rgba(255, 77, 77, 0.5)');
+    nodeIdx++;
+  });
 
   if(linkValues.length === 0) {
     Plotly.purge('sankeyChart');
@@ -1169,20 +1215,29 @@ function updateSankey(data) {
   }
 
   const chartHeight = isSankeyExpanded
-    ? Math.max(320, Math.min(760, nodeIdx * 35))
-    : Math.max(240, Math.min(360, nodeIdx * 32));
+    ? Math.max(460, Math.min(980, Math.max(inflowEntries.length, outflowEntries.length) * 44 + 180))
+    : Math.max(260, Math.min(420, Math.max(inflowEntries.length, outflowEntries.length) * 34 + 120));
   const dynamicPadding = Math.max(10, Math.min(50, (chartHeight / (nodeIdx + 1))));
 
   const plotData = [{
     type: 'sankey', orientation: 'h',
-    node: { pad: Math.min(dynamicPadding, 30), thickness: 18, line: { color: 'transparent', width: 0 }, label: nodeLabels, color: nodeColors },
+    arrangement: 'fixed',
+    node: {
+      pad: Math.min(dynamicPadding, 30),
+      thickness: 16,
+      line: { color: 'transparent', width: 0 },
+      label: nodeLabels,
+      color: nodeColors,
+      x: nodeX,
+      y: nodeY
+    },
     link: { source: linkSources, target: linkTargets, value: linkValues, color: linkColors }
   }];
 
   const layout = {
     autosize: true, font: { size: 11, color: sankeyTextColor, family: "'Inter', sans-serif" },
     paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
-    margin: { l: 10, r: 10, t: 30, b: 10 },
+    margin: { l: 26, r: 26, t: 20, b: 20 },
     height: chartHeight,
     transition: { duration: 0 }
   };
