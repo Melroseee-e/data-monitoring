@@ -320,6 +320,7 @@ let currentTrendView = 'daily';
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let lastNonEmptyFlowData = null;
 let lastSankeyToken = null;
+let isManualTimeReset = false;
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
@@ -375,10 +376,20 @@ function initTheme() {
 function resetTrendTimeframe() {
   const chartDiv = document.getElementById('trendChart');
   if (!chartDiv || !chartDiv.data) return;
+  isManualTimeReset = true;
   Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
   document.getElementById('timeRangeDisplay').style.display = 'none';
   const fullAgg = aggregateRangeData(null, null);
   syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
+  // Safety net: if Sankey was dropped by any async race, restore from current snapshot.
+  setTimeout(() => {
+    const sankeyDiv = document.getElementById('sankeyChart');
+    const hasSankey = !!(sankeyDiv && sankeyDiv.data && sankeyDiv.data.length > 0);
+    if (!hasSankey) {
+      syncFlowPanels(rawData?.tokens?.[selectedToken] || fullAgg, { allowSnapshotFallback: true });
+    }
+  }, 120);
+  setTimeout(() => { isManualTimeReset = false; }, 180);
 }
 
 async function init() {
@@ -729,6 +740,11 @@ function updateTrendChart(token) {
   const chartDiv = document.getElementById('trendChart');
   chartDiv.innerHTML = ''; 
   Plotly.newPlot(chartDiv, plotTraces, layout, {displayModeBar: false, responsive: true, doubleClick: false});
+  // Use custom double-click reset to avoid Plotly's internal reset race with sub-panel sync.
+  chartDiv.ondblclick = (event) => {
+    event.preventDefault();
+    resetTrendTimeframe();
+  };
   setTimeout(() => { isUpdatingToken = false; }, 100);
   
   // Reset scroll position of token list item into view if needed
@@ -745,6 +761,12 @@ function updateTrendChart(token) {
 
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
+    if (isManualTimeReset) {
+      document.getElementById('timeRangeDisplay').style.display = 'none';
+      const fullAgg = aggregateRangeData(null, null);
+      syncFlowPanels(fullAgg, { allowSnapshotFallback: true });
+      return;
+    }
     let start, end;
     if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
       start = new Date(eventData['xaxis.range[0]']);
