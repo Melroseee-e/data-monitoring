@@ -404,7 +404,7 @@
               <button class="time-level-btn active" data-level="daily">Daily</button>
               <button class="time-level-btn" data-level="hourly">Hourly</button>
             </div>
-            <small style='color:var(--text-muted); font-weight:normal; margin-left:8px; text-transform:none;'>(Scroll / Pinch to Zoom)</small>
+            <small id="timeZoneHint" style='color:var(--text-muted); font-weight:normal; margin-left:8px; text-transform:none;'>(Scroll / Pinch to Zoom)</small>
           </div>
           <div class="chart-controls">
             <button class="range-btn" data-range="1d">1D</button>
@@ -552,10 +552,39 @@ function formatNum(n) {
   return n.toFixed(2);
 }
 
+function getLocalTimeZone() {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local';
+  } catch (_) {
+    return 'Local';
+  }
+}
+
+function updateTimeZoneHint() {
+  const hint = document.getElementById('timeZoneHint');
+  if (!hint) return;
+  hint.innerText = `(Scroll / Pinch to Zoom · Local Time: ${getLocalTimeZone()})`;
+}
+
+function parsePointTime(raw) {
+  if (!raw) return null;
+  if (raw instanceof Date) return new Date(raw.getTime());
+  if (typeof raw === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    const [y, m, d] = raw.split('-').map(Number);
+    return new Date(y, m - 1, d, 0, 0, 0, 0);
+  }
+  const parsed = new Date(raw);
+  if (!Number.isFinite(parsed.getTime())) return null;
+  return parsed;
+}
+
 function formatDateOnly(d) {
-  const date = (d instanceof Date) ? d : new Date(d);
-  if (Number.isNaN(date.getTime())) return '';
-  return date.toISOString().split('T')[0];
+  const date = parsePointTime(d);
+  if (!date || Number.isNaN(date.getTime())) return '';
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 function setQuickRangeActive(rangeKey) {
@@ -717,6 +746,7 @@ function resetTrendTimeframe() {
 
 async function init() {
   initTheme();
+  updateTimeZoneHint();
   initTrendTabs();
   initTimeLevelSwitch();
   initRangeControls();
@@ -836,7 +866,8 @@ function aggregateRangeData(start, end, level = currentTimeLevel) {
   
   searchSources.forEach(source => {
     source.forEach(entry => {
-      const dDate = new Date(entry.date || entry.timestamp);
+      const dDate = parsePointTime(entry.date || entry.timestamp);
+      if (!dDate) return;
       const dTime = dDate.getTime();
       if (dTime >= startTime && dTime <= endTime && entry.tokens && entry.tokens[selectedToken]) {
         const t = entry.tokens[selectedToken];
@@ -1028,7 +1059,7 @@ function buildDailyTrendSeries(token) {
   let runningNet = 0;
 
   sourceData.slice(startIndex).forEach(entry => {
-    const d = entry.date || entry.timestamp;
+    const d = parsePointTime(entry.date || entry.timestamp);
     if (!d) return;
     const tData = entry.tokens?.[token];
     const inf = Number(tData?.total_inflow || 0);
@@ -1053,16 +1084,16 @@ function buildHourlyTrendSeries(token) {
     const rawTs = entry.timestamp || entry.date;
     const tData = entry.tokens?.[token];
     if (!rawTs || !tData) return;
-    const d = new Date(rawTs);
-    if (!Number.isFinite(d.getTime())) return;
+    const d = parsePointTime(rawTs);
+    if (!d) return;
     d.setMinutes(0, 0, 0);
-    const key = d.toISOString();
+    const key = d.getTime();
     if (!buckets.has(key)) buckets.set(key, { inflow: 0, outflow: 0 });
     buckets.get(key).inflow += Number(tData.total_inflow || 0);
     buckets.get(key).outflow += Number(tData.total_outflow || 0);
   });
 
-  const sortedHours = Array.from(buckets.keys()).sort((a, b) => new Date(a) - new Date(b));
+  const sortedHours = Array.from(buckets.keys()).sort((a, b) => a - b);
   if (sortedHours.length === 0) return null;
 
   const dates = [];
@@ -1077,7 +1108,7 @@ function buildHourlyTrendSeries(token) {
     const inf = Number(flows?.inflow || 0);
     const outf = Number(flows?.outflow || 0);
     const net = inf - outf;
-    dates.push(hour);
+    dates.push(new Date(hour));
     inflows.push(inf);
     outflows.push(outf);
     nets.push(net);
@@ -1103,21 +1134,22 @@ function updateTrendChart(token) {
   const netColor = '#3B82F6';
   const xHoverFormat = currentTimeLevel === 'hourly' ? '%Y-%m-%d %H:%M' : '%Y-%m-%d';
   const xTickFormat = currentTimeLevel === 'hourly' ? '%m-%d %H:%M' : '%Y-%m-%d';
+  const xHoverText = currentTimeLevel === 'hourly' ? '%{x|%Y-%m-%d %H:%M}' : '%{x|%Y-%m-%d}';
 
   let plotTraces = [];
   if (currentTrendView === 'daily') {
     plotTraces = [
       {
         x: dates, y: inflows, name: 'Inflow', type: 'bar', marker: { color: inflowColor },
-        hovertemplate: `<b>%{x}</b><br>Inflow: %{y:.3s}<extra></extra>`
+        hovertemplate: `<b>${xHoverText}</b><br>Inflow: %{y:.3s}<extra></extra>`
       },
       {
         x: dates, y: outflows.map(v => -v), name: 'Outflow', type: 'bar', marker: { color: outflowColor },
-        hovertemplate: `<b>%{x}</b><br>Outflow: %{y:.3s}<extra></extra>`
+        hovertemplate: `<b>${xHoverText}</b><br>Outflow: %{y:.3s}<extra></extra>`
       },
       {
         x: dates, y: nets, name: 'Net Flow', type: 'scatter', mode: 'lines', line: { color: netColor, width: 2 },
-        hovertemplate: `<b>%{x}</b><br>Net Flow: %{y:.3s}<extra></extra>`
+        hovertemplate: `<b>${xHoverText}</b><br>Net Flow: %{y:.3s}<extra></extra>`
       }
     ];
   } else {
@@ -1126,7 +1158,7 @@ function updateTrendChart(token) {
         x: dates, y: cumulative, name: 'Cumulative Net Flow', type: 'scatter', mode: 'lines',
         fill: 'tozeroy', line: { color: netColor, width: 3 },
         fillcolor: isLight ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.2)',
-        hovertemplate: `<b>%{x}</b><br>Cumulative: %{y:.3s}<extra></extra>`
+        hovertemplate: `<b>${xHoverText}</b><br>Cumulative: %{y:.3s}<extra></extra>`
       }
     ];
   }
@@ -1147,6 +1179,7 @@ function updateTrendChart(token) {
       type: 'date', gridcolor: gridColor, zerolinecolor: gridColor,
       hoverformat: xHoverFormat,
       tickformat: xTickFormat,
+      title: { text: `Time (${getLocalTimeZone()})`, standoff: 4, font: { size: 10, color: textColor } },
       rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 }
     },
     yaxis: { gridcolor: gridColor, zerolinecolor: gridColor, tickformat: '.2s', autorange: true, fixedrange: false },
