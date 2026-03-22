@@ -141,10 +141,100 @@
     font-family: var(--font-mono);
     color: var(--accent);
     background: rgba(37, 99, 235, 0.1);
-    padding: 2px 8px;
+    padding: 4px 9px;
     border-radius: 4px;
     font-weight: 600;
-    display: none;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .range-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    line-height: 1;
+  }
+  .range-btn.active {
+    color: var(--text-main);
+    border-color: var(--accent);
+    background: rgba(37, 99, 235, 0.12);
+  }
+
+  .range-date-input {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    min-width: 122px;
+    line-height: 1.2;
+  }
+
+  .range-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .exchange-overall {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-panel);
+  }
+  .exchange-overall .title {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    min-width: 54px;
+  }
+  .exchange-overall .metric {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .exchange-overall .metric .label {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+  }
+  .exchange-overall .metric .value {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .sankey-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sankey-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: 0;
   }
   
   .kpi-mini-group { display: flex; gap: 24px; }
@@ -236,7 +326,6 @@
       <div class="active-token-title" id="headerTitle">
         --- <span class="badge">---</span>
       </div>
-      <div id="timeRangeDisplay"></div>
       <div class="kpi-mini-group">
         <div class="kpi-mini">
           <span class="kpi-mini-label">Total Inflow</span>
@@ -268,7 +357,19 @@
             <span class="trend-tab" data-view="cumulative" style="cursor:pointer; padding-bottom: 2px; border-bottom: 2px solid transparent; color: var(--text-muted);">Cumulative (TGE)</span>
             <small style='color:var(--text-muted); font-weight:normal; margin-left:8px; text-transform:none;'>(Scroll / Pinch to Zoom)</small>
           </div>
-          <button id="resetTimeframeBtn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-main); padding:4px 10px; border-radius:4px; cursor:pointer; font-family:var(--font-ui); font-size:11px;">Reset Timeframe</button>
+          <div class="chart-controls">
+            <button class="range-btn" data-range="1d">1D</button>
+            <button class="range-btn" data-range="1w">1W</button>
+            <button class="range-btn" data-range="1m">1M</button>
+            <button class="range-btn active" data-range="all">ALL</button>
+            <div id="timeRangeDisplay">ALL</div>
+            <span class="range-label">From</span>
+            <input id="rangeStartInput" class="range-date-input" type="date">
+            <span class="range-label">To</span>
+            <input id="rangeEndInput" class="range-date-input" type="date">
+            <button id="applyDateRangeBtn" class="range-btn">Apply</button>
+            <button id="resetTimeframeBtn" class="range-btn">Reset</button>
+          </div>
         </div>
         <div class="pane-body">
           <div style="flex: 1; position: relative; min-height: 0;">
@@ -283,6 +384,25 @@
       <div class="pane left" style="flex: 0.6;">
         <div class="pane-header">Exchange Flows Breakdown</div>
         <div class="pane-body" style="padding:0;">
+          <div id="exchangeOverall" class="exchange-overall">
+            <div class="title">Overall</div>
+            <div class="metric">
+              <span class="label">Inflow</span>
+              <span id="overallInflow" class="value pos">0.00</span>
+            </div>
+            <div class="metric">
+              <span class="label">Outflow</span>
+              <span id="overallOutflow" class="value neg">0.00</span>
+            </div>
+            <div class="metric">
+              <span class="label">Net</span>
+              <span id="overallNet" class="value">0.00</span>
+            </div>
+            <div class="metric">
+              <span class="label">Direction</span>
+              <span id="overallDirection" class="value">NEUTRAL</span>
+            </div>
+          </div>
           <table id="exchangeTable">
             <thead>
               <tr>
@@ -297,7 +417,13 @@
         </div>
       </div>
       <div class="pane" style="display: flex; flex-direction: column;">
-        <div class="pane-header">Funds Routing (Sankey)</div>
+        <div class="pane-header">
+          <span>Funds Routing (Sankey)</span>
+          <div class="sankey-controls">
+            <span id="sankeyHint" class="sankey-hint">Expand to view more</span>
+            <button id="toggleSankeyDetailBtn" class="range-btn">Expand</button>
+          </div>
+        </div>
         <div class="pane-body" id="sankeyWrapper" style="padding:0; overflow:hidden; flex: 1; display: flex; align-items: stretch; justify-content: stretch;">
           <div id="sankeyChart" style="flex: 1; min-width: 0; min-height: 0;"></div>
         </div>
@@ -319,6 +445,8 @@ let charts = {};
 let currentTrendView = 'daily';
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let manualResetUntil = 0;
+let isSankeyExpanded = false;
+let lastFlowPanelData = null;
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
@@ -351,6 +479,134 @@ function formatNum(n) {
   return n.toFixed(2);
 }
 
+function formatDateOnly(d) {
+  const date = (d instanceof Date) ? d : new Date(d);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toISOString().split('T')[0];
+}
+
+function setQuickRangeActive(rangeKey) {
+  document.querySelectorAll('.range-btn[data-range]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.range === rangeKey);
+  });
+}
+
+function setTimeRangeUi(start, end) {
+  const display = document.getElementById('timeRangeDisplay');
+  const startInput = document.getElementById('rangeStartInput');
+  const endInput = document.getElementById('rangeEndInput');
+  if (!display || !startInput || !endInput) return;
+
+  if (!start || !end) {
+    display.innerText = 'ALL';
+    startInput.value = '';
+    endInput.value = '';
+    return;
+  }
+
+  const startText = formatDateOnly(start);
+  const endText = formatDateOnly(end);
+  display.innerText = `${startText} → ${endText}`;
+  startInput.value = startText;
+  endInput.value = endText;
+}
+
+function getTrendDateBounds() {
+  const chartDiv = document.getElementById('trendChart');
+  const xData = chartDiv?.data?.[0]?.x;
+  if (!xData || !xData.length) return null;
+  const times = xData.map(x => new Date(x).getTime()).filter(v => Number.isFinite(v));
+  if (!times.length) return null;
+  return { min: new Date(Math.min(...times)), max: new Date(Math.max(...times)) };
+}
+
+function applyQuickRange(rangeKey) {
+  const chartDiv = document.getElementById('trendChart');
+  if (!chartDiv || !chartDiv.data) return;
+
+  if (rangeKey === 'all') {
+    resetTrendTimeframe();
+    return;
+  }
+
+  const bounds = getTrendDateBounds();
+  if (!bounds) return;
+
+  const end = new Date(bounds.max);
+  end.setHours(23, 59, 59, 999);
+  const start = new Date(end);
+  if (rangeKey === '1d') start.setDate(start.getDate() - 1);
+  if (rangeKey === '1w') start.setDate(start.getDate() - 7);
+  if (rangeKey === '1m') start.setMonth(start.getMonth() - 1);
+  start.setHours(0, 0, 0, 0);
+
+  setQuickRangeActive(rangeKey);
+  Plotly.relayout(chartDiv, {
+    'xaxis.range[0]': start.toISOString(),
+    'xaxis.range[1]': end.toISOString(),
+    'yaxis.autorange': true
+  });
+}
+
+function applyCustomDateRange() {
+  const chartDiv = document.getElementById('trendChart');
+  const startInput = document.getElementById('rangeStartInput');
+  const endInput = document.getElementById('rangeEndInput');
+  if (!chartDiv || !chartDiv.data || !startInput || !endInput) return;
+
+  const bounds = getTrendDateBounds();
+  if (!bounds) return;
+
+  let start = startInput.value ? new Date(startInput.value) : new Date(bounds.min);
+  let end = endInput.value ? new Date(endInput.value) : new Date(bounds.max);
+  if (start > end) [start, end] = [end, start];
+  start.setHours(0, 0, 0, 0);
+  end.setHours(23, 59, 59, 999);
+
+  setQuickRangeActive(null);
+  Plotly.relayout(chartDiv, {
+    'xaxis.range[0]': start.toISOString(),
+    'xaxis.range[1]': end.toISOString(),
+    'yaxis.autorange': true
+  });
+}
+
+function initRangeControls() {
+  document.querySelectorAll('.range-btn[data-range]').forEach(btn => {
+    btn.addEventListener('click', () => applyQuickRange(btn.dataset.range));
+  });
+
+  document.getElementById('applyDateRangeBtn')?.addEventListener('click', applyCustomDateRange);
+
+  const applyOnEnter = (event) => {
+    if (event.key === 'Enter') applyCustomDateRange();
+  };
+  document.getElementById('rangeStartInput')?.addEventListener('keydown', applyOnEnter);
+  document.getElementById('rangeEndInput')?.addEventListener('keydown', applyOnEnter);
+}
+
+function updateSankeyModeUi(isTruncated, totalRoutes) {
+  const toggleBtn = document.getElementById('toggleSankeyDetailBtn');
+  const hint = document.getElementById('sankeyHint');
+  if (toggleBtn) toggleBtn.innerText = isSankeyExpanded ? 'Collapse' : 'Expand';
+  if (!hint) return;
+
+  if (isSankeyExpanded) {
+    hint.innerText = totalRoutes > 0 ? `Detailed view (${totalRoutes} routes)` : 'Detailed view';
+    return;
+  }
+  hint.innerText = isTruncated ? 'Expand to view more' : 'Showing main routes';
+}
+
+function toggleSankeyDetail() {
+  isSankeyExpanded = !isSankeyExpanded;
+  if (lastFlowPanelData) {
+    updateSankey(lastFlowPanelData);
+  } else {
+    updateSankeyModeUi(false, 0);
+  }
+}
+
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
   const body = document.body;
@@ -375,15 +631,19 @@ function resetTrendTimeframe() {
   const chartDiv = document.getElementById('trendChart');
   if (!chartDiv || !chartDiv.data) return;
   manualResetUntil = Date.now() + 700;
+  setQuickRangeActive('all');
+  setTimeRangeUi(null, null);
   Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
-  document.getElementById('timeRangeDisplay').style.display = 'none';
   syncFlowPanels(getFullTokenFlowData(selectedToken));
 }
 
 async function init() {
   initTheme();
   initTrendTabs();
+  initRangeControls();
+  updateSankeyModeUi(true, 0);
   document.getElementById('resetTimeframeBtn')?.addEventListener('click', resetTrendTimeframe);
+  document.getElementById('toggleSankeyDetailBtn')?.addEventListener('click', toggleSankeyDetail);
   try {
     const [dRes, dailyRes, hRes] = await Promise.all([
       fetch(DATA_URL).catch(()=>null),
@@ -491,7 +751,7 @@ function renderTokenList(filter = '') {
           const dTime = dDate.getTime();
           if (dTime >= startTime && dTime <= endTime && entry.tokens && entry.tokens[selectedToken]) {
             const t = entry.tokens[selectedToken];
-            const exData = t.exchanges || {}; 
+            const exData = t.exchanges || t.exchange_flows || {};
             Object.entries(exData).forEach(([ex, flows]) => {
               if (!aggregated.exchanges[ex]) aggregated.exchanges[ex] = { net_flow: 0, inflow: 0, outflow: 0 };
               aggregated.exchanges[ex].inflow += (flows.inflow || flows.in || 0);
@@ -555,8 +815,9 @@ function syncFlowPanels(data) {
     const snapshotAgg = getTokenSnapshotFlowData(selectedToken);
     if (hasRenderableFlowData(snapshotAgg)) resolved = snapshotAgg;
   }
-  updateExchangeTable(resolved || { exchanges: {} });
-  updateSankey(resolved || { exchanges: {} });
+  lastFlowPanelData = resolved || { exchanges: {} };
+  updateExchangeTable(lastFlowPanelData);
+  updateSankey(lastFlowPanelData);
 }
     
 
@@ -576,7 +837,8 @@ function updateDashboard() {
   netEl.className = 'kpi-mini-val ' + (d.net_flow >= 0 ? 'pos' : 'neg');
   
   // Initial render with ALL-TIME aggregated data (from start of time)
-  document.getElementById('timeRangeDisplay').style.display = 'none';
+  setQuickRangeActive('all');
+  setTimeRangeUi(null, null);
   syncFlowPanels(getFullTokenFlowData(selectedToken));
   
   updateTrendChart(selectedToken);
@@ -588,7 +850,7 @@ function updateExchangeTable(data) {
   
   if (data.deployments) {
     data.deployments.forEach(dep => {
-      Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
+      Object.entries(dep.exchange_flows || {}).forEach(([ex, flows]) => {
         if(!agg[ex]) agg[ex] = {inflow:0, outflow:0, net_flow:0};
         const inf = Number(flows.inflow ?? flows.in ?? 0);
         const outf = Number(flows.outflow ?? flows.out ?? 0);
@@ -608,8 +870,16 @@ function updateExchangeTable(data) {
   }
   
   const sortedEx = Object.entries(agg).sort((a,b) => Math.abs(b[1].net_flow || 0) - Math.abs(a[1].net_flow || 0));
+
+  const totals = sortedEx.reduce((acc, [, flows]) => {
+    acc.inflow += Number(flows.inflow ?? flows.in ?? 0);
+    acc.outflow += Number(flows.outflow ?? flows.out ?? 0);
+    acc.net += Number(flows.net_flow ?? flows.net ?? 0);
+    return acc;
+  }, { inflow: 0, outflow: 0, net: 0 });
+  updateExchangeOverall(totals);
   
-   tbody.innerHTML = sortedEx.map(([ex, flows]) => {
+  tbody.innerHTML = sortedEx.map(([ex, flows]) => {
     const net = Number(flows.net_flow ?? flows.net ?? 0);
     const isPos = net >= 0;
     return `<tr>
@@ -619,6 +889,29 @@ function updateExchangeTable(data) {
       <td class="${isPos ? 'pos' : 'neg'}">${isPos ? '+' : ''}${formatNum(net)}</td>
     </tr>`;
   }).join('');
+}
+
+function updateExchangeOverall(totals) {
+  const inflow = Number(totals?.inflow ?? 0);
+  const outflow = Number(totals?.outflow ?? 0);
+  const net = Number(totals?.net ?? (inflow - outflow));
+
+  const inflowEl = document.getElementById('overallInflow');
+  const outflowEl = document.getElementById('overallOutflow');
+  const netEl = document.getElementById('overallNet');
+  const directionEl = document.getElementById('overallDirection');
+  if (!inflowEl || !outflowEl || !netEl || !directionEl) return;
+
+  inflowEl.innerText = formatNum(inflow);
+  outflowEl.innerText = formatNum(outflow);
+  netEl.innerText = `${net >= 0 ? '+' : ''}${formatNum(net)}`;
+  netEl.className = `value ${net >= 0 ? 'pos' : 'neg'}`;
+
+  let direction = 'NEUTRAL';
+  if (net > 0) direction = 'NET IN';
+  if (net < 0) direction = 'NET OUT';
+  directionEl.innerText = direction;
+  directionEl.className = `value ${net > 0 ? 'pos' : (net < 0 ? 'neg' : '')}`.trim();
 }
 
 function updateTrendChart(token) {
@@ -716,16 +1009,7 @@ function updateTrendChart(token) {
     xaxis: {
       type: 'date', gridcolor: gridColor, zerolinecolor: gridColor,
       hoverformat: '%Y-%m-%d %H:%M',
-      rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 },
-      rangeselector: {
-        buttons: [
-          { count: 1, label: '1D', step: 'day', stepmode: 'backward' },
-          { count: 7, label: '1W', step: 'day', stepmode: 'backward' },
-          { count: 1, label: '1M', step: 'month', stepmode: 'backward' },
-          { step: 'all', label: 'ALL' }
-        ],
-        bgcolor: isLight ? '#FFFFFF' : '#18181B', activecolor: isLight ? '#E4E4E7' : '#27272A'
-      }
+      rangeslider: { visible: true, borderwidth: 1, bordercolor: gridColor, bgcolor: isLight ? '#F4F4F5' : '#09090B', thickness: 0.1 }
     },
     yaxis: { gridcolor: gridColor, zerolinecolor: gridColor, tickformat: '.2s', autorange: true, fixedrange: false },
     transition: { duration: 0 }
@@ -752,14 +1036,16 @@ function updateTrendChart(token) {
   chartDiv.on('plotly_doubleclick', function() {
     if (selectedToken !== currentInstanceToken) return;
     manualResetUntil = Date.now() + 700;
-    document.getElementById('timeRangeDisplay').style.display = 'none';
+    setQuickRangeActive('all');
+    setTimeRangeUi(null, null);
     syncFlowPanels(getFullTokenFlowData(selectedToken));
   });
 
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
     if (Date.now() < manualResetUntil) {
-      document.getElementById('timeRangeDisplay').style.display = 'none';
+      setQuickRangeActive('all');
+      setTimeRangeUi(null, null);
       syncFlowPanels(getFullTokenFlowData(selectedToken));
       return;
     }
@@ -767,18 +1053,16 @@ function updateTrendChart(token) {
     if (eventData['xaxis.range[0]'] && eventData['xaxis.range[1]']) {
       start = new Date(eventData['xaxis.range[0]']);
       end = new Date(eventData['xaxis.range[1]']);
+      setQuickRangeActive(null);
     } else if (eventData['xaxis.autorange']) {
       Plotly.relayout(chartDiv, { 'yaxis.autorange': true });
-      document.getElementById('timeRangeDisplay').style.display = 'none';
+      setQuickRangeActive('all');
+      setTimeRangeUi(null, null);
       syncFlowPanels(getFullTokenFlowData(selectedToken));
       return;
     } else { return; }
 
-    // Update Time Range Display
-    const rangeDisplay = document.getElementById('timeRangeDisplay');
-    const fmt = d => d.toISOString().split('T')[0];
-    rangeDisplay.innerText = `${fmt(start)} → ${fmt(end)}`;
-    rangeDisplay.style.display = 'block';
+    setTimeRangeUi(start, end);
 
     // 1. Sync Table & Sankey (use canonical aggregator to keep field names consistent)
     const aggregated = aggregateRangeData(start, end);
@@ -817,6 +1101,38 @@ function updateSankey(data) {
   const isLight = document.body.classList.contains('theme-light');
   const sankeyNodeColor = isLight ? '#E4E4E7' : '#27272A';
   const sankeyTextColor = isLight ? '#71717A' : '#A1A1AA';
+  const maxNodesInCompact = 7;
+
+  const exchangeMap = {};
+  const appendExchange = (exchange, flows) => {
+    if (!exchangeMap[exchange]) exchangeMap[exchange] = { inflow: 0, outflow: 0, net_flow: 0 };
+    const inf = Number(flows.inflow ?? flows.in ?? 0);
+    const outf = Number(flows.outflow ?? flows.out ?? 0);
+    const net = Number(flows.net_flow ?? flows.net ?? (inf - outf));
+    exchangeMap[exchange].inflow += inf;
+    exchangeMap[exchange].outflow += outf;
+    exchangeMap[exchange].net_flow += net;
+  };
+
+  if (data.deployments) {
+    data.deployments.forEach(dep => {
+      Object.entries(dep.exchange_flows || {}).forEach(([exchange, flows]) => appendExchange(exchange, flows));
+    });
+  } else if (data.exchanges) {
+    Object.entries(data.exchanges).forEach(([exchange, flows]) => appendExchange(exchange, flows));
+  }
+
+  const sortedEntries = Object.entries(exchangeMap)
+    .map(([exchange, flows]) => ({
+      exchange,
+      inflow: Number(flows.inflow ?? 0),
+      outflow: Number(flows.outflow ?? 0),
+      magnitude: Number(flows.inflow ?? 0) + Number(flows.outflow ?? 0)
+    }))
+    .sort((a, b) => b.magnitude - a.magnitude);
+
+  const isTruncated = !isSankeyExpanded && sortedEntries.length > maxNodesInCompact;
+  const renderEntries = isTruncated ? sortedEntries.slice(0, maxNodesInCompact) : sortedEntries;
 
   const nodeLabels = [selectedToken];
   const nodeColors = ['#3B82F6'];
@@ -824,40 +1140,37 @@ function updateSankey(data) {
   const linkTargets = [];
   const linkValues = [];
   const linkColors = [];
-  
   let nodeIdx = 1;
 
-  if (data.deployments) {
-    data.deployments.forEach(dep => {
-      Object.entries(dep.exchange_flows).forEach(([ex, flows]) => {
-        nodeLabels.push(ex);
-        nodeColors.push(sankeyNodeColor);
-        const inf = Number(flows.inflow ?? flows.in ?? 0);
-        const outf = Number(flows.outflow ?? flows.out ?? 0);
-        if(inf > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(inf); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
-        if(outf > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(outf); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
-        nodeIdx++;
-      });
-    });
-  } else if (data.exchanges) {
-    Object.entries(data.exchanges).forEach(([ex, flows]) => {
-      nodeLabels.push(ex);
-      nodeColors.push(sankeyNodeColor);
-      const inf = Number(flows.inflow ?? flows.in ?? 0);
-      const outf = Number(flows.outflow ?? flows.out ?? 0);
-      if(inf > 0) { linkSources.push(nodeIdx); linkTargets.push(0); linkValues.push(inf); linkColors.push(isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(0, 255, 163, 0.4)'); }
-      if(outf > 0) { linkSources.push(0); linkTargets.push(nodeIdx); linkValues.push(outf); linkColors.push(isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 77, 77, 0.4)'); }
-      nodeIdx++;
-    });
-  }
+  renderEntries.forEach(({ exchange, inflow, outflow }) => {
+    nodeLabels.push(exchange);
+    nodeColors.push(sankeyNodeColor);
+    if (inflow > 0) {
+      linkSources.push(nodeIdx);
+      linkTargets.push(0);
+      linkValues.push(inflow);
+      linkColors.push(isLight ? 'rgba(5, 150, 105, 0.45)' : 'rgba(0, 255, 163, 0.45)');
+    }
+    if (outflow > 0) {
+      linkSources.push(0);
+      linkTargets.push(nodeIdx);
+      linkValues.push(outflow);
+      linkColors.push(isLight ? 'rgba(220, 38, 38, 0.45)' : 'rgba(255, 77, 77, 0.45)');
+    }
+    nodeIdx++;
+  });
+  updateSankeyModeUi(isTruncated, sortedEntries.length);
 
   if(linkValues.length === 0) {
     Plotly.purge('sankeyChart');
+    updateSankeyModeUi(false, 0);
     sankeyDiv.innerHTML = `<div style="padding:20px;color:${sankeyTextColor};text-align:center;">No flow data available for this range</div>`;
     return;
   }
 
-  const chartHeight = Math.max(300, Math.min(500, nodeIdx * 35));
+  const chartHeight = isSankeyExpanded
+    ? Math.max(320, Math.min(760, nodeIdx * 35))
+    : Math.max(240, Math.min(360, nodeIdx * 32));
   const dynamicPadding = Math.max(10, Math.min(50, (chartHeight / (nodeIdx + 1))));
 
   const plotData = [{
