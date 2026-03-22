@@ -507,7 +507,7 @@ def collect_token_data(
 
 
 def generate_history_summary():
-    """Generate history_summary.json from all available JSONL history files."""
+    """Generate history_summary.json from recent hourly snapshots."""
     summary = []
     if not HISTORY_DIR.exists():
         return
@@ -547,6 +547,8 @@ def generate_history_summary():
                     continue
 
     summary.sort(key=lambda x: x.get("timestamp", ""))
+    # Keep recent window for frontend performance (7 days x 24 hourly points)
+    summary = summary[-168:]
 
     with open(HISTORY_SUMMARY_FILE, "w") as f:
         json.dump(summary, f, indent=2)
