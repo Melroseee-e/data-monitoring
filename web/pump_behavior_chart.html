@@ -770,8 +770,8 @@ function renderChart() {
           event: e,
           labelTxt: 'Buy Back',
           itemStyle: { color: COLOR_BUYBACK, borderColor: '#FFFFFF', borderWidth: 1.5 },
-          symbolSize: [56, 22],
-          symbolOffset: [0, 0]
+          symbolSize: [72, 30],
+          symbolOffset: [0, 15]
         });
         buybackLinks.push([date, markerY, candle.low]);
       });
@@ -909,6 +909,7 @@ function renderChart() {
         xAxisIndex: 0,
         yAxisIndex: 0,
         z: 3,
+        clip: false,
         data: buybackLinks,
         renderItem: function(params, api) {
           const xVal = api.value(0);
@@ -919,7 +920,7 @@ function renderChart() {
           return {
             type: 'line',
             shape: { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1] },
-            style: { stroke: 'rgba(37,99,235,0.4)', lineWidth: 1, lineDash: [4, 4] }
+            style: { stroke: '#2563EB', lineWidth: 1.5, lineDash: [4, 4], opacity: 0.6 }
           };
         }
       },
