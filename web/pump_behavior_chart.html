@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUMP Whale Behavior Chart</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1116;
+    --panel: #171a22;
+    --panel2: #1d2130;
+    --border: #2a2f3f;
+    --text: #e8edf5;
+    --muted: #97a2b8;
+    --buy: #7ccf3c;
+    --sell: #ff4da6;
+    --official: #34c5ff;
+    --accent: #5ea1ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "SF Pro Display", "Segoe UI", sans-serif;
+    background: radial-gradient(1200px 700px at 20% -20%, #21273a 0%, var(--bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .page { max-width: 1540px; margin: 0 auto; padding: 18px 18px 24px; }
+  .header { margin-bottom: 14px; }
+  .title { font-size: 24px; font-weight: 700; letter-spacing: 0.2px; }
+  .subtitle { font-size: 13px; color: var(--muted); margin-top: 5px; }
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: var(--muted);
+    font-size: 12px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.15s;
+  }
+  .chip.active {
+    color: #fff;
+    border-color: #4d79ff;
+    background: rgba(94, 161, 255, 0.2);
+  }
+  .chip.buy.active { border-color: #95dc61; background: rgba(124, 207, 60, 0.18); }
+  .chip.sell.active { border-color: #ff6bb8; background: rgba(255, 77, 166, 0.2); }
+  .chip.official.active { border-color: #4ad1ff; background: rgba(52, 197, 255, 0.2); }
+  .field-group { display: flex; align-items: center; gap: 8px; }
+  .field-label { font-size: 12px; color: var(--muted); }
+  select, input {
+    background: #121520;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+  input { min-width: 240px; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .stat .k { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .stat .v { font-size: 18px; font-weight: 700; line-height: 1.2; }
+  .stat .v.buy { color: var(--buy); }
+  .stat .v.sell { color: var(--sell); }
+  .chart-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+  #mainChart { width: 100%; height: 700px; }
+  .table-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+  .table-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #242a39; }
+  th { color: var(--muted); font-weight: 500; }
+  .addr { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #93a8cc; }
+  .buy-text { color: var(--buy); }
+  .sell-text { color: var(--sell); }
+  .note { color: var(--muted); font-size: 11px; margin-top: 8px; }
+
+  @media (max-width: 1100px) {
+    .controls { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    input { min-width: 150px; width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="title">PUMP 大户行为 K 线图</div>
+    <div class="subtitle" id="subtitle">加载中...</div>
+  </div>
+
+  <div class="controls">
+    <div class="chip-row" id="categoryChips">
+      <div class="chip buy active" data-cat="whale_netflow">大户净流向</div>
+      <div class="chip sell active" data-cat="official_exchange">官方/团队交易所转入</div>
+      <div class="chip official active" data-cat="buyback">官方回购事件</div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">最小金额</span>
+      <select id="minAmount">
+        <option value="0">全部</option>
+        <option value="0.1" selected>≥ 0.1B</option>
+        <option value="0.2">≥ 0.2B</option>
+        <option value="0.5">≥ 0.5B</option>
+        <option value="1">≥ 1.0B</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <span class="field-label">搜索钱包</span>
+      <input id="searchInput" placeholder="标签或地址片段">
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">K线周期</div><div class="v" id="statRange">-</div></div>
+    <div class="stat"><div class="k">K线数量</div><div class="v" id="statCandles">-</div></div>
+    <div class="stat"><div class="k">收录地址</div><div class="v" id="statWallets">-</div></div>
+    <div class="stat"><div class="k">筛选后事件</div><div class="v" id="statEvents">-</div></div>
+    <div class="stat"><div class="k">买入/回购</div><div class="v buy" id="statBuys">-</div></div>
+    <div class="stat"><div class="k">卖出/转入交易所</div><div class="v sell" id="statSells">-</div></div>
+  </div>
+
+  <div class="chart-wrap">
+    <div id="mainChart"></div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-title">钱包事件汇总（按筛选条件）</div>
+    <table>
+      <thead>
+        <tr>
+          <th>标签</th>
+          <th>地址</th>
+          <th>分类</th>
+          <th>事件数</th>
+          <th>买入(B)</th>
+          <th>卖出(B)</th>
+          <th>净值(B)</th>
+        </tr>
+      </thead>
+      <tbody id="walletTableBody"></tbody>
+    </table>
+    <div class="note">
+      口径说明：`wallet -> exchange` 记为卖出（红）；`exchange -> wallet` 记为买入（绿）。当前数据里，官方/团队事件是交易所向已验证事件；大户事件主要来自日度余额变化（代理信号）。
+    </div>
+  </div>
+</div>
+
+<script>
+let rawData = null;
+let chart = null;
+let activeCategories = new Set(['whale_netflow', 'official_exchange', 'buyback']);
+
+const COLOR_BUY = '#7ccf3c';
+const COLOR_SELL = '#ff4da6';
+const COLOR_BUYBACK = '#34c5ff';
+const MAX_MARKERS_PER_SIDE_PER_DAY = 12;
+
+function formatNum(n, digits = 2) {
+  return Number(n || 0).toLocaleString(undefined, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  });
+}
+
+function shortAddr(addr) {
+  if (!addr) return '-';
+  return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+}
+
+function avatarText(label, rank) {
+  if (typeof rank === 'number') return String(rank);
+  const s = (label || '').trim();
+  if (!s) return '?';
+  if (s.includes('Hyperunit')) return 'HU';
+  if (s.includes('Coinbase')) return 'CB';
+  if (s.includes('Team')) return 'TM';
+  if (s.includes('Investor')) return 'IV';
+  if (s.includes('Buyback')) return 'BB';
+  const chars = s.replace(/[^A-Za-z0-9]/g, '');
+  if (!chars) return '?';
+  return chars.slice(0, 2).toUpperCase();
+}
+
+function categoryText(cat) {
+  if (cat === 'whale_netflow') return 'Whale';
+  if (cat === 'official_exchange') return 'Official/Team';
+  if (cat === 'buyback') return 'Buyback';
+  return cat;
+}
+
+function getFilteredEvents() {
+  const minAmount = Number(document.getElementById('minAmount').value || 0);
+  const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+  return rawData.events.filter(e => {
+    if (!activeCategories.has(e.category)) return false;
+    if (typeof e.amount_B === 'number' && e.amount_B < minAmount) return false;
+    if (q) {
+      const label = (e.label || '').toLowerCase();
+      const address = (e.address || '').toLowerCase();
+      if (!label.includes(q) && !address.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function buildDailyEventMap(events) {
+  const map = new Map();
+  for (const e of events) {
+    if (!map.has(e.date)) map.set(e.date, []);
+    map.get(e.date).push(e);
+  }
+  for (const [, arr] of map.entries()) {
+    arr.sort((a, b) => (b.amount_B || 0) - (a.amount_B || 0));
+  }
+  return map;
+}
+
+function buildMarkerSeries(candles, dailyEventsMap) {
+  const candleByDate = new Map(candles.map(c => [c.date, c]));
+  const buyPoints = [];
+  const sellPoints = [];
+  const buybackPoints = [];
+
+  for (const [date, events] of dailyEventsMap.entries()) {
+    const candle = candleByDate.get(date);
+    if (!candle) continue;
+    const buyEvents = events.filter(e => e.direction === 'buy' && e.category !== 'buyback');
+    const sellEvents = events.filter(e => e.direction !== 'buy');
+    const buybackEvents = events.filter(e => e.category === 'buyback');
+
+    buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
+      const y = candle.low * (1 - (0.025 + idx * 0.028));
+      buyPoints.push({
+        value: [date, y, e.amount_B || 0],
+        event: e,
+        labelTxt: avatarText(e.label, e.rank),
+        itemStyle: { color: COLOR_BUY, borderColor: '#1a3d0d', borderWidth: 1.2 },
+        symbolSize: 16 + Math.min(16, (e.amount_B || 0) * 10)
+      });
+    });
+
+    sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
+      const y = candle.high * (1 + (0.025 + idx * 0.028));
+      sellPoints.push({
+        value: [date, y, e.amount_B || 0],
+        event: e,
+        labelTxt: avatarText(e.label, e.rank),
+        itemStyle: { color: COLOR_SELL, borderColor: '#61173e', borderWidth: 1.2 },
+        symbolSize: 16 + Math.min(16, (e.amount_B || 0) * 10)
+      });
+    });
+
+    buybackEvents.slice(0, 2).forEach((e, idx) => {
+      const y = candle.low * (1 - (0.012 + idx * 0.02));
+      buybackPoints.push({
+        value: [date, y, e.amount_B || 0],
+        event: e,
+        labelTxt: 'BK',
+        itemStyle: { color: COLOR_BUYBACK, borderColor: '#0a3f57', borderWidth: 1.2 },
+        symbolSize: 18
+      });
+    });
+  }
+
+  return { buyPoints, sellPoints, buybackPoints };
+}
+
+function buildTooltipHtml(params, dailyEventsMap) {
+  const p0 = params.find(p => p.seriesName === 'Price');
+  if (!p0) return '';
+  const date = p0.axisValue;
+  const [open, close, low, high] = p0.data;
+  const events = dailyEventsMap.get(date) || [];
+
+  let html = `<div style="font-size:12px;color:#d9e0ef;line-height:1.4">`;
+  html += `<div style="font-weight:700;margin-bottom:6px">${date}</div>`;
+  html += `<div>O: <b>${formatNum(open, 6)}</b> H: <b>${formatNum(high, 6)}</b> L: <b>${formatNum(low, 6)}</b> C: <b>${formatNum(close, 6)}</b></div>`;
+
+  if (!events.length) {
+    html += `<div style="margin-top:8px;color:#8fa0bd">无事件</div></div>`;
+    return html;
+  }
+
+  html += `<div style="margin-top:8px;color:#8fa0bd">事件 ${events.length} 条：</div>`;
+  const top = events.slice(0, 16);
+  for (const e of top) {
+    const isBuy = e.direction === 'buy';
+    const color = e.category === 'buyback' ? COLOR_BUYBACK : (isBuy ? COLOR_BUY : COLOR_SELL);
+    const sideText = isBuy ? 'BUY' : 'SELL';
+    const amount = typeof e.amount_B === 'number' ? `${formatNum(e.amount_B, 3)}B` : (e.amount_usd ? `$${formatNum(e.amount_usd, 0)}` : '—');
+    const ex = e.exchange ? ` → ${e.exchange}` : '';
+    html += `<div style="display:flex;justify-content:space-between;gap:10px;margin-top:3px">
+      <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:290px">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px"></span>
+        [${sideText}] ${e.label || shortAddr(e.address)}${ex}
+      </span>
+      <b style="color:${color}">${amount}</b>
+    </div>`;
+  }
+  if (events.length > top.length) {
+    html += `<div style="margin-top:4px;color:#8fa0bd">+${events.length - top.length} more ...</div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderStats(candles, events) {
+  const buys = events.filter(e => e.direction === 'buy').length;
+  const sells = events.filter(e => e.direction !== 'buy').length;
+  const walletsTouched = new Set(events.map(e => e.address).filter(Boolean)).size;
+
+  document.getElementById('statRange').textContent = `${candles[0].date} ~ ${candles[candles.length - 1].date}`;
+  document.getElementById('statCandles').textContent = String(candles.length);
+  document.getElementById('statWallets').textContent = String(rawData.wallets.length);
+  document.getElementById('statEvents').textContent = `${events.length} (${walletsTouched} 地址)`;
+  document.getElementById('statBuys').textContent = String(buys);
+  document.getElementById('statSells').textContent = String(sells);
+}
+
+function renderWalletTable(events) {
+  const map = new Map();
+  for (const e of events) {
+    const k = e.address || `unknown:${e.label}`;
+    if (!map.has(k)) {
+      map.set(k, {
+        address: e.address,
+        label: e.label || '-',
+        category: categoryText(e.category),
+        count: 0,
+        buy: 0,
+        sell: 0
+      });
+    }
+    const row = map.get(k);
+    row.count += 1;
+    const amount = Number(e.amount_B || 0);
+    if (e.direction === 'buy') row.buy += amount;
+    else row.sell += amount;
+  }
+
+  const rows = Array.from(map.values()).sort((a, b) => b.count - a.count).slice(0, 40);
+  const body = document.getElementById('walletTableBody');
+  body.innerHTML = rows.map(r => {
+    const net = r.buy - r.sell;
+    return `<tr>
+      <td>${r.label}</td>
+      <td class="addr">${r.address ? shortAddr(r.address) : '-'}</td>
+      <td>${r.category}</td>
+      <td>${r.count}</td>
+      <td class="buy-text">${formatNum(r.buy, 3)}</td>
+      <td class="sell-text">${formatNum(r.sell, 3)}</td>
+      <td class="${net >= 0 ? 'buy-text' : 'sell-text'}">${net >= 0 ? '+' : ''}${formatNum(net, 3)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderChart() {
+  const candles = rawData.price.candles;
+  const events = getFilteredEvents();
+  const dailyEventsMap = buildDailyEventMap(events);
+  const dates = candles.map(c => c.date);
+  const klineData = candles.map(c => [c.open, c.close, c.low, c.high]);
+  const volumes = candles.map(c => c.volume_usd || 0);
+  const dailyNet = new Map((rawData.daily_summary || []).map(d => [d.date, d.net_amount_B || 0]));
+  const netData = candles.map(c => dailyNet.get(c.date) || 0);
+
+  const { buyPoints, sellPoints, buybackPoints } = buildMarkerSeries(candles, dailyEventsMap);
+  renderStats(candles, events);
+  renderWalletTable(events);
+
+  if (!chart) chart = echarts.init(document.getElementById('mainChart'));
+  chart.setOption({
+    animation: false,
+    backgroundColor: 'transparent',
+    legend: {
+      top: 6,
+      textStyle: { color: '#9ca6bb' },
+      data: ['Price', 'Volume', 'Daily Net(B)', 'Buy Marker', 'Sell Marker', 'Buyback Marker']
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'cross' },
+      borderColor: '#364159',
+      backgroundColor: 'rgba(16,20,30,0.95)',
+      textStyle: { color: '#e0e7f5' },
+      formatter: p => buildTooltipHtml(Array.isArray(p) ? p : [p], dailyEventsMap),
+      extraCssText: 'max-width: 420px; border-radius: 8px;'
+    },
+    axisPointer: { link: [{ xAxisIndex: [0, 1] }] },
+    grid: [
+      { left: 55, right: 20, top: 38, height: '62%' },
+      { left: 55, right: 20, top: '74%', height: '18%' }
+    ],
+    xAxis: [
+      {
+        type: 'category',
+        data: dates,
+        boundaryGap: true,
+        axisLine: { lineStyle: { color: '#33405b' } },
+        axisLabel: { color: '#8f9db7', interval: Math.max(1, Math.floor(dates.length / 14)) },
+        min: 'dataMin',
+        max: 'dataMax'
+      },
+      {
+        type: 'category',
+        gridIndex: 1,
+        data: dates,
+        boundaryGap: true,
+        axisLine: { lineStyle: { color: '#33405b' } },
+        axisLabel: { color: '#8f9db7', show: false }
+      }
+    ],
+    yAxis: [
+      {
+        scale: true,
+        axisLine: { lineStyle: { color: '#33405b' } },
+        axisLabel: { color: '#8f9db7', formatter: v => v.toFixed(4) },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } }
+      },
+      {
+        gridIndex: 1,
+        axisLine: { lineStyle: { color: '#33405b' } },
+        axisLabel: { color: '#8f9db7', formatter: v => `$${(v / 1e6).toFixed(1)}M` },
+        splitLine: { show: false }
+      },
+      {
+        gridIndex: 1,
+        position: 'right',
+        axisLine: { lineStyle: { color: '#33405b' } },
+        axisLabel: { color: '#8f9db7', formatter: v => `${v.toFixed(1)}B` },
+        splitLine: { show: false }
+      }
+    ],
+    dataZoom: [
+      { type: 'inside', xAxisIndex: [0, 1], start: 0, end: 100 },
+      {
+        show: true,
+        type: 'slider',
+        xAxisIndex: [0, 1],
+        bottom: 8,
+        height: 24,
+        borderColor: '#33405b',
+        textStyle: { color: '#8f9db7' }
+      }
+    ],
+    series: [
+      {
+        name: 'Price',
+        type: 'candlestick',
+        data: klineData,
+        itemStyle: {
+          color: COLOR_BUY,
+          color0: COLOR_SELL,
+          borderColor: COLOR_BUY,
+          borderColor0: COLOR_SELL
+        }
+      },
+      {
+        name: 'Volume',
+        type: 'bar',
+        xAxisIndex: 1,
+        yAxisIndex: 1,
+        data: volumes,
+        itemStyle: { color: '#6b7a95', opacity: 0.35 }
+      },
+      {
+        name: 'Daily Net(B)',
+        type: 'line',
+        xAxisIndex: 1,
+        yAxisIndex: 2,
+        data: netData,
+        smooth: true,
+        showSymbol: false,
+        lineStyle: { color: '#9b7bff', width: 1.4 }
+      },
+      {
+        name: 'Buy Marker',
+        type: 'scatter',
+        data: buyPoints,
+        symbol: 'circle',
+        zlevel: 4,
+        label: {
+          show: true,
+          color: '#0f1a06',
+          fontSize: 9,
+          fontWeight: 700,
+          formatter: p => p.data.labelTxt || ''
+        }
+      },
+      {
+        name: 'Sell Marker',
+        type: 'scatter',
+        data: sellPoints,
+        symbol: 'circle',
+        zlevel: 4,
+        label: {
+          show: true,
+          color: '#2f0c1f',
+          fontSize: 9,
+          fontWeight: 700,
+          formatter: p => p.data.labelTxt || ''
+        }
+      },
+      {
+        name: 'Buyback Marker',
+        type: 'scatter',
+        data: buybackPoints,
+        symbol: 'diamond',
+        zlevel: 5,
+        label: {
+          show: true,
+          color: '#032535',
+          fontSize: 8,
+          fontWeight: 700,
+          formatter: p => p.data.labelTxt || ''
+        }
+      }
+    ]
+  }, true);
+}
+
+function bindControls() {
+  document.querySelectorAll('#categoryChips .chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const cat = chip.dataset.cat;
+      if (activeCategories.has(cat)) activeCategories.delete(cat);
+      else activeCategories.add(cat);
+      chip.classList.toggle('active', activeCategories.has(cat));
+      renderChart();
+    });
+  });
+
+  document.getElementById('minAmount').addEventListener('change', renderChart);
+  document.getElementById('searchInput').addEventListener('input', renderChart);
+  window.addEventListener('resize', () => chart && chart.resize());
+}
+
+async function init() {
+  const resp = await fetch('../data/pump_behavior_chart_data.json');
+  if (!resp.ok) throw new Error(`load failed: ${resp.status}`);
+  rawData = await resp.json();
+  document.getElementById('subtitle').textContent =
+    `Price: ${rawData.metadata.price_source} | Events: ${rawData.event_stats.total_events} | Generated: ${rawData.metadata.generated_at}`;
+  bindControls();
+  renderChart();
+}
+
+init().catch(err => {
+  document.getElementById('subtitle').textContent = `加载失败: ${err.message}`;
+});
+</script>
+</body>
+</html>
