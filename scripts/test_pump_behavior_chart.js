@@ -32,19 +32,25 @@ async function run() {
     await page.waitForTimeout(1000);
     await page.screenshot({ path: path.join(outDir, '03_min_amount_0_5.png'), fullPage: true });
 
+    await page.click('.chip[data-cat="whale_netflow"]');
+    await page.waitForTimeout(1000);
+    await page.screenshot({ path: path.join(outDir, '04_only_buyback_bottom.png'), fullPage: true });
+
+    await page.click('.chip[data-cat="whale_netflow"]');
+    await page.waitForTimeout(600);
     await page.fill('#searchInput', 'Hyperunit');
     await page.waitForTimeout(1200);
-    await page.screenshot({ path: path.join(outDir, '04_search_hyperunit.png'), fullPage: true });
+    await page.screenshot({ path: path.join(outDir, '05_search_hyperunit.png'), fullPage: true });
 
     const chartBox = await page.locator('#mainChart').boundingBox();
     if (chartBox) {
       await page.mouse.move(chartBox.x + chartBox.width * 0.66, chartBox.y + chartBox.height * 0.34);
       await page.waitForTimeout(900);
-      await page.screenshot({ path: path.join(outDir, '05_hover_tooltip.png'), fullPage: true });
+      await page.screenshot({ path: path.join(outDir, '06_hover_tooltip.png'), fullPage: true });
     }
 
     console.log('Screenshots generated at:', outDir);
-    console.log('Checked interactions: toggle category, min amount filter, search, hover tooltip.');
+    console.log('Checked interactions: toggle category, min amount filter, buyback-only view, search, hover tooltip.');
   } finally {
     await browser.close();
   }

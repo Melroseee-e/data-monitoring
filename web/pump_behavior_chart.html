@@ -288,13 +288,13 @@ function buildMarkerSeries(candles, dailyEventsMap) {
     });
 
     buybackEvents.slice(0, 2).forEach((e, idx) => {
-      const y = candle.low * (1 - (0.012 + idx * 0.02));
       buybackPoints.push({
-        value: [date, y, e.amount_B || 0],
+        // Dedicated bottom lane (0~1 axis), always pinned near timeline base.
+        value: [date, 0.08 + idx * 0.10, e.amount_B || 0],
         event: e,
-        labelTxt: 'BK',
-        itemStyle: { color: COLOR_BUYBACK, borderColor: '#0a3f57', borderWidth: 1.2 },
-        symbolSize: 18
+        labelTxt: 'BUYBACK',
+        itemStyle: { color: COLOR_BUYBACK, borderColor: '#0b4f6b', borderWidth: 1.6, shadowBlur: 14, shadowColor: 'rgba(52,197,255,0.9)' },
+        symbolSize: 30
       });
     });
   }
@@ -323,7 +323,7 @@ function buildTooltipHtml(params, dailyEventsMap) {
   for (const e of top) {
     const isBuy = e.direction === 'buy';
     const color = e.category === 'buyback' ? COLOR_BUYBACK : (isBuy ? COLOR_BUY : COLOR_SELL);
-    const sideText = isBuy ? 'BUY' : 'SELL';
+    const sideText = e.category === 'buyback' ? 'BUYBACK' : (isBuy ? 'BUY' : 'SELL');
     const amount = typeof e.amount_B === 'number' ? `${formatNum(e.amount_B, 3)}B` : (e.amount_usd ? `$${formatNum(e.amount_usd, 0)}` : '—');
     const ex = e.exchange ? ` → ${e.exchange}` : '';
     html += `<div style="display:flex;justify-content:space-between;gap:10px;margin-top:3px">
@@ -455,6 +455,15 @@ function renderChart() {
         splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } }
       },
       {
+        // Buyback marker lane for main price grid: fixed [0, 1], hidden axis.
+        min: 0,
+        max: 1,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { show: false },
+        splitLine: { show: false }
+      },
+      {
         gridIndex: 1,
         axisLine: { lineStyle: { color: '#33405b' } },
         axisLabel: { color: '#8f9db7', formatter: v => `$${(v / 1e6).toFixed(1)}M` },
@@ -496,7 +505,7 @@ function renderChart() {
         name: 'Volume',
         type: 'bar',
         xAxisIndex: 1,
-        yAxisIndex: 1,
+        yAxisIndex: 2,
         data: volumes,
         itemStyle: { color: '#6b7a95', opacity: 0.35 }
       },
@@ -504,7 +513,7 @@ function renderChart() {
         name: 'Daily Net(B)',
         type: 'line',
         xAxisIndex: 1,
-        yAxisIndex: 2,
+        yAxisIndex: 3,
         data: netData,
         smooth: true,
         showSymbol: false,
@@ -540,14 +549,17 @@ function renderChart() {
       },
       {
         name: 'Buyback Marker',
-        type: 'scatter',
+        type: 'effectScatter',
         data: buybackPoints,
-        symbol: 'diamond',
+        xAxisIndex: 0,
+        yAxisIndex: 1,
+        symbol: 'triangle',
+        rippleEffect: { scale: 2.6, brushType: 'stroke' },
         zlevel: 5,
         label: {
           show: true,
           color: '#032535',
-          fontSize: 8,
+          fontSize: 9,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
