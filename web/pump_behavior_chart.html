@@ -7,21 +7,21 @@
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <style>
   :root {
-    --bg: #0f1116;
-    --panel: #171a22;
-    --panel2: #1d2130;
-    --border: #2a2f3f;
-    --text: #e8edf5;
-    --muted: #97a2b8;
-    --buy: #7ccf3c;
-    --sell: #ff4da6;
-    --official: #34c5ff;
-    --accent: #5ea1ff;
+    --bg: #faf8f5;
+    --panel: #ffffff;
+    --panel2: #f4f4f5;
+    --border: #e4e4e7;
+    --text: #111827;
+    --muted: #6b7280;
+    --buy: #059669;
+    --sell: #dc2626;
+    --official: #2563eb;
+    --accent: #2563eb;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: "SF Pro Display", "Segoe UI", sans-serif;
-    background: radial-gradient(1200px 700px at 20% -20%, #21273a 0%, var(--bg) 60%);
+    font-family: "Inter", "Segoe UI", sans-serif;
+    background: var(--bg);
     color: var(--text);
     min-height: 100vh;
   }
@@ -34,7 +34,7 @@
     grid-template-columns: 1fr auto auto;
     gap: 12px;
     align-items: center;
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 12px;
@@ -53,17 +53,17 @@
     transition: 0.15s;
   }
   .chip.active {
-    color: #fff;
-    border-color: #4d79ff;
-    background: rgba(94, 161, 255, 0.2);
+    color: #1d4ed8;
+    border-color: #93c5fd;
+    background: #eff6ff;
   }
-  .chip.buy.active { border-color: #95dc61; background: rgba(124, 207, 60, 0.18); }
-  .chip.sell.active { border-color: #ff6bb8; background: rgba(255, 77, 166, 0.2); }
-  .chip.official.active { border-color: #4ad1ff; background: rgba(52, 197, 255, 0.2); }
+  .chip.buy.active { color: #047857; border-color: #86efac; background: #ecfdf5; }
+  .chip.sell.active { color: #b91c1c; border-color: #fca5a5; background: #fef2f2; }
+  .chip.official.active { color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; }
   .field-group { display: flex; align-items: center; gap: 8px; }
   .field-label { font-size: 12px; color: var(--muted); }
   select, input {
-    background: #121520;
+    background: #fff;
     border: 1px solid var(--border);
     color: var(--text);
     border-radius: 8px;
@@ -103,9 +103,10 @@
   }
   .table-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #242a39; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #e5e7eb; }
+  tr:hover td { background: #f9fafb; }
   th { color: var(--muted); font-weight: 500; }
-  .addr { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #93a8cc; }
+  .addr { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #4b5563; }
   .buy-text { color: var(--buy); }
   .sell-text { color: var(--sell); }
   .note { color: var(--muted); font-size: 11px; margin-top: 8px; }
@@ -254,9 +255,18 @@ function buildDailyEventMap(events) {
 
 function buildMarkerSeries(candles, dailyEventsMap) {
   const candleByDate = new Map(candles.map(c => [c.date, c]));
+  const lows = candles.map(c => Number(c.low));
+  const highs = candles.map(c => Number(c.high));
+  const minLow = Math.min(...lows);
+  const maxHigh = Math.max(...highs);
+  const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
+  const buybackBaseY = Math.max(minLow - range * 0.18, minLow * 0.02);
+  const buybackStepY = Math.max(range * 0.04, minLow * 0.01);
+
   const buyPoints = [];
   const sellPoints = [];
   const buybackPoints = [];
+  const buybackLinks = [];
 
   for (const [date, events] of dailyEventsMap.entries()) {
     const candle = candleByDate.get(date);
@@ -288,18 +298,25 @@ function buildMarkerSeries(candles, dailyEventsMap) {
     });
 
     buybackEvents.slice(0, 2).forEach((e, idx) => {
+      const markerY = buybackBaseY + idx * buybackStepY;
       buybackPoints.push({
-        // Dedicated bottom lane (0~1 axis), always pinned near timeline base.
-        value: [date, 0.08 + idx * 0.10, e.amount_B || 0],
+        value: [date, markerY, e.amount_B || 0],
         event: e,
-        labelTxt: 'BUYBACK',
-        itemStyle: { color: COLOR_BUYBACK, borderColor: '#0b4f6b', borderWidth: 1.6, shadowBlur: 14, shadowColor: 'rgba(52,197,255,0.9)' },
-        symbolSize: 30
+        labelTxt: 'Buyback',
+        itemStyle: { color: COLOR_BUYBACK, borderColor: '#1d4ed8', borderWidth: 1 },
+        symbolSize: 10
       });
+      buybackLinks.push([date, markerY, candle.low * 0.998]);
     });
   }
 
-  return { buyPoints, sellPoints, buybackPoints };
+  return {
+    buyPoints,
+    sellPoints,
+    buybackPoints,
+    buybackLinks,
+    buybackAxisMin: buybackBaseY - buybackStepY * 0.8
+  };
 }
 
 function buildTooltipHtml(params, dailyEventsMap) {
@@ -309,16 +326,16 @@ function buildTooltipHtml(params, dailyEventsMap) {
   const [open, close, low, high] = p0.data;
   const events = dailyEventsMap.get(date) || [];
 
-  let html = `<div style="font-size:12px;color:#d9e0ef;line-height:1.4">`;
+  let html = `<div style="font-size:12px;color:#1f2937;line-height:1.4">`;
   html += `<div style="font-weight:700;margin-bottom:6px">${date}</div>`;
   html += `<div>O: <b>${formatNum(open, 6)}</b> H: <b>${formatNum(high, 6)}</b> L: <b>${formatNum(low, 6)}</b> C: <b>${formatNum(close, 6)}</b></div>`;
 
   if (!events.length) {
-    html += `<div style="margin-top:8px;color:#8fa0bd">无事件</div></div>`;
+    html += `<div style="margin-top:8px;color:#6b7280">无事件</div></div>`;
     return html;
   }
 
-  html += `<div style="margin-top:8px;color:#8fa0bd">事件 ${events.length} 条：</div>`;
+  html += `<div style="margin-top:8px;color:#6b7280">事件 ${events.length} 条：</div>`;
   const top = events.slice(0, 16);
   for (const e of top) {
     const isBuy = e.direction === 'buy';
@@ -335,7 +352,7 @@ function buildTooltipHtml(params, dailyEventsMap) {
     </div>`;
   }
   if (events.length > top.length) {
-    html += `<div style="margin-top:4px;color:#8fa0bd">+${events.length - top.length} more ...</div>`;
+    html += `<div style="margin-top:4px;color:#6b7280">+${events.length - top.length} more ...</div>`;
   }
   html += '</div>';
   return html;
@@ -401,7 +418,15 @@ function renderChart() {
   const dailyNet = new Map((rawData.daily_summary || []).map(d => [d.date, d.net_amount_B || 0]));
   const netData = candles.map(c => dailyNet.get(c.date) || 0);
 
-  const { buyPoints, sellPoints, buybackPoints } = buildMarkerSeries(candles, dailyEventsMap);
+  const {
+    buyPoints,
+    sellPoints,
+    buybackPoints,
+    buybackLinks,
+    buybackAxisMin
+  } = buildMarkerSeries(candles, dailyEventsMap);
+  const plainAxisMin = Math.min(...candles.map(c => Number(c.low))) * 0.96;
+  const priceAxisMin = buybackPoints.length ? Math.min(plainAxisMin, buybackAxisMin) : plainAxisMin;
   renderStats(candles, events);
   renderWalletTable(events);
 
@@ -411,15 +436,15 @@ function renderChart() {
     backgroundColor: 'transparent',
     legend: {
       top: 6,
-      textStyle: { color: '#9ca6bb' },
+      textStyle: { color: '#6b7280' },
       data: ['Price', 'Volume', 'Daily Net(B)', 'Buy Marker', 'Sell Marker', 'Buyback Marker']
     },
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'cross' },
-      borderColor: '#364159',
-      backgroundColor: 'rgba(16,20,30,0.95)',
-      textStyle: { color: '#e0e7f5' },
+      borderColor: '#d1d5db',
+      backgroundColor: 'rgba(255,255,255,0.97)',
+      textStyle: { color: '#1f2937' },
       formatter: p => buildTooltipHtml(Array.isArray(p) ? p : [p], dailyEventsMap),
       extraCssText: 'max-width: 420px; border-radius: 8px;'
     },
@@ -433,8 +458,8 @@ function renderChart() {
         type: 'category',
         data: dates,
         boundaryGap: true,
-        axisLine: { lineStyle: { color: '#33405b' } },
-        axisLabel: { color: '#8f9db7', interval: Math.max(1, Math.floor(dates.length / 14)) },
+        axisLine: { lineStyle: { color: '#d1d5db' } },
+        axisLabel: { color: '#6b7280', interval: Math.max(1, Math.floor(dates.length / 14)) },
         min: 'dataMin',
         max: 'dataMax'
       },
@@ -443,37 +468,29 @@ function renderChart() {
         gridIndex: 1,
         data: dates,
         boundaryGap: true,
-        axisLine: { lineStyle: { color: '#33405b' } },
-        axisLabel: { color: '#8f9db7', show: false }
+        axisLine: { lineStyle: { color: '#d1d5db' } },
+        axisLabel: { color: '#6b7280', show: false }
       }
     ],
     yAxis: [
       {
+        min: priceAxisMin,
         scale: true,
-        axisLine: { lineStyle: { color: '#33405b' } },
-        axisLabel: { color: '#8f9db7', formatter: v => v.toFixed(4) },
-        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } }
-      },
-      {
-        // Buyback marker lane for main price grid: fixed [0, 1], hidden axis.
-        min: 0,
-        max: 1,
-        axisLine: { show: false },
-        axisTick: { show: false },
-        axisLabel: { show: false },
-        splitLine: { show: false }
+        axisLine: { lineStyle: { color: '#d1d5db' } },
+        axisLabel: { color: '#6b7280', formatter: v => v.toFixed(4) },
+        splitLine: { lineStyle: { color: 'rgba(15,23,42,0.07)' } }
       },
       {
         gridIndex: 1,
-        axisLine: { lineStyle: { color: '#33405b' } },
-        axisLabel: { color: '#8f9db7', formatter: v => `$${(v / 1e6).toFixed(1)}M` },
+        axisLine: { lineStyle: { color: '#d1d5db' } },
+        axisLabel: { color: '#6b7280', formatter: v => `$${(v / 1e6).toFixed(1)}M` },
         splitLine: { show: false }
       },
       {
         gridIndex: 1,
         position: 'right',
-        axisLine: { lineStyle: { color: '#33405b' } },
-        axisLabel: { color: '#8f9db7', formatter: v => `${v.toFixed(1)}B` },
+        axisLine: { lineStyle: { color: '#d1d5db' } },
+        axisLabel: { color: '#6b7280', formatter: v => `${v.toFixed(1)}B` },
         splitLine: { show: false }
       }
     ],
@@ -485,8 +502,8 @@ function renderChart() {
         xAxisIndex: [0, 1],
         bottom: 8,
         height: 24,
-        borderColor: '#33405b',
-        textStyle: { color: '#8f9db7' }
+        borderColor: '#d1d5db',
+        textStyle: { color: '#6b7280' }
       }
     ],
     series: [
@@ -502,18 +519,40 @@ function renderChart() {
         }
       },
       {
+        // Dashed anchor line from buyback marker to same-day candle.
+        name: 'Buyback Link',
+        type: 'custom',
+        silent: true,
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        z: 3,
+        data: buybackLinks,
+        renderItem: function(params, api) {
+          const xVal = api.value(0);
+          const yFrom = api.value(1);
+          const yTo = api.value(2);
+          const p1 = api.coord([xVal, yFrom]);
+          const p2 = api.coord([xVal, yTo]);
+          return {
+            type: 'line',
+            shape: { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1] },
+            style: { stroke: '#3b82f6', lineWidth: 1, lineDash: [4, 3], opacity: 0.85 }
+          };
+        }
+      },
+      {
         name: 'Volume',
         type: 'bar',
         xAxisIndex: 1,
-        yAxisIndex: 2,
+        yAxisIndex: 1,
         data: volumes,
-        itemStyle: { color: '#6b7a95', opacity: 0.35 }
+        itemStyle: { color: '#94a3b8', opacity: 0.45 }
       },
       {
         name: 'Daily Net(B)',
         type: 'line',
         xAxisIndex: 1,
-        yAxisIndex: 3,
+        yAxisIndex: 2,
         data: netData,
         smooth: true,
         showSymbol: false,
@@ -549,18 +588,21 @@ function renderChart() {
       },
       {
         name: 'Buyback Marker',
-        type: 'effectScatter',
+        type: 'scatter',
         data: buybackPoints,
         xAxisIndex: 0,
-        yAxisIndex: 1,
+        yAxisIndex: 0,
         symbol: 'triangle',
-        rippleEffect: { scale: 2.6, brushType: 'stroke' },
         zlevel: 5,
         label: {
           show: true,
-          color: '#032535',
-          fontSize: 9,
-          fontWeight: 700,
+          position: 'top',
+          color: '#ffffff',
+          backgroundColor: '#1d4ed8',
+          borderRadius: 3,
+          padding: [2, 4],
+          fontSize: 10,
+          fontWeight: 600,
           formatter: p => p.data.labelTxt || ''
         }
       }
