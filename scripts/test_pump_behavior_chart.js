@@ -19,7 +19,7 @@ async function run() {
 
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
-    await page.waitForSelector('#mainChart canvas', { timeout: 60000 });
+    await page.waitForSelector('#mainChart canvas, #mainChart svg', { timeout: 60000 });
     await page.waitForTimeout(1500);
 
     await page.screenshot({ path: path.join(outDir, '01_initial.png'), fullPage: true });
