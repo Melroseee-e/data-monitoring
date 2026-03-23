@@ -1,22 +1,5 @@
 [
   {
-    "timestamp": "2026-03-15T17:00:00Z",
-    "tokens": {
-      "PUMP": {
-        "total_inflow": 0,
-        "total_outflow": 34600.291,
-        "net_flow": -34600.291,
-        "exchanges": {
-          "OKX": {
-            "inflow": 0,
-            "outflow": 34600.291,
-            "net_flow": -34600.291
-          }
-        }
-      }
-    }
-  },
-  {
     "timestamp": "2026-03-15T18:00:00Z",
     "tokens": {
       "PUMP": {
@@ -27733,6 +27716,158 @@
             "inflow": 57257049.0,
             "outflow": 17190669.0474,
             "net_flow": 40066379.9526
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-23T21:26:01Z",
+    "tokens": {
+      "UAI": {
+        "total_inflow": 33934.9136,
+        "total_outflow": 0.0,
+        "net_flow": 33934.9136,
+        "exchanges": {
+          "Binance": {
+            "inflow": 5733.1324,
+            "outflow": 0.0,
+            "net_flow": 5733.1324
+          },
+          "MEXC": {
+            "inflow": 28201.7812,
+            "outflow": 0.0,
+            "net_flow": 28201.7812
+          }
+        }
+      },
+      "BIRB": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "AZTEC": {
+        "total_inflow": 0.0,
+        "total_outflow": 26818.1375,
+        "net_flow": -26818.1375,
+        "exchanges": {
+          "Coinbase": {
+            "inflow": 0.0,
+            "outflow": 26818.1375,
+            "net_flow": -26818.1375
+          }
+        }
+      },
+      "TRIA": {
+        "total_inflow": 19187.895,
+        "total_outflow": 0.0,
+        "net_flow": 19187.895,
+        "exchanges": {
+          "Binance": {
+            "inflow": 19187.895,
+            "outflow": 0.0,
+            "net_flow": 19187.895
+          }
+        }
+      },
+      "SKR": {
+        "total_inflow": 3373277.7718,
+        "total_outflow": 2722355.6,
+        "net_flow": 650922.1718,
+        "exchanges": {
+          "Backpack": {
+            "inflow": 0.0,
+            "outflow": 135853.0,
+            "net_flow": -135853.0
+          },
+          "Bybit": {
+            "inflow": 0.0,
+            "outflow": 499980.0,
+            "net_flow": -499980.0
+          },
+          "Coinbase": {
+            "inflow": 236792.1718,
+            "outflow": 0.0,
+            "net_flow": 236792.1718
+          },
+          "Robinhood": {
+            "inflow": 2086522.6,
+            "outflow": 0.0,
+            "net_flow": 2086522.6
+          },
+          "Wintermute": {
+            "inflow": 1049963.0,
+            "outflow": 2086522.6,
+            "net_flow": -1036559.6
+          }
+        }
+      },
+      "GWEI": {
+        "total_inflow": 231603.225,
+        "total_outflow": 1185.7423,
+        "net_flow": 230417.4827,
+        "exchanges": {
+          "Bitget": {
+            "inflow": 24090.1569,
+            "outflow": 0.0,
+            "net_flow": 24090.1569
+          },
+          "Gate.io": {
+            "inflow": 207513.0681,
+            "outflow": 1185.7423,
+            "net_flow": 206327.3258
+          }
+        }
+      },
+      "SPACE": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "PUMP": {
+        "total_inflow": 21339325.7596,
+        "total_outflow": 48230909.9675,
+        "net_flow": -26891584.2079,
+        "exchanges": {
+          "Binance": {
+            "inflow": 49133.7376,
+            "outflow": 25217212.53,
+            "net_flow": -25168078.7924
+          },
+          "Bitget": {
+            "inflow": 0.0,
+            "outflow": 1080071.4502,
+            "net_flow": -1080071.4502
+          },
+          "Bithumb": {
+            "inflow": 5447088.0,
+            "outflow": 0.0,
+            "net_flow": 5447088.0
+          },
+          "Bitvavo": {
+            "inflow": 0.0,
+            "outflow": 251186.055,
+            "net_flow": -251186.055
+          },
+          "Kraken": {
+            "inflow": 774334.06,
+            "outflow": 0.0,
+            "net_flow": 774334.06
+          },
+          "MEXC": {
+            "inflow": 14999806.0,
+            "outflow": 219794.03,
+            "net_flow": 14780011.97
+          },
+          "OKX": {
+            "inflow": 17654.47,
+            "outflow": 16403033.5,
+            "net_flow": -16385379.03
+          },
+          "Wintermute": {
+            "inflow": 51309.492,
+            "outflow": 5059612.4023,
+            "net_flow": -5008302.9103
           }
         }
       }
