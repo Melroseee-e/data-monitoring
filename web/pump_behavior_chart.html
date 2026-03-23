@@ -5,320 +5,344 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PUMP Whale Behavior Chart</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f7f8fa;
-    --panel: #ffffff;
-    --panel2: #f4f6f9;
-    --border: #e5e7eb;
-    --text: #101828;
-    --muted: #667085;
-    --buy: #16a34a;
-    --sell: #ef4444;
-    --buyback: #2563eb;
-    --official: #2563eb;
-    --accent: #2563eb;
-    --shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
-    --font-ui: "Inter", "Segoe UI", sans-serif;
-    --font-mono: "JetBrains Mono", SFMono-Regular, Menlo, monospace;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: var(--font-ui);
-    background: linear-gradient(180deg, #f7f8fa 0%, #f2f5fa 100%);
-    color: var(--text);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-  .page { max-width: 1680px; margin: 0 auto; padding: 18px 18px 24px; }
-  .header { margin-bottom: 14px; }
-  .title { font-size: 24px; font-weight: 700; letter-spacing: 0.2px; }
-  .subtitle { font-size: 13px; color: var(--muted); margin-top: 5px; }
-  .controls {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: 12px;
-    align-items: center;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-  }
-  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    border: 1px solid var(--border);
-    background: var(--panel2);
-    color: var(--muted);
-    font-size: 12px;
-    padding: 6px 11px;
-    border-radius: 999px;
-    cursor: pointer;
-    user-select: none;
-    transition: 0.15s;
-  }
-  .chip.active {
-    color: #1d4ed8;
-    border-color: #93c5fd;
-    background: #eff6ff;
-  }
-  .chip.buy.active { color: #166534; border-color: #86efac; background: #ecfdf5; }
-  .chip.sell.active { color: #991b1b; border-color: #fca5a5; background: #fef2f2; }
-  .chip.official.active { color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; }
-  .field-group { display: flex; align-items: center; gap: 8px; }
-  .field-label { font-size: 12px; color: var(--muted); }
-  select, input {
-    background: #fff;
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 8px;
-    font-size: 12px;
-    padding: 7px 10px;
-    outline: none;
-  }
-  select:focus, input:focus { border-color: #93c5fd; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12); }
-  input { min-width: 240px; }
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .stat {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
-    box-shadow: var(--shadow);
-  }
-  .stat .k { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .stat .v { font-size: 18px; font-weight: 700; line-height: 1.2; }
-  .stat .v.buy { color: var(--buy); }
-  .stat .v.sell { color: var(--sell); }
-  .stat .v.official { color: var(--official); }
-  .chart-wrap {
-    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-    border: 1px solid #dbe3ef;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  }
-  #mainChart { width: 100%; height: 760px; }
-  .table-wrap {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 12px;
-    box-shadow: var(--shadow);
-  }
-  .table-wrap + .table-wrap { margin-top: 12px; }
-  .section-head {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-  }
-  .table-title { font-size: 13px; font-weight: 600; }
-  .table-scroll { width: 100%; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 980px; }
-  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
-  tr:hover td { background: #f9fafb; }
-  th {
-    color: #475467;
-    font-weight: 600;
-    background: #f9fafb;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    white-space: nowrap;
-  }
-  .addr { font-family: var(--font-mono); color: #344054; font-size: 11px; }
-  .buy-text { color: var(--buy); }
-  .sell-text { color: var(--sell); }
-  .note { color: var(--muted); font-size: 11px; margin-top: 8px; }
-  .chip-inline {
-    display: inline-block;
-    font-size: 11px;
-    line-height: 1;
-    padding: 4px 6px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: #f8fafc;
-    color: #475467;
-    white-space: nowrap;
-  }
-  .chip-inline.type-whale { background: #ecfdf5; border-color: #86efac; color: #166534; }
-  .chip-inline.type-official { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
-  .chip-inline.type-exchange { background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
-  .chip-inline.type-other { background: #f8fafc; border-color: #cbd5e1; color: #334155; }
-  .mono { font-family: var(--font-mono); }
-  .profile-controls {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .profile-cards {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .profile-card {
-    background: #f9fafb;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
-  }
-  .profile-card .k { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .profile-card .v { font-size: 16px; font-weight: 700; line-height: 1.2; }
-  .profile-card .v.buy { color: var(--buy); }
-  .profile-card .v.sell { color: var(--sell); }
-  .profile-card .v.official { color: var(--official); }
-  .muted { color: var(--muted); }
+:root {
+  --bg: #FAFAFA;
+  --bg-card: #FFFFFF;
+  --text: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --accent: #2563EB;
+  --accent-blue: #3B82F6;
+  --accent-green: #00C087; /* OKX Green */
+  --accent-red: #FF4D4D;   /* OKX Red */
+  --accent-purple: #8B5CF6;
+  --border: rgba(15,23,42,0.08);
+  --border-light: rgba(15,23,42,0.04);
+  --glass-bg: rgba(255,255,255,0.85);
+  --glass-border: rgba(15,23,42,0.08);
+  --shadow: 0 4px 20px rgba(0,0,0,0.03);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.02);
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
 
-  @media (max-width: 1100px) {
-    .controls { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .profile-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    input { min-width: 150px; width: 100%; }
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(37,99,235,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(0,192,135,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Navbar */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 14px 32px;
+  display: flex; align-items: center; gap: 16px;
+}
+.nav-logo {
+  font-size: 18px; font-weight: 700;
+  background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.nav-sub { font-size: 12px; color: var(--text-secondary); font-family: var(--font-mono); }
+.nav-back {
+  font-size: 12px; font-weight: 500; color: var(--text-secondary);
+  text-decoration: none; border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 6px;
+  transition: all 0.2s;
+  background: var(--bg-card);
+}
+.nav-back:hover { color: var(--text); border-color: var(--text-secondary); box-shadow: var(--shadow-sm); }
+
+main { max-width: 1600px; margin: 0 auto; padding: 24px 32px; position: relative; z-index: 1; }
+
+/* Sections */
+.section { margin-bottom: 32px; }
+.section-title {
+  font-size: 15px; font-weight: 600;
+  color: var(--text); text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: 16px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 8px rgba(37,99,235,0.4);
+}
+
+/* Controls */
+.controls {
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-secondary);
+  font-size: 12px; font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+.chip:hover { border-color: var(--text-muted); }
+.chip.active { color: var(--accent); border-color: var(--accent); background: rgba(37,99,235,0.05); }
+.chip.buy.active { color: var(--accent-green); border-color: var(--accent-green); background: rgba(0,192,135,0.05); }
+.chip.sell.active { color: var(--accent-red); border-color: var(--accent-red); background: rgba(255,77,77,0.05); }
+
+.field-group { display: flex; align-items: center; gap: 8px; }
+.field-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+select, input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 6px 12px;
+  outline: none;
+  font-family: var(--font-body);
+  transition: all 0.2s;
+}
+select:focus, input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.1); background: var(--bg-card); }
+input { min-width: 220px; }
+
+/* Cards Grid */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;
+  margin-bottom: 24px;
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.card .k { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+.card .v { font-size: 24px; font-weight: 700; font-family: var(--font-mono); color: var(--text); line-height: 1.2; }
+.card .v.buy { color: var(--accent-green); }
+.card .v.sell { color: var(--accent-red); }
+.card .v.official { color: var(--accent-blue); }
+
+/* Chart Area */
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px;
+  box-shadow: var(--shadow);
+}
+#mainChart { width: 100%; height: 720px; }
+
+/* Tables */
+.table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
+.table-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.table-scroll { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 980px; }
+thead th {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--text-secondary);
+  padding: 12px 20px; border-bottom: 1px solid var(--border);
+  text-align: left; white-space: nowrap; background: #F8FAFC;
+}
+tbody td {
+  padding: 12px 20px; border-bottom: 1px solid var(--border-light);
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--text); vertical-align: middle;
+}
+tbody tr:hover td { background: var(--bg); }
+.addr-cell { color: var(--text-secondary); cursor: pointer; }
+.addr-cell:hover { color: var(--accent); }
+.label-cell { font-family: var(--font-body); font-weight: 500; font-size: 13px; }
+.buy-text { color: var(--accent-green); font-weight: 500; }
+.sell-text { color: var(--accent-red); font-weight: 500; }
+
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 600; font-family: var(--font-body);
+  padding: 3px 8px; border-radius: 6px; letter-spacing: 0.02em; text-transform: uppercase;
+}
+.badge-whale { background: rgba(0,192,135,0.1); color: var(--accent-green); border: 1px solid rgba(0,192,135,0.2); }
+.badge-official { background: rgba(37,99,235,0.1); color: var(--accent-blue); border: 1px solid rgba(37,99,235,0.2); }
+.badge-exchange { background: rgba(245,158,11,0.1); color: #D97706; border: 1px solid rgba(245,158,11,0.2); }
+.badge-other { background: rgba(100,116,139,0.1); color: var(--text-secondary); border: 1px solid rgba(100,116,139,0.2); }
+
+.note { font-size: 11px; color: var(--text-muted); padding: 12px 20px; font-family: var(--font-body); background: var(--bg); }
+
+@media (max-width: 1100px) {
+  .controls { flex-direction: column; align-items: stretch; }
+  .field-group { flex-direction: column; align-items: flex-start; }
+  input, select { width: 100%; }
+}
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="header">
-    <div class="title">PUMP 大户行为 K 线图</div>
-    <div class="subtitle" id="subtitle">加载中...</div>
-  </div>
 
+<nav class="nav">
+  <a class="nav-back" href="pump_analysis.html">← 返回总览</a>
+  <div>
+    <div class="nav-logo">PUMP Whale Behavior</div>
+    <div class="nav-sub" id="subtitle">加载中...</div>
+  </div>
+</nav>
+
+<main>
   <div class="controls">
     <div class="chip-row" id="categoryChips">
-      <div class="chip buy active" data-cat="whale_netflow">流出交易所（绿）</div>
-      <div class="chip sell active" data-cat="official_exchange">流入交易所（红）</div>
-      <div class="chip official active" data-cat="buyback">Buy Back（蓝）</div>
+      <div class="chip buy active" data-cat="whale_netflow">流出交易所 (Buy)</div>
+      <div class="chip sell active" data-cat="official_exchange">流入交易所 (Sell)</div>
+      <div class="chip official active" data-cat="buyback">Buy Back</div>
     </div>
-    <div class="field-group">
-      <span class="field-label">最小金额</span>
-      <select id="minAmount">
-        <option value="0">全部</option>
-        <option value="0.1" selected>≥ 0.1B</option>
-        <option value="0.2">≥ 0.2B</option>
-        <option value="0.5">≥ 0.5B</option>
-        <option value="1">≥ 1.0B</option>
-      </select>
-    </div>
-    <div class="field-group">
-      <span class="field-label">搜索钱包</span>
-      <input id="searchInput" placeholder="标签或地址片段">
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><div class="k">K线周期</div><div class="v" id="statRange">-</div></div>
-    <div class="stat"><div class="k">K线数量</div><div class="v" id="statCandles">-</div></div>
-    <div class="stat"><div class="k">收录地址</div><div class="v" id="statWallets">-</div></div>
-    <div class="stat"><div class="k">筛选后事件</div><div class="v" id="statEvents">-</div></div>
-    <div class="stat"><div class="k">流出交易所（绿）</div><div class="v buy" id="statBuys">-</div></div>
-    <div class="stat"><div class="k">流入交易所（红）</div><div class="v sell" id="statSells">-</div></div>
-  </div>
-
-  <div class="chart-wrap">
-    <div id="mainChart"></div>
-  </div>
-
-  <div class="table-wrap">
-    <div class="section-head">
-      <div class="table-title">钱包事件汇总（按上方筛选条件）</div>
-    </div>
-    <div class="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>标签</th>
-            <th>地址</th>
-            <th>分类</th>
-            <th>事件数</th>
-            <th>流出交易所(B)</th>
-            <th>流入交易所(B)</th>
-            <th>净值(B)</th>
-          </tr>
-        </thead>
-        <tbody id="walletTableBody"></tbody>
-      </table>
-    </div>
-    <div class="note">
-      口径：绿色 = 流出交易所；红色 = 流入交易所。
-    </div>
-  </div>
-
-  <div class="table-wrap">
-    <div class="section-head">
-      <div class="table-title">地址基础信息（59 大户 + 官方钱包 + 交易所地址）</div>
-      <div class="profile-controls">
-        <span class="field-label">类型</span>
-        <select id="profileTypeFilter">
-          <option value="all">全部</option>
-          <option value="whale">大户(59)</option>
-          <option value="official">官方/团队</option>
-          <option value="exchange">交易所相关</option>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div class="field-group">
+        <span class="field-label">最小金额 (Min Amount)</span>
+        <select id="minAmount">
+          <option value="0">全部 (All)</option>
+          <option value="0.1" selected>≥ 0.1B</option>
+          <option value="0.2">≥ 0.2B</option>
+          <option value="0.5">≥ 0.5B</option>
+          <option value="1">≥ 1.0B</option>
         </select>
-        <span class="field-label">搜索</span>
-        <input id="profileSearchInput" placeholder="标签 / 地址 / 交易所">
+      </div>
+      <div class="field-group">
+        <span class="field-label">搜索钱包 (Search)</span>
+        <input id="searchInput" placeholder="Label or Address">
       </div>
     </div>
-    <div class="profile-cards">
-      <div class="profile-card"><div class="k">总地址数</div><div class="v" id="profileStatTotal">-</div></div>
-      <div class="profile-card"><div class="k">大户地址</div><div class="v buy" id="profileStatWhales">-</div></div>
-      <div class="profile-card"><div class="k">官方/团队地址</div><div class="v official" id="profileStatOfficial">-</div></div>
-      <div class="profile-card"><div class="k">交易所相关地址</div><div class="v sell" id="profileStatExchange">-</div></div>
-      <div class="profile-card"><div class="k">有余额地址</div><div class="v" id="profileStatWithBalance">-</div></div>
-    </div>
-    <div class="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>标签</th>
-            <th>地址</th>
-            <th>资产</th>
-            <th>类型</th>
-            <th>交易所</th>
-            <th>排名</th>
-            <th>持仓(B)</th>
-            <th>占总供应(%)</th>
-            <th>估值(USD)</th>
-            <th>事件数</th>
-            <th>流出交易所(B)</th>
-            <th>流入交易所(B)</th>
-            <th>净值(B)</th>
-            <th>交易所入金(B)</th>
-            <th>来源</th>
-            <th>备注</th>
-          </tr>
-        </thead>
-        <tbody id="profileTableBody"></tbody>
-      </table>
-    </div>
-    <div class="note">
-      占比 = 地址 PUMP 余额 / 1,000B 总供应；估值按最新 PUMP/USD 收盘价估算。买卖方向定义与上方图表一致。
-    </div>
   </div>
-</div>
+
+  <div class="cards-grid">
+    <div class="card"><div class="k">时间范围</div><div class="v" id="statRange">-</div></div>
+    <div class="card"><div class="k">K线数量</div><div class="v" id="statCandles">-</div></div>
+    <div class="card"><div class="k">收录地址</div><div class="v" id="statWallets">-</div></div>
+    <div class="card"><div class="k">筛选后事件</div><div class="v" id="statEvents">-</div></div>
+    <div class="card"><div class="k">流出交易所 (绿)</div><div class="v buy" id="statBuys">-</div></div>
+    <div class="card"><div class="k">流入交易所 (红)</div><div class="v sell" id="statSells">-</div></div>
+  </div>
+
+  <section class="section">
+    <div class="section-title"><span class="section-title-dot"></span>市场走势与大户行为 (Market & Behavior)</div>
+    <div class="chart-card">
+      <div id="mainChart"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><span class="section-title-dot"></span>钱包事件汇总 (Event Summary)</div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>标签 (Label)</th>
+              <th>地址 (Address)</th>
+              <th>分类 (Category)</th>
+              <th>事件数</th>
+              <th>流出交易所 (B)</th>
+              <th>流入交易所 (B)</th>
+              <th>净值 (B)</th>
+            </tr>
+          </thead>
+          <tbody id="walletTableBody"></tbody>
+        </table>
+      </div>
+      <div class="note">口径：绿色 = 流出交易所；红色 = 流入交易所。按上方筛选条件动态计算。</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title" style="justify-content:space-between;border:none;margin-bottom:0">
+      <div style="display:flex;align-items:center;gap:8px"><span class="section-title-dot"></span>地址基础信息 (Address Profiles)</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <select id="profileTypeFilter">
+          <option value="all">全部 (All)</option>
+          <option value="whale">大户 (Whales)</option>
+          <option value="official">官方/团队 (Official)</option>
+          <option value="exchange">交易所 (Exchanges)</option>
+        </select>
+        <input id="profileSearchInput" placeholder="Search profiles...">
+      </div>
+    </div>
+    
+    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin-top: 16px;">
+      <div class="card"><div class="k">总地址数</div><div class="v" id="profileStatTotal">-</div></div>
+      <div class="card"><div class="k">大户地址</div><div class="v buy" id="profileStatWhales">-</div></div>
+      <div class="card"><div class="k">官方/团队</div><div class="v official" id="profileStatOfficial">-</div></div>
+      <div class="card"><div class="k">交易所</div><div class="v sell" id="profileStatExchange">-</div></div>
+      <div class="card"><div class="k">有余额地址</div><div class="v" id="profileStatWithBalance">-</div></div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>标签 (Label)</th>
+              <th>地址 (Address)</th>
+              <th>类型</th>
+              <th>交易所</th>
+              <th>持仓 (B)</th>
+              <th>占总供应</th>
+              <th>估值 (USD)</th>
+              <th>流出 (B)</th>
+              <th>流入 (B)</th>
+              <th>净值 (B)</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody id="profileTableBody"></tbody>
+        </table>
+      </div>
+      <div class="note">占比 = 地址余额 / 1,000B 总供应；估值按最新收盘价估算。</div>
+    </div>
+  </section>
+
+</main>
 
 <script>
 let rawData = null;
 let chart = null;
 let activeCategories = new Set(['whale_netflow', 'official_exchange', 'buyback']);
 
-const COLOR_BUY = '#16a34a';
-const COLOR_SELL = '#ef4444';
-const COLOR_BUYBACK = '#2563eb';
-const COLOR_NET = '#6b8afd';
+const COLOR_BUY = '#00C087';   // OKX Green
+const COLOR_SELL = '#FF4D4D';  // OKX Red
+const COLOR_BUYBACK = '#2563EB'; // Blue
+const COLOR_NET = '#8B5CF6';     // Purple
+
 const MAX_MARKERS_PER_SIDE_PER_DAY = 10;
 const OFFICIAL_MAIN_TYPES = new Set([
   'official_wallet', 'team', 'investor', 'treasury', 'buyback', 'vesting',
@@ -375,26 +399,26 @@ function avatarText(label, rank) {
 }
 
 function categoryText(cat) {
-  if (cat === 'whale_netflow') return '流向信号';
-  if (cat === 'official_exchange') return '交易所流向';
+  if (cat === 'whale_netflow') return '流向信号 (Signal)';
+  if (cat === 'official_exchange') return '交易所 (Exchange)';
   if (cat === 'buyback') return 'Buy Back';
   return cat;
 }
 
 function profileTypeText(profile) {
   const t = profile.main_type || 'unknown';
-  if (t === 'whale') return '大户';
-  if (t === 'exchange_address') return '交易所地址';
-  if (OFFICIAL_MAIN_TYPES.has(t)) return '官方/团队';
+  if (t === 'whale') return 'Whale';
+  if (t === 'exchange_address') return 'Exchange';
+  if (OFFICIAL_MAIN_TYPES.has(t)) return 'Official';
   return t;
 }
 
 function profileTypeClass(profile) {
   const t = profile.main_type || 'unknown';
-  if (t === 'whale') return 'type-whale';
-  if (t === 'exchange_address' || profile.exchange_name) return 'type-exchange';
-  if (OFFICIAL_MAIN_TYPES.has(t)) return 'type-official';
-  return 'type-other';
+  if (t === 'whale') return 'badge badge-whale';
+  if (t === 'exchange_address' || profile.exchange_name) return 'badge badge-exchange';
+  if (OFFICIAL_MAIN_TYPES.has(t)) return 'badge badge-official';
+  return 'badge badge-other';
 }
 
 function isOfficialProfile(profile) {
@@ -456,24 +480,26 @@ function buildMarkerSeries(candles, dailyEventsMap) {
     const buybackEvents = events.filter(e => e.category === 'buyback');
 
     buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const y = candle.low * (1 - (0.02 + idx * 0.024));
+      const y = candle.low * (1 - (0.015 + idx * 0.02));
+      const size = 16 + Math.min(14, (e.amount_B || 0) * 6);
       buyPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
         labelTxt: avatarText(e.label, e.rank),
-        itemStyle: { color: COLOR_BUY, borderColor: '#166534', borderWidth: 1 },
-        symbolSize: 12 + Math.min(12, (e.amount_B || 0) * 8)
+        itemStyle: { color: COLOR_BUY, borderColor: '#ffffff', borderWidth: 1.5, shadowColor: 'rgba(0,192,135,0.3)', shadowBlur: 4 },
+        symbolSize: size
       });
     });
 
     sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const y = candle.high * (1 + (0.02 + idx * 0.024));
+      const y = candle.high * (1 + (0.015 + idx * 0.02));
+      const size = 16 + Math.min(14, (e.amount_B || 0) * 6);
       sellPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
         labelTxt: avatarText(e.label, e.rank),
-        itemStyle: { color: COLOR_SELL, borderColor: '#991b1b', borderWidth: 1 },
-        symbolSize: 12 + Math.min(12, (e.amount_B || 0) * 8)
+        itemStyle: { color: COLOR_SELL, borderColor: '#ffffff', borderWidth: 1.5, shadowColor: 'rgba(255,77,77,0.3)', shadowBlur: 4 },
+        symbolSize: size
       });
     });
 
@@ -482,9 +508,9 @@ function buildMarkerSeries(candles, dailyEventsMap) {
       buybackPoints.push({
         value: [date, markerY, e.amount_B || 0],
         event: e,
-        labelTxt: 'Buy Back',
-        itemStyle: { color: COLOR_BUYBACK, borderColor: '#1e3a8a', borderWidth: 1 },
-        symbolSize: 8
+        labelTxt: 'BB',
+        itemStyle: { color: COLOR_BUYBACK, borderColor: '#ffffff', borderWidth: 1.5, shadowColor: 'rgba(37,99,235,0.3)', shadowBlur: 4 },
+        symbolSize: 16
       });
       buybackLinks.push([date, markerY, candle.low * 0.998]);
     });
@@ -506,35 +532,42 @@ function buildTooltipHtml(params, dailyEventsMap) {
   const [open, close, low, high] = p0.data;
   const events = dailyEventsMap.get(date) || [];
 
-  let html = `<div style="font-size:12px;color:#1f2937;line-height:1.4">`;
-  html += `<div style="font-weight:700;margin-bottom:6px">${date}</div>`;
-  html += `<div>O: <b>${formatNum(open, 6)}</b> H: <b>${formatNum(high, 6)}</b> L: <b>${formatNum(low, 6)}</b> C: <b>${formatNum(close, 6)}</b></div>`;
+  let html = `<div style="min-width:280px;">`;
+  html += `<div style="font-weight:600;font-size:13px;color:#0F172A;margin-bottom:8px">${date}</div>`;
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748B;">
+    <div>O: <b style="color:#0F172A">${formatNum(open, 6)}</b></div>
+    <div>H: <b style="color:#0F172A">${formatNum(high, 6)}</b></div>
+    <div>L: <b style="color:#0F172A">${formatNum(low, 6)}</b></div>
+    <div>C: <b style="color:#0F172A">${formatNum(close, 6)}</b></div>
+  </div>`;
 
   if (!events.length) {
-    html += `<div style="margin-top:8px;color:#6b7280">无事件</div></div>`;
+    html += `<div style="color:#94A3B8;font-size:12px;padding-top:8px;border-top:1px solid #E2E8F0">No events found.</div></div>`;
     return html;
   }
 
-  html += `<div style="margin-top:8px;color:#6b7280">事件 ${events.length} 条：</div>`;
+  html += `<div style="padding-top:8px;border-top:1px solid #E2E8F0;font-size:12px">`;
+  html += `<div style="color:#64748B;margin-bottom:6px;font-weight:500">Key Events (${events.length})</div>`;
   const top = events.slice(0, 16);
   for (const e of top) {
     const isBuy = e.direction === 'buy';
     const color = e.category === 'buyback' ? COLOR_BUYBACK : (isBuy ? COLOR_BUY : COLOR_SELL);
-    const sideText = e.category === 'buyback' ? 'BUY BACK' : (isBuy ? '流出交易所' : '流入交易所');
+    const sideText = e.category === 'buyback' ? 'BUYBACK' : (isBuy ? 'OUTFLOW' : 'INFLOW');
     const amount = typeof e.amount_B === 'number' ? `${formatNum(e.amount_B, 3)}B` : (e.amount_usd ? `$${formatNum(e.amount_usd, 0)}` : '—');
     const ex = e.exchange ? ` → ${e.exchange}` : '';
-    html += `<div style="display:flex;justify-content:space-between;gap:10px;margin-top:3px">
-      <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:290px">
-        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:6px"></span>
-        [${sideText}] ${e.label || shortAddr(e.address)}${ex}
-      </span>
-      <b style="color:${color}">${amount}</b>
+    html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">
+      <div style="display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:210px;">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${color};flex-shrink:0"></span>
+        <span style="font-size:9px;font-weight:700;color:${color};background:${color}15;padding:2px 4px;border-radius:4px;letter-spacing:0.02em">${sideText}</span>
+        <span style="color:#334155" title="${e.label || shortAddr(e.address)}">${e.label || shortAddr(e.address)}${ex}</span>
+      </div>
+      <b style="color:${color};font-family:'JetBrains Mono',monospace;margin-left:12px;font-size:11px">${amount}</b>
     </div>`;
   }
   if (events.length > top.length) {
-    html += `<div style="margin-top:4px;color:#6b7280">+${events.length - top.length} more ...</div>`;
+    html += `<div style="margin-top:8px;color:#94A3B8;font-size:11px">+${events.length - top.length} more</div>`;
   }
-  html += '</div>';
+  html += '</div></div>';
   return html;
 }
 
@@ -543,10 +576,10 @@ function renderStats(candles, events) {
   const sells = events.filter(e => e.direction !== 'buy').length;
   const walletsTouched = new Set(events.map(e => e.address).filter(Boolean)).size;
 
-  document.getElementById('statRange').textContent = `${candles[0].date} ~ ${candles[candles.length - 1].date}`;
+  document.getElementById('statRange').textContent = `${candles[0].date.slice(5)} ~ ${candles[candles.length - 1].date.slice(5)}`;
   document.getElementById('statCandles').textContent = String(candles.length);
   document.getElementById('statWallets').textContent = String(rawData.wallets.length);
-  document.getElementById('statEvents').textContent = `${events.length} (${walletsTouched} 地址)`;
+  document.getElementById('statEvents').textContent = `${events.length}`;
   document.getElementById('statBuys').textContent = String(buys);
   document.getElementById('statSells').textContent = String(sells);
 }
@@ -577,9 +610,9 @@ function renderWalletTable(events) {
   body.innerHTML = rows.map(r => {
     const net = r.buy - r.sell;
     return `<tr>
-      <td>${escapeHtml(r.label)}</td>
-      <td class="addr">${escapeHtml(r.address || '-')}</td>
-      <td>${escapeHtml(r.category)}</td>
+      <td class="label-cell">${escapeHtml(r.label)}</td>
+      <td class="addr-cell" title="${escapeHtml(r.address || '-')}">${escapeHtml(r.address || '-')}</td>
+      <td><span style="font-size:11px;color:var(--text-secondary)">${escapeHtml(r.category)}</span></td>
       <td>${r.count}</td>
       <td class="buy-text">${formatNum(r.buy, 3)}</td>
       <td class="sell-text">${formatNum(r.sell, 3)}</td>
@@ -640,30 +673,23 @@ function renderProfileTable() {
   const body = document.getElementById('profileTableBody');
   body.innerHTML = rows.map(p => {
     const net = Number(p.buy_amount_B || 0) - Number(p.sell_amount_B || 0);
-    const categories = (p.categories || []).join(', ');
-    const sources = (p.source_tags || []).join(', ');
     const note = p.note ? String(p.note) : '-';
-    const noteShort = note.length > 110 ? `${note.slice(0, 110)}...` : note;
+    const noteShort = note.length > 80 ? `${note.slice(0, 80)}...` : note;
     return `<tr>
       <td>
-        <div>${escapeHtml(p.label || '-')}</div>
-        <div class="muted mono">${escapeHtml(categories || '-')}</div>
+        <div class="label-cell">${escapeHtml(p.label || '-')}</div>
+        ${typeof p.rank === 'number' ? `<div style="font-size:10px;color:var(--text-muted);margin-top:2px">Rank #${p.rank}</div>` : ''}
       </td>
-      <td class="addr">${escapeHtml(p.address || '-')}</td>
-      <td>PUMP</td>
-      <td><span class="chip-inline ${profileTypeClass(p)}">${escapeHtml(profileTypeText(p))}</span></td>
-      <td>${escapeHtml(p.exchange_name || '-')}</td>
-      <td>${typeof p.rank === 'number' ? p.rank : '-'}</td>
-      <td class="mono">${formatNum(p.current_balance_B, 4)}</td>
-      <td>${formatPct(p.share_total_supply_pct, 4)}</td>
-      <td>${formatUsd(p.estimated_value_usd)}</td>
-      <td>${Number(p.event_count || 0)}</td>
-      <td class="buy-text mono">${formatNum(p.buy_amount_B, 4)}</td>
-      <td class="sell-text mono">${formatNum(p.sell_amount_B, 4)}</td>
-      <td class="${net >= 0 ? 'buy-text' : 'sell-text'} mono">${net >= 0 ? '+' : ''}${formatNum(net, 4)}</td>
-      <td class="mono">${formatNum(p.exchange_inflow_B, 4)}</td>
-      <td class="muted mono">${escapeHtml(sources || '-')}</td>
-      <td class="muted" title="${escapeHtml(note)}">${escapeHtml(noteShort)}</td>
+      <td class="addr-cell" title="${escapeHtml(p.address || '-')}">${shortAddr(p.address)}</td>
+      <td><span class="${profileTypeClass(p)}">${escapeHtml(profileTypeText(p))}</span></td>
+      <td><span style="color:var(--text-secondary)">${escapeHtml(p.exchange_name || '-')}</span></td>
+      <td style="color:var(--text);font-weight:600">${formatNum(p.current_balance_B, 3)}</td>
+      <td style="color:var(--text-secondary)">${formatPct(p.share_total_supply_pct, 4)}</td>
+      <td style="color:var(--text-muted)">${formatUsd(p.estimated_value_usd)}</td>
+      <td class="buy-text">${formatNum(p.buy_amount_B, 3)}</td>
+      <td class="sell-text">${formatNum(p.sell_amount_B, 3)}</td>
+      <td class="${net >= 0 ? 'buy-text' : 'sell-text'}">${net >= 0 ? '+' : ''}${formatNum(net, 3)}</td>
+      <td style="color:var(--text-muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escapeHtml(note)}">${escapeHtml(noteShort)}</td>
     </tr>`;
   }).join('');
 }
@@ -676,20 +702,75 @@ function renderChart() {
   const klineData = candles.map(c => [c.open, c.close, c.low, c.high]);
   const volumes = candles.map(c => ({
     value: c.volume_usd || 0,
-    itemStyle: { color: Number(c.close) >= Number(c.open) ? 'rgba(22,163,74,0.36)' : 'rgba(239,68,68,0.36)' }
+    itemStyle: { color: Number(c.close) >= Number(c.open) ? 'rgba(0,192,135,0.35)' : 'rgba(255,77,77,0.35)' }
   }));
   const dailyNet = new Map((rawData.daily_summary || []).map(d => [d.date, d.net_amount_B || 0]));
   const netData = candles.map(c => dailyNet.get(c.date) || 0);
 
-  const {
-    buyPoints,
-    sellPoints,
-    buybackPoints,
-    buybackLinks,
-    buybackAxisMin
-  } = buildMarkerSeries(candles, dailyEventsMap);
+  const candleByDate = new Map(candles.map(c => [c.date, c]));
+  const lows = candles.map(c => Number(c.low));
+  const highs = candles.map(c => Number(c.high));
+  const minLow = Math.min(...lows);
+  const maxHigh = Math.max(...highs);
+  const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
+  const buybackBaseY = Math.max(minLow - range * 0.24, minLow * 0.01);
+  const buybackStepY = Math.max(range * 0.028, minLow * 0.006);
+
+  const buyPoints = [];
+  const sellPoints = [];
+  const buybackPoints = [];
+  const buybackLinks = [];
+
+  for (const [date, events] of dailyEventsMap.entries()) {
+    const candle = candleByDate.get(date);
+    if (!candle) continue;
+    const buyEvents = events.filter(e => e.direction === 'buy' && e.category !== 'buyback');
+    const sellEvents = events.filter(e => e.direction !== 'buy');
+    const buybackEvents = events.filter(e => e.category === 'buyback');
+
+    // Dynamic offset based on price range
+    const step = range * 0.035; 
+
+    buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
+      const y = candle.low - (step * (idx + 0.5));
+      const size = 15 + Math.min(6, (e.amount_B || 0) * 4);
+      buyPoints.push({
+        value: [date, y, e.amount_B || 0],
+        event: e,
+        labelTxt: avatarText(e.label, e.rank),
+        itemStyle: { color: COLOR_BUY, borderColor: '#FFFFFF', borderWidth: 1.5 },
+        symbolSize: size
+      });
+    });
+
+    sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
+      const y = candle.high + (step * (idx + 0.5));
+      const size = 15 + Math.min(6, (e.amount_B || 0) * 4);
+      sellPoints.push({
+        value: [date, y, e.amount_B || 0],
+        event: e,
+        labelTxt: avatarText(e.label, e.rank),
+        itemStyle: { color: COLOR_SELL, borderColor: '#FFFFFF', borderWidth: 1.5 },
+        symbolSize: size
+      });
+    });
+
+    buybackEvents.slice(0, 3).forEach((e, idx) => {
+      const markerY = buybackBaseY + idx * buybackStepY;
+      buybackPoints.push({
+        value: [date, markerY, e.amount_B || 0],
+        event: e,
+        labelTxt: 'BB',
+        itemStyle: { color: COLOR_BUYBACK, borderColor: '#FFFFFF', borderWidth: 1.5 },
+        symbolSize: 18
+      });
+      buybackLinks.push([date, markerY, candle.low]);
+    });
+  }
+
   const plainAxisMin = Math.min(...candles.map(c => Number(c.low))) * 0.96;
-  const priceAxisMin = buybackPoints.length ? Math.min(plainAxisMin, buybackAxisMin) : plainAxisMin;
+  const priceAxisMin = buybackPoints.length ? Math.min(plainAxisMin, buybackBaseY - buybackStepY * 0.9) : plainAxisMin;
+  
   renderStats(candles, events);
   renderWalletTable(events);
 
@@ -697,47 +778,51 @@ function renderChart() {
     chart = echarts.init(
       document.getElementById('mainChart'),
       null,
-      { renderer: 'svg', useDirtyRect: true, devicePixelRatio: window.devicePixelRatio || 2 }
+      // Switching to canvas for sharper pixel rendering of thousands of elements
+      { renderer: 'canvas', useDirtyRect: true, devicePixelRatio: window.devicePixelRatio || 2 }
     );
   }
   chart.setOption({
     animation: false,
-    backgroundColor: 'transparent',
-    textStyle: { fontFamily: 'Inter, Segoe UI, sans-serif' },
+    backgroundColor: '#FFFFFF',
+    textStyle: { fontFamily: 'Inter, -apple-system, sans-serif' },
     legend: {
-      top: 6,
-      itemWidth: 14,
-      itemHeight: 8,
-      textStyle: { color: '#475467', fontSize: 11 },
-      data: ['Price', 'Volume', 'Daily Net(B)', '流出交易所标记(绿)', '流入交易所标记(红)', 'Buy Back(蓝)']
+      top: 4,
+      left: 16,
+      itemWidth: 12,
+      itemHeight: 12,
+      textStyle: { color: '#64748B', fontSize: 12, fontWeight: 500 },
+      data: ['Price', 'Volume', 'Daily Net(B)', '流出交易所 (Buy)', '流入交易所 (Sell)', 'Buy Back']
     },
     tooltip: {
       trigger: 'axis',
-      axisPointer: { type: 'cross' },
-      borderColor: '#cbd5e1',
+      axisPointer: { type: 'cross', crossStyle: { color: '#94A3B8', type: 'dashed' } },
+      backgroundColor: 'rgba(255, 255, 255, 0.96)',
+      borderColor: '#E2E8F0',
       borderWidth: 1,
-      backgroundColor: 'rgba(255,255,255,0.98)',
-      textStyle: { color: '#1f2937' },
-      formatter: p => buildTooltipHtml(Array.isArray(p) ? p : [p], dailyEventsMap),
-      extraCssText: 'max-width: 420px; border-radius: 8px; box-shadow: 0 8px 20px rgba(15,23,42,0.16);'
+      padding: 12,
+      textStyle: { color: '#0F172A', fontSize: 12 },
+      extraCssText: 'border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); backdrop-filter: blur(8px);',
+      formatter: p => buildTooltipHtml(Array.isArray(p) ? p : [p], dailyEventsMap)
     },
     axisPointer: {
       link: [{ xAxisIndex: [0, 1] }],
-      lineStyle: { color: '#94a3b8', width: 1, type: 'dashed' },
-      label: { backgroundColor: '#334155' }
+      lineStyle: { color: '#94A3B8', width: 1, type: 'dashed' },
+      label: { backgroundColor: '#0F172A', color: '#FFFFFF', fontSize: 11, padding: [4, 6] }
     },
     grid: [
-      { left: 60, right: 24, top: 40, height: '62%' },
-      { left: 60, right: 24, top: '75%', height: '16.5%' }
+      { left: 16, right: 70, top: 44, height: '62%' },
+      { left: 16, right: 70, top: '75%', height: '16%' }
     ],
     xAxis: [
       {
         type: 'category',
         data: dates,
         boundaryGap: true,
-        axisLine: { lineStyle: { color: '#d0d5dd', width: 1 } },
+        axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: '#667085', interval: Math.max(1, Math.floor(dates.length / 14)), fontSize: 10 },
+        axisLabel: { color: '#64748B', fontFamily: 'JetBrains Mono', fontSize: 10, interval: Math.max(1, Math.floor(dates.length / 12)), margin: 12 },
+        splitLine: { show: true, lineStyle: { color: '#F1F5F9', type: 'solid' } },
         min: 'dataMin',
         max: 'dataMax'
       },
@@ -746,33 +831,36 @@ function renderChart() {
         gridIndex: 1,
         data: dates,
         boundaryGap: true,
-        axisLine: { lineStyle: { color: '#d0d5dd', width: 1 } },
+        axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: '#6b7280', show: false }
+        axisLabel: { show: false },
+        splitLine: { show: false }
       }
     ],
     yAxis: [
       {
+        position: 'right',
         min: priceAxisMin,
         scale: true,
-        axisLine: { lineStyle: { color: '#d0d5dd', width: 1 } },
+        axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: '#667085', fontSize: 10, formatter: v => (v >= 1 ? v.toFixed(2) : v.toFixed(4)) },
-        splitLine: { lineStyle: { color: '#eef2f6', width: 1 } }
-      },
-      {
-        gridIndex: 1,
-        axisLine: { lineStyle: { color: '#d0d5dd', width: 1 } },
-        axisTick: { show: false },
-        axisLabel: { color: '#667085', fontSize: 10, formatter: v => `$${(v / 1e6).toFixed(1)}M` },
-        splitLine: { show: false }
+        axisLabel: { color: '#64748B', fontFamily: 'JetBrains Mono', fontSize: 11, formatter: v => (v >= 1 ? v.toFixed(2) : v.toFixed(4)), inside: false, margin: 8 },
+        splitLine: { show: true, lineStyle: { color: '#F1F5F9', type: 'solid' } }
       },
       {
         gridIndex: 1,
         position: 'right',
-        axisLine: { lineStyle: { color: '#d0d5dd', width: 1 } },
+        axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: '#667085', fontSize: 10, formatter: v => `${v.toFixed(1)}B` },
+        axisLabel: { color: '#64748B', fontFamily: 'JetBrains Mono', fontSize: 10, formatter: v => `$${(v / 1e6).toFixed(1)}M`, margin: 8 },
+        splitLine: { show: false }
+      },
+      {
+        gridIndex: 1,
+        position: 'left',
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: '#64748B', fontFamily: 'JetBrains Mono', fontSize: 10, formatter: v => `${v.toFixed(1)}B`, margin: 8 },
         splitLine: { show: false }
       }
     ],
@@ -782,13 +870,13 @@ function renderChart() {
         show: true,
         type: 'slider',
         xAxisIndex: [0, 1],
-        bottom: 8,
+        bottom: 4,
         height: 20,
-        borderColor: '#d0d5dd',
-        backgroundColor: '#f8fafc',
-        fillerColor: 'rgba(59,130,246,0.12)',
-        handleSize: 14,
-        textStyle: { color: '#667085' }
+        borderColor: 'transparent',
+        backgroundColor: '#F8FAFC',
+        fillerColor: 'rgba(37,99,235,0.06)',
+        handleStyle: { color: '#2563EB', borderColor: '#ffffff', borderWidth: 1 },
+        textStyle: { color: '#64748B' }
       }
     ],
     series: [
@@ -796,7 +884,7 @@ function renderChart() {
         name: 'Price',
         type: 'candlestick',
         data: klineData,
-        barMaxWidth: 11,
+        barMaxWidth: 12,
         barMinWidth: 2,
         itemStyle: {
           color: COLOR_BUY,
@@ -804,8 +892,7 @@ function renderChart() {
           borderColor: COLOR_BUY,
           borderColor0: COLOR_SELL,
           borderWidth: 1.2
-        },
-        emphasis: { itemStyle: { borderWidth: 1.6 } }
+        }
       },
       {
         name: 'Buyback Link',
@@ -824,7 +911,7 @@ function renderChart() {
           return {
             type: 'line',
             shape: { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1] },
-            style: { stroke: '#3b82f6', lineWidth: 1, lineDash: [3, 3], opacity: 0.9 }
+            style: { stroke: 'rgba(37,99,235,0.3)', lineWidth: 1, lineDash: [2, 4] }
           };
         }
       },
@@ -843,62 +930,60 @@ function renderChart() {
         data: netData,
         smooth: true,
         showSymbol: false,
-        lineStyle: { color: COLOR_NET, width: 1.6 },
-        areaStyle: { color: 'rgba(107,138,253,0.08)' }
+        lineStyle: { color: COLOR_NET, width: 1.5 },
+        areaStyle: { color: 'rgba(139,92,246,0.05)' }
       },
       {
-        name: '流出交易所标记(绿)',
+        name: '流出交易所 (Buy)',
         type: 'scatter',
         data: buyPoints,
         symbol: 'circle',
         zlevel: 4,
+        itemStyle: { color: COLOR_BUY },
         label: {
           show: true,
+          position: 'inside',
           color: '#ffffff',
           fontFamily: 'JetBrains Mono, monospace',
           fontSize: 8.5,
-          textBorderColor: 'rgba(22,163,74,0.95)',
-          textBorderWidth: 1,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
       },
       {
-        name: '流入交易所标记(红)',
+        name: '流入交易所 (Sell)',
         type: 'scatter',
         data: sellPoints,
         symbol: 'circle',
         zlevel: 4,
+        itemStyle: { color: COLOR_SELL },
         label: {
           show: true,
+          position: 'inside',
           color: '#ffffff',
           fontFamily: 'JetBrains Mono, monospace',
           fontSize: 8.5,
-          textBorderColor: 'rgba(239,68,68,0.95)',
-          textBorderWidth: 1,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
       },
       {
-        name: 'Buy Back(蓝)',
+        name: 'Buy Back',
         type: 'scatter',
         data: buybackPoints,
         xAxisIndex: 0,
         yAxisIndex: 0,
-        symbol: 'triangle',
+        symbol: 'path://M 0,0 L 4,6 L 12,6 A 3,3 0 0,1 15,9 L 15,21 A 3,3 0 0,1 12,24 L -12,24 A 3,3 0 0,1 -15,21 L -15,9 A 3,3 0 0,1 -12,6 L -4,6 Z',
+        symbolOffset: [0, 12],
         zlevel: 5,
+        itemStyle: { color: COLOR_BUYBACK },
         label: {
           show: true,
-          position: 'bottom',
-          distance: 1,
-          color: '#1e3a8a',
-          backgroundColor: '#eff6ff',
-          borderColor: '#93c5fd',
-          borderWidth: 1,
-          borderRadius: 3,
-          padding: [1, 3],
-          fontSize: 9,
+          position: 'inside',
+          offset: [0, 4],
+          color: '#ffffff',
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: 8.5,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
@@ -913,7 +998,20 @@ function bindControls() {
       const cat = chip.dataset.cat;
       if (activeCategories.has(cat)) activeCategories.delete(cat);
       else activeCategories.add(cat);
-      chip.classList.toggle('active', activeCategories.has(cat));
+      
+      if(cat === 'buyback') {
+        if(activeCategories.has(cat)) {
+          chip.style.color = 'var(--accent-blue)';
+          chip.style.borderColor = 'var(--accent-blue)';
+          chip.style.background = 'rgba(37,99,235,0.05)';
+        } else {
+          chip.style.color = '';
+          chip.style.borderColor = '';
+          chip.style.background = '';
+        }
+      } else {
+        chip.classList.toggle('active', activeCategories.has(cat));
+      }
       renderChart();
     });
   });
@@ -931,7 +1029,7 @@ async function init() {
   rawData = await resp.json();
   const profileCount = (rawData.address_profile_stats && rawData.address_profile_stats.total_profiles) || (rawData.address_profiles || []).length;
   document.getElementById('subtitle').textContent =
-    `Price: ${rawData.metadata.price_source} | Events: ${rawData.event_stats.total_events} | Profiles: ${profileCount} | Generated: ${rawData.metadata.generated_at}`;
+    `Price: ${rawData.metadata.price_source} · Events: ${rawData.event_stats.total_events} · Updated: ${rawData.metadata.generated_at.slice(0,10)}`;
   bindControls();
   renderProfileStats();
   renderProfileTable();
@@ -940,6 +1038,7 @@ async function init() {
 
 init().catch(err => {
   document.getElementById('subtitle').textContent = `加载失败: ${err.message}`;
+  document.getElementById('subtitle').style.color = 'var(--accent-red)';
 });
 </script>
 </body>
