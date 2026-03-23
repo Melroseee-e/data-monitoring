@@ -713,18 +713,10 @@ function renderChart() {
   const minLow = Math.min(...lows);
   const maxHigh = Math.max(...highs);
   const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
-  
-  const step = range * 0.035; 
-  const maxBuyDrop = step * MAX_MARKERS_PER_SIDE_PER_DAY;
-  const maxSellRise = step * MAX_MARKERS_PER_SIDE_PER_DAY;
-
-  const buybackBaseY = minLow - maxBuyDrop - (range * 0.08);
-  const buybackStepY = range * 0.05;
 
   const buyPoints = [];
   const sellPoints = [];
   const buybackPoints = [];
-  const buybackLinks = [];
 
   for (const [date, events] of dailyEventsMap.entries()) {
     const candle = candleByDate.get(date);
@@ -733,45 +725,58 @@ function renderChart() {
     const sellEvents = events.filter(e => e.direction !== 'buy');
     const buybackEvents = events.filter(e => e.category === 'buyback');
 
+    let currentBuyOffset = 18; 
     buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const y = candle.low - (step * (idx + 0.5));
       const size = 20 + Math.min(10, (e.amount_B || 0) * 5);
+      const radius = size / 2;
+      currentBuyOffset += radius;
       buyPoints.push({
-        value: [date, y, e.amount_B || 0],
+        value: [date, candle.low, e.amount_B || 0],
         event: e,
         labelTxt: avatarText(e.label, e.rank),
         itemStyle: { color: COLOR_BUY, borderColor: '#FFFFFF', borderWidth: 1.5 },
-        symbolSize: size
+        symbolSize: size,
+        symbolOffset: [0, currentBuyOffset]
       });
+      currentBuyOffset += radius + 3;
     });
 
+    let currentSellOffset = -18;
     sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const y = candle.high + (step * (idx + 0.5));
       const size = 20 + Math.min(10, (e.amount_B || 0) * 5);
+      const radius = size / 2;
+      currentSellOffset -= radius;
       sellPoints.push({
-        value: [date, y, e.amount_B || 0],
+        value: [date, candle.high, e.amount_B || 0],
         event: e,
         labelTxt: avatarText(e.label, e.rank),
         itemStyle: { color: COLOR_SELL, borderColor: '#FFFFFF', borderWidth: 1.5 },
-        symbolSize: size
+        symbolSize: size,
+        symbolOffset: [0, currentSellOffset]
       });
+      currentSellOffset -= (radius + 3);
     });
 
-    buybackEvents.slice(0, 3).forEach((e, idx) => {
-      const markerY = buybackBaseY - idx * buybackStepY;
-      buybackPoints.push({
-        value: [date, markerY, e.amount_B || 0],
-        event: e,
-        labelTxt: 'Buy Back',
-        itemStyle: { color: COLOR_BUYBACK, borderColor: '#FFFFFF', borderWidth: 1.5 },
-        symbolSize: [56, 22]
+    if (buybackEvents.length > 0) {
+      if (buyEvents.length > 0) currentBuyOffset += 12;
+      buybackEvents.slice(0, 3).forEach((e, idx) => {
+        const height = 22;
+        currentBuyOffset += height / 2;
+        buybackPoints.push({
+          value: [date, candle.low, e.amount_B || 0],
+          event: e,
+          labelTxt: 'Buy Back',
+          itemStyle: { color: COLOR_BUYBACK, borderColor: '#FFFFFF', borderWidth: 1.5 },
+          symbolSize: [56, height],
+          symbolOffset: [0, currentBuyOffset]
+        });
+        currentBuyOffset += height / 2 + 4;
       });
-      buybackLinks.push([date, markerY, candle.low]);
-    });
+    }
   }
 
-  const priceAxisMin = buybackPoints.length ? (buybackBaseY - buybackStepY * 4) : (minLow - maxBuyDrop - range * 0.1);
-  const priceAxisMax = maxHigh + maxSellRise + range * 0.1;
+  const priceAxisMin = minLow - range * 0.35;
+  const priceAxisMax = maxHigh + range * 0.35;
   
   renderStats(candles, events);
   renderWalletTable(events);
@@ -895,27 +900,6 @@ function renderChart() {
           borderColor: COLOR_BUY,
           borderColor0: COLOR_SELL,
           borderWidth: 1.2
-        }
-      },
-      {
-        name: 'Buyback Link',
-        type: 'custom',
-        silent: true,
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        z: 3,
-        data: buybackLinks,
-        renderItem: function(params, api) {
-          const xVal = api.value(0);
-          const yFrom = api.value(1);
-          const yTo = api.value(2);
-          const p1 = api.coord([xVal, yFrom]);
-          const p2 = api.coord([xVal, yTo]);
-          return {
-            type: 'line',
-            shape: { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1] },
-            style: { stroke: 'rgba(37,99,235,0.3)', lineWidth: 1, lineDash: [2, 4] }
-          };
         }
       },
       {
