@@ -1054,7 +1054,8 @@ function buildDailyTrendSeries(token) {
   let runningNet = 0;
 
   const dailyBuckets = new Map();
-  let minDay = null;
+  let minPresenceDay = null;
+  let minActiveDay = null;
   let maxDay = null;
   sourceData.forEach(entry => {
     const d = parsePointTime(entry.date || entry.timestamp);
@@ -1064,14 +1065,20 @@ function buildDailyTrendSeries(token) {
     const day = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
     const key = day.getTime();
     if (!dailyBuckets.has(key)) dailyBuckets.set(key, { inflow: 0, outflow: 0 });
-    dailyBuckets.get(key).inflow += Number(tData?.total_inflow || 0);
-    dailyBuckets.get(key).outflow += Number(tData?.total_outflow || 0);
-    if (minDay === null || key < minDay) minDay = key;
+    const inf = Number(tData?.total_inflow || 0);
+    const outf = Number(tData?.total_outflow || 0);
+    dailyBuckets.get(key).inflow += inf;
+    dailyBuckets.get(key).outflow += outf;
+    if (minPresenceDay === null || key < minPresenceDay) minPresenceDay = key;
+    if (inf !== 0 || outf !== 0) {
+      if (minActiveDay === null || key < minActiveDay) minActiveDay = key;
+    }
     if (maxDay === null || key > maxDay) maxDay = key;
   });
-  if (minDay === null || maxDay === null) return null;
+  const startDay = minActiveDay ?? minPresenceDay;
+  if (startDay === null || maxDay === null) return null;
 
-  for (let ts = minDay; ts <= maxDay; ts += 24 * 60 * 60 * 1000) {
+  for (let ts = startDay; ts <= maxDay; ts += 24 * 60 * 60 * 1000) {
     const day = new Date(ts);
     const flows = dailyBuckets.get(ts) || { inflow: 0, outflow: 0 };
     const inf = Number(flows.inflow || 0);
@@ -1107,7 +1114,11 @@ function buildHourlyTrendSeries(token) {
 
   const sortedHours = Array.from(buckets.keys()).sort((a, b) => a - b);
   if (sortedHours.length === 0) return null;
-  const firstHour = sortedHours[0];
+  const firstActiveHour = sortedHours.find(h => {
+    const flows = buckets.get(h) || { inflow: 0, outflow: 0 };
+    return Number(flows.inflow || 0) !== 0 || Number(flows.outflow || 0) !== 0;
+  });
+  const firstHour = firstActiveHour ?? sortedHours[0];
   const lastHour = sortedHours[sortedHours.length - 1];
 
   const dates = [];
