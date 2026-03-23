@@ -714,9 +714,14 @@ function renderChart() {
   const maxHigh = Math.max(...highs);
   const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
 
+  const priceAxisMin = minLow - range * 0.35;
+  const priceAxisMax = maxHigh + range * 0.35;
+  const buybackBaseY = priceAxisMin + range * 0.08;
+
   const buyPoints = [];
   const sellPoints = [];
   const buybackPoints = [];
+  const buybackLinks = [];
 
   for (const [date, events] of dailyEventsMap.entries()) {
     const candle = candleByDate.get(date);
@@ -725,9 +730,9 @@ function renderChart() {
     const sellEvents = events.filter(e => e.direction !== 'buy');
     const buybackEvents = events.filter(e => e.category === 'buyback');
 
-    let currentBuyOffset = 18; 
+    let currentBuyOffset = 22; 
     buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const size = 20 + Math.min(10, (e.amount_B || 0) * 5);
+      const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
       const radius = size / 2;
       currentBuyOffset += radius;
       buyPoints.push({
@@ -738,12 +743,12 @@ function renderChart() {
         symbolSize: size,
         symbolOffset: [0, currentBuyOffset]
       });
-      currentBuyOffset += radius + 3;
+      currentBuyOffset += radius + 4;
     });
 
-    let currentSellOffset = -18;
+    let currentSellOffset = -22;
     sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const size = 20 + Math.min(10, (e.amount_B || 0) * 5);
+      const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
       const radius = size / 2;
       currentSellOffset -= radius;
       sellPoints.push({
@@ -754,29 +759,24 @@ function renderChart() {
         symbolSize: size,
         symbolOffset: [0, currentSellOffset]
       });
-      currentSellOffset -= (radius + 3);
+      currentSellOffset -= (radius + 4);
     });
 
     if (buybackEvents.length > 0) {
-      if (buyEvents.length > 0) currentBuyOffset += 12;
       buybackEvents.slice(0, 3).forEach((e, idx) => {
-        const height = 22;
-        currentBuyOffset += height / 2;
+        const markerY = buybackBaseY - (idx * range * 0.05);
         buybackPoints.push({
-          value: [date, candle.low, e.amount_B || 0],
+          value: [date, markerY, e.amount_B || 0],
           event: e,
           labelTxt: 'Buy Back',
           itemStyle: { color: COLOR_BUYBACK, borderColor: '#FFFFFF', borderWidth: 1.5 },
-          symbolSize: [56, height],
-          symbolOffset: [0, currentBuyOffset]
+          symbolSize: [56, 22],
+          symbolOffset: [0, 0]
         });
-        currentBuyOffset += height / 2 + 4;
+        buybackLinks.push([date, markerY, candle.low]);
       });
     }
   }
-
-  const priceAxisMin = minLow - range * 0.35;
-  const priceAxisMax = maxHigh + range * 0.35;
   
   renderStats(candles, events);
   renderWalletTable(events);
@@ -900,6 +900,27 @@ function renderChart() {
           borderColor: COLOR_BUY,
           borderColor0: COLOR_SELL,
           borderWidth: 1.2
+        }
+      },
+      {
+        name: 'Buyback Link',
+        type: 'custom',
+        silent: true,
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        z: 3,
+        data: buybackLinks,
+        renderItem: function(params, api) {
+          const xVal = api.value(0);
+          const yFrom = api.value(1);
+          const yTo = api.value(2);
+          const p1 = api.coord([xVal, yFrom]);
+          const p2 = api.coord([xVal, yTo]);
+          return {
+            type: 'line',
+            shape: { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1] },
+            style: { stroke: 'rgba(37,99,235,0.4)', lineWidth: 1, lineDash: [4, 4] }
+          };
         }
       },
       {
