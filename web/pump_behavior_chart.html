@@ -713,8 +713,13 @@ function renderChart() {
   const minLow = Math.min(...lows);
   const maxHigh = Math.max(...highs);
   const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
-  const buybackBaseY = Math.max(minLow - range * 0.24, minLow * 0.01);
-  const buybackStepY = Math.max(range * 0.028, minLow * 0.006);
+  
+  const step = range * 0.035; 
+  const maxBuyDrop = step * MAX_MARKERS_PER_SIDE_PER_DAY;
+  const maxSellRise = step * MAX_MARKERS_PER_SIDE_PER_DAY;
+
+  const buybackBaseY = minLow - maxBuyDrop - (range * 0.08);
+  const buybackStepY = range * 0.05;
 
   const buyPoints = [];
   const sellPoints = [];
@@ -728,12 +733,9 @@ function renderChart() {
     const sellEvents = events.filter(e => e.direction !== 'buy');
     const buybackEvents = events.filter(e => e.category === 'buyback');
 
-    // Dynamic offset based on price range
-    const step = range * 0.055; 
-
     buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
       const y = candle.low - (step * (idx + 0.5));
-      const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
+      const size = 20 + Math.min(10, (e.amount_B || 0) * 5);
       buyPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
@@ -745,7 +747,7 @@ function renderChart() {
 
     sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
       const y = candle.high + (step * (idx + 0.5));
-      const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
+      const size = 20 + Math.min(10, (e.amount_B || 0) * 5);
       sellPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
@@ -756,20 +758,20 @@ function renderChart() {
     });
 
     buybackEvents.slice(0, 3).forEach((e, idx) => {
-      const markerY = buybackBaseY + idx * buybackStepY;
+      const markerY = buybackBaseY - idx * buybackStepY;
       buybackPoints.push({
         value: [date, markerY, e.amount_B || 0],
         event: e,
         labelTxt: 'Buy Back',
         itemStyle: { color: COLOR_BUYBACK, borderColor: '#FFFFFF', borderWidth: 1.5 },
-        symbolSize: [60, 24]
+        symbolSize: [56, 22]
       });
       buybackLinks.push([date, markerY, candle.low]);
     });
   }
 
-  const plainAxisMin = Math.min(...candles.map(c => Number(c.low))) * 0.96;
-  const priceAxisMin = buybackPoints.length ? Math.min(plainAxisMin, buybackBaseY - buybackStepY * 0.9) : plainAxisMin;
+  const priceAxisMin = buybackPoints.length ? (buybackBaseY - buybackStepY * 3) : (minLow - maxBuyDrop - range * 0.05);
+  const priceAxisMax = maxHigh + maxSellRise + range * 0.05;
   
   renderStats(candles, events);
   renderWalletTable(events);
@@ -841,6 +843,7 @@ function renderChart() {
       {
         position: 'right',
         min: priceAxisMin,
+        max: priceAxisMax,
         scale: true,
         axisLine: { show: false },
         axisTick: { show: false },
