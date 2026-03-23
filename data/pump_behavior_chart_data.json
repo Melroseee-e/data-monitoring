@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2026-03-23T06:26:49Z",
+    "generated_at": "2026-03-23T07:48:59Z",
     "token": "PUMP",
     "contract": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
     "price_source": "Binance API (PUMPUSDT 1d klines)",
@@ -14,7 +14,8 @@
       "data/pump_whale_chart_data.json",
       "data/pump_team_analysis.json",
       "data/pump_buyback_analysis.json",
-      "data/pump_addresses.json"
+      "data/pump_addresses.json",
+      "data/pump_whale_analysis.json"
     ],
     "dropped_events_outside_price_range": 117
   },
@@ -1956,10 +1957,10 @@
         "timestamp_ms": 1774224000000,
         "open": 0.001765,
         "high": 0.001828,
-        "low": 0.001752,
-        "close": 0.001785,
-        "volume_token": 1079211384.0,
-        "volume_usd": 1938890.996631
+        "low": 0.001749,
+        "close": 0.001767,
+        "volume_token": 1295686509.0,
+        "volume_usd": 2321792.841077
       }
     ],
     "start_date": "2025-09-11",
@@ -2835,6 +2836,1922 @@
       "current_balance_B": 365.461857223
     }
   ],
+  "address_profiles": [
+    {
+      "address": "9SLPTL41SPsYkgdsMzdfJsxymEANKr5bYoBsQzJyKpKS",
+      "short_address": "9SLPTL...KpKS",
+      "label": "Hyperunit: Hot Wallet",
+      "main_type": "whale",
+      "categories": [
+        "official_wallet",
+        "whale"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 10.5391,
+      "rank": 1,
+      "note": "DeFi protocol hot wallet (Hyperunit). Publicly labeled on Solscan. Holds 10.5B PUMP + 299K SOL (M) + 108M Fartcoin. Very active (1000+ txs/3 days). Likely market maker or liquidity provider holding PUMP inventory. Minimal PUMP outflow (4.82% sell rate).",
+      "event_count": 113,
+      "buy_amount_B": 17.7874,
+      "sell_amount_B": 41.6757,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 1.05391,
+      "estimated_value_usd": 18622589.7
+    },
+    {
+      "address": "4GZwzZgqSwwTTRVgBoxTDeH3EwDye84dCPb9fALAZFjF",
+      "short_address": "4GZwzZ...ZFjF",
+      "label": "Coinbase-Connected PUMP Holder",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "official_wallet",
+        "whale"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": "Coinbase",
+      "current_balance_B": 7.189,
+      "rank": 2,
+      "note": "Received PUMP in Jan 2026 from multiple transfers from Coinbase Hot Wallet 4. Holds 7.189B PUMP. Zero outflows — pure holder. Also held some Bubblegum NFTs. Likely Coinbase institutional custody account or whale who acquired via Coinbase OTC.",
+      "event_count": 13,
+      "buy_amount_B": 7.0507,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.7189,
+      "estimated_value_usd": 12702963.0
+    },
+    {
+      "address": "H61va8NXmR72rJ5Z4cy2FNrGrptedTsArDxqiH7yZUB8",
+      "short_address": "H61va8...ZUB8",
+      "label": "Top Whale #3",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 4.69,
+      "rank": 3,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 5.29,
+      "sell_amount_B": 0.6,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.469,
+      "estimated_value_usd": 8287230.0
+    },
+    {
+      "address": "3Z2AqcKCmdcCZ3iCUiFKtwUbrmuPcefwN3xRLTdY7XyN",
+      "short_address": "3Z2Aqc...7XyN",
+      "label": "Top Whale #4",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 4.223,
+      "rank": 4,
+      "note": null,
+      "event_count": 8,
+      "buy_amount_B": 2.6718,
+      "sell_amount_B": 1.5584,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.4223,
+      "estimated_value_usd": 7462041.0
+    },
+    {
+      "address": "DLkDZH2McPeHi4G8DJryEk63WH83RePGL8uKf1yJ1vhH",
+      "short_address": "DLkDZH...1vhH",
+      "label": "Top Whale #5",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 2.826,
+      "rank": 5,
+      "note": null,
+      "event_count": 69,
+      "buy_amount_B": 10.6647,
+      "sell_amount_B": 6.4209,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.2826,
+      "estimated_value_usd": 4993542.0
+    },
+    {
+      "address": "26nbFGWaybNdMoPKgG5eNznkrAjFR4dgXSCsbF2Xkt5j",
+      "short_address": "26nbFG...kt5j",
+      "label": "Top Whale #6",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 2.8,
+      "rank": 6,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 2.8001,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.28,
+      "estimated_value_usd": 4947600.0
+    },
+    {
+      "address": "DZ8M6QjqS6reDLFCFyoErJzSgGFthd57FMmBqaFNXaNB",
+      "short_address": "DZ8M6Q...XaNB",
+      "label": "Top Whale #7",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 2.3,
+      "rank": 7,
+      "note": null,
+      "event_count": 5,
+      "buy_amount_B": 1.822,
+      "sell_amount_B": 3.1411,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.23,
+      "estimated_value_usd": 4064100.0
+    },
+    {
+      "address": "EPv4d221Dk5bY2rzB8a2BsHQ7sv9tHwKZeSoc1VLwNwT",
+      "short_address": "EPv4d2...wNwT",
+      "label": "Top Whale #8",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 2.05,
+      "rank": 8,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 2.05,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.205,
+      "estimated_value_usd": 3622350.0
+    },
+    {
+      "address": "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+      "short_address": "8PSmqJ...jUey",
+      "label": "Top Whale #9",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 1.912,
+      "rank": 9,
+      "note": null,
+      "event_count": 5,
+      "buy_amount_B": 2.9846,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1912,
+      "estimated_value_usd": 3378504.0
+    },
+    {
+      "address": "JqmDJJnx8Qof7DsrJneKxvWEoxjG3EYF4KWrdeQcB6W",
+      "short_address": "JqmDJJ...cB6W",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 1.634,
+      "rank": 10,
+      "note": null,
+      "event_count": 8,
+      "buy_amount_B": 2.4615,
+      "sell_amount_B": 0.883,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1634,
+      "estimated_value_usd": 2887278.0
+    },
+    {
+      "address": "24BLFjSAcUPPWs8F7nhwthfRPvh5mopNYfu5WXTkLChr",
+      "short_address": "24BLFj...LChr",
+      "label": "Top Whale #11",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 1.623,
+      "rank": 11,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 2.0669,
+      "sell_amount_B": 0.4437,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1623,
+      "estimated_value_usd": 2867841.0
+    },
+    {
+      "address": "6v434aRMo8S21HFWVUVT9bfqF11nwoH6PM7bJJzQGPhW",
+      "short_address": "6v434a...GPhW",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 1.328,
+      "rank": 12,
+      "note": null,
+      "event_count": 7,
+      "buy_amount_B": 2.038,
+      "sell_amount_B": 0.7601,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1328,
+      "estimated_value_usd": 2346576.0
+    },
+    {
+      "address": "6SF8A35Q6Sf7FV4adDdxta3UFvZVRGP1fHeFBsrxuYht",
+      "short_address": "6SF8A3...uYht",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 1.282,
+      "rank": 13,
+      "note": null,
+      "event_count": 5,
+      "buy_amount_B": 1.282,
+      "sell_amount_B": 1.7833,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1282,
+      "estimated_value_usd": 2265294.0
+    },
+    {
+      "address": "EuH2wD3rkVp5uosoL8v5kRTMLT5L6jvbwXAXRSEwzdwG",
+      "short_address": "EuH2wD...zdwG",
+      "label": "Robinhood Deposit",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Robinhood",
+      "current_balance_B": 1.276,
+      "rank": 14,
+      "note": null,
+      "event_count": 7,
+      "buy_amount_B": 4.0845,
+      "sell_amount_B": 2.887,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1276,
+      "estimated_value_usd": 2254692.0
+    },
+    {
+      "address": "DSo8tY2KdbmZC6Q9YNWgQ9745ugL1Q9K6FeyqovkGqRS",
+      "short_address": "DSo8tY...GqRS",
+      "label": "Top Whale #15",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 1.156,
+      "rank": 15,
+      "note": null,
+      "event_count": 7,
+      "buy_amount_B": 1.3575,
+      "sell_amount_B": 0.2515,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1156,
+      "estimated_value_usd": 2042652.0
+    },
+    {
+      "address": "Am8MAEorCMAKxphqjAz3Ff59NEwPm4W2eS3DQLi2B4hg",
+      "short_address": "Am8MAE...B4hg",
+      "label": "Top Whale #16",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 1.109,
+      "rank": 16,
+      "note": null,
+      "event_count": 79,
+      "buy_amount_B": 9.4511,
+      "sell_amount_B": 6.9683,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1109,
+      "estimated_value_usd": 1959603.0
+    },
+    {
+      "address": "B1TyrFZ3HRzKVvf14qq7THBVkMEAGb2wJPKUSh13CLxx",
+      "short_address": "B1TyrF...CLxx",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 1.059,
+      "rank": 17,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.3848,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1059,
+      "estimated_value_usd": 1871253.0
+    },
+    {
+      "address": "4zg4mV2QNUsGN5qVbuKA3sqvkaPRkyb5gByjfRUH3uHn",
+      "short_address": "4zg4mV...3uHn",
+      "label": "Top Whale #18",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 1.055,
+      "rank": 18,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 1.0546,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1055,
+      "estimated_value_usd": 1864185.0
+    },
+    {
+      "address": "zt27jpb8jfLg5e6fvnEgkfnNyxpqhJV4mcd1JneeQMW",
+      "short_address": "zt27jp...eQMW",
+      "label": "Top Whale #19",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 1.027,
+      "rank": 19,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 0.9473,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1027,
+      "estimated_value_usd": 1814709.0
+    },
+    {
+      "address": "E3MhdiKia92MFswUHM68G4fqYCyF4EK7gJ5H1vTky9Cs",
+      "short_address": "E3Mhdi...y9Cs",
+      "label": "Top Whale #20",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 1.0,
+      "rank": 20,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.1,
+      "estimated_value_usd": 1767000.0
+    },
+    {
+      "address": "3r8yisznwhwTc3zvRpwCNozv9UE1zHcpma2VpGL1cjEk",
+      "short_address": "3r8yis...cjEk",
+      "label": "Top Whale #21",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.976,
+      "rank": 21,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 0.9758,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0976,
+      "estimated_value_usd": 1724592.0
+    },
+    {
+      "address": "256Eh2SHgCtxhhdVWyJ6HyH4xDgdRP7R4ZbHn1GpLoUt",
+      "short_address": "256Eh2...LoUt",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 0.943,
+      "rank": 22,
+      "note": null,
+      "event_count": 12,
+      "buy_amount_B": 1.5586,
+      "sell_amount_B": 0.7124,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0943,
+      "estimated_value_usd": 1666281.0
+    },
+    {
+      "address": "Ba64vywjQwvmennBzn8Yvaz3h2v8bwVBzao5cKNmc3c5",
+      "short_address": "Ba64vy...c3c5",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 0.94,
+      "rank": 23,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 0.6273,
+      "sell_amount_B": 0.3125,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.094,
+      "estimated_value_usd": 1660980.0
+    },
+    {
+      "address": "Dyo7tqec9dTED6kddpqj4e3L68HLC2VZAiboNsMzKUP4",
+      "short_address": "Dyo7tq...KUP4",
+      "label": "Top Whale #24",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.925,
+      "rank": 24,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.925,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0925,
+      "estimated_value_usd": 1634475.0
+    },
+    {
+      "address": "6t24Vghr2VKYhZ38qmx6rcprE2wbLa7P7YwZti3NLiDJ",
+      "short_address": "6t24Vg...LiDJ",
+      "label": "Top Whale #25",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.896,
+      "rank": 25,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.15,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0896,
+      "estimated_value_usd": 1583232.0
+    },
+    {
+      "address": "Gaw3fcEJZkZjhmNp4zix5MHj82asVWv162nhDUo8bGvp",
+      "short_address": "Gaw3fc...bGvp",
+      "label": "Top Whale #26",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.884,
+      "rank": 26,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 0.8837,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0884,
+      "estimated_value_usd": 1562028.0
+    },
+    {
+      "address": "FWMrpLyjDnpaMcRrD83baoHrny9fhitEBa5HJeRzJR8P",
+      "short_address": "FWMrpL...JR8P",
+      "label": "Top Whale #27",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.838,
+      "rank": 27,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.6975,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0838,
+      "estimated_value_usd": 1480746.0
+    },
+    {
+      "address": "ED86KHerMiNnekX995NMvx9F3TaLEiAAoiAtrnKQcdh6",
+      "short_address": "ED86KH...cdh6",
+      "label": "Top Whale #28",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.8,
+      "rank": 28,
+      "note": null,
+      "event_count": 4,
+      "buy_amount_B": 0.8,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.08,
+      "estimated_value_usd": 1413600.0
+    },
+    {
+      "address": "6dwaj585LCV6R6gm5fKQ9XBbJz1Si7LKmgaDA6xgvUzt",
+      "short_address": "6dwaj5...vUzt",
+      "label": "Top Whale #29",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.8,
+      "rank": 29,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.8,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.08,
+      "estimated_value_usd": 1413600.0
+    },
+    {
+      "address": "4ERWabcgDyqjPAENHCXPPUE41zsGqPfUdNYbJ4XvxpB1",
+      "short_address": "4ERWab...xpB1",
+      "label": "Top Whale #30",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.798,
+      "rank": 30,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 0.7979,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0798,
+      "estimated_value_usd": 1410066.0
+    },
+    {
+      "address": "89APoB3qsbwJ6by9dabzFE3NPevHc4UtiJtdJaNKq8NZ",
+      "short_address": "89APoB...q8NZ",
+      "label": "Top Whale #31",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.786,
+      "rank": 31,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 0.7863,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0786,
+      "estimated_value_usd": 1388862.0
+    },
+    {
+      "address": "6EpVvvEkjgfGHLcg2bMJofmDHmybuLhfDW4YXfP6QZwP",
+      "short_address": "6EpVvv...QZwP",
+      "label": "Top Whale #32",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.786,
+      "rank": 32,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0786,
+      "estimated_value_usd": 1388862.0
+    },
+    {
+      "address": "EZ41WcMH3FmyWGV9WQaDLo5uo4ysVNdeAm1ZoTybxjsJ",
+      "short_address": "EZ41Wc...xjsJ",
+      "label": "Top Whale #33",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.77,
+      "rank": 33,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.077,
+      "estimated_value_usd": 1360590.0
+    },
+    {
+      "address": "5X7QspyRDJUjCdBXB2u1vpuTj2seLCNZDAJZ8EWvBD5e",
+      "short_address": "5X7Qsp...BD5e",
+      "label": "Top Whale #34",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.743,
+      "rank": 34,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 0.6654,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0743,
+      "estimated_value_usd": 1312881.0
+    },
+    {
+      "address": "7EVW21WrPmuzMA926ApgAgpEaqtocCCFi5YNzKvzqNhA",
+      "short_address": "7EVW21...qNhA",
+      "label": "Top Whale #35",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.724,
+      "rank": 35,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 0.6245,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0724,
+      "estimated_value_usd": 1279308.0
+    },
+    {
+      "address": "FbmX51eefDd2AeKjPFdAXhLdwUbnVGuYzEuNajC2Rg7e",
+      "short_address": "FbmX51...Rg7e",
+      "label": "Top Whale #36",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.717,
+      "rank": 36,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.7172,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0717,
+      "estimated_value_usd": 1266939.0
+    },
+    {
+      "address": "DLUzWHBuZ4THC5gmeY3ohSNLKeNYnorspojGSyfKvxhr",
+      "short_address": "DLUzWH...vxhr",
+      "label": "Top Whale #37",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.711,
+      "rank": 37,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.7108,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0711,
+      "estimated_value_usd": 1256337.0
+    },
+    {
+      "address": "AZj4GPWqekwy4PGfpZ8A5H1P1Y992Bqc8jVKbXsVa4dX",
+      "short_address": "AZj4GP...a4dX",
+      "label": "Top Whale #38",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.71,
+      "rank": 38,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.7101,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.071,
+      "estimated_value_usd": 1254570.0
+    },
+    {
+      "address": "4uD8iRXzpjVnRkWwJMTHohA4jRdbjLCrNZgN8jPtrCSf",
+      "short_address": "4uD8iR...rCSf",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 0.688,
+      "rank": 39,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0688,
+      "estimated_value_usd": 1215696.0
+    },
+    {
+      "address": "9k5L4HRLyivBRnTZdEsCw4aSjSQxhxumYPeKRbNusA8P",
+      "short_address": "9k5L4H...sA8P",
+      "label": "Top Whale #40",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.682,
+      "rank": 40,
+      "note": null,
+      "event_count": 4,
+      "buy_amount_B": 0.6136,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0682,
+      "estimated_value_usd": 1205094.0
+    },
+    {
+      "address": "EGTodPfWCDznfJuWd4UJHMZsoR9u9BofHyzCYk83FqYm",
+      "short_address": "EGTodP...FqYm",
+      "label": "Top Whale #41",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.663,
+      "rank": 41,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 0.6632,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0663,
+      "estimated_value_usd": 1171521.0
+    },
+    {
+      "address": "AMW16oZp9qDh6PEJGYu38zdPkffgrxbrQAhBTaxFoj5x",
+      "short_address": "AMW16o...oj5x",
+      "label": "Top Whale #42",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.66,
+      "rank": 42,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.6,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.066,
+      "estimated_value_usd": 1166220.0
+    },
+    {
+      "address": "9qNsDboRfZFRXQNJviwE7e7CqdWPEopHhhNQXXdwVDRh",
+      "short_address": "9qNsDb...VDRh",
+      "label": "Top Whale #43",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.637,
+      "rank": 43,
+      "note": null,
+      "event_count": 3,
+      "buy_amount_B": 1.4887,
+      "sell_amount_B": 0.8521,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0637,
+      "estimated_value_usd": 1125579.0
+    },
+    {
+      "address": "3ixYKp5PsdqykioextzwKjZBEpwnEDkiHTqgc5Z2piKS",
+      "short_address": "3ixYKp...piKS",
+      "label": "Top Whale #44",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.628,
+      "rank": 44,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.6225,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0628,
+      "estimated_value_usd": 1109676.0
+    },
+    {
+      "address": "44YLvsHWqLctxjVBZeL77inGqn7sV64AFbp7bqhPPCN3",
+      "short_address": "44YLvs...PCN3",
+      "label": "Top Whale #45",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.625,
+      "rank": 45,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0625,
+      "estimated_value_usd": 1104375.0
+    },
+    {
+      "address": "BcmaXnztGU5ZS1TV5b9sebm1cYBNmr6YqXshcnR1G4dW",
+      "short_address": "BcmaXn...G4dW",
+      "label": "Top Whale #46",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.625,
+      "rank": 46,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0625,
+      "estimated_value_usd": 1104375.0
+    },
+    {
+      "address": "6cmq4Gi9tczKBd4SgQdVPxGhGhRzSyYWXmQEqQh4b6pN",
+      "short_address": "6cmq4G...b6pN",
+      "label": "Top Whale #47",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.622,
+      "rank": 47,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.6218,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0622,
+      "estimated_value_usd": 1099074.0
+    },
+    {
+      "address": "HXDAHHFXMHNpPStytzg8dmmePHUNFc1HAGSPWrBNxKGs",
+      "short_address": "HXDAHH...xKGs",
+      "label": "Top Whale #48",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.62,
+      "rank": 48,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.62,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.062,
+      "estimated_value_usd": 1095540.0
+    },
+    {
+      "address": "FX8yzhzUUM7VRo8syDBT523pbTj1TjEzY5vLLWSf91eD",
+      "short_address": "FX8yzh...91eD",
+      "label": "Top Whale #49",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.61,
+      "rank": 49,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.5211,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.061,
+      "estimated_value_usd": 1077870.0
+    },
+    {
+      "address": "8Q5h2sAmdHw3cuPEE9jPWrbK1mqJ8Vcqe91byQ9FUMTL",
+      "short_address": "8Q5h2s...UMTL",
+      "label": "Top Whale #50",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.608,
+      "rank": 50,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 0.6078,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0608,
+      "estimated_value_usd": 1074336.0
+    },
+    {
+      "address": "49mvMufixEbUMzZEUVAnbQ8hLLuEWy789XfKUNTz7wCv",
+      "short_address": "49mvMu...7wCv",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 0.605,
+      "rank": 51,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.1131,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0605,
+      "estimated_value_usd": 1069035.0
+    },
+    {
+      "address": "Gm98QzCfGfJaWWSvGNdPKza21kEs4VnYAs1EKzGy9dsC",
+      "short_address": "Gm98Qz...9dsC",
+      "label": "Top Whale #52",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.6,
+      "rank": 52,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.15,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.06,
+      "estimated_value_usd": 1060200.0
+    },
+    {
+      "address": "B8Ukud8toM6uv763BUPAVbmM53o1XnXWdXtqiHFwd4Wc",
+      "short_address": "B8Ukud...d4Wc",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 0.586,
+      "rank": 53,
+      "note": null,
+      "event_count": 4,
+      "buy_amount_B": 0.5865,
+      "sell_amount_B": 3.0227,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0586,
+      "estimated_value_usd": 1035462.0
+    },
+    {
+      "address": "2xEhE8DWKcKZpz9F6NRtMUJZqHDMf9EMCdEa37jYDusZ",
+      "short_address": "2xEhE8...DusZ",
+      "label": "Top Whale #54",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.555,
+      "rank": 54,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.1966,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0555,
+      "estimated_value_usd": 980685.0
+    },
+    {
+      "address": "Dtqa1NmaKnKR43iMoyAjQ1wXnDho81KusE8hTpKBhdZb",
+      "short_address": "Dtqa1N...hdZb",
+      "label": "Coinbase Prime Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Coinbase",
+      "current_balance_B": 0.522,
+      "rank": 55,
+      "note": null,
+      "event_count": 5,
+      "buy_amount_B": 0.6635,
+      "sell_amount_B": 0.11,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0522,
+      "estimated_value_usd": 922374.0
+    },
+    {
+      "address": "GcGJ1V1TNFScT4XzrTQKdZTqVmcheYmmieeK1rufr2yK",
+      "short_address": "GcGJ1V...r2yK",
+      "label": "Btok",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.522,
+      "rank": 56,
+      "note": null,
+      "event_count": 2,
+      "buy_amount_B": 0.522,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0522,
+      "estimated_value_usd": 922374.0
+    },
+    {
+      "address": "BGSLvBb6Rn4r21skKtRyE8NPXvkmkbUdNtDqGhTDWTe5",
+      "short_address": "BGSLvB...WTe5",
+      "label": "Top Whale #57",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.518,
+      "rank": 57,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.518,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0518,
+      "estimated_value_usd": 915306.0
+    },
+    {
+      "address": "BWR4Sc4EVF8BNKotToMJvUGvoNVymy1i2K4Dt3vfKsdd",
+      "short_address": "BWR4Sc...Ksdd",
+      "label": "Top Whale #58",
+      "main_type": "whale",
+      "categories": [
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.503,
+      "rank": 58,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.1958,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0503,
+      "estimated_value_usd": 888801.0
+    },
+    {
+      "address": "CQWxRn2iW5qSxfBaEDaZSym4ZhVjpeXsgSDvw9PehnLj",
+      "short_address": "CQWxRn...hnLj",
+      "label": "Fireblocks Custody",
+      "main_type": "whale",
+      "categories": [
+        "exchange",
+        "whale"
+      ],
+      "source_tags": [
+        "wallet_registry"
+      ],
+      "exchange_name": "Fireblocks",
+      "current_balance_B": 0.5,
+      "rank": 59,
+      "note": null,
+      "event_count": 1,
+      "buy_amount_B": 0.5,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.05,
+      "estimated_value_usd": 883500.0
+    },
+    {
+      "address": "77DsB9kw8u8eKesicT44hGirsj5A2SicGdFPQZZEzPXe",
+      "short_address": "77DsB9...zPXe",
+      "label": "Pump.fun Team Wallet #1 (CONFIRMED)",
+      "main_type": "team",
+      "categories": [
+        "official_wallet",
+        "team"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.0,
+      "rank": null,
+      "note": "Received 3.75B PUMP from Token Custodian on 2025-07-14. Held for 7 months. Distributed entire 3.75B over Feb 16-21, 2026 in small amounts (~12-14M per tx) to 10+ wallet addresses. Main recipient: Wintermute (0.94B, market maker). Other 2.8B distributed across 9+ wallets. 0 PUMP balance remaining. No direct CEX deposits detected. Likely a grant program, liquidity mining rewards, or market maker compensation pool.",
+      "event_count": 6,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.941666,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0,
+      "estimated_value_usd": 0.0
+    },
+    {
+      "address": "9UcygiamY92yGntGkUkBKi4SdApxkBMZd9QSo6wMC2dN",
+      "short_address": "9Ucygi...C2dN",
+      "label": "PUMP Investor Wallet #1 (CONFIRMED)",
+      "main_type": "investor",
+      "categories": [
+        "investor",
+        "official",
+        "official_wallet"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 8.8,
+      "rank": 17,
+      "note": "Received 20B PUMP from Token Custodian on 2025-07-14. Deposited 11.2B PUMP ($21.22M) to Kraken on 2026-02-26. Estimated ~8.8B remaining.",
+      "event_count": 1,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 11.2,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.88,
+      "estimated_value_usd": 15549600.0
+    },
+    {
+      "address": "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm",
+      "short_address": "G8CcfR...kqjm",
+      "label": "Pump.fun Buyback Treasury (Squads Vault - Coin 2 SOL4)",
+      "main_type": "treasury",
+      "categories": [
+        "official",
+        "official_wallet",
+        "treasury"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 103.9626,
+      "rank": 2,
+      "note": "Receives all buyback tokens from 3vkpy5YH. Squads multisig. Holds ~104B PUMP accumulated via buybacks (NOT from Token Custodian directly). 60% burn, 40% staking.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 10.39626,
+      "estimated_value_usd": 183701914.2
+    },
+    {
+      "address": "8UhbNoBXmGoxJr2TeWW8wmSMoWmjS2rTT2tVJxzuTogC",
+      "short_address": "8UhbNo...TogC",
+      "label": "Pump.fun Community/Ecosystem Reserve (Squads Vault - Coin 2 SOL5)",
+      "main_type": "treasury",
+      "categories": [
+        "official",
+        "official_wallet",
+        "treasury"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 80.0,
+      "rank": 3,
+      "note": "Received 80B PUMP from Token Custodian on 2025-07-14. Still holds 80B (fully intact). Likely Community & Ecosystem reserve fund. pump_fun entity in BubbleMaps.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 8.0,
+      "estimated_value_usd": 141360000.0
+    },
+    {
+      "address": "AvqFxKNrYZNvxsj2oWhLW8det68HzCXBqswshoD2TdT6",
+      "short_address": "AvqFxK...TdT6",
+      "label": "Pump.fun Operational Vault (Squads Vault - Token Hot SOL3)",
+      "main_type": "treasury",
+      "categories": [
+        "official",
+        "official_wallet",
+        "treasury"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 24.0,
+      "rank": 9,
+      "note": "Received 24B PUMP from Token Custodian on 2025-07-14. Still holds 24B (fully intact). pump_fun entity. Likely operational/hot wallet for protocol use.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 2.4,
+      "estimated_value_usd": 42408000.0
+    },
+    {
+      "address": "2WHL4XiNGKW9NgSwsJeG7WG2kD35Bi44rZoLrXHEz3dw",
+      "short_address": "2WHL4X...z3dw",
+      "label": "Pump.fun Operational Wallet (unlabeled)",
+      "main_type": "treasury",
+      "categories": [
+        "official",
+        "official_wallet",
+        "treasury"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 10.0,
+      "rank": 16,
+      "note": "Received 10B PUMP from Token Custodian on 2025-07-14. Still holds 10B (fully intact). No BubbleMaps label but in Top500. Likely ecosystem/operational allocation.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 1.0,
+      "estimated_value_usd": 17670000.0
+    },
+    {
+      "address": "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+      "short_address": "3vkpy5...3WTi",
+      "label": "Pump.fun Buyback Wallet",
+      "main_type": "buyback",
+      "categories": [
+        "buyback",
+        "official_wallet"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 6.2311512e-08,
+      "rank": null,
+      "note": "Executes market purchases using platform fees. Reported $310M+ cumulative buyback as of 2026-03. Sends purchased PUMP to G8CcfRff treasury.",
+      "event_count": 6,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0,
+      "estimated_value_usd": 0.11
+    },
+    {
+      "address": "9pkFKCR1mdS31JxjKdtmWg2awZUg6vJUYVY722DAcXzv",
+      "short_address": "9pkFKC...cXzv",
+      "label": "PUMP Team/Investor Squads Vault #1 (LOCKED)",
+      "main_type": "vesting",
+      "categories": [
+        "official",
+        "official_wallet",
+        "vesting"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 35.0,
+      "rank": 4,
+      "note": "Received 35B PUMP from Token Custodian on 2025-07-14. Still holds 35B (100% locked). Squads Vault. No PUMP outflows detected. Likely Team allocation awaiting Jul 2026 cliff. Token account: GGNKqK95ZFFyKem9Gqx7uvc7De4cBTjxYMJYssHWVaAM",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 3.5,
+      "estimated_value_usd": 61845000.0
+    },
+    {
+      "address": "BBvQteuawKB2UtExfevL8HYLjWWsgmWXsp922vFbvCfT",
+      "short_address": "BBvQte...vCfT",
+      "label": "PUMP Team/Investor Squads Vault #2 (LOCKED)",
+      "main_type": "vesting",
+      "categories": [
+        "official",
+        "official_wallet",
+        "vesting"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 25.0,
+      "rank": 7,
+      "note": "Received 25B PUMP from Token Custodian on 2025-07-14. Still holds 25B (100% locked). Squads Vault. No PUMP outflows detected. Token account: FapAcxVZBeeyQYMH5uyFmWM8i9HKvAfPqYAe2yYmAQao",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 2.5,
+      "estimated_value_usd": 44175000.0
+    },
+    {
+      "address": "GTeSSwovPiVirpvWJpThUWiLDSLsuApmJw621Yom3MhB",
+      "short_address": "GTeSSw...3MhB",
+      "label": "PUMP Team/Investor Squads Vault #3 SOLANA 3 (LOCKED)",
+      "main_type": "vesting",
+      "categories": [
+        "official",
+        "official_wallet",
+        "vesting"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 25.0,
+      "rank": 8,
+      "note": "Received 25B PUMP from Token Custodian on 2025-07-14. Still holds 25B (100% locked). BubbleMaps label: 'Squads Vault SOLANA 3'. No PUMP outflows detected. Token account: HXVBCbgfPaUaQguWtdxQ3MSDF61oW22P1F7gKceWcZYv",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 2.5,
+      "estimated_value_usd": 44175000.0
+    },
+    {
+      "address": "GhFaBi8sy3M5mgG97YguQ6J3f7XH4JwV5CoW8MbzRgAU",
+      "short_address": "GhFaBi...RgAU",
+      "label": "PUMP Team/Investor Squads Vault #4 (SELLING → OKX)",
+      "main_type": "vesting",
+      "categories": [
+        "exchange",
+        "official",
+        "official_wallet",
+        "vesting"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": "OKX",
+      "current_balance_B": 15.63,
+      "rank": 13,
+      "note": "Received 18.75B PUMP from Token Custodian on 2025-07-14. CONFIRMED: 3.125B distributed as 2×1.5625B to OKX on 2025-10-06 via pass-through FfGLiWhCDH3FqQho5hMopReTmYAwXArJtJ23wKxrG47A (17 txs, same-day, Squads V4 execution pattern). Current balance: 15.625B.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 1.563,
+      "estimated_value_usd": 27618210.0
+    },
+    {
+      "address": "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE",
+      "short_address": "5v7ZZg...CVKE",
+      "label": "PUMP Team/Investor Squads Vault #5 Wallet A (ACTIVE SELLING)",
+      "main_type": "vesting",
+      "categories": [
+        "official",
+        "official_wallet",
+        "vesting"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 6.8906,
+      "rank": 20,
+      "note": "Received 18.75B PUMP from Token Custodian on 2025-07-14. CONFIRMED: ALL outflows went to Bitget. Sep 2025: 4.6875B → pass-through 3K9vhQSaRtkoZbvj5bzRdqdYZLRmG2Cj9qN5sVFjmVru → DNuUdE9on7cVcnZ9DGN89pfmd23DeBFYWupyUjeK7QGp → Bitget. Mar 2026: 7.172B → Bitget via 3 more pass-throughs. TOTAL to Bitget: ~11.859B. Current balance: 6.891B.",
+      "event_count": 4,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 7.172,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.68906,
+      "estimated_value_usd": 12175690.2
+    },
+    {
+      "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+      "short_address": "9WzDXw...AWWM",
+      "label": "CEX: Binance",
+      "main_type": "exchange_address",
+      "categories": [
+        "cex",
+        "exchange",
+        "exchange_address"
+      ],
+      "source_tags": [
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": "Binance",
+      "current_balance_B": 30.14,
+      "rank": 5,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 3.014,
+      "estimated_value_usd": 53257380.0
+    },
+    {
+      "address": "AC5RDfQFmDS1deWZos921JfqscXdByf8BKHs5ACWjtW2",
+      "short_address": "AC5RDf...jtW2",
+      "label": "CEX: Bybit",
+      "main_type": "exchange_address",
+      "categories": [
+        "cex",
+        "exchange",
+        "exchange_address"
+      ],
+      "source_tags": [
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": "Bybit",
+      "current_balance_B": 13.2565,
+      "rank": 14,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 1.32565,
+      "estimated_value_usd": 23424235.5
+    },
+    {
+      "address": "C68a6RCGLiPskbPYtAcsCjhG8tfTWYcoB4JjCrXFdqyo",
+      "short_address": "C68a6R...dqyo",
+      "label": "CEX: OKX",
+      "main_type": "exchange_address",
+      "categories": [
+        "cex",
+        "exchange",
+        "exchange_address"
+      ],
+      "source_tags": [
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": "OKX",
+      "current_balance_B": 7.8657,
+      "rank": 18,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.78657,
+      "estimated_value_usd": 13898691.9
+    },
+    {
+      "address": "A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR",
+      "short_address": "A77HEr...4RiR",
+      "label": "Bitget Deposit Address",
+      "main_type": "exchange_address",
+      "categories": [
+        "exchange",
+        "exchange_address"
+      ],
+      "source_tags": [
+        "reported_event_exchange_address"
+      ],
+      "exchange_name": "Bitget",
+      "current_balance_B": null,
+      "rank": null,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 7.172,
+      "share_total_supply_pct": null,
+      "estimated_value_usd": null
+    },
+    {
+      "address": "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa",
+      "short_address": "MfDuWe...GVWa",
+      "label": "Wintermute Deposit Address",
+      "main_type": "exchange_address",
+      "categories": [
+        "exchange",
+        "exchange_address"
+      ],
+      "source_tags": [
+        "team_classified_tx_destination"
+      ],
+      "exchange_name": "Wintermute",
+      "current_balance_B": null,
+      "rank": null,
+      "note": null,
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.941666,
+      "share_total_supply_pct": null,
+      "estimated_value_usd": null
+    },
+    {
+      "address": "Cfq1ts1iFr1eUWWBm8eFxUzm5R3YA3UvMZznwiShbgZt",
+      "short_address": "Cfq1ts...bgZt",
+      "label": "Pump.fun Token Custodian (Main Lock)",
+      "main_type": "token_custodian",
+      "categories": [
+        "official",
+        "official_wallet",
+        "token_custodian"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 365.4619,
+      "rank": 1,
+      "note": "MAIN LOCK. Received all 1000B PUMP on 2025-07-10. Distributed 634.54B to all buckets. Currently holds 365.46B (36.5% total supply = Team+Investor+Community remainder). All token unlocks originate from this address. Token account: 7AN6avKCJPMkXkW8kPwMuHmaWvJeHH69e8rKpLf9rdfk",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 36.54619,
+      "estimated_value_usd": 645771177.3
+    },
+    {
+      "address": "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS",
+      "short_address": "85WTuj...5ERS",
+      "label": "PUMP Insider/Co-founder Cluster Aug21 #1 (LOCKED - 30B)",
+      "main_type": "insider",
+      "categories": [
+        "insider",
+        "official_wallet"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 30.0,
+      "rank": 6,
+      "note": "Received 30B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED — zero outflows. All three Aug21 wallets (#1, #2, #3) funded by same funder wallet 3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i, linked by community research to @a1lon9 (Alon, Pump.fun co-founder). Combined cluster: 70B PUMP (7% total supply, ~$137.6M). Classification: Insider/co-founder allocation, NOT external ICO investors.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 3.0,
+      "estimated_value_usd": 53010000.0
+    },
+    {
+      "address": "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9",
+      "short_address": "96HiV4...VWM9",
+      "label": "PUMP Insider/Co-founder Cluster Aug21 #2 (LOCKED - 23B)",
+      "main_type": "insider",
+      "categories": [
+        "insider",
+        "official_wallet"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 23.0,
+      "rank": 10,
+      "note": "Received 23B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED — zero outflows. All three Aug21 wallets (#1, #2, #3) funded by same funder wallet 3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i, linked by community research to @a1lon9 (Alon, Pump.fun co-founder). Combined cluster: 70B PUMP (7% total supply, ~$137.6M). Classification: Insider/co-founder allocation, NOT external ICO investors.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 2.3,
+      "estimated_value_usd": 40641000.0
+    },
+    {
+      "address": "8UHpWBnhYNeAQURWjAABp8vSrzfYa69o7sfi65vYLC42",
+      "short_address": "8UHpWB...LC42",
+      "label": "PUMP Official Allocation Multisig #2 (CONFIRMED - 20B allocation 2025-07-14)",
+      "main_type": "official_allocation",
+      "categories": [
+        "official",
+        "official_allocation",
+        "official_wallet"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 19.1311,
+      "rank": 11,
+      "note": "CONFIRMED official allocation. Received exactly 20B PUMP from Token Custodian (Cfq1ts1...) on 2025-07-14 — same batch as Team Wallet #1 (77DsB9kw, 3.75B) and Investor Wallet #1 (9Ucygiam, 20B). Multisig wallet (isOnCurve=False, Squads-style). CONFIRMED: 0.869B distributed as staking/ecosystem rewards (NOT CEX selling). Flow: Multisig → 7Qao1Sqh1mdKVKskFTuQe7ivy4f7Q3rrwzE4QrzMDJKV (0.796B) → HaYTWK3nQuHuGrydBR4Gkc8tRzqDQ7swq8Fnf45DppQi (rewards hub, distributed to ~80+ wallets in 0.001-0.033B micro-amounts Oct-Nov 2025). Also → 8S3BjPnAygsmbGnxpLUNympLoeEnRJhyqHkpuxY6aMdC (rolling monthly micro-distributions to multiple wallets). Zero CEX deposits. Likely Foundation or Community Ecosystem rewards allocation.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 1.91311,
+      "estimated_value_usd": 33804653.7
+    },
+    {
+      "address": "ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa",
+      "short_address": "ERRGqu...dNYa",
+      "label": "PUMP Insider/Co-founder Cluster Aug21 #3 (LOCKED - 17B)",
+      "main_type": "insider",
+      "categories": [
+        "insider",
+        "official_wallet"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry",
+        "whale_analysis_top_holders"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 17.0,
+      "rank": 12,
+      "note": "Received 17B PUMP from Token Custodian on 2025-08-21 (TGE+40 days). CONFIRMED LOCKED — zero outflows. All three Aug21 wallets (#1, #2, #3) funded by same funder wallet 3cBqg6k7g9kBH17hLQPwe4KWn89s3qoP5HN5jGng2p3i, linked by community research to @a1lon9 (Alon, Pump.fun co-founder). Combined cluster: 70B PUMP (7% total supply, ~$137.6M). Classification: Insider/co-founder allocation, NOT external ICO investors.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 1.7,
+      "estimated_value_usd": 30039000.0
+    },
+    {
+      "address": "5D95TQGUmg71zrM7CJZiTYBVCPxrjCrrahEHegEPL2oj",
+      "short_address": "5D95TQ...L2oj",
+      "label": "PUMP ICO Distribution Contract (PDA - Defunct)",
+      "main_type": "ico_distribution",
+      "categories": [
+        "ico_distribution",
+        "official_wallet"
+      ],
+      "source_tags": [
+        "pump_addresses",
+        "wallet_registry"
+      ],
+      "exchange_name": null,
+      "current_balance_B": 0.0,
+      "rank": null,
+      "note": "PDA (isOnCurve=False) - Program Derived Address, not a wallet. Received 112.125B PUMP from Token Custodian on 2025-07-12 (TGE day). Executed ~2000 distribution TXs to on-chain ICO buyers. Now holds ~$51 (essentially empty). This is the on-chain ICO settlement contract.",
+      "event_count": 0,
+      "buy_amount_B": 0.0,
+      "sell_amount_B": 0.0,
+      "exchange_inflow_B": 0.0,
+      "share_total_supply_pct": 0.0,
+      "estimated_value_usd": 0.0
+    }
+  ],
+  "address_profile_stats": {
+    "total_profiles": 82,
+    "with_exchange_name": 19,
+    "with_balance": 80,
+    "by_main_type": {
+      "whale": 59,
+      "team": 1,
+      "investor": 1,
+      "treasury": 4,
+      "buyback": 1,
+      "vesting": 5,
+      "exchange_address": 5,
+      "token_custodian": 1,
+      "insider": 3,
+      "official_allocation": 1,
+      "ico_distribution": 1
+    },
+    "latest_price_usd": 0.001767
+  },
   "events": [
     {
       "date": "2025-09-11",
@@ -8570,6 +10487,9 @@
         "44RwyoAckCFTHuxkymJcZbyaGMRYBzXRLu1g9imfbPqzX4T2aWmZd6nBAHQ2rAVYkkMm39iDgxNnNBTWx7zgqXYy",
         "JTyHoNKhbQjAprsHXsyt8Su6cLPGBHPNA8E1HX3MQx1JLhCYXGWWskscvnmgCDNjrZjgBrZ39zSxu7pK753aoQC"
       ],
+      "exchange_addresses": [
+        "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa"
+      ],
       "id": "evt_00337"
     },
     {
@@ -8627,6 +10547,9 @@
         "5r6BLk6L46L6i8FeQN5Bhayagx9NqmhW6ohWntMfjGrKM18q87dUCjt6tvM7h81jp45BCm1Lda7QPR56naQL7BFr",
         "4a4kfYFHcj2YgBFY4oXEGqd8GKF1hczeJ3upDp2CxP6eJD3FFTsTuf7Y3c5Na3Nic7YWUkn1NEjvN2T2EUTUfTKm"
       ],
+      "exchange_addresses": [
+        "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa"
+      ],
       "id": "evt_00340"
     },
     {
@@ -8650,6 +10573,9 @@
         "KLmqbnBL1Lkp4Ghnvb8AG9vhxxnQTAQ3yAbvxeqMH6yXLKSmw4f5wji51ESzmeCVHWquViRmCGhSmVNrC3bVebc",
         "4zVUzF8b7sKGcHDVaLu258nrua5X1weTrT4roh5ADdaWNXrvca9aWGfKDVK2LLH7PdbLigwhtXFjWaSBXPmc3RAP",
         "4yFUFRE4akBhVzZGk99LQ17HyV3EVwABun131VsiojLjCEcPQwCSTdHBTZWBnA64GEmJUY1R98ytn4khJWA9cDux"
+      ],
+      "exchange_addresses": [
+        "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa"
       ],
       "id": "evt_00341"
     },
@@ -8692,6 +10618,9 @@
         "knFuc8zRuTiUm8wwwTHJKgUaqznmHv1XVDVwrXQLrsDEBZ1hJAwWG5jcMBEkKYt1tqijMNACj6L4kUacJxS4k4d",
         "92PRWWkGNReEav9ucCH7KokA8obFSxjin4CHKesnAaCuWEPKWhSADN2XzjYSkp7NSHg89ant26bW9ZboikKoXBW"
       ],
+      "exchange_addresses": [
+        "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa"
+      ],
       "id": "evt_00343"
     },
     {
@@ -8716,6 +10645,9 @@
         "FPuDZDsgcKVq4wkH4WDQ9JkFNocYebdcuBHmdVZthQbjbpszFvWymXk5CutEnAo4UgTWLUK7tr5Pbvzmret1NRP",
         "2aSRpVp2ikZT9k5M6tYnefyM7SPyXUCip6GPp6oS2rJq6JZiLuFbPAKhXmTKXvu5kPeV6GfENNRYPAQVJHTLYLCJ"
       ],
+      "exchange_addresses": [
+        "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa"
+      ],
       "id": "evt_00344"
     },
     {
@@ -8739,6 +10671,9 @@
         "3P5vtWjnGfw6txsbYRLNDhtFWEKojLbcBhaCZEiKYRdbusnGh2fPR1ZsAUyShfTtRKV7Drw2ZXGpqyY3xAnrATvE",
         "3HWXmvs9pmjspcsWQnTVv3Vy37aEvzKncC7C6gGKXMTw2dKCVZhzEM8tCe9rSSSM5ECT5RJAse6rkbZd9F6W8UfQ",
         "4KAi4y8qdKQvW3VZdiM5N8eoHJDSqEPA2vS8RKC8Vg6wx66m5PEQs72BBUuZ6gBJGCTZegM1WtBTDs96aTE3tm8J"
+      ],
+      "exchange_addresses": [
+        "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa"
       ],
       "id": "evt_00345"
     },

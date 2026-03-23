@@ -5,27 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PUMP Whale Behavior Chart</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #faf8f5;
+    --bg: #f7f8fa;
     --panel: #ffffff;
-    --panel2: #f4f4f5;
-    --border: #e4e4e7;
-    --text: #111827;
-    --muted: #6b7280;
-    --buy: #059669;
-    --sell: #dc2626;
+    --panel2: #f4f6f9;
+    --border: #e5e7eb;
+    --text: #101828;
+    --muted: #667085;
+    --buy: #16a34a;
+    --sell: #ef4444;
+    --buyback: #2563eb;
     --official: #2563eb;
     --accent: #2563eb;
+    --shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    --font-ui: "Inter", "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", SFMono-Regular, Menlo, monospace;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: "Inter", "Segoe UI", sans-serif;
+    font-family: var(--font-ui);
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
-  .page { max-width: 1540px; margin: 0 auto; padding: 18px 18px 24px; }
+  .page { max-width: 1680px; margin: 0 auto; padding: 18px 18px 24px; }
   .header { margin-bottom: 14px; }
   .title { font-size: 24px; font-weight: 700; letter-spacing: 0.2px; }
   .subtitle { font-size: 13px; color: var(--muted); margin-top: 5px; }
@@ -39,6 +45,7 @@
     border-radius: 12px;
     padding: 12px;
     margin-bottom: 12px;
+    box-shadow: var(--shadow);
   }
   .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
@@ -57,8 +64,8 @@
     border-color: #93c5fd;
     background: #eff6ff;
   }
-  .chip.buy.active { color: #047857; border-color: #86efac; background: #ecfdf5; }
-  .chip.sell.active { color: #b91c1c; border-color: #fca5a5; background: #fef2f2; }
+  .chip.buy.active { color: #166534; border-color: #86efac; background: #ecfdf5; }
+  .chip.sell.active { color: #991b1b; border-color: #fca5a5; background: #fef2f2; }
   .chip.official.active { color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; }
   .field-group { display: flex; align-items: center; gap: 8px; }
   .field-label { font-size: 12px; color: var(--muted); }
@@ -69,7 +76,9 @@
     border-radius: 8px;
     font-size: 12px;
     padding: 7px 10px;
+    outline: none;
   }
+  select:focus, input:focus { border-color: #93c5fd; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12); }
   input { min-width: 240px; }
   .stats {
     display: grid;
@@ -82,17 +91,20 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 10px 12px;
+    box-shadow: var(--shadow);
   }
   .stat .k { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
   .stat .v { font-size: 18px; font-weight: 700; line-height: 1.2; }
   .stat .v.buy { color: var(--buy); }
   .stat .v.sell { color: var(--sell); }
+  .stat .v.official { color: var(--official); }
   .chart-wrap {
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 10px;
     margin-bottom: 12px;
+    box-shadow: var(--shadow);
   }
   #mainChart { width: 100%; height: 700px; }
   .table-wrap {
@@ -100,20 +112,80 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 10px 12px;
+    box-shadow: var(--shadow);
   }
-  .table-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #e5e7eb; }
+  .table-wrap + .table-wrap { margin-top: 12px; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .table-title { font-size: 13px; font-weight: 600; }
+  .table-scroll { width: 100%; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 980px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
   tr:hover td { background: #f9fafb; }
-  th { color: var(--muted); font-weight: 500; }
-  .addr { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #4b5563; }
+  th {
+    color: #475467;
+    font-weight: 600;
+    background: #f9fafb;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    white-space: nowrap;
+  }
+  .addr { font-family: var(--font-mono); color: #344054; font-size: 11px; }
   .buy-text { color: var(--buy); }
   .sell-text { color: var(--sell); }
   .note { color: var(--muted); font-size: 11px; margin-top: 8px; }
+  .chip-inline {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #f8fafc;
+    color: #475467;
+    white-space: nowrap;
+  }
+  .chip-inline.type-whale { background: #ecfdf5; border-color: #86efac; color: #166534; }
+  .chip-inline.type-official { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+  .chip-inline.type-exchange { background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
+  .chip-inline.type-other { background: #f8fafc; border-color: #cbd5e1; color: #334155; }
+  .mono { font-family: var(--font-mono); }
+  .profile-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .profile-cards {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .profile-card {
+    background: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .profile-card .k { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .profile-card .v { font-size: 16px; font-weight: 700; line-height: 1.2; }
+  .profile-card .v.buy { color: var(--buy); }
+  .profile-card .v.sell { color: var(--sell); }
+  .profile-card .v.official { color: var(--official); }
+  .muted { color: var(--muted); }
 
   @media (max-width: 1100px) {
     .controls { grid-template-columns: 1fr; }
     .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .profile-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     input { min-width: 150px; width: 100%; }
   }
 </style>
@@ -127,9 +199,9 @@
 
   <div class="controls">
     <div class="chip-row" id="categoryChips">
-      <div class="chip buy active" data-cat="whale_netflow">大户净流向</div>
-      <div class="chip sell active" data-cat="official_exchange">官方/团队交易所转入</div>
-      <div class="chip official active" data-cat="buyback">官方回购事件</div>
+      <div class="chip buy active" data-cat="whale_netflow">大户链上净流入/净流出</div>
+      <div class="chip sell active" data-cat="official_exchange">官方/团队/交易所流入交易所</div>
+      <div class="chip official active" data-cat="buyback">官方 Buy Back</div>
     </div>
     <div class="field-group">
       <span class="field-label">最小金额</span>
@@ -152,8 +224,8 @@
     <div class="stat"><div class="k">K线数量</div><div class="v" id="statCandles">-</div></div>
     <div class="stat"><div class="k">收录地址</div><div class="v" id="statWallets">-</div></div>
     <div class="stat"><div class="k">筛选后事件</div><div class="v" id="statEvents">-</div></div>
-    <div class="stat"><div class="k">买入/回购</div><div class="v buy" id="statBuys">-</div></div>
-    <div class="stat"><div class="k">卖出/转入交易所</div><div class="v sell" id="statSells">-</div></div>
+    <div class="stat"><div class="k">链上流入/回购（绿）</div><div class="v buy" id="statBuys">-</div></div>
+    <div class="stat"><div class="k">流入交易所（红）</div><div class="v sell" id="statSells">-</div></div>
   </div>
 
   <div class="chart-wrap">
@@ -161,23 +233,79 @@
   </div>
 
   <div class="table-wrap">
-    <div class="table-title">钱包事件汇总（按筛选条件）</div>
-    <table>
-      <thead>
-        <tr>
-          <th>标签</th>
-          <th>地址</th>
-          <th>分类</th>
-          <th>事件数</th>
-          <th>买入(B)</th>
-          <th>卖出(B)</th>
-          <th>净值(B)</th>
-        </tr>
-      </thead>
-      <tbody id="walletTableBody"></tbody>
-    </table>
+    <div class="section-head">
+      <div class="table-title">钱包事件汇总（按上方筛选条件）</div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>标签</th>
+            <th>地址</th>
+            <th>分类</th>
+            <th>事件数</th>
+            <th>链上流入(B)</th>
+            <th>流入交易所(B)</th>
+            <th>净值(B)</th>
+          </tr>
+        </thead>
+        <tbody id="walletTableBody"></tbody>
+      </table>
+    </div>
     <div class="note">
-      口径说明：`wallet -> exchange` 记为卖出（红）；`exchange -> wallet` 记为买入（绿）。当前数据里，官方/团队事件是交易所向已验证事件；大户事件主要来自日度余额变化（代理信号）。
+      口径说明：绿色 = 官方/大户/交易所地址向链上钱包转出代币（买入/回购压力）；红色 = 官方/大户/交易所地址向交易所转入代币（卖出压力）。
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="section-head">
+      <div class="table-title">地址基础信息（59 大户 + 官方钱包 + 交易所地址）</div>
+      <div class="profile-controls">
+        <span class="field-label">类型</span>
+        <select id="profileTypeFilter">
+          <option value="all">全部</option>
+          <option value="whale">大户(59)</option>
+          <option value="official">官方/团队</option>
+          <option value="exchange">交易所相关</option>
+        </select>
+        <span class="field-label">搜索</span>
+        <input id="profileSearchInput" placeholder="标签 / 地址 / 交易所">
+      </div>
+    </div>
+    <div class="profile-cards">
+      <div class="profile-card"><div class="k">总地址数</div><div class="v" id="profileStatTotal">-</div></div>
+      <div class="profile-card"><div class="k">大户地址</div><div class="v buy" id="profileStatWhales">-</div></div>
+      <div class="profile-card"><div class="k">官方/团队地址</div><div class="v official" id="profileStatOfficial">-</div></div>
+      <div class="profile-card"><div class="k">交易所相关地址</div><div class="v sell" id="profileStatExchange">-</div></div>
+      <div class="profile-card"><div class="k">有余额地址</div><div class="v" id="profileStatWithBalance">-</div></div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>标签</th>
+            <th>地址</th>
+            <th>资产</th>
+            <th>类型</th>
+            <th>交易所</th>
+            <th>排名</th>
+            <th>持仓(B)</th>
+            <th>占总供应(%)</th>
+            <th>估值(USD)</th>
+            <th>事件数</th>
+            <th>链上流入(B)</th>
+            <th>流入交易所(B)</th>
+            <th>净值(B)</th>
+            <th>交易所入金(B)</th>
+            <th>来源</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody id="profileTableBody"></tbody>
+      </table>
+    </div>
+    <div class="note">
+      占比 = 地址 PUMP 余额 / 1,000B 总供应；估值按最新 PUMP/USD 收盘价估算。买卖方向定义与上方图表一致。
     </div>
   </div>
 </div>
@@ -187,21 +315,49 @@ let rawData = null;
 let chart = null;
 let activeCategories = new Set(['whale_netflow', 'official_exchange', 'buyback']);
 
-const COLOR_BUY = '#7ccf3c';
-const COLOR_SELL = '#ff4da6';
-const COLOR_BUYBACK = '#34c5ff';
-const MAX_MARKERS_PER_SIDE_PER_DAY = 12;
+const COLOR_BUY = '#16a34a';
+const COLOR_SELL = '#ef4444';
+const COLOR_BUYBACK = '#2563eb';
+const COLOR_NET = '#6b8afd';
+const MAX_MARKERS_PER_SIDE_PER_DAY = 10;
+const OFFICIAL_MAIN_TYPES = new Set([
+  'official_wallet', 'team', 'investor', 'treasury', 'buyback', 'vesting',
+  'token_custodian', 'insider', 'official_allocation', 'ico_distribution'
+]);
 
 function formatNum(n, digits = 2) {
+  if (n === null || n === undefined || Number.isNaN(Number(n))) return '-';
   return Number(n || 0).toLocaleString(undefined, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits
   });
 }
 
+function formatUsd(n) {
+  if (n === null || n === undefined || Number.isNaN(Number(n))) return '-';
+  return `$${Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+}
+
+function formatPct(n, digits = 4) {
+  if (n === null || n === undefined || Number.isNaN(Number(n))) return '-';
+  return `${Number(n).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: digits
+  })}%`;
+}
+
 function shortAddr(addr) {
   if (!addr) return '-';
   return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+}
+
+function escapeHtml(v) {
+  return String(v ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function avatarText(label, rank) {
@@ -219,10 +375,34 @@ function avatarText(label, rank) {
 }
 
 function categoryText(cat) {
-  if (cat === 'whale_netflow') return 'Whale';
+  if (cat === 'whale_netflow') return 'Whale Netflow';
   if (cat === 'official_exchange') return 'Official/Team';
-  if (cat === 'buyback') return 'Buyback';
+  if (cat === 'buyback') return 'Buy Back';
   return cat;
+}
+
+function profileTypeText(profile) {
+  const t = profile.main_type || 'unknown';
+  if (t === 'whale') return '大户';
+  if (t === 'exchange_address') return '交易所地址';
+  if (OFFICIAL_MAIN_TYPES.has(t)) return '官方/团队';
+  return t;
+}
+
+function profileTypeClass(profile) {
+  const t = profile.main_type || 'unknown';
+  if (t === 'whale') return 'type-whale';
+  if (t === 'exchange_address' || profile.exchange_name) return 'type-exchange';
+  if (OFFICIAL_MAIN_TYPES.has(t)) return 'type-official';
+  return 'type-other';
+}
+
+function isOfficialProfile(profile) {
+  return OFFICIAL_MAIN_TYPES.has(profile.main_type || '');
+}
+
+function isExchangeProfile(profile) {
+  return profile.main_type === 'exchange_address' || Boolean(profile.exchange_name);
 }
 
 function getFilteredEvents() {
@@ -260,8 +440,8 @@ function buildMarkerSeries(candles, dailyEventsMap) {
   const minLow = Math.min(...lows);
   const maxHigh = Math.max(...highs);
   const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
-  const buybackBaseY = Math.max(minLow - range * 0.18, minLow * 0.02);
-  const buybackStepY = Math.max(range * 0.04, minLow * 0.01);
+  const buybackBaseY = Math.max(minLow - range * 0.24, minLow * 0.01);
+  const buybackStepY = Math.max(range * 0.028, minLow * 0.006);
 
   const buyPoints = [];
   const sellPoints = [];
@@ -276,35 +456,35 @@ function buildMarkerSeries(candles, dailyEventsMap) {
     const buybackEvents = events.filter(e => e.category === 'buyback');
 
     buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const y = candle.low * (1 - (0.025 + idx * 0.028));
+      const y = candle.low * (1 - (0.02 + idx * 0.024));
       buyPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
         labelTxt: avatarText(e.label, e.rank),
-        itemStyle: { color: COLOR_BUY, borderColor: '#1a3d0d', borderWidth: 1.2 },
-        symbolSize: 16 + Math.min(16, (e.amount_B || 0) * 10)
+        itemStyle: { color: COLOR_BUY, borderColor: '#166534', borderWidth: 1 },
+        symbolSize: 12 + Math.min(12, (e.amount_B || 0) * 8)
       });
     });
 
     sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
-      const y = candle.high * (1 + (0.025 + idx * 0.028));
+      const y = candle.high * (1 + (0.02 + idx * 0.024));
       sellPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
         labelTxt: avatarText(e.label, e.rank),
-        itemStyle: { color: COLOR_SELL, borderColor: '#61173e', borderWidth: 1.2 },
-        symbolSize: 16 + Math.min(16, (e.amount_B || 0) * 10)
+        itemStyle: { color: COLOR_SELL, borderColor: '#991b1b', borderWidth: 1 },
+        symbolSize: 12 + Math.min(12, (e.amount_B || 0) * 8)
       });
     });
 
-    buybackEvents.slice(0, 2).forEach((e, idx) => {
+    buybackEvents.slice(0, 3).forEach((e, idx) => {
       const markerY = buybackBaseY + idx * buybackStepY;
       buybackPoints.push({
         value: [date, markerY, e.amount_B || 0],
         event: e,
-        labelTxt: 'Buyback',
-        itemStyle: { color: COLOR_BUYBACK, borderColor: '#1d4ed8', borderWidth: 1 },
-        symbolSize: 10
+        labelTxt: 'Buy Back',
+        itemStyle: { color: COLOR_BUYBACK, borderColor: '#1e3a8a', borderWidth: 1 },
+        symbolSize: 8
       });
       buybackLinks.push([date, markerY, candle.low * 0.998]);
     });
@@ -315,7 +495,7 @@ function buildMarkerSeries(candles, dailyEventsMap) {
     sellPoints,
     buybackPoints,
     buybackLinks,
-    buybackAxisMin: buybackBaseY - buybackStepY * 0.8
+    buybackAxisMin: buybackBaseY - buybackStepY * 0.9
   };
 }
 
@@ -340,7 +520,7 @@ function buildTooltipHtml(params, dailyEventsMap) {
   for (const e of top) {
     const isBuy = e.direction === 'buy';
     const color = e.category === 'buyback' ? COLOR_BUYBACK : (isBuy ? COLOR_BUY : COLOR_SELL);
-    const sideText = e.category === 'buyback' ? 'BUYBACK' : (isBuy ? 'BUY' : 'SELL');
+    const sideText = e.category === 'buyback' ? 'BUY BACK' : (isBuy ? '链上流入' : '流入交易所');
     const amount = typeof e.amount_B === 'number' ? `${formatNum(e.amount_B, 3)}B` : (e.amount_usd ? `$${formatNum(e.amount_usd, 0)}` : '—');
     const ex = e.exchange ? ` → ${e.exchange}` : '';
     html += `<div style="display:flex;justify-content:space-between;gap:10px;margin-top:3px">
@@ -392,18 +572,98 @@ function renderWalletTable(events) {
     else row.sell += amount;
   }
 
-  const rows = Array.from(map.values()).sort((a, b) => b.count - a.count).slice(0, 40);
+  const rows = Array.from(map.values()).sort((a, b) => b.count - a.count).slice(0, 60);
   const body = document.getElementById('walletTableBody');
   body.innerHTML = rows.map(r => {
     const net = r.buy - r.sell;
     return `<tr>
-      <td>${r.label}</td>
-      <td class="addr">${r.address ? shortAddr(r.address) : '-'}</td>
-      <td>${r.category}</td>
+      <td>${escapeHtml(r.label)}</td>
+      <td class="addr">${escapeHtml(r.address || '-')}</td>
+      <td>${escapeHtml(r.category)}</td>
       <td>${r.count}</td>
       <td class="buy-text">${formatNum(r.buy, 3)}</td>
       <td class="sell-text">${formatNum(r.sell, 3)}</td>
       <td class="${net >= 0 ? 'buy-text' : 'sell-text'}">${net >= 0 ? '+' : ''}${formatNum(net, 3)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function getFilteredProfiles() {
+  const profiles = rawData.address_profiles || [];
+  const typeFilter = document.getElementById('profileTypeFilter').value;
+  const q = (document.getElementById('profileSearchInput').value || '').toLowerCase().trim();
+
+  return profiles
+    .filter(p => {
+      if (typeFilter === 'whale' && p.main_type !== 'whale') return false;
+      if (typeFilter === 'official' && !isOfficialProfile(p)) return false;
+      if (typeFilter === 'exchange' && !isExchangeProfile(p)) return false;
+      if (q) {
+        const bag = [
+          p.label,
+          p.address,
+          p.exchange_name,
+          ...(p.categories || []),
+          ...(p.source_tags || [])
+        ].join(' ').toLowerCase();
+        if (!bag.includes(q)) return false;
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      const ar = typeof a.rank === 'number' ? a.rank : 9999;
+      const br = typeof b.rank === 'number' ? b.rank : 9999;
+      if (ar !== br) return ar - br;
+      const ab = Number(a.current_balance_B || 0);
+      const bb = Number(b.current_balance_B || 0);
+      if (ab !== bb) return bb - ab;
+      return String(a.label || '').localeCompare(String(b.label || ''));
+    });
+}
+
+function renderProfileStats() {
+  const profiles = rawData.address_profiles || [];
+  const stats = rawData.address_profile_stats || {};
+  const whaleCount = profiles.filter(p => p.main_type === 'whale').length;
+  const officialCount = profiles.filter(isOfficialProfile).length;
+  const exchangeCount = profiles.filter(isExchangeProfile).length;
+
+  document.getElementById('profileStatTotal').textContent = String(stats.total_profiles || profiles.length);
+  document.getElementById('profileStatWhales').textContent = String(whaleCount);
+  document.getElementById('profileStatOfficial').textContent = String(officialCount);
+  document.getElementById('profileStatExchange').textContent = String(exchangeCount);
+  document.getElementById('profileStatWithBalance').textContent = String(stats.with_balance || profiles.filter(p => typeof p.current_balance_B === 'number').length);
+}
+
+function renderProfileTable() {
+  const rows = getFilteredProfiles();
+  const body = document.getElementById('profileTableBody');
+  body.innerHTML = rows.map(p => {
+    const net = Number(p.buy_amount_B || 0) - Number(p.sell_amount_B || 0);
+    const categories = (p.categories || []).join(', ');
+    const sources = (p.source_tags || []).join(', ');
+    const note = p.note ? String(p.note) : '-';
+    const noteShort = note.length > 110 ? `${note.slice(0, 110)}...` : note;
+    return `<tr>
+      <td>
+        <div>${escapeHtml(p.label || '-')}</div>
+        <div class="muted mono">${escapeHtml(categories || '-')}</div>
+      </td>
+      <td class="addr">${escapeHtml(p.address || '-')}</td>
+      <td>PUMP</td>
+      <td><span class="chip-inline ${profileTypeClass(p)}">${escapeHtml(profileTypeText(p))}</span></td>
+      <td>${escapeHtml(p.exchange_name || '-')}</td>
+      <td>${typeof p.rank === 'number' ? p.rank : '-'}</td>
+      <td class="mono">${formatNum(p.current_balance_B, 4)}</td>
+      <td>${formatPct(p.share_total_supply_pct, 4)}</td>
+      <td>${formatUsd(p.estimated_value_usd)}</td>
+      <td>${Number(p.event_count || 0)}</td>
+      <td class="buy-text mono">${formatNum(p.buy_amount_B, 4)}</td>
+      <td class="sell-text mono">${formatNum(p.sell_amount_B, 4)}</td>
+      <td class="${net >= 0 ? 'buy-text' : 'sell-text'} mono">${net >= 0 ? '+' : ''}${formatNum(net, 4)}</td>
+      <td class="mono">${formatNum(p.exchange_inflow_B, 4)}</td>
+      <td class="muted mono">${escapeHtml(sources || '-')}</td>
+      <td class="muted" title="${escapeHtml(note)}">${escapeHtml(noteShort)}</td>
     </tr>`;
   }).join('');
 }
@@ -414,7 +674,10 @@ function renderChart() {
   const dailyEventsMap = buildDailyEventMap(events);
   const dates = candles.map(c => c.date);
   const klineData = candles.map(c => [c.open, c.close, c.low, c.high]);
-  const volumes = candles.map(c => c.volume_usd || 0);
+  const volumes = candles.map(c => ({
+    value: c.volume_usd || 0,
+    itemStyle: { color: Number(c.close) >= Number(c.open) ? 'rgba(22,163,74,0.36)' : 'rgba(239,68,68,0.36)' }
+  }));
   const dailyNet = new Map((rawData.daily_summary || []).map(d => [d.date, d.net_amount_B || 0]));
   const netData = candles.map(c => dailyNet.get(c.date) || 0);
 
@@ -437,7 +700,7 @@ function renderChart() {
     legend: {
       top: 6,
       textStyle: { color: '#6b7280' },
-      data: ['Price', 'Volume', 'Daily Net(B)', 'Buy Marker', 'Sell Marker', 'Buyback Marker']
+      data: ['Price', 'Volume', 'Daily Net(B)', '链上流入标记(绿)', '流入交易所标记(红)', 'Buy Back(蓝)']
     },
     tooltip: {
       trigger: 'axis',
@@ -450,8 +713,8 @@ function renderChart() {
     },
     axisPointer: { link: [{ xAxisIndex: [0, 1] }] },
     grid: [
-      { left: 55, right: 20, top: 38, height: '62%' },
-      { left: 55, right: 20, top: '74%', height: '18%' }
+      { left: 58, right: 22, top: 38, height: '62%' },
+      { left: 58, right: 22, top: '74%', height: '18%' }
     ],
     xAxis: [
       {
@@ -477,7 +740,7 @@ function renderChart() {
         min: priceAxisMin,
         scale: true,
         axisLine: { lineStyle: { color: '#d1d5db' } },
-        axisLabel: { color: '#6b7280', formatter: v => v.toFixed(4) },
+        axisLabel: { color: '#6b7280', formatter: v => (v >= 1 ? v.toFixed(2) : v.toFixed(4)) },
         splitLine: { lineStyle: { color: 'rgba(15,23,42,0.07)' } }
       },
       {
@@ -519,7 +782,6 @@ function renderChart() {
         }
       },
       {
-        // Dashed anchor line from buyback marker to same-day candle.
         name: 'Buyback Link',
         type: 'custom',
         silent: true,
@@ -536,7 +798,7 @@ function renderChart() {
           return {
             type: 'line',
             shape: { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1] },
-            style: { stroke: '#3b82f6', lineWidth: 1, lineDash: [4, 3], opacity: 0.85 }
+            style: { stroke: '#3b82f6', lineWidth: 0.9, lineDash: [2, 3], opacity: 0.85 }
           };
         }
       },
@@ -545,8 +807,7 @@ function renderChart() {
         type: 'bar',
         xAxisIndex: 1,
         yAxisIndex: 1,
-        data: volumes,
-        itemStyle: { color: '#94a3b8', opacity: 0.45 }
+        data: volumes
       },
       {
         name: 'Daily Net(B)',
@@ -556,38 +817,40 @@ function renderChart() {
         data: netData,
         smooth: true,
         showSymbol: false,
-        lineStyle: { color: '#9b7bff', width: 1.4 }
+        lineStyle: { color: COLOR_NET, width: 1.5 }
       },
       {
-        name: 'Buy Marker',
+        name: '链上流入标记(绿)',
         type: 'scatter',
         data: buyPoints,
         symbol: 'circle',
         zlevel: 4,
         label: {
           show: true,
-          color: '#0f1a06',
-          fontSize: 9,
+          color: '#ffffff',
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: 8,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
       },
       {
-        name: 'Sell Marker',
+        name: '流入交易所标记(红)',
         type: 'scatter',
         data: sellPoints,
         symbol: 'circle',
         zlevel: 4,
         label: {
           show: true,
-          color: '#2f0c1f',
-          fontSize: 9,
+          color: '#ffffff',
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: 8,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
       },
       {
-        name: 'Buyback Marker',
+        name: 'Buy Back(蓝)',
         type: 'scatter',
         data: buybackPoints,
         xAxisIndex: 0,
@@ -596,13 +859,16 @@ function renderChart() {
         zlevel: 5,
         label: {
           show: true,
-          position: 'top',
-          color: '#ffffff',
-          backgroundColor: '#1d4ed8',
+          position: 'bottom',
+          distance: 1,
+          color: '#1e3a8a',
+          backgroundColor: '#eff6ff',
+          borderColor: '#93c5fd',
+          borderWidth: 1,
           borderRadius: 3,
-          padding: [2, 4],
-          fontSize: 10,
-          fontWeight: 600,
+          padding: [1, 3],
+          fontSize: 9,
+          fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
       }
@@ -623,6 +889,8 @@ function bindControls() {
 
   document.getElementById('minAmount').addEventListener('change', renderChart);
   document.getElementById('searchInput').addEventListener('input', renderChart);
+  document.getElementById('profileTypeFilter').addEventListener('change', renderProfileTable);
+  document.getElementById('profileSearchInput').addEventListener('input', renderProfileTable);
   window.addEventListener('resize', () => chart && chart.resize());
 }
 
@@ -630,9 +898,12 @@ async function init() {
   const resp = await fetch('../data/pump_behavior_chart_data.json');
   if (!resp.ok) throw new Error(`load failed: ${resp.status}`);
   rawData = await resp.json();
+  const profileCount = (rawData.address_profile_stats && rawData.address_profile_stats.total_profiles) || (rawData.address_profiles || []).length;
   document.getElementById('subtitle').textContent =
-    `Price: ${rawData.metadata.price_source} | Events: ${rawData.event_stats.total_events} | Generated: ${rawData.metadata.generated_at}`;
+    `Price: ${rawData.metadata.price_source} | Events: ${rawData.event_stats.total_events} | Profiles: ${profileCount} | Generated: ${rawData.metadata.generated_at}`;
   bindControls();
+  renderProfileStats();
+  renderProfileTable();
   renderChart();
 }
 

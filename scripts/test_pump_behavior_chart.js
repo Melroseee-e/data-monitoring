@@ -42,15 +42,23 @@ async function run() {
     await page.waitForTimeout(1200);
     await page.screenshot({ path: path.join(outDir, '05_search_hyperunit.png'), fullPage: true });
 
+    await page.selectOption('#profileTypeFilter', 'whale');
+    await page.waitForTimeout(900);
+    await page.screenshot({ path: path.join(outDir, '06_profile_filter_whale.png'), fullPage: true });
+
+    await page.fill('#profileSearchInput', 'Coinbase');
+    await page.waitForTimeout(900);
+    await page.screenshot({ path: path.join(outDir, '07_profile_search_coinbase.png'), fullPage: true });
+
     const chartBox = await page.locator('#mainChart').boundingBox();
     if (chartBox) {
       await page.mouse.move(chartBox.x + chartBox.width * 0.66, chartBox.y + chartBox.height * 0.34);
       await page.waitForTimeout(900);
-      await page.screenshot({ path: path.join(outDir, '06_hover_tooltip.png'), fullPage: true });
+      await page.screenshot({ path: path.join(outDir, '08_hover_tooltip.png'), fullPage: true });
     }
 
     console.log('Screenshots generated at:', outDir);
-    console.log('Checked interactions: toggle category, min amount filter, buyback-only view, search, hover tooltip.');
+    console.log('Checked interactions: toggle category, min amount filter, buyback-only view, chart search, profile type/search filters, hover tooltip.');
   } finally {
     await browser.close();
   }

@@ -28,6 +28,7 @@ WHALE_CHART_FILE = DATA_DIR / "pump_whale_chart_data.json"
 TEAM_ANALYSIS_FILE = DATA_DIR / "pump_team_analysis.json"
 BUYBACK_ANALYSIS_FILE = DATA_DIR / "pump_buyback_analysis.json"
 ADDRESSES_FILE = DATA_DIR / "pump_addresses.json"
+WHALE_ANALYSIS_FILE = DATA_DIR / "pump_whale_analysis.json"
 OUTPUT_FILE = DATA_DIR / "pump_behavior_chart_data.json"
 
 COINGECKO_OHLC_URL = "https://api.coingecko.com/api/v3/coins/pump-fun/ohlc"
@@ -245,6 +246,7 @@ def build_team_exchange_events(team_analysis: dict[str, Any], wallet_registry: d
                     "confidence": "confirmed",
                     "count": 0,
                     "signatures": [],
+                    "exchange_addresses": set(),
                 }
             agg[key]["amount_B"] += amount_b
             agg[key]["amount_signed_B"] -= amount_b
@@ -252,11 +254,15 @@ def build_team_exchange_events(team_analysis: dict[str, Any], wallet_registry: d
             sig = tx.get("signature")
             if sig and len(agg[key]["signatures"]) < 5:
                 agg[key]["signatures"].append(sig)
+            exch_addr = tx.get("pump_destination")
+            if exch_addr:
+                agg[key]["exchange_addresses"].add(str(exch_addr))
 
     events = []
     for item in agg.values():
         item["amount_B"] = round(item["amount_B"], 6)
         item["amount_signed_B"] = round(item["amount_signed_B"], 6)
+        item["exchange_addresses"] = sorted(item["exchange_addresses"])
         events.append(item)
     return events
 
@@ -476,16 +482,265 @@ def build_daily_summary(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
+def infer_exchange_name(label: str | None, fallback: str | None = None) -> str | None:
+    if fallback:
+        return fallback
+    s = (label or "").strip()
+    if not s:
+        return None
+    if s.lower().startswith("cex:"):
+        return s.split(":", 1)[1].strip()
+    keys = [
+        "Binance", "Bybit", "OKX", "Kraken", "Coinbase", "Bitget", "Gate",
+        "KuCoin", "HTX", "MEXC", "Wintermute", "Robinhood", "Fireblocks",
+    ]
+    for k in keys:
+        if k.lower() in s.lower():
+            return k
+    return None
+
+
+def profile_sort_key(row: dict[str, Any]) -> tuple[int, int, str]:
+    order = {
+        "whale": 0,
+        "official_wallet": 1,
+        "team": 2,
+        "investor": 3,
+        "treasury": 4,
+        "buyback": 5,
+        "vesting": 6,
+        "exchange_address": 7,
+        "unknown": 9,
+    }
+    t = row.get("main_type") or "unknown"
+    rank = row.get("rank")
+    rank_v = rank if isinstance(rank, int) else 999999
+    return (order.get(t, 8), rank_v, str(row.get("label") or ""))
+
+
+def build_address_profiles(
+    wallet_registry: dict[str, dict[str, Any]],
+    addresses_data: dict[str, Any],
+    team_analysis: dict[str, Any],
+    whale_analysis: dict[str, Any],
+    in_range_events: list[dict[str, Any]],
+    latest_price_usd: float,
+) -> list[dict[str, Any]]:
+    profiles: dict[str, dict[str, Any]] = {}
+
+    def upsert(
+        address: str | None,
+        *,
+        label: str | None = None,
+        main_type: str | None = None,
+        categories: list[str] | None = None,
+        exchange_name: str | None = None,
+        current_balance_B: float | None = None,
+        rank: int | None = None,
+        source_tag: str | None = None,
+        note: str | None = None,
+    ) -> None:
+        if not address:
+            return
+        address = str(address)
+        row = profiles.setdefault(address, {
+            "address": address,
+            "short_address": short_addr(address),
+            "label": "",
+            "main_type": "unknown",
+            "categories": set(),
+            "source_tags": set(),
+            "exchange_name": None,
+            "current_balance_B": None,
+            "rank": None,
+            "note": None,
+            "event_count": 0,
+            "buy_amount_B": 0.0,
+            "sell_amount_B": 0.0,
+            "exchange_inflow_B": 0.0,
+        })
+
+        if label and (not row["label"] or row["label"] == "无标签" or str(row["label"]).startswith("Top Whale #")):
+            row["label"] = label
+
+        if main_type and (row["main_type"] in ("unknown", "") or main_type == "whale"):
+            row["main_type"] = main_type
+
+        if categories:
+            row["categories"].update([c for c in categories if c])
+            if row["main_type"] == "unknown":
+                row["main_type"] = categories[0]
+
+        if exchange_name and not row["exchange_name"]:
+            row["exchange_name"] = exchange_name
+
+        if isinstance(current_balance_B, (int, float)):
+            v = float(current_balance_B)
+            if row["current_balance_B"] is None or abs(v) > abs(float(row["current_balance_B"])):
+                row["current_balance_B"] = v
+
+        if isinstance(rank, int) and rank > 0 and (row["rank"] is None or rank < row["rank"]):
+            row["rank"] = rank
+
+        if source_tag:
+            row["source_tags"].add(source_tag)
+
+        if note and not row["note"]:
+            row["note"] = note
+
+    # 1) Registry from chart/event build path
+    for addr, info in wallet_registry.items():
+        cats = info.get("categories") or []
+        ex = infer_exchange_name(info.get("label"))
+        upsert(
+            addr,
+            label=info.get("label"),
+            main_type=info.get("primary_category"),
+            categories=list(cats),
+            exchange_name=ex,
+            current_balance_B=info.get("current_balance_B"),
+            rank=info.get("rank"),
+            source_tag="wallet_registry",
+        )
+
+    # 2) Official address book
+    for addr, info in (addresses_data.get("addresses") or {}).items():
+        t = str(info.get("type") or "official_wallet")
+        bal = info.get("balance")
+        bal_b = (float(bal) / 1e9) if isinstance(bal, (int, float)) else None
+        ex = infer_exchange_name(info.get("label"))
+        upsert(
+            addr,
+            label=info.get("label"),
+            main_type=t if t != "official_allocation" else "official_wallet",
+            categories=[t, "official_wallet"],
+            exchange_name=ex,
+            current_balance_B=bal_b,
+            source_tag="pump_addresses",
+            note=info.get("notes"),
+        )
+
+    # 3) Whale analysis top-holders (contains CEX owner addresses in top20)
+    for h in (whale_analysis.get("top_holders_classified") or []):
+        cat = str(h.get("category") or "unknown")
+        lbl = str(h.get("label") or "")
+        ex = infer_exchange_name(lbl)
+        main_type = "exchange_address" if cat == "cex" else cat
+        extra_cats = [cat]
+        if cat == "cex":
+            extra_cats.append("exchange_address")
+        upsert(
+            h.get("owner"),
+            label=lbl,
+            main_type=main_type,
+            categories=extra_cats,
+            exchange_name=ex,
+            current_balance_B=h.get("balance_B"),
+            rank=h.get("rank"),
+            source_tag="whale_analysis_top_holders",
+        )
+
+    # 4) Exchange deposit destination addresses from classified team txs
+    exchange_addr_inflow: dict[str, float] = defaultdict(float)
+    for _wallet_addr, info in (team_analysis.get("wallets") or {}).items():
+        for tx in (info.get("all_transactions_classified") or []):
+            if not tx.get("to_cex"):
+                continue
+            dest = tx.get("pump_destination")
+            ex = tx.get("cex_name")
+            amt_b = float(tx.get("pump_out", 0.0) or 0.0) / 1e9
+            if dest:
+                exchange_addr_inflow[str(dest)] += amt_b
+                upsert(
+                    str(dest),
+                    label=f"{ex or 'Unknown'} Deposit Address",
+                    main_type="exchange_address",
+                    categories=["exchange_address", "exchange"],
+                    exchange_name=str(ex) if ex else None,
+                    source_tag="team_classified_tx_destination",
+                )
+
+    # 5) Reported event explicit exchange addresses
+    for item in (addresses_data.get("news_reported_events") or []):
+        ex_addr = item.get("bitget_address")
+        ex = item.get("exchange")
+        amt_b = float(item.get("amount", 0.0) or 0.0) / 1e9 if isinstance(item.get("amount"), (int, float)) else 0.0
+        if ex_addr:
+            exchange_addr_inflow[str(ex_addr)] += amt_b
+            upsert(
+                str(ex_addr),
+                label=f"{ex or 'Unknown'} Deposit Address",
+                main_type="exchange_address",
+                categories=["exchange_address", "exchange"],
+                exchange_name=str(ex) if ex else None,
+                source_tag="reported_event_exchange_address",
+            )
+
+    # 6) Event statistics by source wallet
+    by_addr_stats: dict[str, dict[str, float]] = defaultdict(lambda: {
+        "event_count": 0.0, "buy_amount_B": 0.0, "sell_amount_B": 0.0
+    })
+    for e in in_range_events:
+        addr = e.get("address")
+        if not addr:
+            continue
+        st = by_addr_stats[str(addr)]
+        st["event_count"] += 1
+        amt = float(e.get("amount_B", 0.0) or 0.0)
+        if e.get("direction") == "buy":
+            st["buy_amount_B"] += amt
+        else:
+            st["sell_amount_B"] += amt
+
+    # Finalize
+    out = []
+    total_supply_B = 1000.0
+    for addr, row in profiles.items():
+        st = by_addr_stats.get(addr)
+        if st:
+            row["event_count"] = int(st["event_count"])
+            row["buy_amount_B"] = round(st["buy_amount_B"], 6)
+            row["sell_amount_B"] = round(st["sell_amount_B"], 6)
+        row["exchange_inflow_B"] = round(float(exchange_addr_inflow.get(addr, 0.0)), 6)
+
+        bal_b = row.get("current_balance_B")
+        if isinstance(bal_b, (int, float)):
+            row["share_total_supply_pct"] = round(float(bal_b) / total_supply_B * 100, 6)
+            row["estimated_value_usd"] = round(float(bal_b) * 1e9 * latest_price_usd, 2)
+        else:
+            row["share_total_supply_pct"] = None
+            row["estimated_value_usd"] = None
+
+        if not row.get("exchange_name"):
+            row["exchange_name"] = infer_exchange_name(row.get("label"))
+        if row.get("exchange_name"):
+            row["categories"].add("exchange")
+            if row["main_type"] == "unknown":
+                row["main_type"] = "exchange_address"
+
+        row["categories"] = sorted(row["categories"])
+        row["source_tags"] = sorted(row["source_tags"])
+        if not row.get("label"):
+            row["label"] = "Unlabeled Address"
+
+        out.append(row)
+
+    out.sort(key=profile_sort_key)
+    return out
+
+
 def main() -> None:
     whale_chart = load_json(WHALE_CHART_FILE)
     team_analysis = load_json(TEAM_ANALYSIS_FILE)
     buyback_analysis = load_json(BUYBACK_ANALYSIS_FILE)
     addresses_data = load_json(ADDRESSES_FILE)
+    whale_analysis = load_json(WHALE_ANALYSIS_FILE)
 
     candles, price_source = fetch_price_series()
     if not candles:
         raise RuntimeError("No price candles fetched from CoinGecko.")
     price_dates = {c["date"] for c in candles}
+    latest_price_usd = float(candles[-1]["close"])
 
     wallet_registry: dict[str, dict[str, Any]] = {}
 
@@ -518,9 +773,20 @@ def main() -> None:
             w.get("label", ""),
         ),
     )
+    address_profiles = build_address_profiles(
+        wallet_registry=wallet_registry,
+        addresses_data=addresses_data,
+        team_analysis=team_analysis,
+        whale_analysis=whale_analysis,
+        in_range_events=in_range_events,
+        latest_price_usd=latest_price_usd,
+    )
 
     by_category = Counter(str(e.get("category")) for e in in_range_events)
     by_direction = Counter(str(e.get("direction")) for e in in_range_events)
+    profile_main_type_counts = Counter(p.get("main_type") or "unknown" for p in address_profiles)
+    profile_exchange_count = sum(1 for p in address_profiles if p.get("exchange_name"))
+    profile_with_balance_count = sum(1 for p in address_profiles if isinstance(p.get("current_balance_B"), (int, float)))
 
     output = {
         "metadata": {
@@ -539,6 +805,7 @@ def main() -> None:
                 str(TEAM_ANALYSIS_FILE.relative_to(BASE_DIR)),
                 str(BUYBACK_ANALYSIS_FILE.relative_to(BASE_DIR)),
                 str(ADDRESSES_FILE.relative_to(BASE_DIR)),
+                str(WHALE_ANALYSIS_FILE.relative_to(BASE_DIR)),
             ],
             "dropped_events_outside_price_range": dropped_events,
         },
@@ -550,6 +817,14 @@ def main() -> None:
             "count": len(candles),
         },
         "wallets": wallet_list,
+        "address_profiles": address_profiles,
+        "address_profile_stats": {
+            "total_profiles": len(address_profiles),
+            "with_exchange_name": profile_exchange_count,
+            "with_balance": profile_with_balance_count,
+            "by_main_type": dict(profile_main_type_counts),
+            "latest_price_usd": latest_price_usd,
+        },
         "events": in_range_events,
         "daily_summary": daily_summary,
         "event_stats": {
@@ -568,6 +843,7 @@ def main() -> None:
     print(f"Output: {OUTPUT_FILE}")
     print(f"Candles: {len(candles)} ({candles[0]['date']} -> {candles[-1]['date']})")
     print(f"Wallets tracked: {len(wallet_list)}")
+    print(f"Address profiles: {len(address_profiles)}")
     print(f"Events in range: {len(in_range_events)}")
     print(f"Dropped events (out of range): {dropped_events}")
     print(f"Event categories: {dict(by_category)}")
