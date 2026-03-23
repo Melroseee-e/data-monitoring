@@ -497,6 +497,7 @@ let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulativ
 let manualResetUntil = 0;
 let isSankeyExpanded = false;
 let lastFlowPanelData = null;
+let forceNextSankeyRedraw = false;
 
 // Chart JS Defaults for Terminal
 Chart.defaults.color = '#A1A1AA';
@@ -730,6 +731,7 @@ function initTheme() {
     const isLight = body.classList.contains('theme-light');
     localStorage.setItem('terminalTheme', isLight ? 'light' : 'dark');
     toggleBtn.innerText = isLight ? '🌙 Dark' : '☀️ Light';
+    forceNextSankeyRedraw = true;
     if (selectedToken) { updateDashboard(); }
   });
 }
@@ -929,15 +931,17 @@ function getFullTokenFlowData(token, level = currentTimeLevel) {
   return fullAgg;
 }
 
-function syncFlowPanels(data) {
+function syncFlowPanels(data, options = {}) {
   let resolved = data;
   if (!hasRenderableFlowData(resolved)) {
     const snapshotAgg = getTokenSnapshotFlowData(selectedToken);
     if (hasRenderableFlowData(snapshotAgg)) resolved = snapshotAgg;
   }
+  const forceSankeyRedraw = Boolean(options.forceSankeyRedraw) || forceNextSankeyRedraw;
+  forceNextSankeyRedraw = false;
   lastFlowPanelData = resolved || { exchanges: {} };
   updateExchangeTable(lastFlowPanelData);
-  updateSankey(lastFlowPanelData);
+  updateSankey(lastFlowPanelData, { forceRedraw: forceSankeyRedraw });
 }
     
 
@@ -1037,7 +1041,7 @@ function updateExchangeOverall(totals) {
 function buildDailyTrendSeries(token) {
   let sourceData = Array.isArray(dailyData) ? dailyData : null;
   const hasDataInDaily = Array.isArray(dailyData) && dailyData.some(
-    d => d.tokens?.[token] && ((d.tokens[token].total_inflow || 0) > 0 || (d.tokens[token].total_outflow || 0) > 0)
+    d => Boolean(d.tokens?.[token])
   );
   if (!hasDataInDaily && Array.isArray(historyData)) sourceData = historyData;
   if (!sourceData || !sourceData.length) return null;
@@ -1055,10 +1059,11 @@ function buildDailyTrendSeries(token) {
   sourceData.forEach(entry => {
     const d = parsePointTime(entry.date || entry.timestamp);
     if (!d) return;
+    const tData = entry.tokens?.[token];
+    if (!tData) return;
     const day = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
     const key = day.getTime();
     if (!dailyBuckets.has(key)) dailyBuckets.set(key, { inflow: 0, outflow: 0 });
-    const tData = entry.tokens?.[token];
     dailyBuckets.get(key).inflow += Number(tData?.total_inflow || 0);
     dailyBuckets.get(key).outflow += Number(tData?.total_outflow || 0);
     if (minDay === null || key < minDay) minDay = key;
@@ -1303,7 +1308,8 @@ function updateTrendChart(token) {
   });
 }
 
-function updateSankey(data) {
+function updateSankey(data, options = {}) {
+  const forceRedraw = Boolean(options.forceRedraw);
   const sankeyDiv = document.getElementById('sankeyChart');
   const isLight = document.body.classList.contains('theme-light');
   const sankeyTextColor = isLight ? '#4B5563' : '#D1D5DB';
@@ -1511,7 +1517,11 @@ function updateSankey(data) {
 
   // Do not clear innerHTML before Plotly.react.
   // Clearing can leave the graph div with data but without rebuilt SVG after relayout races.
-  const hasExistingPlot = !!sankeyDiv.querySelector('.plot-container');
+  if (forceRedraw) {
+    try { Plotly.purge(sankeyDiv); } catch (_) {}
+    sankeyDiv.innerHTML = '';
+  }
+  const hasExistingPlot = !forceRedraw && !!sankeyDiv.querySelector('.plot-container');
   if (hasExistingPlot) {
     Plotly.react(sankeyDiv, plotData, layout, {displayModeBar: false, responsive: true, hovermode: 'closest'});
   } else {
