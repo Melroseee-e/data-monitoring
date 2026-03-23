@@ -729,11 +729,11 @@ function renderChart() {
     const buybackEvents = events.filter(e => e.category === 'buyback');
 
     // Dynamic offset based on price range
-    const step = range * 0.035; 
+    const step = range * 0.055; 
 
     buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
       const y = candle.low - (step * (idx + 0.5));
-      const size = 15 + Math.min(6, (e.amount_B || 0) * 4);
+      const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
       buyPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
@@ -745,7 +745,7 @@ function renderChart() {
 
     sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
       const y = candle.high + (step * (idx + 0.5));
-      const size = 15 + Math.min(6, (e.amount_B || 0) * 4);
+      const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
       sellPoints.push({
         value: [date, y, e.amount_B || 0],
         event: e,
@@ -760,9 +760,9 @@ function renderChart() {
       buybackPoints.push({
         value: [date, markerY, e.amount_B || 0],
         event: e,
-        labelTxt: 'BB',
+        labelTxt: 'Buy Back',
         itemStyle: { color: COLOR_BUYBACK, borderColor: '#FFFFFF', borderWidth: 1.5 },
-        symbolSize: 18
+        symbolSize: [60, 24]
       });
       buybackLinks.push([date, markerY, candle.low]);
     });
@@ -945,7 +945,7 @@ function renderChart() {
           position: 'inside',
           color: '#ffffff',
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: 8.5,
+          fontSize: 10.5,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
@@ -962,7 +962,7 @@ function renderChart() {
           position: 'inside',
           color: '#ffffff',
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: 8.5,
+          fontSize: 10.5,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
@@ -973,8 +973,8 @@ function renderChart() {
         data: buybackPoints,
         xAxisIndex: 0,
         yAxisIndex: 0,
-        symbol: 'path://M 0,0 L 4,6 L 12,6 A 3,3 0 0,1 15,9 L 15,21 A 3,3 0 0,1 12,24 L -12,24 A 3,3 0 0,1 -15,21 L -15,9 A 3,3 0 0,1 -12,6 L -4,6 Z',
-        symbolOffset: [0, 12],
+        symbol: 'path://M 0,0 L 6,8 L 36,8 A 3,3 0 0,1 39,11 L 39,26 A 3,3 0 0,1 36,29 L -36,29 A 3,3 0 0,1 -39,26 L -39,11 A 3,3 0 0,1 -36,8 L -6,8 Z',
+        symbolOffset: [0, 14],
         zlevel: 5,
         itemStyle: { color: COLOR_BUYBACK },
         label: {
@@ -983,7 +983,7 @@ function renderChart() {
           offset: [0, 4],
           color: '#ffffff',
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: 8.5,
+          fontSize: 10.5,
           fontWeight: 700,
           formatter: p => p.data.labelTxt || ''
         }
