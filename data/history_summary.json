@@ -1,27 +1,5 @@
 [
   {
-    "timestamp": "2026-03-13T22:00:00Z",
-    "tokens": {
-      "PUMP": {
-        "total_inflow": 44418984.997995004,
-        "total_outflow": 27965771.093,
-        "net_flow": 16453213.904995006,
-        "exchanges": {
-          "Gate.io": {
-            "inflow": 19999759.0,
-            "outflow": 0,
-            "net_flow": 19999759.0
-          },
-          "OKX": {
-            "inflow": 24419225.997995,
-            "outflow": 27965771.093,
-            "net_flow": -3546545.0950049995
-          }
-        }
-      }
-    }
-  },
-  {
     "timestamp": "2026-03-13T23:00:00Z",
     "tokens": {
       "PUMP": {
@@ -23426,6 +23404,123 @@
             "inflow": 13580728.0,
             "outflow": 0.0,
             "net_flow": 13580728.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-23T08:42:52Z",
+    "tokens": {
+      "UAI": {
+        "total_inflow": 521.0382,
+        "total_outflow": 1484.0416,
+        "net_flow": -963.0034,
+        "exchanges": {
+          "Binance": {
+            "inflow": 521.0382,
+            "outflow": 1484.0416,
+            "net_flow": -963.0034
+          }
+        }
+      },
+      "BIRB": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "AZTEC": {
+        "total_inflow": 90000.0,
+        "total_outflow": 103049.2098,
+        "net_flow": -13049.2098,
+        "exchanges": {
+          "Bybit": {
+            "inflow": 90000.0,
+            "outflow": 90765.4598,
+            "net_flow": -765.4598
+          },
+          "MEXC": {
+            "inflow": 0.0,
+            "outflow": 12283.75,
+            "net_flow": -12283.75
+          }
+        }
+      },
+      "TRIA": {
+        "total_inflow": 0.0,
+        "total_outflow": 4293.8211,
+        "net_flow": -4293.8211,
+        "exchanges": {
+          "Binance": {
+            "inflow": 0.0,
+            "outflow": 4293.8211,
+            "net_flow": -4293.8211
+          }
+        }
+      },
+      "SKR": {
+        "total_inflow": 0.0,
+        "total_outflow": 3067.9,
+        "net_flow": -3067.9,
+        "exchanges": {
+          "Backpack": {
+            "inflow": 0.0,
+            "outflow": 3067.9,
+            "net_flow": -3067.9
+          }
+        }
+      },
+      "GWEI": {
+        "total_inflow": 35597.4654,
+        "total_outflow": 0.0,
+        "net_flow": 35597.4654,
+        "exchanges": {
+          "Bitget": {
+            "inflow": 30918.8184,
+            "outflow": 0.0,
+            "net_flow": 30918.8184
+          },
+          "LBank": {
+            "inflow": 4678.647,
+            "outflow": 0.0,
+            "net_flow": 4678.647
+          }
+        }
+      },
+      "SPACE": {
+        "total_inflow": 0,
+        "total_outflow": 0,
+        "net_flow": 0
+      },
+      "PUMP": {
+        "total_inflow": 52731240.6198,
+        "total_outflow": 41963238.4515,
+        "net_flow": 10768002.1683,
+        "exchanges": {
+          "Bybit": {
+            "inflow": 266696.8045,
+            "outflow": 0.0,
+            "net_flow": 266696.8045
+          },
+          "Gate.io": {
+            "inflow": 13039835.1833,
+            "outflow": 824229.2506,
+            "net_flow": 12215605.9327
+          },
+          "Kraken": {
+            "inflow": 1600.0,
+            "outflow": 0.0,
+            "net_flow": 1600.0
+          },
+          "OKX": {
+            "inflow": 0.0,
+            "outflow": 39248083.0,
+            "net_flow": -39248083.0
+          },
+          "Wintermute": {
+            "inflow": 39423108.632,
+            "outflow": 1890926.2009,
+            "net_flow": 37532182.4311
           }
         }
       }
