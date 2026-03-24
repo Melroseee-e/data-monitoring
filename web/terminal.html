@@ -496,6 +496,7 @@ let currentTimeLevel = 'daily'; // 'daily' or 'hourly'
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let manualResetUntil = 0;
 let suppressNextRelayoutSync = false;
+const HOURLY_VISUAL_RIGHT_PAD_MS = 12 * 60 * 1000;
 let isSankeyExpanded = false;
 let lastFlowPanelData = null;
 let forceNextSankeyRedraw = false;
@@ -1261,7 +1262,8 @@ function updateTrendChart(token) {
     if (!Number.isFinite(end.getTime())) return null;
     const start = new Date(end);
     start.setDate(start.getDate() - 3);
-    return { start, end };
+    const visualEnd = new Date(end.getTime() + HOURLY_VISUAL_RIGHT_PAD_MS);
+    return { start, end, visualEnd };
   };
 
   const isHourlyRangeAligned = (range) => {
@@ -1271,7 +1273,7 @@ function updateTrendChart(token) {
     const currentStart = new Date(layoutRange[0]).getTime();
     const currentEnd = new Date(layoutRange[1]).getTime();
     const targetStart = range.start.getTime();
-    const targetEnd = range.end.getTime();
+    const targetEnd = (range.visualEnd || range.end).getTime();
     if (!Number.isFinite(currentStart) || !Number.isFinite(currentEnd)) return false;
     return Math.abs(currentStart - targetStart) <= 1000 && Math.abs(currentEnd - targetEnd) <= 1000;
   };
@@ -1286,7 +1288,7 @@ function updateTrendChart(token) {
     suppressNextRelayoutSync = true;
     const relayoutResult = Plotly.relayout(chartDiv, {
       'xaxis.range[0]': range.start.toISOString(),
-      'xaxis.range[1]': range.end.toISOString(),
+      'xaxis.range[1]': (range.visualEnd || range.end).toISOString(),
       'yaxis.autorange': true
     });
     if (relayoutResult && typeof relayoutResult.finally === 'function') {
