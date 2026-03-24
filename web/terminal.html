@@ -496,7 +496,7 @@ let currentTimeLevel = 'daily'; // 'daily' or 'hourly'
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let manualResetUntil = 0;
 let suppressNextRelayoutSync = false;
-const HOURLY_VISUAL_RIGHT_PAD_MS = 12 * 60 * 1000;
+const HOURLY_VISUAL_RIGHT_PAD_MS = 0;
 let isSankeyExpanded = false;
 let lastFlowPanelData = null;
 let forceNextSankeyRedraw = false;
@@ -1224,7 +1224,7 @@ function updateTrendChart(token) {
     autosize: true, barmode: 'relative', paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
     dragmode: 'zoom',
     font: { family: "'JetBrains Mono', monospace", color: textColor, size: 11 },
-    margin: { l: 60, r: 20, t: 20, b: 20 },
+    margin: { l: 60, r: 28, t: 20, b: 20 },
     legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
     hovermode: 'x unified',
     hoverlabel: {
