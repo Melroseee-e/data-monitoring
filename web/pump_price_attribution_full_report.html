@@ -398,7 +398,7 @@ tbody tr:hover td { background: rgba(255,255,255,0.62); }
           <h2 class="section-title">官方市场卖压</h2>
           <div class="section-desc">把已确认的官方或官方关联市场化供给单独拆出来，避免和一般大户行为混在一起。</div>
         </div>
-        <div class="tag danger">官方 overhang</div>
+        <div class="tag danger">官方抛压悬顶</div>
       </div>
       <div class="grid-4" id="officialCards"></div>
       <div class="table-card" style="margin-top:14px">
@@ -519,7 +519,7 @@ tbody tr:hover td { background: rgba(255,255,255,0.62); }
       <div class="section-head">
         <div>
           <h2 class="section-title">事件窗口分析</h2>
-          <div class="section-desc">把 buyback milestone、官方卖压事件、59 大户样本净流和事后收益放到同一个事件窗里看。</div>
+          <div class="section-desc">把回购里程碑、官方卖压事件、59 大户样本净流和事后收益放到同一个事件窗里看。</div>
         </div>
         <div class="tag warn">T+3 / T+7</div>
       </div>
@@ -780,8 +780,8 @@ function localizeLabel(value) {
     .replace("Coinbase-Connected PUMP Holder", "Coinbase 关联持仓地址")
     .replace("Hyperunit: Hot Wallet", "Hyperunit 热钱包")
     .replace(/Top Whale #/g, "头部鲸鱼 #")
-    .replace("Fireblocks Custody", "Fireblocks 托管")
-    .replace("PUMP Team/Investor Squads Vault", "PUMP 团队/投资人 Squads Vault")
+    .replace("Fireblocks Custody", "Fireblocks 托管地址")
+    .replace("PUMP Team/Investor Squads Vault", "PUMP 团队/投资人 Squads 金库")
     .replace("Wallet A", "钱包 A")
     .replace("(SELLING → OKX)", "（已确认流向 OKX）")
     .replace("(ACTIVE SELLING)", "（持续卖压）")
@@ -795,14 +795,14 @@ function localizeWindowLabel(value) {
   if (!value) return "—";
   return String(value)
     .replace("Observable Buyback Start", "可观测回购启动")
-    .replace("Vault #4 -> OKX", "Vault #4 -> OKX")
+    .replace("Vault #4 -> OKX", "金库 #4 -> OKX")
     .replace("Team Wallet Distribution Start", "团队钱包分发启动")
     .replace("Investor #1 -> Kraken", "投资人钱包 #1 -> Kraken")
     .replace("Weekly Buyback Milestone", "周度回购里程碑")
-    .replace("Vault #5 -> Bitget Tranche 1", "Vault #5 -> Bitget 第 1 批")
-    .replace("Vault #5 -> Bitget Tranche 2", "Vault #5 -> Bitget 第 2 批")
-    .replace("Vault #5 -> Bitget Tranche 3", "Vault #5 -> Bitget 第 3 批")
-    .replace("Vault #5 -> Bitget Tranche 4", "Vault #5 -> Bitget 第 4 批");
+    .replace("Vault #5 -> Bitget Tranche 1", "金库 #5 -> Bitget 第 1 批")
+    .replace("Vault #5 -> Bitget Tranche 2", "金库 #5 -> Bitget 第 2 批")
+    .replace("Vault #5 -> Bitget Tranche 3", "金库 #5 -> Bitget 第 3 批")
+    .replace("Vault #5 -> Bitget Tranche 4", "金库 #5 -> Bitget 第 4 批");
 }
 
 function localizeGenericLine(value) {
@@ -818,6 +818,8 @@ function localizeGenericLine(value) {
     .replace("Tier 1: confirmed on-chain official pressure from structured address tracing and signature-level buyback verification.", "Tier 1：结构化地址追踪和签名级回购核实得到的已确认官方卖压。")
     .replace("Tier 2: treasury / milestone reconciliation from prior research outputs.", "Tier 2：基于 treasury 和里程碑口径的对账结果。")
     .replace("Tier 3: whale proxy flows from daily balance changes in the 59-holder sample.", "Tier 3：59 大户样本日级余额变化推导出的代理流向。")
+    .replace("Directly observable buyback legs are concentrated in July 2025. Later buybacks are likely under-counted in direct execution data and need treasury / Squads-side reconciliation.", "直接可观测的回购腿主要集中在 2025 年 7 月。后续回购在直接执行数据中大概率被低估，需要结合 treasury / Squads 侧对账补齐。")
+    .replace("Whale entry prices are estimated from first visible balance appearance in the 59-holder history and daily close prices. They are rough anchors, not realized-cost reconstructions.", "大户入场价格是根据 59 大户历史中首次可见持仓时间和对应日收盘价估算的，只能作为粗略成本锚，不能视为真实已实现成本重建。")
     .replace("Investor Wallet #1 is not marked as to_cex in pump_team_analysis.json but is confirmed as 11.2B -> Kraken in pump_addresses.json, pump_whale_analysis.json, and PUMP_Phase1_Report.md.", "`pump_team_analysis.json` 没有把 Investor Wallet #1 标成 `to_cex`，但 `pump_addresses.json`、`pump_whale_analysis.json` 和 `PUMP_Phase1_Report.md` 都确认其 11.2B PUMP 流向 Kraken。")
     .replace("Role", "用途");
 }
@@ -841,7 +843,7 @@ function buildExecutiveSummary() {
     {
       label: "保守累计回购",
       value: fmtUsd(summary.buyback_claimed_usd),
-      meta: `Treasury 当前持有约 ${fmtBillions(summary.buyback_treasury_hold_B)} PUMP`,
+      meta: `回购国库当前持有约 ${fmtBillions(summary.buyback_treasury_hold_B)} PUMP`,
       cls: "buy",
     },
     {
@@ -882,7 +884,7 @@ function buildExecutiveSummary() {
 
   const direct = [
     `回购的确发生了，但并没有大到足以覆盖全部官方市场供给。`,
-    `价格没涨起来，主要不是因为 59 个大户样本在关键窗口里集体砸盘，而是官方 overhang 更强。`,
+    `价格没涨起来，主要不是因为 59 个大户样本在关键窗口里集体砸盘，而是官方抛压悬顶更强。`,
     `后期回购在链上不如卖出侧那样直观可见，这会削弱市场对回购支撑的感知。`,
     `现价仍在两条回购成本锚下方，说明回购没有重设市场清算价格。`,
   ];
@@ -900,7 +902,7 @@ function buildBuybackSection() {
       cls: "buy",
     },
     {
-      label: "转入 Treasury 下限",
+      label: "转入国库下限",
       value: `${fmtBillions(buyback.observable_transfer_to_treasury_pump_B, 3)} PUMP`,
       meta: `按直接回购均价折算约 ${fmtUsd(buyback.observable_transfer_implied_usd)}`,
       cls: "highlight",
@@ -924,7 +926,7 @@ function buildBuybackSection() {
   const interpretation = [
     "法证层已经证明回购真实发生，并且可以在链上定位到执行痕迹。",
     "直接可观测的回购腿主要集中在 2025 年 7 月，因此这个口径是下限，不是完整总量。",
-    "Treasury 持仓和 milestone 对账说明回购在经济上是有规模的，但仍不足以完全吸收官方 overhang。",
+    "国库持仓和里程碑对账说明回购在经济上是有规模的，但仍不足以完全吸收官方抛压悬顶。",
     buyback.observability_note ? localizeGenericLine(buyback.observability_note) : "后续回购大概率通过 Squads 内部或程序控制账户执行，导致直接可见度下降。",
   ];
   renderList("buybackInterpretation", interpretation);
@@ -947,7 +949,7 @@ function buildOfficialSection() {
     {
       label: "做市 / DEX 卖压",
       value: `${fmtBillions(summary.official_market_pressure_B)} PUMP`,
-      meta: "包含 Wintermute 和 DEX 路径",
+      meta: "包含 Wintermute 与 DEX 路径",
       cls: "sell",
     },
     {
@@ -983,7 +985,7 @@ function buildOfficialSection() {
         <td>${fmtBillions(row.confirmed_pressure_B)}</td>
         <td>${fmtBillions(row.current_balance_B)}</td>
         <td>${fmtPct(row.share_of_conservative_buyback_pct)}</td>
-        <td>${escapeHtml(row.exchange_name || "n/a")}</td>
+        <td>${escapeHtml(row.exchange_name || "无")}</td>
       </tr>
     `;
   }).join("") : '<tr><td colspan="7" class="empty">暂无官方实体数据。</td></tr>';
@@ -994,9 +996,9 @@ function buildOfficialSection() {
       <td class="mono">${escapeHtml(row.date || "—")}</td>
       <td><strong>${escapeHtml(localizeLabel(row.label))}</strong></td>
       <td>${escapeHtml(localizeFlowType(row.flow_type))}</td>
-      <td>${escapeHtml(row.exchange || "n/a")}</td>
+      <td>${escapeHtml(row.exchange || "无")}</td>
       <td>${fmtBillions(row.amount_pump_B, 4)}</td>
-      <td>${row.amount_usd !== null && row.amount_usd !== undefined ? fmtUsd(row.amount_usd) : 'n/a'}</td>
+      <td>${row.amount_usd !== null && row.amount_usd !== undefined ? fmtUsd(row.amount_usd) : '无'}</td>
     </tr>
   `).join("") : '<tr><td colspan="6" class="empty">暂无官方卖出流水。</td></tr>';
 }
@@ -1087,7 +1089,7 @@ function buildWindowSection() {
   const readout = windows.map(row => {
     const whaleNet = toNumber(row.whale_proxy_net_B_window) || 0;
     const direction = whaleNet >= 0 ? '59 大户样本偏净增持' : '59 大户样本偏净减持';
-    const t7 = row.return_t_plus_7_pct === null || row.return_t_plus_7_pct === undefined ? 'n/a' : fmtPct(row.return_t_plus_7_pct);
+    const t7 = row.return_t_plus_7_pct === null || row.return_t_plus_7_pct === undefined ? '无' : fmtPct(row.return_t_plus_7_pct);
     return `${localizeWindowLabel(row.label)}：官方确认卖压 ${fmtBillions(row.official_confirmed_pressure_B_window, 3)} PUMP，${direction}，T+7 收益 ${t7}。`;
   });
   renderList("windowReadout", readout);
@@ -1115,9 +1117,9 @@ function buildCostSection() {
       cls: "warn",
     },
     {
-      label: "Treasury 按现价标记",
+      label: "国库按现价标记",
       value: fmtUsd(cost.treasury_hold_value_usd_current),
-      meta: "按当前 spot price 估算",
+      meta: "按当前现价估算",
       cls: "buy",
     },
   ];
@@ -1133,11 +1135,11 @@ function buildCostSection() {
   const interpretation = [
     "现价仍显著低于本报告使用的两条回购成本锚。",
     "这意味着即使回购真实存在，也没有把市场清算价格整体抬到回购成本带上方。",
-    "这和“官方 overhang 与解锁预期压过了回购支撑”的结构性解释一致。",
+    "这和“官方抛压悬顶与解锁预期压过了回购支撑”的结构性解释一致。",
     cost.note ? localizeGenericLine(cost.note) : '这里的成本比较用于定位套牢区和压力区，不代表真实已实现盈亏。',
   ];
   renderList("costInterpretation", interpretation);
-  document.getElementById("currentMark").textContent = `当前价格较保守回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_claimed_buyback_avg_pct) || 0))}，较 7 月直接可观测回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_observed_buyback_avg_pct) || 0))}。按现价标记，Treasury 持仓约值 ${fmtUsd(cost.treasury_hold_value_usd_current)}。`;
+  document.getElementById("currentMark").textContent = `当前价格较保守回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_claimed_buyback_avg_pct) || 0))}，较 7 月直接可观测回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_observed_buyback_avg_pct) || 0))}。按现价标记，国库持仓约值 ${fmtUsd(cost.treasury_hold_value_usd_current)}。`;
 }
 
 function buildFinalAttribution() {
