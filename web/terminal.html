@@ -1264,9 +1264,22 @@ function updateTrendChart(token) {
     return { start, end };
   };
 
+  const isHourlyRangeAligned = (range) => {
+    if (!range) return false;
+    const layoutRange = chartDiv?.layout?.xaxis?.range;
+    if (!layoutRange || layoutRange.length < 2) return false;
+    const currentStart = new Date(layoutRange[0]).getTime();
+    const currentEnd = new Date(layoutRange[1]).getTime();
+    const targetStart = range.start.getTime();
+    const targetEnd = range.end.getTime();
+    if (!Number.isFinite(currentStart) || !Number.isFinite(currentEnd)) return false;
+    return Math.abs(currentStart - targetStart) <= 1000 && Math.abs(currentEnd - targetEnd) <= 1000;
+  };
+
   const applyHourlyDefaultWindow = () => {
     const range = getHourlyDefaultRange();
     if (!range) return false;
+    if (isHourlyRangeAligned(range)) return true;
     setQuickRangeActive(null);
     setTimeRangeUi(range.start, range.end);
     syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
@@ -1289,6 +1302,12 @@ function updateTrendChart(token) {
     if (selectedToken !== currentInstanceToken) return;
     if (currentTimeLevel === 'hourly') {
       applyHourlyDefaultWindow();
+      // Some browsers may emit delayed relayout events after render and reset range unexpectedly.
+      // Re-check once and force align to latest 3-day hourly window.
+      setTimeout(() => {
+        if (selectedToken !== currentInstanceToken || currentTimeLevel !== 'hourly') return;
+        applyHourlyDefaultWindow();
+      }, 280);
     } else {
       setQuickRangeActive('all');
       setTimeRangeUi(null, null);
