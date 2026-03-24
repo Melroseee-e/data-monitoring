@@ -495,6 +495,7 @@ let currentTrendView = 'daily';
 let currentTimeLevel = 'daily'; // 'daily' or 'hourly'
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let manualResetUntil = 0;
+let suppressNextRelayoutSync = false;
 let isSankeyExpanded = false;
 let lastFlowPanelData = null;
 let forceNextSankeyRedraw = false;
@@ -1092,7 +1093,16 @@ function buildDailyTrendSeries(token) {
   const sortedDays = Array.from(mergedBuckets.keys()).sort((a, b) => a - b);
   if (!sortedDays.length) return null;
 
-  const startDay = sortedDays[0];
+  const firstPresenceDay = sortedDays[0];
+  let firstActiveDay = null;
+  sortedDays.forEach(dayKey => {
+    if (firstActiveDay !== null) return;
+    const flows = mergedBuckets.get(dayKey) || { inflow: 0, outflow: 0 };
+    const inf = Number(flows.inflow || 0);
+    const outf = Number(flows.outflow || 0);
+    if (inf !== 0 || outf !== 0) firstActiveDay = dayKey;
+  });
+  const startDay = firstActiveDay ?? firstPresenceDay;
   const lastDay = sortedDays[sortedDays.length - 1];
   const dates = [];
   const inflows = [];
@@ -1251,7 +1261,8 @@ function updateTrendChart(token) {
     if (!Number.isFinite(end.getTime())) return null;
     const start = new Date(end);
     start.setDate(start.getDate() - 3);
-    return { start, end };
+    const visualEnd = new Date(end.getTime() + (60 * 60 * 1000));
+    return { start, end, visualEnd };
   };
 
   const applyHourlyDefaultWindow = () => {
@@ -1260,11 +1271,17 @@ function updateTrendChart(token) {
     setQuickRangeActive(null);
     setTimeRangeUi(range.start, range.end);
     syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
-    Plotly.relayout(chartDiv, {
+    suppressNextRelayoutSync = true;
+    const relayoutResult = Plotly.relayout(chartDiv, {
       'xaxis.range[0]': range.start.toISOString(),
-      'xaxis.range[1]': range.end.toISOString(),
+      'xaxis.range[1]': range.visualEnd.toISOString(),
       'yaxis.autorange': true
     });
+    if (relayoutResult && typeof relayoutResult.finally === 'function') {
+      relayoutResult.finally(() => { suppressNextRelayoutSync = false; });
+    } else {
+      setTimeout(() => { suppressNextRelayoutSync = false; }, 0);
+    }
     return true;
   };
 
@@ -1289,7 +1306,7 @@ function updateTrendChart(token) {
   });
 
   chartDiv.on('plotly_relayout', function(eventData) {
-    if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
+    if (isUpdatingToken || suppressNextRelayoutSync || selectedToken !== currentInstanceToken) return;
     if (Date.now() < manualResetUntil) {
       setQuickRangeActive('all');
       setTimeRangeUi(null, null);
