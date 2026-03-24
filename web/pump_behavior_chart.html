@@ -714,9 +714,9 @@ function renderChart() {
   const maxHigh = Math.max(...highs);
   const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
 
-  const priceAxisMin = minLow - range * 0.35;
-  const priceAxisMax = maxHigh + range * 0.35;
-  const buybackBaseY = priceAxisMin + range * 0.08;
+  const priceAxisMin = minLow - range * 0.18;
+  const priceAxisMax = maxHigh + range * 0.18;
+  const buybackBaseY = priceAxisMin + range * 0.06;
 
   const buyPoints = [];
   const sellPoints = [];
@@ -730,7 +730,7 @@ function renderChart() {
     const sellEvents = events.filter(e => e.direction !== 'buy');
     const buybackEvents = events.filter(e => e.category === 'buyback');
 
-    let currentBuyOffset = 22; 
+    let currentBuyOffset = 14;
     buyEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
       const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
       const radius = size / 2;
@@ -743,10 +743,10 @@ function renderChart() {
         symbolSize: size,
         symbolOffset: [0, currentBuyOffset]
       });
-      currentBuyOffset += radius + 4;
+      currentBuyOffset += radius + 2;
     });
 
-    let currentSellOffset = -22;
+    let currentSellOffset = -14;
     sellEvents.slice(0, MAX_MARKERS_PER_SIDE_PER_DAY).forEach((e, idx) => {
       const size = 22 + Math.min(12, (e.amount_B || 0) * 6);
       const radius = size / 2;
@@ -759,12 +759,12 @@ function renderChart() {
         symbolSize: size,
         symbolOffset: [0, currentSellOffset]
       });
-      currentSellOffset -= (radius + 4);
+      currentSellOffset -= (radius + 2);
     });
 
     if (buybackEvents.length > 0) {
       buybackEvents.slice(0, 3).forEach((e, idx) => {
-        const markerY = buybackBaseY - (idx * range * 0.05);
+        const markerY = buybackBaseY - (idx * range * 0.035);
         buybackPoints.push({
           value: [date, markerY, e.amount_B || 0],
           event: e,
@@ -818,8 +818,8 @@ function renderChart() {
       label: { backgroundColor: '#0F172A', color: '#FFFFFF', fontSize: 11, padding: [4, 6] }
     },
     grid: [
-      { left: 16, right: 70, top: 44, height: '62%' },
-      { left: 16, right: 70, top: '75%', height: '16%' }
+      { left: 16, right: 70, top: 44, height: '66%' },
+      { left: 16, right: 70, top: '79%', height: '13%' }
     ],
     xAxis: [
       {
