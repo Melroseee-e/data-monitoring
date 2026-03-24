@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PUMP Full Attribution Report</title>
+<title>PUMP 完整归因报告</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #07111f;
-  --bg-2: #050b15;
-  --panel: rgba(9, 15, 29, 0.9);
-  --panel-strong: rgba(7, 12, 24, 0.96);
-  --panel-soft: rgba(255,255,255,0.03);
-  --text: #eef4ff;
-  --text-secondary: #a7b6cf;
-  --text-muted: #6f7d95;
-  --accent: #4f8cff;
-  --accent-2: #2ce6c7;
-  --accent-3: #f5b84b;
-  --danger: #ff6b6b;
-  --border: rgba(159, 176, 208, 0.16);
-  --shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
-  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.22);
+  --bg: #f4f1ea;
+  --bg-soft: #fbfaf6;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-strong: rgba(255, 255, 255, 0.96);
+  --panel-muted: rgba(255, 255, 255, 0.72);
+  --text: #18212e;
+  --text-secondary: #4c5b6f;
+  --text-muted: #778396;
+  --accent: #2364d8;
+  --accent-2: #0f9c74;
+  --accent-3: #c78a18;
+  --danger: #d74c4c;
+  --border: rgba(24, 33, 46, 0.12);
+  --shadow: 0 24px 64px rgba(29, 40, 55, 0.10);
+  --shadow-soft: 0 10px 28px rgba(29, 40, 55, 0.08);
   --mono: "JetBrains Mono", monospace;
-  --body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --body: "Noto Sans SC", sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -34,10 +34,10 @@ body {
   font-family: var(--body);
   color: var(--text);
   background:
-    radial-gradient(circle at 10% 12%, rgba(79, 140, 255, 0.18), transparent 30%),
-    radial-gradient(circle at 88% 18%, rgba(44, 230, 199, 0.12), transparent 24%),
-    radial-gradient(circle at 82% 88%, rgba(245, 184, 75, 0.1), transparent 22%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg) 38%, var(--bg-2) 100%);
+    radial-gradient(circle at 12% 10%, rgba(35, 100, 216, 0.11), transparent 28%),
+    radial-gradient(circle at 86% 14%, rgba(15, 156, 116, 0.10), transparent 22%),
+    radial-gradient(circle at 84% 88%, rgba(199, 138, 24, 0.10), transparent 18%),
+    linear-gradient(180deg, #f7f4ee 0%, #f4f1ea 44%, #efe9df 100%);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -47,10 +47,10 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.4), transparent 78%);
+    linear-gradient(rgba(24,33,46,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24,33,46,0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.28), transparent 82%);
   pointer-events: none;
   z-index: 0;
 }
@@ -65,73 +65,78 @@ a { color: inherit; }
   padding: 22px 22px 56px;
 }
 
-.hero {
+.hero,
+.section {
   border: 1px solid var(--border);
   border-radius: 28px;
-  overflow: hidden;
-  background: linear-gradient(180deg, rgba(10, 18, 34, 0.98), rgba(7, 13, 24, 0.94));
+  background: linear-gradient(180deg, var(--panel-strong), var(--panel));
   box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
-.hero-inner {
-  padding: 28px 28px 24px;
+.hero-inner,
+.section-inner {
+  padding: 26px;
+}
+
+.topline,
+.section-head,
+.grid-2,
+.grid-4,
+.meta-stack,
+.columns,
+.kpi-strip,
+.pill-row {
+  display: grid;
+  gap: 14px;
 }
 
 .topline {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 18px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  align-items: start;
 }
+
+.meta-stack { justify-items: end; }
+.pill-row { grid-template-columns: repeat(auto-fit, minmax(120px, max-content)); justify-content: start; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.columns { grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr); }
+.kpi-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 .eyebrow {
   margin: 0 0 8px;
   font-size: 12px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-secondary);
 }
 
 .title {
   margin: 0;
-  font-size: clamp(34px, 4vw, 60px);
-  line-height: 1.02;
-  letter-spacing: -0.055em;
-  max-width: 980px;
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
 }
 
 .subtitle {
-  max-width: 980px;
+  max-width: 920px;
   margin: 14px 0 0;
-  font-size: 15px;
-  line-height: 1.8;
   color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.9;
 }
 
-.meta-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: flex-end;
-}
-
-.pill-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.pill {
+.pill,
+.tag {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.04);
   padding: 8px 12px;
-  font-size: 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.66);
   color: var(--text-secondary);
+  font-size: 12px;
 }
 
 .pill strong {
@@ -140,148 +145,97 @@ a { color: inherit; }
   font-size: 12px;
 }
 
-.section {
-  margin-top: 18px;
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(10, 18, 34, 0.94), rgba(7, 13, 24, 0.88));
-  box-shadow: var(--shadow-soft);
-  overflow: hidden;
+.tag {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 
-.section-inner {
-  padding: 22px;
-}
+.tag.ok { color: var(--accent-2); border-color: rgba(15,156,116,0.24); }
+.tag.warn { color: var(--accent-3); border-color: rgba(199,138,24,0.24); }
+.tag.danger { color: var(--danger); border-color: rgba(215,76,76,0.24); }
+.tag.link { text-decoration: none; transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+.tag.link:hover { transform: translateY(-1px); border-color: rgba(35,100,216,0.32); color: var(--text); }
 
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
+.section { margin-top: 18px; box-shadow: var(--shadow-soft); }
+.section-head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; margin-bottom: 16px; }
 .section-title {
   margin: 0;
   font-size: 14px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-secondary);
 }
-
 .section-desc {
   margin-top: 6px;
-  font-size: 13px;
   color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.7;
 }
 
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.card,
+.statement,
+.table-card,
+.kpi {
   border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.03);
-  color: var(--text-secondary);
-  padding: 6px 10px;
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.72);
+  box-shadow: 0 8px 22px rgba(29, 40, 55, 0.05);
 }
 
-.tag.ok { color: var(--accent-2); border-color: rgba(44,230,199,0.24); }
-.tag.warn { color: var(--accent-3); border-color: rgba(245,184,75,0.24); }
-.tag.danger { color: var(--danger); border-color: rgba(255,107,107,0.24); }
-.tag.link { text-decoration: none; transition: transform 0.2s, border-color 0.2s; }
-.tag.link:hover { transform: translateY(-1px); border-color: rgba(79,140,255,0.4); color: var(--text); }
+.card,
+.kpi,
+.statement { padding: 18px; }
 
-.grid-4 {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.card {
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--panel-soft);
-  padding: 16px;
-}
-
-.card-label {
+.card-label,
+.kpi-label {
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-secondary);
 }
 
-.card-value {
+.card-value,
+.kpi-value {
   margin-top: 10px;
   font-size: 26px;
   line-height: 1.1;
   font-weight: 800;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
 }
 
-.card-value.buy { color: var(--accent-2); }
-.card-value.sell { color: var(--danger); }
-.card-value.danger { color: var(--danger); }
-.card-value.highlight { color: var(--accent); }
-.card-value.warn { color: var(--accent-3); }
+.card-value.buy,
+.kpi-value.buy { color: var(--accent-2); }
+.card-value.sell,
+.card-value.danger,
+.kpi-value.sell { color: var(--danger); }
+.card-value.highlight,
+.kpi-value.highlight { color: var(--accent); }
+.card-value.warn,
+.kpi-value.warn { color: var(--accent-3); }
 
 .card-meta {
   margin-top: 8px;
-  font-size: 12px;
-  line-height: 1.6;
   color: var(--text-muted);
-}
-
-.statement {
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: rgba(255,255,255,0.03);
-  padding: 20px;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 .statement-main {
   font-size: 20px;
-  line-height: 1.6;
-  color: var(--text);
-}
-
-.list {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--text-secondary);
   line-height: 1.8;
 }
 
-.list li + li { margin-top: 6px; }
-
+.list,
 .numbered {
   margin: 0;
-  padding-left: 22px;
+  padding-left: 20px;
   color: var(--text-secondary);
-  line-height: 1.8;
+  line-height: 1.9;
 }
 
-.numbered li + li { margin-top: 8px; }
-
-.mono { font-family: var(--mono); }
-.muted { color: var(--text-muted); }
-
-.table-card {
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.03);
-}
+.list li + li,
+.numbered li + li { margin-top: 6px; }
 
 .table-head {
   display: flex;
@@ -290,7 +244,7 @@ a { color: inherit; }
   gap: 14px;
   padding: 16px 18px;
   border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.02);
+  background: rgba(247, 244, 238, 0.86);
 }
 
 .table-title {
@@ -301,9 +255,9 @@ a { color: inherit; }
 
 .table-note {
   margin-top: 4px;
-  font-size: 12px;
   color: var(--text-muted);
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 .table-scroll { overflow-x: auto; }
@@ -321,77 +275,45 @@ thead th {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  background: rgba(255,255,255,0.02);
+  background: rgba(247, 244, 238, 0.75);
   border-bottom: 1px solid var(--border);
 }
 
 tbody td {
   padding: 14px 18px;
-  border-bottom: 1px solid rgba(159,176,208,0.08);
+  border-bottom: 1px solid rgba(24, 33, 46, 0.08);
   font-size: 13px;
-  color: var(--text);
   vertical-align: top;
 }
 
-tbody tr:hover td { background: rgba(255,255,255,0.02); }
-
-.kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.kpi {
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  background: rgba(255,255,255,0.03);
-}
-
-.kpi-label {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-
-.kpi-value {
-  margin-top: 8px;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-}
-
-.columns {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 16px;
-}
+tbody tr:hover td { background: rgba(255,255,255,0.62); }
 
 .callout {
   border-left: 3px solid var(--accent);
   padding-left: 14px;
   color: var(--text-secondary);
-  line-height: 1.8;
+  line-height: 1.9;
 }
 
-.empty {
-  padding: 18px;
-  color: var(--text-secondary);
-}
+.mono { font-family: var(--mono); }
+.muted { color: var(--text-muted); }
+.empty { padding: 18px; color: var(--text-secondary); }
 
 @media (max-width: 1180px) {
-  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .columns { grid-template-columns: 1fr; }
+  .topline,
+  .grid-4,
+  .grid-2,
+  .columns,
   .kpi-strip { grid-template-columns: 1fr; }
+  .meta-stack { justify-items: start; }
 }
 
 @media (max-width: 780px) {
   .shell { padding: 14px 14px 32px; }
-  .hero-inner, .section-inner { padding: 16px; }
-  .topline, .meta-stack, .section-head { flex-direction: column; align-items: flex-start; }
-  .grid-4, .grid-2 { grid-template-columns: 1fr; }
+  .hero-inner,
+  .section-inner { padding: 16px; }
   .title { font-size: 34px; }
+  .table-head { flex-direction: column; }
 }
 </style>
 </head>
@@ -401,20 +323,20 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="hero-inner">
       <div class="topline">
         <div>
-          <p class="eyebrow">PUMP Forensic Research Report</p>
-          <h1 class="title">Complete on-chain attribution for why buybacks did not re-rate price</h1>
-          <p class="subtitle" id="heroSubtitle">Loading report dataset...</p>
+          <p class="eyebrow">PUMP 链上法证归因报告</p>
+          <h1 class="title">为什么回购没有把价格托起来</h1>
+          <p class="subtitle" id="heroSubtitle">正在加载归因数据...</p>
           <div class="pill-row">
-            <a class="tag link" href="pump_analysis.html">Overview</a>
-            <a class="tag link" href="pump_price_attribution.html">Summary View</a>
-            <span class="tag ok">Full Report</span>
-            <span class="tag" id="statusTag">Loading</span>
+            <a class="tag link" href="pump_analysis.html">总览</a>
+            <a class="tag link" href="pump_price_attribution.html">摘要版</a>
+            <span class="tag ok">完整报告</span>
+            <span class="tag" id="statusTag">加载中</span>
           </div>
         </div>
         <div class="meta-stack">
-          <div class="pill">Generated <strong id="generatedAt">-</strong></div>
-          <div class="pill">Price Range <strong id="priceRange">-</strong></div>
-          <div class="pill">Contract <strong id="contractText">-</strong></div>
+          <div class="pill">生成时间 <strong id="generatedAt">-</strong></div>
+          <div class="pill">价格区间 <strong id="priceRange">-</strong></div>
+          <div class="pill">合约地址 <strong id="contractText">-</strong></div>
         </div>
       </div>
     </div>
@@ -424,10 +346,10 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Executive Summary</h2>
-          <div class="section-desc">One-screen answer before drilling into ledgers and clusters.</div>
+          <h2 class="section-title">执行摘要</h2>
+          <div class="section-desc">先看一句话结论，再进入官方抛压、回购基线和大户样本。</div>
         </div>
-        <div class="tag ok">Attribution first</div>
+        <div class="tag ok">结论先行</div>
       </div>
       <div class="statement">
         <div class="statement-main" id="headlineBox">—</div>
@@ -435,11 +357,11 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
       <div class="grid-4" id="summaryCards" style="margin-top:14px"></div>
       <div class="grid-2" style="margin-top:14px">
         <div class="card">
-          <div class="card-label">Key Takeaways</div>
+          <div class="card-label">核心发现</div>
           <ol class="numbered" id="takeawayList"></ol>
         </div>
         <div class="card">
-          <div class="card-label">Direct Answer</div>
+          <div class="card-label">直接回答</div>
           <ol class="numbered" id="directAnswerList"></ol>
         </div>
       </div>
@@ -450,19 +372,19 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Buyback Verification Baseline</h2>
-          <div class="section-desc">Forensic lower bound, treasury reconciliation, and how much of the program is directly visible on-chain.</div>
+          <h2 class="section-title">回购核实基线</h2>
+          <div class="section-desc">区分法证可观测下限、转入 treasury 的下限，以及保守累计口径。</div>
         </div>
-        <div class="tag warn">Direct trace is a floor, not the full program</div>
+        <div class="tag warn">直接链路只是下限</div>
       </div>
       <div class="kpi-strip" id="buybackKpis"></div>
       <div class="columns" style="margin-top:14px">
         <div class="card">
-          <div class="card-label">Interpretation</div>
+          <div class="card-label">解释</div>
           <ul class="list" id="buybackInterpretation"></ul>
         </div>
         <div class="card">
-          <div class="card-label">Method Summary</div>
+          <div class="card-label">方法分层</div>
           <ul class="list" id="confidenceTiers"></ul>
         </div>
       </div>
@@ -473,30 +395,30 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Official Market Pressure</h2>
-          <div class="section-desc">Confirmed official and official-linked entities that created market-facing supply.</div>
+          <h2 class="section-title">官方市场卖压</h2>
+          <div class="section-desc">把已确认的官方或官方关联市场化供给单独拆出来，避免和一般大户行为混在一起。</div>
         </div>
-        <div class="tag danger">Official overhang</div>
+        <div class="tag danger">官方 overhang</div>
       </div>
       <div class="grid-4" id="officialCards"></div>
       <div class="table-card" style="margin-top:14px">
         <div class="table-head">
           <div>
-            <h3 class="table-title">Official Pressure by Entity</h3>
-            <div class="table-note">Entity type, pressure route, current balance, and share of the conservative buyback volume.</div>
+            <h3 class="table-title">官方实体卖压表</h3>
+            <div class="table-note">展示实体类型、卖压路径、当前余额，以及相对于保守回购口径的占比。</div>
           </div>
         </div>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>Entity</th>
-                <th>Type</th>
-                <th>Pressure Type</th>
-                <th>Pressure</th>
-                <th>Balance</th>
-                <th>Share of Buyback</th>
-                <th>Route</th>
+                <th>实体</th>
+                <th>类型</th>
+                <th>卖压类型</th>
+                <th>确认卖压</th>
+                <th>当前余额</th>
+                <th>占保守回购比重</th>
+                <th>主要去向</th>
               </tr>
             </thead>
             <tbody id="officialEntityBody"></tbody>
@@ -506,20 +428,20 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
       <div class="table-card" style="margin-top:14px">
         <div class="table-head">
           <div>
-            <h3 class="table-title">Official Sell Ledger</h3>
-            <div class="table-note">Chronological list of confirmed market-facing official flows.</div>
+            <h3 class="table-title">官方卖出流水</h3>
+            <div class="table-note">时间顺序列出已确认的官方市场化流出事件。</div>
           </div>
         </div>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Entity</th>
-                <th>Flow Type</th>
-                <th>Exchange / Route</th>
-                <th>Amount</th>
-                <th>USD</th>
+                <th>日期</th>
+                <th>实体</th>
+                <th>流向类型</th>
+                <th>交易所 / 路径</th>
+                <th>数量</th>
+                <th>金额</th>
               </tr>
             </thead>
             <tbody id="sellLedgerBody"></tbody>
@@ -533,29 +455,29 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">59-Holder Whale Sample</h2>
-          <div class="section-desc">Proxy flow profile for the whale universe already tracked in the behavior layer.</div>
+          <h2 class="section-title">59 大户样本</h2>
+          <div class="section-desc">这个部分展示已跟踪大户样本的代理净流，不把它误当成直接交易所卖出证据。</div>
         </div>
-        <div class="tag">Whale proxy, not direct exchange proof</div>
+        <div class="tag">代理信号</div>
       </div>
       <div class="grid-4" id="whaleCards"></div>
       <div class="grid-2" style="margin-top:14px">
         <div class="table-card">
           <div class="table-head">
             <div>
-              <h3 class="table-title">Top Accumulators</h3>
-              <div class="table-note">Addresses with the strongest positive proxy netflow.</div>
+              <h3 class="table-title">净增持最多</h3>
+              <div class="table-note">代理净流为正的大户地址。</div>
             </div>
           </div>
           <div class="table-scroll">
             <table>
               <thead>
                 <tr>
-                  <th>Label</th>
-                  <th>Current Balance</th>
-                  <th>Proxy Buy</th>
-                  <th>Proxy Sell</th>
-                  <th>Proxy Net</th>
+                  <th>地址标签</th>
+                  <th>当前余额</th>
+                  <th>代理买入</th>
+                  <th>代理卖出</th>
+                  <th>代理净值</th>
                 </tr>
               </thead>
               <tbody id="accumulatorBody"></tbody>
@@ -565,19 +487,19 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
         <div class="table-card">
           <div class="table-head">
             <div>
-              <h3 class="table-title">Top Distributors</h3>
-              <div class="table-note">Addresses with the strongest negative proxy netflow.</div>
+              <h3 class="table-title">净减持最多</h3>
+              <div class="table-note">代理净流为负的大户地址。</div>
             </div>
           </div>
           <div class="table-scroll">
             <table>
               <thead>
                 <tr>
-                  <th>Label</th>
-                  <th>Current Balance</th>
-                  <th>Proxy Buy</th>
-                  <th>Proxy Sell</th>
-                  <th>Proxy Net</th>
+                  <th>地址标签</th>
+                  <th>当前余额</th>
+                  <th>代理买入</th>
+                  <th>代理卖出</th>
+                  <th>代理净值</th>
                 </tr>
               </thead>
               <tbody id="distributorBody"></tbody>
@@ -586,7 +508,7 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
       </div>
       <div class="card" style="margin-top:14px">
-        <div class="card-label">Whale Interpretation</div>
+        <div class="card-label">大户解读</div>
         <ul class="list" id="whaleInterpretation"></ul>
       </div>
     </div>
@@ -596,29 +518,29 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Event Window Analysis</h2>
-          <div class="section-desc">Buyback milestones and official sell bursts, compared to whale proxy flows and post-event returns.</div>
+          <h2 class="section-title">事件窗口分析</h2>
+          <div class="section-desc">把 buyback milestone、官方卖压事件、59 大户样本净流和事后收益放到同一个事件窗里看。</div>
         </div>
-        <div class="tag warn">T+3 and T+7 return tracking</div>
+        <div class="tag warn">T+3 / T+7</div>
       </div>
       <div class="table-card">
         <div class="table-head">
           <div>
-            <h3 class="table-title">Window Ledger</h3>
-            <div class="table-note">Official pressure is in billions of PUMP. Buyback is in USD.</div>
+            <h3 class="table-title">事件窗账本</h3>
+            <div class="table-note">官方卖压和大户代理流以 PUMP 十亿枚计；回购以 USD 计。</div>
           </div>
         </div>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>Window</th>
-                <th>Date</th>
-                <th>Official Pressure</th>
-                <th>Whale Sell</th>
-                <th>Whale Buy</th>
-                <th>Whale Net</th>
-                <th>Buyback USD</th>
+                <th>窗口</th>
+                <th>日期</th>
+                <th>官方卖压</th>
+                <th>大户代理卖出</th>
+                <th>大户代理买入</th>
+                <th>大户代理净值</th>
+                <th>回购金额</th>
                 <th>T+3</th>
                 <th>T+7</th>
               </tr>
@@ -628,7 +550,7 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
       </div>
       <div class="card" style="margin-top:14px">
-        <div class="card-label">Window Readout</div>
+        <div class="card-label">窗口解读</div>
         <ul class="list" id="windowReadout"></ul>
       </div>
     </div>
@@ -638,19 +560,19 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Cost Basis & Overhang</h2>
-          <div class="section-desc">Where price sits relative to buyback cost anchors and treasury mark value.</div>
+          <h2 class="section-title">成本锚与上方套牢</h2>
+          <div class="section-desc">比较现价与回购成本锚的距离，观察 buyback 是否真正抬升了市场清算价格。</div>
         </div>
-        <div class="tag">Overhead supply framing</div>
+        <div class="tag">成本带视角</div>
       </div>
       <div class="grid-4" id="costCards"></div>
       <div class="columns" style="margin-top:14px">
         <div class="card">
-          <div class="card-label">Cost Interpretation</div>
+          <div class="card-label">成本解读</div>
           <ul class="list" id="costInterpretation"></ul>
         </div>
         <div class="card">
-          <div class="card-label">Current Mark</div>
+          <div class="card-label">当前标记</div>
           <div class="callout" id="currentMark"></div>
         </div>
       </div>
@@ -661,18 +583,18 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Final Attribution</h2>
-          <div class="section-desc">What is well supported by the ledger, and what remains inference or open work.</div>
+          <h2 class="section-title">最终归因</h2>
+          <div class="section-desc">明确哪些结论是强证据支持，哪些仍然属于待补链路。</div>
         </div>
-        <div class="tag ok">Evidence split</div>
+        <div class="tag ok">证据拆分</div>
       </div>
       <div class="grid-2">
         <div class="card">
-          <div class="card-label">Well Supported</div>
+          <div class="card-label">强证据支持</div>
           <ul class="list" id="supportedList"></ul>
         </div>
         <div class="card">
-          <div class="card-label">Still Uncertain</div>
+          <div class="card-label">仍待补充</div>
           <ul class="list" id="uncertainList"></ul>
         </div>
       </div>
@@ -683,39 +605,39 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="section-inner">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Data Quality & Sources</h2>
-          <div class="section-desc">Coverage flags, known conflicts, explicit limitations, and the source registry behind this page.</div>
+          <h2 class="section-title">数据质量与来源</h2>
+          <div class="section-desc">覆盖范围、冲突项、限制条件，以及支撑这个页面的源文件注册表。</div>
         </div>
-        <div class="tag">Audit trail</div>
+        <div class="tag">审计轨迹</div>
       </div>
       <div class="grid-2">
         <div class="card">
-          <div class="card-label">Coverage Flags</div>
+          <div class="card-label">覆盖说明</div>
           <ul class="list" id="coverageList"></ul>
         </div>
         <div class="card">
-          <div class="card-label">Known Conflicts</div>
+          <div class="card-label">已知冲突</div>
           <ul class="list" id="conflictList"></ul>
         </div>
       </div>
       <div class="card" style="margin-top:14px">
-        <div class="card-label">Limitations</div>
+        <div class="card-label">限制</div>
         <ul class="list" id="limitationList"></ul>
       </div>
       <div class="table-card" style="margin-top:14px">
         <div class="table-head">
           <div>
-            <h3 class="table-title">Source Registry</h3>
-            <div class="table-note">Exact source files and the role each one plays in the attribution stack.</div>
+            <h3 class="table-title">源文件注册表</h3>
+            <div class="table-note">列出本页面背后的关键源文件及其角色。</div>
           </div>
         </div>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>Source ID</th>
-                <th>Path</th>
-                <th>Role</th>
+                <th>来源 ID</th>
+                <th>路径</th>
+                <th>用途</th>
               </tr>
             </thead>
             <tbody id="sourceBody"></tbody>
@@ -801,61 +723,148 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function renderList(id, items, ordered = false) {
+function renderList(id, items) {
   const root = document.getElementById(id);
   const list = normalizeList(items).map(item => typeof item === "string" ? item : (item.value ?? item.key ?? JSON.stringify(item)));
   if (!root) return;
   if (!list.length) {
-    root.innerHTML = `<li>—</li>`;
+    root.innerHTML = "<li>—</li>";
     return;
   }
   root.innerHTML = list.map(item => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
+function localizeEntityType(value) {
+  const map = {
+    official_vesting_vault: "官方归属金库",
+    investor_wallet: "投资人钱包",
+    team_wallet: "团队钱包",
+    official_multisig: "官方多签",
+  };
+  return map[value] || value || "—";
+}
+
+function localizePressureType(value) {
+  const map = {
+    confirmed_cex: "已确认转所",
+    market_maker_and_dex: "做市 / DEX 市场化流出",
+    non_sell_distribution: "非卖出型分发",
+  };
+  return map[value] || value || "—";
+}
+
+function localizeFlowType(value) {
+  const map = {
+    to_cex: "转入交易所",
+    to_mm: "转给做市商",
+    to_wallet: "转入其他钱包",
+  };
+  return map[value] || value || "—";
+}
+
+function localizeSourceRole(value) {
+  const map = {
+    official_wallet_flows: "官方钱包资金流",
+    verified_official_events: "已核实官方事件",
+    holder_labels_and_provenance: "大户标签与溯源",
+    '59_whale_daily_balances': "59 大户日级余额",
+    buyback_observable_absorption: "回购可观测吸收量",
+    confirmed_vault_sell_tables: "已确认金库卖出表",
+  };
+  return map[value] || value || "—";
+}
+
+function localizeLabel(value) {
+  if (!value) return "—";
+  return String(value)
+    .replace("Coinbase-Connected PUMP Holder", "Coinbase 关联持仓地址")
+    .replace("Hyperunit: Hot Wallet", "Hyperunit 热钱包")
+    .replace(/Top Whale #/g, "头部鲸鱼 #")
+    .replace("Fireblocks Custody", "Fireblocks 托管")
+    .replace("PUMP Team/Investor Squads Vault", "PUMP 团队/投资人 Squads Vault")
+    .replace("Wallet A", "钱包 A")
+    .replace("(SELLING → OKX)", "（已确认流向 OKX）")
+    .replace("(ACTIVE SELLING)", "（持续卖压）")
+    .replace("(CONFIRMED)", "（已确认）")
+    .replace("Official Allocation Multisig #2", "官方分配多签 #2")
+    .replace("Pump.fun Team Wallet #1", "Pump.fun 团队钱包 #1")
+    .replace("PUMP Investor Wallet #1", "PUMP 投资人钱包 #1");
+}
+
+function localizeWindowLabel(value) {
+  if (!value) return "—";
+  return String(value)
+    .replace("Observable Buyback Start", "可观测回购启动")
+    .replace("Vault #4 -> OKX", "Vault #4 -> OKX")
+    .replace("Team Wallet Distribution Start", "团队钱包分发启动")
+    .replace("Investor #1 -> Kraken", "投资人钱包 #1 -> Kraken")
+    .replace("Weekly Buyback Milestone", "周度回购里程碑")
+    .replace("Vault #5 -> Bitget Tranche 1", "Vault #5 -> Bitget 第 1 批")
+    .replace("Vault #5 -> Bitget Tranche 2", "Vault #5 -> Bitget 第 2 批")
+    .replace("Vault #5 -> Bitget Tranche 3", "Vault #5 -> Bitget 第 3 批")
+    .replace("Vault #5 -> Bitget Tranche 4", "Vault #5 -> Bitget 第 4 批");
+}
+
+function localizeGenericLine(value) {
+  if (!value) return "—";
+  return String(value)
+    .replace("Direct buyback observability is strong in July 2025 and weaker afterward.", "2025 年 7 月的直接回购可观测性较强，之后明显下降。")
+    .replace("Official vault / investor sell events are structured and confirmed for the main pressure addresses.", "主要官方金库和投资人地址的卖出事件已有结构化确认。")
+    .replace("59-holder whale history covers balance behavior but not direct exchange attribution.", "59 大户历史覆盖的是余额变化，不是直接交易所归因。")
+    .replace("Later buybacks are likely under-counted in direct execution data because routing may occur through Squads internals or other program-controlled accounts.", "后续回购在直接执行数据里大概率被低估，因为路径可能经过 Squads 内部账户或其他程序控制地址。")
+    .replace("Whale flows are proxy signals from balance deltas, not direct exchange-transfer proof.", "大户流向是基于余额变动的代理信号，不是直接转所证明。")
+    .replace("Current price comparisons do not prove realized PnL; they only frame pressure relative to observed or estimated cost anchors.", "现价与成本锚的比较不代表真实已实现盈亏，只是用来刻画抛压和成本带位置。")
+    .replace("The 59-holder sample captures large-address behavior, not the full free float.", "59 大户样本反映的是大额地址行为，不代表全部自由流通盘。")
+    .replace("Tier 1: confirmed on-chain official pressure from structured address tracing and signature-level buyback verification.", "Tier 1：结构化地址追踪和签名级回购核实得到的已确认官方卖压。")
+    .replace("Tier 2: treasury / milestone reconciliation from prior research outputs.", "Tier 2：基于 treasury 和里程碑口径的对账结果。")
+    .replace("Tier 3: whale proxy flows from daily balance changes in the 59-holder sample.", "Tier 3：59 大户样本日级余额变化推导出的代理流向。")
+    .replace("Investor Wallet #1 is not marked as to_cex in pump_team_analysis.json but is confirmed as 11.2B -> Kraken in pump_addresses.json, pump_whale_analysis.json, and PUMP_Phase1_Report.md.", "`pump_team_analysis.json` 没有把 Investor Wallet #1 标成 `to_cex`，但 `pump_addresses.json`、`pump_whale_analysis.json` 和 `PUMP_Phase1_Report.md` 都确认其 11.2B PUMP 流向 Kraken。")
+    .replace("Role", "用途");
+}
+
 function buildHero() {
   const md = report?.metadata || {};
-  const summary = report?.summary || {};
-  document.getElementById("heroSubtitle").textContent = summary.headline || "Complete attribution across buyback, official pressure, whale behavior, and cost-basis structure.";
+  document.getElementById("heroSubtitle").textContent = "从链上数据看，PUMP 的回购并非没有发生，而是被持续的官方市场化供给、较弱的后期可观测性，以及尚未被抬高的成本锚共同抵消。";
   document.getElementById("generatedAt").textContent = pick(md, ["generated_at"], "—").replace("T", " ").replace("Z", " UTC");
   document.getElementById("priceRange").textContent = `${pick(md, ["price_range_start"], "—")} → ${pick(md, ["price_range_end"], "—")}`;
   document.getElementById("contractText").textContent = pick(md, ["contract"], "—");
-  document.getElementById("statusTag").textContent = "Loaded";
+  document.getElementById("statusTag").textContent = "已加载";
 }
 
 function buildExecutiveSummary() {
   const summary = report?.summary || {};
   const cost = report?.cost_basis || {};
-  document.getElementById("headlineBox").textContent = summary.headline || "—";
+  const officialTotal = (toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0);
+  document.getElementById("headlineBox").textContent = `链上证据显示，PUMP 的回购规模并不小，但价格支撑被已确认官方及官方关联地址的市场化流出持续稀释；尤其在 2026 年 3 月几个关键卖压窗口里，59 个大户样本整体并没有同步大规模净抛售。`;
 
   const cards = [
     {
-      label: "Claimed Buyback",
+      label: "保守累计回购",
       value: fmtUsd(summary.buyback_claimed_usd),
-      meta: `Treasury hold: ${fmtBillions(summary.buyback_treasury_hold_B)} PUMP`,
+      meta: `Treasury 当前持有约 ${fmtBillions(summary.buyback_treasury_hold_B)} PUMP`,
       cls: "buy",
     },
     {
-      label: "Official CEX Pressure",
+      label: "已确认官方转所卖压",
       value: `${fmtBillions(summary.official_cex_pressure_B)} PUMP`,
-      meta: `${fmtPct(summary.official_cex_pressure_pct_of_claimed_buyback_B)} of conservative claimed buyback volume`,
+      meta: `约占保守回购量的 ${fmtPct(summary.official_cex_pressure_pct_of_claimed_buyback_B)}`,
       cls: "sell",
     },
     {
-      label: "Official Market Pressure",
-      value: `${fmtBillions((toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0))} PUMP`,
-      meta: `${fmtPct(summary.official_total_market_pressure_pct_of_claimed_buyback_B)} of conservative claimed buyback volume`,
+      label: "合计官方市场卖压",
+      value: `${fmtBillions(officialTotal)} PUMP`,
+      meta: `含做市 / DEX 路径，约占保守回购量的 ${fmtPct(summary.official_total_market_pressure_pct_of_claimed_buyback_B)}`,
       cls: "sell",
     },
     {
-      label: "Current Price vs Buyback Avg",
+      label: "现价相对回购均价",
       value: fmtPct(cost.distance_from_claimed_buyback_avg_pct),
-      meta: `Spot ${fmtUsd(cost.current_price_usd, 6)} vs claimed avg ${fmtUsd(cost.claimed_buyback_avg_price_usd, 6)}`,
+      meta: `现价 ${fmtUsd(cost.current_price_usd, 6)}，保守回购均价 ${fmtUsd(cost.claimed_buyback_avg_price_usd, 6)}`,
       cls: "warn",
     },
   ];
 
-  const root = document.getElementById("summaryCards");
-  root.innerHTML = cards.map(card => `
+  document.getElementById("summaryCards").innerHTML = cards.map(card => `
     <div class="card">
       <div class="card-label">${card.label}</div>
       <div class="card-value ${card.cls}">${card.value}</div>
@@ -863,13 +872,19 @@ function buildExecutiveSummary() {
     </div>
   `).join("");
 
-  renderList("takeawayList", summary.key_takeaways || []);
+  const takeaways = [
+    `已确认官方转入交易所的卖压达到 ${fmtBillions(summary.official_cex_pressure_B)} PUMP。`,
+    `把做市商 / DEX 路径也算进去后，官方市场化卖压达到 ${fmtBillions(officialTotal)} PUMP。`,
+    `在 2026 年 3 月的关键卖压窗口里，59 大户样本整体更接近净增持，而不是同步净抛售。`,
+    `现价较保守回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_claimed_buyback_avg_pct) || 0))}，较 7 月直接可观测回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_observed_buyback_avg_pct) || 0))}。`,
+  ];
+  renderList("takeawayList", takeaways);
 
   const direct = [
-    `Confirmed official and official-linked market-facing supply reached ${fmtBillions((toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0))} PUMP, large enough to materially dilute buyback support.`,
-    `The March 2026 sell windows do not line up with broad whale proxy distribution; the tracked 59-holder sample was mostly net accumulating in those windows.`,
-    `Post-July buybacks are less directly observable than the sell side, so the market may have seen official overhang more clearly than buyback execution.`,
-    `Spot remains below both buyback cost anchors, which means buybacks did not reset the market clearing price upward.`
+    `回购的确发生了，但并没有大到足以覆盖全部官方市场供给。`,
+    `价格没涨起来，主要不是因为 59 个大户样本在关键窗口里集体砸盘，而是官方 overhang 更强。`,
+    `后期回购在链上不如卖出侧那样直观可见，这会削弱市场对回购支撑的感知。`,
+    `现价仍在两条回购成本锚下方，说明回购没有重设市场清算价格。`,
   ];
   renderList("directAnswerList", direct);
 }
@@ -879,73 +894,76 @@ function buildBuybackSection() {
   const method = report?.methodology || {};
   const kpis = [
     {
-      label: "Observable Direct Buy Floor",
+      label: "直接可观测回购下限",
       value: fmtUsd(buyback.observable_direct_buy_usd),
-      meta: `${fmtBillions(buyback.observable_direct_buy_pump_B, 3)} PUMP at avg ${fmtUsd(buyback.observable_direct_buy_avg_price_usd, 6)}`,
+      meta: `${fmtBillions(buyback.observable_direct_buy_pump_B, 3)} PUMP，均价 ${fmtUsd(buyback.observable_direct_buy_avg_price_usd, 6)}`,
       cls: "buy",
     },
     {
-      label: "Transfer-to-Treasury Floor",
+      label: "转入 Treasury 下限",
       value: `${fmtBillions(buyback.observable_transfer_to_treasury_pump_B, 3)} PUMP`,
-      meta: `Implied ${fmtUsd(buyback.observable_transfer_implied_usd)} using observable direct-buy average`,
+      meta: `按直接回购均价折算约 ${fmtUsd(buyback.observable_transfer_implied_usd)}`,
       cls: "highlight",
     },
     {
-      label: "Conservative Claimed Total",
+      label: "保守累计口径",
       value: `${fmtBillions(buyback.claimed_conservative_bought_B, 3)} PUMP`,
-      meta: `${fmtUsd(buyback.claimed_cumulative_usd)} at avg ${fmtUsd(buyback.claimed_avg_price_usd, 6)}`,
+      meta: `${fmtUsd(buyback.claimed_cumulative_usd)}，均价 ${fmtUsd(buyback.claimed_avg_price_usd, 6)}`,
       cls: "buy",
     },
   ];
+
   document.getElementById("buybackKpis").innerHTML = kpis.map(kpi => `
     <div class="kpi">
       <div class="kpi-label">${kpi.label}</div>
-      <div class="kpi-value ${kpi.cls || ""}">${kpi.value}</div>
+      <div class="kpi-value ${kpi.cls}">${kpi.value}</div>
       <div class="card-meta">${kpi.meta}</div>
     </div>
   `).join("");
 
   const interpretation = [
-    "The forensic layer proves buyback execution existed and can be tied to direct transaction activity.",
-    "Directly observable buyback legs are concentrated in July 2025, so the direct trace is a lower bound rather than the full program total.",
-    "Treasury holdings and milestone reconciliation imply a much larger economic footprint than the direct execution floor alone.",
-    buyback.observability_note || "Later buybacks likely route through Squads internals or other program-controlled accounts, which reduces direct observability."
+    "法证层已经证明回购真实发生，并且可以在链上定位到执行痕迹。",
+    "直接可观测的回购腿主要集中在 2025 年 7 月，因此这个口径是下限，不是完整总量。",
+    "Treasury 持仓和 milestone 对账说明回购在经济上是有规模的，但仍不足以完全吸收官方 overhang。",
+    buyback.observability_note ? localizeGenericLine(buyback.observability_note) : "后续回购大概率通过 Squads 内部或程序控制账户执行，导致直接可见度下降。",
   ];
   renderList("buybackInterpretation", interpretation);
-  renderList("confidenceTiers", method.confidence_tiers || []);
+  renderList("confidenceTiers", (method.confidence_tiers || []).map(localizeGenericLine));
 }
 
 function buildOfficialSection() {
   const summary = report?.summary || {};
   const entities = normalizeList(report?.official_entities);
   const ledger = normalizeList(report?.official_sell_ledger);
-  const totalOfficial = (toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0);
+  const officialTotal = (toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0);
+
   const cards = [
     {
-      label: "Confirmed CEX Pressure",
+      label: "已确认转所卖压",
       value: `${fmtBillions(summary.official_cex_pressure_B)} PUMP`,
-      meta: `${fmtPct(summary.official_cex_pressure_pct_of_claimed_buyback_B)} of conservative buyback`,
+      meta: `约为保守回购量的 ${fmtPct(summary.official_cex_pressure_pct_of_claimed_buyback_B)}`,
       cls: "sell",
     },
     {
-      label: "Market-Maker / DEX Pressure",
+      label: "做市 / DEX 卖压",
       value: `${fmtBillions(summary.official_market_pressure_B)} PUMP`,
-      meta: `Wintermute and DEX-style release paths`,
+      meta: "包含 Wintermute 和 DEX 路径",
       cls: "sell",
     },
     {
-      label: "Combined Official Market Pressure",
-      value: `${fmtBillions(totalOfficial)} PUMP`,
-      meta: `${fmtPct(summary.official_total_market_pressure_pct_of_claimed_buyback_B)} of conservative buyback`,
+      label: "合计官方市场卖压",
+      value: `${fmtBillions(officialTotal)} PUMP`,
+      meta: `约为保守回购量的 ${fmtPct(summary.official_total_market_pressure_pct_of_claimed_buyback_B)}`,
       cls: "danger",
     },
     {
-      label: "Confirmed Sell Events",
+      label: "确认卖出事件数",
       value: String(ledger.length),
-      meta: `Structured ledger entries currently in scope`,
+      meta: "本页当前纳入的结构化事件条数",
       cls: "highlight",
-    }
+    },
   ];
+
   document.getElementById("officialCards").innerHTML = cards.map(card => `
     <div class="card">
       <div class="card-label">${card.label}</div>
@@ -954,62 +972,68 @@ function buildOfficialSection() {
     </div>
   `).join("");
 
-  const body = document.getElementById("officialEntityBody");
-  body.innerHTML = entities.length ? entities.map(row => `
-    <tr>
-      <td><strong>${escapeHtml(row.label || "—")}</strong><div class="muted" style="margin-top:4px">${escapeHtml(row.note || "")}</div></td>
-      <td>${escapeHtml(row.entity_type || "—")}</td>
-      <td><span class="tag ${row.pressure_type === "confirmed_cex" ? "danger" : row.pressure_type === "market_maker_and_dex" ? "warn" : ""}">${escapeHtml(row.pressure_type || "—")}</span></td>
-      <td>${fmtBillions(row.confirmed_pressure_B)}</td>
-      <td>${fmtBillions(row.current_balance_B)}</td>
-      <td>${fmtPct(row.share_of_conservative_buyback_pct)}</td>
-      <td>${escapeHtml(row.exchange_name || "n/a")}</td>
-    </tr>
-  `).join("") : `<tr><td colspan="7" class="empty">No official entities available.</td></tr>`;
+  const entityBody = document.getElementById("officialEntityBody");
+  entityBody.innerHTML = entities.length ? entities.map(row => {
+    const summaryLine = `${fmtBillions(row.confirmed_pressure_B)} PUMP 已形成可确认卖压，当前剩余 ${fmtBillions(row.current_balance_B)} PUMP。`;
+    return `
+      <tr>
+        <td><strong>${escapeHtml(localizeLabel(row.label))}</strong><div class="muted" style="margin-top:4px">${escapeHtml(summaryLine)}</div></td>
+        <td>${escapeHtml(localizeEntityType(row.entity_type))}</td>
+        <td><span class="tag ${row.pressure_type === "confirmed_cex" ? "danger" : row.pressure_type === "market_maker_and_dex" ? "warn" : ""}">${escapeHtml(localizePressureType(row.pressure_type))}</span></td>
+        <td>${fmtBillions(row.confirmed_pressure_B)}</td>
+        <td>${fmtBillions(row.current_balance_B)}</td>
+        <td>${fmtPct(row.share_of_conservative_buyback_pct)}</td>
+        <td>${escapeHtml(row.exchange_name || "n/a")}</td>
+      </tr>
+    `;
+  }).join("") : '<tr><td colspan="7" class="empty">暂无官方实体数据。</td></tr>';
 
   const ledgerBody = document.getElementById("sellLedgerBody");
   ledgerBody.innerHTML = ledger.length ? ledger.map(row => `
     <tr>
       <td class="mono">${escapeHtml(row.date || "—")}</td>
-      <td><strong>${escapeHtml(row.label || "—")}</strong></td>
-      <td>${escapeHtml(row.flow_type || "—")}</td>
+      <td><strong>${escapeHtml(localizeLabel(row.label))}</strong></td>
+      <td>${escapeHtml(localizeFlowType(row.flow_type))}</td>
       <td>${escapeHtml(row.exchange || "n/a")}</td>
       <td>${fmtBillions(row.amount_pump_B, 4)}</td>
-      <td>${row.amount_usd !== null && row.amount_usd !== undefined ? fmtUsd(row.amount_usd) : "n/a"}</td>
+      <td>${row.amount_usd !== null && row.amount_usd !== undefined ? fmtUsd(row.amount_usd) : 'n/a'}</td>
     </tr>
-  `).join("") : `<tr><td colspan="6" class="empty">No official sell ledger available.</td></tr>`;
+  `).join("") : '<tr><td colspan="6" class="empty">暂无官方卖出流水。</td></tr>';
 }
 
 function buildWhaleSection() {
   const summary = report?.summary || {};
   const acc = normalizeList(report?.whale_accumulators);
   const dist = normalizeList(report?.whale_distributors);
+  const net = (toNumber(summary.whale_proxy_buy_B) || 0) - (toNumber(summary.whale_proxy_sell_B) || 0);
+
   const cards = [
     {
-      label: "Proxy Buy",
+      label: "代理买入",
       value: `${fmtBillions(summary.whale_proxy_buy_B, 3)} PUMP`,
-      meta: `59-holder sample cumulative proxy buy`,
+      meta: "59 大户样本累计代理买入",
       cls: "buy",
     },
     {
-      label: "Proxy Sell",
+      label: "代理卖出",
       value: `${fmtBillions(summary.whale_proxy_sell_B, 3)} PUMP`,
-      meta: `59-holder sample cumulative proxy sell`,
+      meta: "59 大户样本累计代理卖出",
       cls: "sell",
     },
     {
-      label: "Proxy Net",
-      value: `${fmtBillions((toNumber(summary.whale_proxy_buy_B) || 0) - (toNumber(summary.whale_proxy_sell_B) || 0), 3)} PUMP`,
-      meta: `Aggregate whale sample netflow`,
+      label: "代理净值",
+      value: `${fmtBillions(net, 3)} PUMP`,
+      meta: "大于 0 代表样本整体更偏增持",
       cls: "highlight",
     },
     {
-      label: "Top Whale Rows",
+      label: "样本行数",
       value: String(normalizeList(report?.whale_clusters).length),
-      meta: `Detailed whale rows currently promoted into attribution`,
+      meta: "当前提升到归因层的重点大户条目数",
       cls: "warn",
-    }
+    },
   ];
+
   document.getElementById("whaleCards").innerHTML = cards.map(card => `
     <div class="card">
       <div class="card-label">${card.label}</div>
@@ -1022,23 +1046,23 @@ function buildWhaleSection() {
     const root = document.getElementById(id);
     root.innerHTML = rows.length ? rows.map(row => `
       <tr>
-        <td><strong>${escapeHtml(row.label || "—")}</strong><div class="muted" style="margin-top:4px">${escapeHtml(row.exchange_name || "")}</div></td>
+        <td><strong>${escapeHtml(localizeLabel(row.label))}</strong><div class="muted" style="margin-top:4px">${escapeHtml(row.exchange_name || '')}</div></td>
         <td>${fmtBillions(row.current_balance_B)}</td>
         <td>${fmtBillions(row.proxy_buy_B, 4)}</td>
         <td>${fmtBillions(row.proxy_sell_B, 4)}</td>
-        <td><span class="tag ${(toNumber(row.proxy_net_B) || 0) >= 0 ? "ok" : "danger"}">${fmtBillions(row.proxy_net_B, 4)}</span></td>
+        <td><span class="tag ${(toNumber(row.proxy_net_B) || 0) >= 0 ? 'ok' : 'danger'}">${fmtBillions(row.proxy_net_B, 4)}</span></td>
       </tr>
-    `).join("") : `<tr><td colspan="5" class="empty">No whale rows available.</td></tr>`;
+    `).join("") : '<tr><td colspan="5" class="empty">暂无大户样本数据。</td></tr>';
   }
 
   renderWhaleRows("accumulatorBody", acc);
   renderWhaleRows("distributorBody", dist);
 
   const interpretation = [
-    "The tracked 59-holder sample does not support a simple claim that whales broadly dumped into buyback support during the major March 2026 windows.",
-    "Several large holders were still accumulating or at least not materially distributing during official sell windows.",
-    "Hyperunit hot wallet is the largest negative proxy-flow row, but its pattern is more consistent with inventory or market-making behavior than a clean directional dump wallet.",
-    "Whale flows here remain proxy signals from balance changes, not direct exchange-deposit proof."
+    "59 大户样本并不支持“回购期间是大户集体砸盘导致价格上不去”这个简单解释。",
+    "在几次关键官方卖压窗口中，样本整体更像是在净增持或至少没有同步大规模净减持。",
+    "负向代理流最大的地址是 Hyperunit 热钱包，但它更像库存 / 做市类地址，而不是单纯方向性抛售地址。",
+    "这里的大户流向是余额变化代理值，不等于直接交易所卖出证明。",
   ];
   renderList("whaleInterpretation", interpretation);
 }
@@ -1048,24 +1072,23 @@ function buildWindowSection() {
   const body = document.getElementById("windowBody");
   body.innerHTML = windows.length ? windows.map(row => `
     <tr>
-      <td><strong>${escapeHtml(row.label || "—")}</strong></td>
-      <td class="mono">${escapeHtml(row.date || "—")}</td>
+      <td><strong>${escapeHtml(localizeWindowLabel(row.label))}</strong></td>
+      <td class="mono">${escapeHtml(row.date || '—')}</td>
       <td>${fmtBillions(row.official_confirmed_pressure_B_window, 3)}</td>
       <td>${fmtBillions(row.whale_proxy_sell_B_window, 3)}</td>
       <td>${fmtBillions(row.whale_proxy_buy_B_window, 3)}</td>
-      <td><span class="tag ${(toNumber(row.whale_proxy_net_B_window) || 0) >= 0 ? "ok" : "danger"}">${fmtBillions(row.whale_proxy_net_B_window, 3)}</span></td>
+      <td><span class="tag ${(toNumber(row.whale_proxy_net_B_window) || 0) >= 0 ? 'ok' : 'danger'}">${fmtBillions(row.whale_proxy_net_B_window, 3)}</span></td>
       <td>${fmtUsd(row.buyback_usd_window)}</td>
       <td>${fmtPct(row.return_t_plus_3_pct)}</td>
       <td>${fmtPct(row.return_t_plus_7_pct)}</td>
     </tr>
-  `).join("") : `<tr><td colspan="9" class="empty">No event windows available.</td></tr>`;
+  `).join("") : '<tr><td colspan="9" class="empty">暂无事件窗数据。</td></tr>';
 
   const readout = windows.map(row => {
-    const official = toNumber(row.official_confirmed_pressure_B_window) || 0;
     const whaleNet = toNumber(row.whale_proxy_net_B_window) || 0;
-    const direction = whaleNet >= 0 ? "sampled whales were net accumulating" : "sampled whales were net distributing";
-    const t7 = row.return_t_plus_7_pct === null || row.return_t_plus_7_pct === undefined ? "n/a" : fmtPct(row.return_t_plus_7_pct);
-    return `${row.label}: official pressure ${fmtBillions(official, 3)} PUMP; ${direction}; T+7 return ${t7}.`;
+    const direction = whaleNet >= 0 ? '59 大户样本偏净增持' : '59 大户样本偏净减持';
+    const t7 = row.return_t_plus_7_pct === null || row.return_t_plus_7_pct === undefined ? 'n/a' : fmtPct(row.return_t_plus_7_pct);
+    return `${localizeWindowLabel(row.label)}：官方确认卖压 ${fmtBillions(row.official_confirmed_pressure_B_window, 3)} PUMP，${direction}，T+7 收益 ${t7}。`;
   });
   renderList("windowReadout", readout);
 }
@@ -1074,30 +1097,31 @@ function buildCostSection() {
   const cost = report?.cost_basis || {};
   const cards = [
     {
-      label: "Current Price",
+      label: "当前价格",
       value: fmtUsd(cost.current_price_usd, 6),
-      meta: `Date ${escapeHtml(cost.current_price_date || "—")}`,
+      meta: `日期 ${escapeHtml(cost.current_price_date || '—')}`,
       cls: "highlight",
     },
     {
-      label: "Claimed Buyback Avg",
+      label: "保守回购均价",
       value: fmtUsd(cost.claimed_buyback_avg_price_usd, 6),
-      meta: `Distance ${fmtPct(cost.distance_from_claimed_buyback_avg_pct)}`,
+      meta: `现价相对其变动 ${fmtPct(cost.distance_from_claimed_buyback_avg_pct)}`,
       cls: "warn",
     },
     {
-      label: "Observed July Direct-Buy Avg",
+      label: "7 月直接回购均价",
       value: fmtUsd(cost.observed_buyback_avg_price_usd, 6),
-      meta: `Distance ${fmtPct(cost.distance_from_observed_buyback_avg_pct)}`,
+      meta: `现价相对其变动 ${fmtPct(cost.distance_from_observed_buyback_avg_pct)}`,
       cls: "warn",
     },
     {
-      label: "Treasury Hold Mark",
+      label: "Treasury 按现价标记",
       value: fmtUsd(cost.treasury_hold_value_usd_current),
-      meta: `Marked at current spot price`,
+      meta: "按当前 spot price 估算",
       cls: "buy",
-    }
+    },
   ];
+
   document.getElementById("costCards").innerHTML = cards.map(card => `
     <div class="card">
       <div class="card-label">${card.label}</div>
@@ -1107,26 +1131,26 @@ function buildCostSection() {
   `).join("");
 
   const interpretation = [
-    "Spot remains materially below both buyback cost anchors used in this report.",
-    "If the buyback average is even directionally correct, the program did not lift the market clearing level enough to remove overhead supply.",
-    "This is consistent with a structure where official overhang and unlock-related fear dominate the support value of buybacks.",
-    cost.note || "Cost comparisons frame pressure relative to estimated anchors; they do not prove realized PnL."
+    "现价仍显著低于本报告使用的两条回购成本锚。",
+    "这意味着即使回购真实存在，也没有把市场清算价格整体抬到回购成本带上方。",
+    "这和“官方 overhang 与解锁预期压过了回购支撑”的结构性解释一致。",
+    cost.note ? localizeGenericLine(cost.note) : '这里的成本比较用于定位套牢区和压力区，不代表真实已实现盈亏。',
   ];
   renderList("costInterpretation", interpretation);
-  document.getElementById("currentMark").textContent = `Current price is ${fmtPct(cost.distance_from_claimed_buyback_avg_pct)} versus the claimed cumulative buyback average and ${fmtPct(cost.distance_from_observed_buyback_avg_pct)} versus the observable July direct-buy average. Treasury hold marked at spot is ${fmtUsd(cost.treasury_hold_value_usd_current)}.`;
+  document.getElementById("currentMark").textContent = `当前价格较保守回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_claimed_buyback_avg_pct) || 0))}，较 7 月直接可观测回购均价低 ${fmtPct(Math.abs(toNumber(cost.distance_from_observed_buyback_avg_pct) || 0))}。按现价标记，Treasury 持仓约值 ${fmtUsd(cost.treasury_hold_value_usd_current)}。`;
 }
 
 function buildFinalAttribution() {
   const supported = [
-    "Buybacks were real and economically meaningful.",
-    "Official and official-linked market-facing supply was also real and large.",
-    "The largest confirmed sell-side sources in scope were official or official-linked wallets, not unlabeled whales.",
-    "In the major March 2026 windows, the tracked whale sample was more net bid than net offered."
+    '回购是真实发生的，而且经济上并不小。',
+    '官方及官方关联的市场化供给同样真实且规模较大。',
+    '当前数据里最大的已确认卖压源主要来自官方或官方关联地址，而不是未标注鲸鱼。',
+    '在 2026 年 3 月的关键窗口里，59 大户样本更多表现为净承接而非净抛售。',
   ];
   const uncertain = [
-    "The full direct execution footprint of buybacks after July 2025.",
-    "Precise realized cost basis for many unlabeled whales and custodial addresses.",
-    "Whether some unlabeled large holders are indirect official affiliates beyond the confirmed set."
+    '2025 年 7 月之后全部回购执行腿的完整链路。',
+    '部分未标注大户和托管地址的精确成本价。',
+    '是否仍有更多未确认的大户与官方存在间接关联。',
   ];
   renderList("supportedList", supported);
   renderList("uncertainList", uncertain);
@@ -1135,28 +1159,28 @@ function buildFinalAttribution() {
 function buildDataQuality() {
   const dq = report?.data_quality || {};
   const sources = normalizeList(report?.source_registry);
-  renderList("coverageList", dq.coverage_flags || []);
-  renderList("conflictList", dq.known_conflicts || []);
-  renderList("limitationList", dq.limitations || report?.methodology?.limitations || []);
+  renderList("coverageList", (dq.coverage_flags || []).map(localizeGenericLine));
+  renderList("conflictList", (dq.known_conflicts || []).map(localizeGenericLine));
+  renderList("limitationList", (dq.limitations || report?.methodology?.limitations || []).map(localizeGenericLine));
 
   const body = document.getElementById("sourceBody");
   body.innerHTML = sources.length ? sources.map(src => `
     <tr>
-      <td class="mono">${escapeHtml(src.id || src.key || "—")}</td>
-      <td class="mono">${escapeHtml(src.path || "—")}</td>
-      <td>${escapeHtml(src.role || "—")}</td>
+      <td class="mono">${escapeHtml(src.id || src.key || '—')}</td>
+      <td class="mono">${escapeHtml(src.path || '—')}</td>
+      <td>${escapeHtml(localizeSourceRole(src.role))}</td>
     </tr>
-  `).join("") : `<tr><td colspan="3" class="empty">No source registry available.</td></tr>`;
+  `).join("") : '<tr><td colspan="3" class="empty">暂无来源注册表。</td></tr>';
 }
 
 async function loadReport() {
   try {
-    const resp = await fetch(DATA_URL, { cache: "no-store" });
+    const resp = await fetch(DATA_URL, { cache: 'no-store' });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     report = await resp.json();
   } catch (error) {
-    document.getElementById("statusTag").textContent = "Fallback";
-    document.getElementById("heroSubtitle").textContent = `Data file unavailable: ${error.message}`;
+    document.getElementById('statusTag').textContent = '回退';
+    document.getElementById('heroSubtitle').textContent = `数据文件不可用：${error.message}`;
     report = {
       metadata: {},
       summary: {},
@@ -1170,7 +1194,7 @@ async function loadReport() {
       methodology: {},
       data_quality: {},
       source_registry: [],
-      whale_clusters: []
+      whale_clusters: [],
     };
   }
 
