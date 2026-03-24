@@ -100,6 +100,36 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 24px; position: relative
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
 }
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.nav-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(180deg, rgba(18,20,24,0.9), rgba(12,14,18,0.92));
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  transition: all 0.2s;
+}
+.nav-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0,229,255,0.24);
+  background: linear-gradient(180deg, rgba(22,24,28,0.95), rgba(14,16,20,0.98));
+}
+.nav-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.nav-card-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
 .card {
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
@@ -300,6 +330,24 @@ tbody tr:hover { background: rgba(255,255,255,0.03); }
 </nav>
 
 <main id="main" style="display:none">
+
+  <section class="section">
+    <div class="section-title"><span class="section-title-dot"></span>Research Views</div>
+    <div class="link-grid">
+      <a class="nav-card" href="pump_behavior_chart.html">
+        <div class="nav-card-title">Whale Behavior Chart</div>
+        <div class="nav-card-desc">Price, whale balance deltas, confirmed official exchange deposits, and buyback milestones on one timeline.</div>
+      </a>
+      <a class="nav-card" href="pump_price_attribution.html">
+        <div class="nav-card-title">Price Attribution</div>
+        <div class="nav-card-desc">Buyback absorption, official sell ledger, whale cluster proxies, event windows, and cost-basis anchors.</div>
+      </a>
+      <a class="nav-card" href="pump_price_attribution_full_report.html">
+        <div class="nav-card-title">Full Attribution Report</div>
+        <div class="nav-card-desc">完整长页版归因报告，展开 executive summary、official sell ledger、whale tables、event windows、成本锚与限制项。</div>
+      </a>
+    </div>
+  </section>
 
   <!-- 1. OVERVIEW METRICS -->
   <section class="section">
