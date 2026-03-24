@@ -495,8 +495,6 @@ let currentTrendView = 'daily';
 let currentTimeLevel = 'daily'; // 'daily' or 'hourly'
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let manualResetUntil = 0;
-let suppressNextRelayoutSync = false;
-const HOURLY_VISUAL_RIGHT_PAD_MS = 0;
 let isSankeyExpanded = false;
 let lastFlowPanelData = null;
 let forceNextSankeyRedraw = false;
@@ -533,14 +531,9 @@ function initTimeLevelSwitch() {
       document.querySelectorAll('.time-level-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      // Time level switch resets display window policy:
-      // daily -> all-time; hourly -> auto to latest 3 days.
-      if (currentTimeLevel === 'daily') {
-        setQuickRangeActive('all');
-        setTimeRangeUi(null, null);
-      } else {
-        setQuickRangeActive(null);
-      }
+      // Keep consistent behavior across time levels: default to full window.
+      setQuickRangeActive('all');
+      setTimeRangeUi(null, null);
 
       if (selectedToken) updateTrendChart(selectedToken);
     });
@@ -975,7 +968,7 @@ function updateDashboard() {
   netEl.className = 'kpi-mini-val ' + (d.net_flow >= 0 ? 'pos' : 'neg');
   
   // Initial render with ALL-TIME aggregated data (from start of time)
-  setQuickRangeActive(currentTimeLevel === 'hourly' ? null : 'all');
+  setQuickRangeActive('all');
   setTimeRangeUi(null, null);
   syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
   
@@ -1256,65 +1249,12 @@ function updateTrendChart(token) {
     chartDiv.removeAllListeners('plotly_doubleclick');
   }
 
-  const getHourlyDefaultRange = () => {
-    if (currentTimeLevel !== 'hourly' || !dates.length) return null;
-    const end = new Date(dates[dates.length - 1]);
-    if (!Number.isFinite(end.getTime())) return null;
-    const start = new Date(end);
-    start.setDate(start.getDate() - 3);
-    const visualEnd = new Date(end.getTime() + HOURLY_VISUAL_RIGHT_PAD_MS);
-    return { start, end, visualEnd };
-  };
-
-  const isHourlyRangeAligned = (range) => {
-    if (!range) return false;
-    const layoutRange = chartDiv?.layout?.xaxis?.range;
-    if (!layoutRange || layoutRange.length < 2) return false;
-    const currentStart = new Date(layoutRange[0]).getTime();
-    const currentEnd = new Date(layoutRange[1]).getTime();
-    const targetStart = range.start.getTime();
-    const targetEnd = (range.visualEnd || range.end).getTime();
-    if (!Number.isFinite(currentStart) || !Number.isFinite(currentEnd)) return false;
-    return Math.abs(currentStart - targetStart) <= 1000 && Math.abs(currentEnd - targetEnd) <= 1000;
-  };
-
-  const applyHourlyDefaultWindow = () => {
-    const range = getHourlyDefaultRange();
-    if (!range) return false;
-    if (isHourlyRangeAligned(range)) return true;
-    setQuickRangeActive(null);
-    setTimeRangeUi(range.start, range.end);
-    syncFlowPanels(aggregateRangeData(range.start, range.end, 'hourly'));
-    suppressNextRelayoutSync = true;
-    const relayoutResult = Plotly.relayout(chartDiv, {
-      'xaxis.range[0]': range.start.toISOString(),
-      'xaxis.range[1]': (range.visualEnd || range.end).toISOString(),
-      'yaxis.autorange': true
-    });
-    if (relayoutResult && typeof relayoutResult.finally === 'function') {
-      relayoutResult.finally(() => { suppressNextRelayoutSync = false; });
-    } else {
-      setTimeout(() => { suppressNextRelayoutSync = false; }, 0);
-    }
-    return true;
-  };
-
   setTimeout(() => {
     isUpdatingToken = false;
     if (selectedToken !== currentInstanceToken) return;
-    if (currentTimeLevel === 'hourly') {
-      applyHourlyDefaultWindow();
-      // Some browsers may emit delayed relayout events after render and reset range unexpectedly.
-      // Re-check once and force align to latest 3-day hourly window.
-      setTimeout(() => {
-        if (selectedToken !== currentInstanceToken || currentTimeLevel !== 'hourly') return;
-        applyHourlyDefaultWindow();
-      }, 280);
-    } else {
-      setQuickRangeActive('all');
-      setTimeRangeUi(null, null);
-      syncFlowPanels(getFullTokenFlowData(selectedToken, 'daily'));
-    }
+    setQuickRangeActive('all');
+    setTimeRangeUi(null, null);
+    syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
   }, 120);
 
   chartDiv.on('plotly_doubleclick', function() {
@@ -1326,7 +1266,7 @@ function updateTrendChart(token) {
   });
 
   chartDiv.on('plotly_relayout', function(eventData) {
-    if (isUpdatingToken || suppressNextRelayoutSync || selectedToken !== currentInstanceToken) return;
+    if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
     if (Date.now() < manualResetUntil) {
       setQuickRangeActive('all');
       setTimeRangeUi(null, null);
