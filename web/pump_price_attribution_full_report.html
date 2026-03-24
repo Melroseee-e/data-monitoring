@@ -650,6 +650,11 @@ tbody tr:hover td { background: rgba(255,255,255,0.62); }
 
 <script>
 const DATA_URL = "../data/pump_price_attribution.json";
+const BUYBACK_TREASURY = {
+  wallet: "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm",
+  tokenAccount: "HdtUyEC7TeLGrA7ddRRJWM6nUYk5UZsL9pJuWnXAFQ32",
+  buybackWallet: "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+};
 let report = null;
 
 function normalizeList(value) {
@@ -843,7 +848,7 @@ function buildExecutiveSummary() {
     {
       label: "保守累计回购",
       value: fmtUsd(summary.buyback_claimed_usd),
-      meta: `回购国库当前持有约 ${fmtBillions(summary.buyback_treasury_hold_B)} PUMP`,
+      meta: `这里指的是回购国库地址 ${BUYBACK_TREASURY.wallet.slice(0, 10)}... 当前持有约 ${fmtBillions(summary.buyback_treasury_hold_B)} PUMP`,
       cls: "buy",
     },
     {
@@ -926,6 +931,7 @@ function buildBuybackSection() {
   const interpretation = [
     "法证层已经证明回购真实发生，并且可以在链上定位到执行痕迹。",
     "直接可观测的回购腿主要集中在 2025 年 7 月，因此这个口径是下限，不是完整总量。",
+    `当前页面里“回购国库持仓 ${fmtBillions(buyback.treasury_hold_B)} PUMP”对应的主地址是 ${BUYBACK_TREASURY.wallet}，对应 PUMP token account 是 ${BUYBACK_TREASURY.tokenAccount}。`,
     "国库持仓和里程碑对账说明回购在经济上是有规模的，但仍不足以完全吸收官方抛压悬顶。",
     buyback.observability_note ? localizeGenericLine(buyback.observability_note) : "后续回购大概率通过 Squads 内部或程序控制账户执行，导致直接可见度下降。",
   ];
