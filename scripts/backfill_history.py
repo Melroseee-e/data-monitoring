@@ -31,6 +31,17 @@ HELIUS_RPC = "https://mainnet.helius-rpc.com/?api-key={api_key}"
 
 TRANSFER_EVENT_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
 
+# Reuse HTTP connections to avoid repeated TLS handshake overhead.
+_RPC_SESSIONS = {}
+
+
+def get_rpc_session(url):
+    session = _RPC_SESSIONS.get(url)
+    if session is None:
+        session = requests.Session()
+        _RPC_SESSIONS[url] = session
+    return session
+
 # TGE block numbers (using hybrid strategy: exchange first transfer > contract deployment > news TGE)
 TGE_BLOCKS = {
     # AZTEC: Contract deployment (2025-07-01) - block 22823299
@@ -57,6 +68,48 @@ TGE_BLOCKS = {
     # PUMP: ICO launch (2025-07-12 14:00 UTC) - Solana
     "PUMP": {"solana": "2025-07-12T14:00:00Z", "date": "2025-07-12"}
 }
+
+
+def parse_start_date_utc(start_date_str):
+    """Parse YYYY-MM-DD into UTC datetime at 00:00:00."""
+    if not start_date_str:
+        return None
+    return datetime.strptime(start_date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+
+
+def get_eth_block_by_timestamp(api_key, timestamp):
+    """Resolve Ethereum block number at a given unix timestamp."""
+    try:
+        params = {
+            "chainid": "1",
+            "module": "block",
+            "action": "getblocknobytime",
+            "timestamp": str(int(timestamp)),
+            "closest": "before",
+            "apikey": api_key,
+        }
+        resp = requests.get(ETHERSCAN_API, params=params, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        result = data.get("result")
+        if not result:
+            return None
+        return int(result)
+    except Exception as e:
+        print(f"WARNING: failed to resolve ETH block by timestamp: {e}", flush=True)
+        return None
+
+
+def iso_utc(dt):
+    return dt.isoformat().replace("+00:00", "Z")
+
+
+def max_iso_start_time(tge_start_iso, start_date_utc):
+    """Return later of TGE start and user start date (both in UTC ISO)."""
+    if not start_date_utc:
+        return tge_start_iso
+    tge_dt = datetime.fromisoformat(tge_start_iso.replace("Z", "+00:00"))
+    return iso_utc(max(tge_dt, start_date_utc))
 
 def load_exchange_lookup(exchanges_data):
     lookup = defaultdict(dict)
@@ -150,7 +203,8 @@ def rpc_call(url, method, params, max_retries=3):
 
     for attempt in range(max_retries):
         try:
-            resp = requests.post(url, json=payload, timeout=30)
+            session = get_rpc_session(url)
+            resp = session.post(url, json=payload, timeout=30)
             resp.raise_for_status()
             result = resp.json()
             return result.get("result")
@@ -216,6 +270,7 @@ def fetch_solana_signatures_since(api_key, token_mint, exchange_addresses, start
 
             # Filter by time
             filtered = []
+            reached_start_time = False
             for sig_info in sigs:
                 block_time = sig_info.get("blockTime")
                 if block_time and block_time >= start_timestamp:
@@ -226,11 +281,16 @@ def fetch_solana_signatures_since(api_key, token_mint, exchange_addresses, start
                         "exchange": ex_addr
                     })
                 else:
-                    # Reached transactions before start_time, stop pagination
-                    print(f"    Reached start time, stopping pagination", flush=True)
-                    return all_signatures + filtered
+                    # Reached transactions before start_time for this ATA.
+                    # Stop pagination for current ATA, but continue other ATAs.
+                    print(f"    Reached start time for current ATA, stopping pagination", flush=True)
+                    reached_start_time = True
+                    break
 
             all_signatures.extend(filtered)
+
+            if reached_start_time:
+                break
 
             # Check if we need to continue pagination
             if len(sigs) < 1000:
@@ -239,8 +299,18 @@ def fetch_solana_signatures_since(api_key, token_mint, exchange_addresses, start
             before = sigs[-1]["signature"]
             time.sleep(0.2)
 
-    print(f"  Total signatures collected: {len(all_signatures)}", flush=True)
-    return all_signatures
+    # Deduplicate signatures (same tx can touch multiple exchange ATAs)
+    deduped = []
+    seen = set()
+    for sig in all_signatures:
+        sig_id = sig.get("signature")
+        if not sig_id or sig_id in seen:
+            continue
+        seen.add(sig_id)
+        deduped.append(sig)
+
+    print(f"  Total signatures collected: {len(deduped)} (deduped from {len(all_signatures)})", flush=True)
+    return deduped
 
 def parse_solana_transaction(api_key, signature):
     """Parse a Solana transaction to extract SPL token transfer details."""
@@ -346,11 +416,50 @@ def aggregate_by_hour_solana(exchange_flows, token_name, chain, contract):
 
     return hourly_data
 
-def write_to_jsonl(hourly_data, token_name, chain, contract):
+def _sum_token_totals_from_deployments(deployments):
+    total_inflow = 0.0
+    total_outflow = 0.0
+    for dep in deployments:
+        for flows in (dep.get("exchange_flows") or {}).values():
+            total_inflow += float(flows.get("inflow", 0) or 0)
+            total_outflow += float(flows.get("outflow", 0) or 0)
+    return total_inflow, total_outflow
+
+
+def _merge_token_entry(existing_token_entry, new_token_entry):
+    """Merge token data by deployment (chain+contract), preserving other chains."""
+    merged = {"deployments": []}
+    dep_map = {}
+
+    for dep in existing_token_entry.get("deployments", []):
+        key = (dep.get("chain"), dep.get("contract"))
+        dep_map[key] = dep
+
+    # New deployment data should replace same chain+contract from existing row.
+    for dep in new_token_entry.get("deployments", []):
+        key = (dep.get("chain"), dep.get("contract"))
+        dep_map[key] = dep
+
+    merged_deps = sorted(
+        dep_map.values(),
+        key=lambda d: (str(d.get("chain", "")), str(d.get("contract", "")))
+    )
+    merged["deployments"] = merged_deps
+
+    total_inflow, total_outflow = _sum_token_totals_from_deployments(merged_deps)
+    merged["total_inflow"] = total_inflow
+    merged["total_outflow"] = total_outflow
+    merged["net_flow"] = total_inflow - total_outflow
+    return merged
+
+
+def write_to_jsonl(hourly_data, token_name, chain, contract, start_date_utc=None):
     """Write hourly snapshots to daily JSONL files with smart merging."""
     by_date = defaultdict(list)
     for hour_ts, flows in sorted(hourly_data.items()):
         dt = datetime.fromisoformat(hour_ts.replace('Z', '+00:00'))
+        if start_date_utc and dt < start_date_utc:
+            continue
         date_key = dt.strftime('%Y-%m-%d')
 
         total_inflow = sum(f["inflow"] for f in flows.values())
@@ -390,8 +499,16 @@ def write_to_jsonl(hourly_data, token_name, chain, contract):
         for snap in snapshots:
             ts = snap["timestamp"]
             if ts in existing_data:
-                # Merge tokens: add new token to existing record
-                existing_data[ts]["tokens"][token_name] = snap["tokens"][token_name]
+                # Merge token data into existing record without overwriting other deployments.
+                existing_tokens = existing_data[ts].setdefault("tokens", {})
+                new_token_entry = snap["tokens"][token_name]
+                if token_name in existing_tokens:
+                    existing_tokens[token_name] = _merge_token_entry(
+                        existing_tokens[token_name],
+                        new_token_entry
+                    )
+                else:
+                    existing_tokens[token_name] = new_token_entry
             else:
                 # New timestamp: add entire snapshot
                 existing_data[ts] = snap
@@ -403,7 +520,7 @@ def write_to_jsonl(hourly_data, token_name, chain, contract):
 
         print(f"    Wrote {len(snapshots)} snapshots to {date_key}.jsonl", flush=True)
 
-def backfill_token(token_name, deployments, exchange_lookup, api_keys):
+def backfill_token(token_name, deployments, exchange_lookup, api_keys, start_date_utc=None):
     print(f"\n=== Backfilling {token_name} ===", flush=True)
     tge_info = TGE_BLOCKS.get(token_name, {})
 
@@ -421,6 +538,7 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
             if not start_time:
                 print(f"  No TGE time for Solana, skipping", flush=True)
                 continue
+            start_time = max_iso_start_time(start_time, start_date_utc)
 
             print(f"  Solana: {contract} from {start_time}", flush=True)
 
@@ -473,7 +591,7 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
                         for ex in exchange_flows[ts]:
                             exchange_flows[ts][ex]["net_flow"] = exchange_flows[ts][ex]["inflow"] - exchange_flows[ts][ex]["outflow"]
                     hourly_data = aggregate_by_hour_solana(exchange_flows, token_name, chain, contract)
-                    write_to_jsonl(hourly_data, token_name, chain, contract)
+                    write_to_jsonl(hourly_data, token_name, chain, contract, start_date_utc)
                     exchange_flows = {}  # Clear memory after writing
 
                     # Save progress checkpoint for resume
@@ -484,6 +602,7 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
                 # Single RPC request
                 try:
                     rpc_url = HELIUS_RPC.format(api_key=api_key)
+                    session = get_rpc_session(rpc_url)
                     single_request = {
                         "jsonrpc": "2.0",
                         "id": i,
@@ -493,7 +612,7 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
                             {"encoding": "jsonParsed", "maxSupportedTransactionVersion": 0}
                         ]
                     }
-                    response = requests.post(rpc_url, json=single_request, timeout=30)
+                    response = session.post(rpc_url, json=single_request, timeout=30)
                     response.raise_for_status()
                     result = response.json()
                     tx = result.get("result") if result else None
@@ -569,7 +688,7 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
 
             # Aggregate by hour and write
             hourly_data = aggregate_by_hour_solana(exchange_flows, token_name, chain, contract)
-            write_to_jsonl(hourly_data, token_name, chain, contract)
+            write_to_jsonl(hourly_data, token_name, chain, contract, start_date_utc)
 
             # Delete progress file — backfill complete for this token/chain
             if progress_file.exists():
@@ -589,10 +708,16 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
             if not api_key:
                 continue
             current_block = get_current_block_eth(api_key)
-            print(f"  ETH: {contract} from block {start_block} to {current_block}", flush=True)
+            effective_start_block = start_block
+            if start_date_utc:
+                block_by_time = get_eth_block_by_timestamp(api_key, int(start_date_utc.timestamp()))
+                if block_by_time is not None:
+                    effective_start_block = max(effective_start_block, block_by_time)
+
+            print(f"  ETH: {contract} from block {effective_start_block} to {current_block}", flush=True)
 
             block_range = 10000
-            for block in range(start_block, current_block, block_range):
+            for block in range(effective_start_block, current_block, block_range):
                 end = min(block + block_range - 1, current_block)
                 print(f"    Fetching blocks {block}-{end}...", flush=True)
                 transfers = fetch_eth_transfers_range(api_key, contract, block, end)
@@ -629,18 +754,25 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
                     exchange_flows[ts][ex]["net_flow"] = exchange_flows[ts][ex]["inflow"] - exchange_flows[ts][ex]["outflow"]
 
             hourly_data = aggregate_by_hour(all_transfers, token_name, chain, contract, exchange_flows)
-            write_to_jsonl(hourly_data, token_name, chain, contract)
+            write_to_jsonl(hourly_data, token_name, chain, contract, start_date_utc)
 
         elif chain == "bsc":
             api_key = api_keys.get("bsc")
             if not api_key:
                 continue
             current_block = get_current_block_bsc(api_key)
-            print(f"  BSC: {contract} from block {start_block} to {current_block}", flush=True)
+            effective_start_block = start_block
+            if start_date_utc:
+                now_ts = int(time.time())
+                delta_seconds = max(0, now_ts - int(start_date_utc.timestamp()))
+                estimated_block = max(0, current_block - (delta_seconds // 3))
+                effective_start_block = max(effective_start_block, estimated_block)
+
+            print(f"  BSC: {contract} from block {effective_start_block} to {current_block}", flush=True)
 
             block_range = 5000
             all_logs = []
-            for block in range(start_block, current_block, block_range):
+            for block in range(effective_start_block, current_block, block_range):
                 end = min(block + block_range - 1, current_block)
                 print(f"    Fetching blocks {block}-{end}...", flush=True)
                 logs = fetch_bsc_transfers_range(api_key, contract, block, end)
@@ -689,12 +821,13 @@ def backfill_token(token_name, deployments, exchange_lookup, api_keys):
                     exchange_flows[ts][ex]["net_flow"] = exchange_flows[ts][ex]["inflow"] - exchange_flows[ts][ex]["outflow"]
 
             hourly_data = aggregate_by_hour(all_logs, token_name, chain, contract, exchange_flows)
-            write_to_jsonl(hourly_data, token_name, chain, contract)
+            write_to_jsonl(hourly_data, token_name, chain, contract, start_date_utc)
 
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Backfill historical token data")
     parser.add_argument("--token", type=str, help="Specific token to backfill (e.g., AZTEC). If not specified, backfills all tokens.")
+    parser.add_argument("--start-date", type=str, help="Backfill from this UTC date (YYYY-MM-DD).")
     args = parser.parse_args()
 
     HISTORY_DIR.mkdir(exist_ok=True)
@@ -719,6 +852,15 @@ def main():
         print(f"  {key_name}: {status}", flush=True)
     print("", flush=True)
 
+    start_date_utc = None
+    if args.start_date:
+        try:
+            start_date_utc = parse_start_date_utc(args.start_date)
+        except ValueError:
+            print(f"Error: invalid --start-date '{args.start_date}', expected YYYY-MM-DD", flush=True)
+            sys.exit(1)
+        print(f"Applying start date (UTC): {iso_utc(start_date_utc)}", flush=True)
+
     # Filter tokens if specific token requested
     if args.token:
         if args.token not in tokens:
@@ -731,7 +873,7 @@ def main():
         print(f"Processing all {len(tokens)} tokens", flush=True)
 
     for token_name, deployments in tokens_to_process.items():
-        backfill_token(token_name, deployments, exchange_lookup, api_keys)
+        backfill_token(token_name, deployments, exchange_lookup, api_keys, start_date_utc)
 
     print("\n✓ Backfill complete", flush=True)
 

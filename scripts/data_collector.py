@@ -51,6 +51,21 @@ def get_env(name: str) -> str:
     return val
 
 
+def floor_to_hour_iso_utc(dt: datetime) -> str:
+    """Floor datetime to UTC hour and format as ISO Z."""
+    dt_utc = dt.astimezone(timezone.utc).replace(minute=0, second=0, microsecond=0)
+    return dt_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def parse_iso_to_hour_iso_utc(ts: str) -> str | None:
+    """Parse arbitrary ISO timestamp and return floored UTC hour ISO Z."""
+    try:
+        dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return floor_to_hour_iso_utc(dt)
+
+
 def load_exchange_lookup(exchanges_data: dict) -> dict:
     """Build chain -> address -> exchange_name lookup."""
     lookup = defaultdict(dict)
@@ -150,19 +165,44 @@ def process_evm_transfers(
 # ── BSC (BSCTrace / NodeReal JSON-RPC) ────────────────────────────────
 
 
-def rpc_call(rpc_url: str, method: str, params: list) -> dict | list | None:
-    """Make a JSON-RPC call."""
+def rpc_call(rpc_url: str, method: str, params: list, max_retries: int = 5) -> dict | list | None:
+    """Make a JSON-RPC call with retry/backoff for transient failures."""
     payload = {"jsonrpc": "2.0", "method": method, "params": params, "id": 1}
-    try:
-        resp = requests.post(rpc_url, json=payload, timeout=30)
-        data = resp.json()
-        if "error" in data:
-            print(f"  RPC error ({method}): {data['error']}")
+    for attempt in range(max_retries):
+        try:
+            resp = requests.post(rpc_url, json=payload, timeout=30)
+            # Helius can return HTTP 429 at transport level
+            if resp.status_code == 429:
+                wait_s = min(30, 2 ** attempt)
+                print(f"  RPC rate limited ({method}), retry in {wait_s}s...")
+                time.sleep(wait_s)
+                continue
+
+            resp.raise_for_status()
+            data = resp.json()
+            err = data.get("error")
+            if err:
+                # Helius JSON-RPC rate-limit code
+                if err.get("code") == -32429:
+                    wait_s = min(30, 2 ** attempt)
+                    print(f"  RPC error ({method}): {err} -> retry in {wait_s}s...")
+                    time.sleep(wait_s)
+                    continue
+                print(f"  RPC error ({method}): {err}")
+                return None
+            return data.get("result")
+        except requests.exceptions.RequestException as e:
+            wait_s = min(30, 2 ** attempt)
+            if attempt < max_retries - 1:
+                print(f"  ERROR in RPC {method}: {e} -> retry in {wait_s}s...")
+                time.sleep(wait_s)
+                continue
+            print(f"  ERROR in RPC {method}: {e}")
             return None
-        return data.get("result")
-    except Exception as e:
-        print(f"  ERROR in RPC {method}: {e}")
-        return None
+        except Exception as e:
+            print(f"  ERROR in RPC {method}: {e}")
+            return None
+    return None
 
 
 def get_bsc_transfers(api_key: str, contract: str, start_block: int) -> list[dict]:
@@ -506,9 +546,94 @@ def collect_token_data(
         return {}
 
 
+def _build_token_summary_entry(tdata: dict) -> dict:
+    token_entry = {
+        "total_inflow": tdata.get("total_inflow", 0),
+        "total_outflow": tdata.get("total_outflow", 0),
+        "net_flow": tdata.get("net_flow", 0),
+    }
+    exchange_summary = {}
+    for dep in tdata.get("deployments", []):
+        for ex, flows in dep.get("exchange_flows", {}).items():
+            if ex not in exchange_summary:
+                exchange_summary[ex] = {"inflow": 0, "outflow": 0, "net_flow": 0}
+            exchange_summary[ex]["inflow"] += flows.get("inflow", 0)
+            exchange_summary[ex]["outflow"] += flows.get("outflow", 0)
+            exchange_summary[ex]["net_flow"] += flows.get("net_flow", 0)
+    if exchange_summary:
+        token_entry["exchanges"] = exchange_summary
+    return token_entry
+
+
+def _merge_token_deployments(existing_token: dict, incoming_token: dict) -> dict:
+    """Merge two token payloads by deployment key (chain+contract)."""
+    merged = {"deployments": []}
+    dep_map = {}
+
+    for dep in existing_token.get("deployments", []):
+        key = (dep.get("chain"), dep.get("contract"))
+        dep_map[key] = dep
+
+    for dep in incoming_token.get("deployments", []):
+        key = (dep.get("chain"), dep.get("contract"))
+        dep_map[key] = dep
+
+    merged["deployments"] = sorted(
+        dep_map.values(),
+        key=lambda d: (str(d.get("chain", "")), str(d.get("contract", "")))
+    )
+
+    total_inflow = 0.0
+    total_outflow = 0.0
+    for dep in merged["deployments"]:
+        for flows in dep.get("exchange_flows", {}).values():
+            total_inflow += float(flows.get("inflow", 0) or 0)
+            total_outflow += float(flows.get("outflow", 0) or 0)
+
+    merged["total_inflow"] = round(total_inflow, 4)
+    merged["total_outflow"] = round(total_outflow, 4)
+    merged["net_flow"] = round(total_inflow - total_outflow, 4)
+    return merged
+
+
+def upsert_history_snapshot(history_file: Path, output: dict) -> None:
+    """Upsert one hourly snapshot by timestamp instead of always appending."""
+    existing_by_ts = {}
+    if history_file.exists():
+        with open(history_file) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    row = json.loads(line)
+                    ts = row.get("timestamp")
+                    if ts:
+                        existing_by_ts[ts] = row
+                except json.JSONDecodeError:
+                    continue
+
+    ts = output["timestamp"]
+    if ts in existing_by_ts:
+        base = existing_by_ts[ts]
+        base.setdefault("tokens", {})
+        for symbol, new_token in output.get("tokens", {}).items():
+            if symbol in base["tokens"]:
+                base["tokens"][symbol] = _merge_token_deployments(base["tokens"][symbol], new_token)
+            else:
+                base["tokens"][symbol] = new_token
+        base["lookback_seconds"] = output.get("lookback_seconds", base.get("lookback_seconds", LOOKBACK_SECONDS))
+    else:
+        existing_by_ts[ts] = output
+
+    with open(history_file, "w") as f:
+        for row_ts in sorted(existing_by_ts.keys()):
+            f.write(json.dumps(existing_by_ts[row_ts]) + "\n")
+
+
 def generate_history_summary():
     """Generate history_summary.json from recent hourly snapshots."""
-    summary = []
+    summary_by_ts = {}
     if not HISTORY_DIR.exists():
         return
 
@@ -520,33 +645,25 @@ def generate_history_summary():
                     continue
                 try:
                     record = json.loads(line)
-                    # Extract summary info (keep it compact)
-                    entry = {
-                        "timestamp": record["timestamp"],
-                        "tokens": {},
-                    }
-                    for symbol, tdata in record.get("tokens", {}).items():
-                        token_entry = {
-                            "total_inflow": tdata.get("total_inflow", 0),
-                            "total_outflow": tdata.get("total_outflow", 0),
-                            "net_flow": tdata.get("net_flow", 0),
-                        }
-                        exchange_summary = {}
-                        for dep in tdata.get("deployments", []):
-                            for ex, flows in dep.get("exchange_flows", {}).items():
-                                if ex not in exchange_summary:
-                                    exchange_summary[ex] = {"inflow": 0, "outflow": 0, "net_flow": 0}
-                                exchange_summary[ex]["inflow"] += flows.get("inflow", 0)
-                                exchange_summary[ex]["outflow"] += flows.get("outflow", 0)
-                                exchange_summary[ex]["net_flow"] += flows.get("net_flow", 0)
-                        if exchange_summary:
-                            token_entry["exchanges"] = exchange_summary
-                        entry["tokens"][symbol] = token_entry
-                    summary.append(entry)
-                except (json.JSONDecodeError, KeyError):
+                except json.JSONDecodeError:
                     continue
 
-    summary.sort(key=lambda x: x.get("timestamp", ""))
+                raw_ts = record.get("timestamp")
+                if not raw_ts:
+                    continue
+                hour_ts = parse_iso_to_hour_iso_utc(raw_ts)
+                if not hour_ts:
+                    continue
+
+                entry = summary_by_ts.setdefault(hour_ts, {"timestamp": hour_ts, "tokens": {}})
+                for symbol, tdata in record.get("tokens", {}).items():
+                    # Prefer exact-on-hour source for this bucket if both exist.
+                    # Otherwise keep first-seen token in this hour bucket.
+                    if symbol in entry["tokens"] and raw_ts != hour_ts:
+                        continue
+                    entry["tokens"][symbol] = _build_token_summary_entry(tdata)
+
+    summary = sorted(summary_by_ts.values(), key=lambda x: x.get("timestamp", ""))
     # Keep recent window for frontend performance (7 days x 24 hourly points)
     summary = summary[-168:]
 
@@ -571,7 +688,8 @@ def main():
     }
 
     now = datetime.now(timezone.utc)
-    timestamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    timestamp = floor_to_hour_iso_utc(now)
+    snapshot_hour_dt = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
 
     output = {
         "timestamp": timestamp,
@@ -619,10 +737,9 @@ def main():
 
     # Append to history
     HISTORY_DIR.mkdir(parents=True, exist_ok=True)
-    history_file = HISTORY_DIR / f"{now.strftime('%Y-%m-%d')}.jsonl"
-    with open(history_file, "a") as f:
-        f.write(json.dumps(output) + "\n")
-    print(f"Appended to {history_file}")
+    history_file = HISTORY_DIR / f"{snapshot_hour_dt.strftime('%Y-%m-%d')}.jsonl"
+    upsert_history_snapshot(history_file, output)
+    print(f"Upserted to {history_file}")
 
     # Generate history summary for frontend
     generate_history_summary()

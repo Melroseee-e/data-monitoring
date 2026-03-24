@@ -495,6 +495,7 @@ let currentTrendView = 'daily';
 let currentTimeLevel = 'daily'; // 'daily' or 'hourly'
 let isUpdatingToken = false; // 'daily' or 'cumulative' // 'daily' or 'cumulative'
 let manualResetUntil = 0;
+let relayoutIgnoreUntil = 0;
 let isSankeyExpanded = false;
 let lastFlowPanelData = null;
 let forceNextSankeyRedraw = false;
@@ -630,6 +631,31 @@ function getTrendDateBounds() {
   return { min: new Date(Math.min(...times)), max: new Date(Math.max(...times)) };
 }
 
+function getFullWindowRange(level = currentTimeLevel) {
+  const bounds = getTrendDateBounds();
+  if (!bounds) return null;
+  const padMs = level === 'hourly' ? (20 * 60 * 1000) : (6 * 60 * 60 * 1000);
+  return {
+    start: new Date(bounds.min.getTime()),
+    end: new Date(bounds.max.getTime() + padMs)
+  };
+}
+
+function applyFullWindowRange(chartDiv = document.getElementById('trendChart')) {
+  if (!chartDiv || !chartDiv.data) return;
+  const range = getFullWindowRange(currentTimeLevel);
+  if (!range) {
+    Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
+    return;
+  }
+  relayoutIgnoreUntil = Date.now() + 500;
+  Plotly.relayout(chartDiv, {
+    'xaxis.range[0]': range.start.toISOString(),
+    'xaxis.range[1]': range.end.toISOString(),
+    'yaxis.autorange': true
+  });
+}
+
 function applyQuickRange(rangeKey) {
   const chartDiv = document.getElementById('trendChart');
   if (!chartDiv || !chartDiv.data) return;
@@ -749,7 +775,7 @@ function resetTrendTimeframe() {
   manualResetUntil = Date.now() + 700;
   setQuickRangeActive('all');
   setTimeRangeUi(null, null);
-  Plotly.relayout(chartDiv, { 'xaxis.autorange': true, 'yaxis.autorange': true });
+  applyFullWindowRange(chartDiv);
   syncFlowPanels(getFullTokenFlowData(selectedToken, currentTimeLevel));
 }
 
@@ -1143,7 +1169,16 @@ function buildHourlyTrendSeries(token) {
 
   const sortedHours = Array.from(timeline).sort((a, b) => a - b);
   if (sortedHours.length === 0) return null;
-  const firstHour = sortedHours[0];
+  const firstPresenceHour = sortedHours[0];
+  let firstActiveHour = null;
+  sortedHours.forEach(hourKey => {
+    if (firstActiveHour !== null) return;
+    const flows = buckets.get(hourKey) || { inflow: 0, outflow: 0 };
+    const inf = Number(flows.inflow || 0);
+    const outf = Number(flows.outflow || 0);
+    if (inf !== 0 || outf !== 0) firstActiveHour = hourKey;
+  });
+  const firstHour = firstActiveHour ?? firstPresenceHour;
   const lastHour = sortedHours[sortedHours.length - 1];
 
   const dates = [];
@@ -1239,6 +1274,7 @@ function updateTrendChart(token) {
   const chartDiv = document.getElementById('trendChart');
   chartDiv.innerHTML = '';
   Plotly.newPlot(chartDiv, plotTraces, layout, { displayModeBar: false, responsive: true, doubleClick: 'reset+autosize' });
+  applyFullWindowRange(chartDiv);
 
   const activeItem = document.querySelector('.token-item.active');
   if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1267,6 +1303,7 @@ function updateTrendChart(token) {
 
   chartDiv.on('plotly_relayout', function(eventData) {
     if (isUpdatingToken || selectedToken !== currentInstanceToken) return;
+    if (Date.now() < relayoutIgnoreUntil) return;
     if (Date.now() < manualResetUntil) {
       setQuickRangeActive('all');
       setTimeRangeUi(null, null);
