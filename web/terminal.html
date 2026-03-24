@@ -1261,8 +1261,7 @@ function updateTrendChart(token) {
     if (!Number.isFinite(end.getTime())) return null;
     const start = new Date(end);
     start.setDate(start.getDate() - 3);
-    const visualEnd = new Date(end.getTime() + (60 * 60 * 1000));
-    return { start, end, visualEnd };
+    return { start, end };
   };
 
   const applyHourlyDefaultWindow = () => {
@@ -1274,7 +1273,7 @@ function updateTrendChart(token) {
     suppressNextRelayoutSync = true;
     const relayoutResult = Plotly.relayout(chartDiv, {
       'xaxis.range[0]': range.start.toISOString(),
-      'xaxis.range[1]': range.visualEnd.toISOString(),
+      'xaxis.range[1]': range.end.toISOString(),
       'yaxis.autorange': true
     });
     if (relayoutResult && typeof relayoutResult.finally === 'function') {
