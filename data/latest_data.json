@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-24T22:00:00Z",
+  "timestamp": "2026-03-24T23:00:00Z",
   "lookback_seconds": 3600,
   "tokens": {
     "UAI": {
@@ -7,12 +7,20 @@
         {
           "chain": "bsc",
           "contract": "0x3e5d4f8aee0d9b3082d5f6da5d6e225d17ba9ea0",
-          "exchange_flows": {}
+          "exchange_flows": {
+            "Binance": {
+              "inflow": 0.0,
+              "outflow": 7303.7922,
+              "net_flow": -7303.7922,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 1
+            }
+          }
         }
       ],
-      "total_inflow": 0,
-      "total_outflow": 0,
-      "net_flow": 0
+      "total_inflow": 0.0,
+      "total_outflow": 7303.7922,
+      "net_flow": -7303.7922
     },
     "BIRB": {
       "deployments": [
@@ -21,36 +29,9 @@
           "contract": "G7vQWurMkMMm2dU3iZpXYFTHT9Biio4F4gZCrwFpKNwG",
           "exchange_flows": {
             "Bybit": {
-              "inflow": 19298.1336,
-              "outflow": 0.0,
-              "net_flow": 19298.1336,
-              "inflow_tx_count": 1,
-              "outflow_tx_count": 0
-            },
-            "Coinbase": {
               "inflow": 0.0,
-              "outflow": 19298.1336,
-              "net_flow": -19298.1336,
-              "inflow_tx_count": 0,
-              "outflow_tx_count": 1
-            }
-          }
-        }
-      ],
-      "total_inflow": 19298.1336,
-      "total_outflow": 19298.1336,
-      "net_flow": 0.0
-    },
-    "AZTEC": {
-      "deployments": [
-        {
-          "chain": "ethereum",
-          "contract": "0xA27EC0006e59f245217Ff08CD52A7E8b169E62D2",
-          "exchange_flows": {
-            "KuCoin": {
-              "inflow": 0.0,
-              "outflow": 10477.8,
-              "net_flow": -10477.8,
+              "outflow": 18353.8437,
+              "net_flow": -18353.8437,
               "inflow_tx_count": 0,
               "outflow_tx_count": 1
             }
@@ -58,62 +39,60 @@
         }
       ],
       "total_inflow": 0.0,
-      "total_outflow": 10477.8,
-      "net_flow": -10477.8
+      "total_outflow": 18353.8437,
+      "net_flow": -18353.8437
+    },
+    "AZTEC": {
+      "deployments": [
+        {
+          "chain": "ethereum",
+          "contract": "0xA27EC0006e59f245217Ff08CD52A7E8b169E62D2",
+          "exchange_flows": {
+            "Bybit": {
+              "inflow": 1056483.0,
+              "outflow": 0.0,
+              "net_flow": 1056483.0,
+              "inflow_tx_count": 1,
+              "outflow_tx_count": 0
+            },
+            "Coinbase": {
+              "inflow": 0.0,
+              "outflow": 193596.2675,
+              "net_flow": -193596.2675,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 1
+            }
+          }
+        }
+      ],
+      "total_inflow": 1056483.0,
+      "total_outflow": 193596.2675,
+      "net_flow": 862886.7325
     },
     "TRIA": {
       "deployments": [
         {
           "chain": "ethereum",
           "contract": "0x228bec415ade4b61d7caf0adf8c91eac587ba369",
-          "exchange_flows": {
-            "Bitget": {
-              "inflow": 0.0,
-              "outflow": 235815.9465,
-              "net_flow": -235815.9465,
-              "inflow_tx_count": 0,
-              "outflow_tx_count": 2
-            },
-            "Bitvavo": {
-              "inflow": 0.0,
-              "outflow": 155811.0,
-              "net_flow": -155811.0,
-              "inflow_tx_count": 0,
-              "outflow_tx_count": 1
-            },
-            "Bybit": {
-              "inflow": 521831.4854,
-              "outflow": 117738.1099,
-              "net_flow": 404093.3755,
-              "inflow_tx_count": 5,
-              "outflow_tx_count": 2
-            },
-            "KuCoin": {
-              "inflow": 54590.0758,
-              "outflow": 127460.0,
-              "net_flow": -72869.9242,
-              "inflow_tx_count": 1,
-              "outflow_tx_count": 1
-            }
-          }
+          "exchange_flows": {}
         },
         {
           "chain": "bsc",
           "contract": "0xb0b92de23baa85fb06208277e925ced53edab482",
           "exchange_flows": {
             "Binance": {
-              "inflow": 84802.9928,
+              "inflow": 71739.4511,
               "outflow": 0.0,
-              "net_flow": 84802.9928,
-              "inflow_tx_count": 3,
+              "net_flow": 71739.4511,
+              "inflow_tx_count": 10,
               "outflow_tx_count": 0
             }
           }
         }
       ],
-      "total_inflow": 661224.554,
-      "total_outflow": 636825.0564,
-      "net_flow": 24399.4976
+      "total_inflow": 71739.4511,
+      "total_outflow": 0.0,
+      "net_flow": 71739.4511
     },
     "SKR": {
       "deployments": [
@@ -121,31 +100,67 @@
           "chain": "solana",
           "contract": "SKRbvo6Gf7GondiT3BbTfuRDPqLWei4j2Qy2NPGZhW3",
           "exchange_flows": {
-            "Bitget": {
-              "inflow": 3859.4593,
-              "outflow": 5336.1487,
-              "net_flow": -1476.6894,
-              "inflow_tx_count": 1,
+            "Coinbase": {
+              "inflow": 0.0,
+              "outflow": 11726.0,
+              "net_flow": -11726.0,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 1
+            },
+            "Crypto.com": {
+              "inflow": 0.0,
+              "outflow": 397.9302,
+              "net_flow": -397.9302,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 1
+            },
+            "Kraken": {
+              "inflow": 0.0,
+              "outflow": 1829.913,
+              "net_flow": -1829.913,
+              "inflow_tx_count": 0,
               "outflow_tx_count": 1
             }
           }
         }
       ],
-      "total_inflow": 3859.4593,
-      "total_outflow": 5336.1487,
-      "net_flow": -1476.6894
+      "total_inflow": 0.0,
+      "total_outflow": 13953.8432,
+      "net_flow": -13953.8432
     },
     "GWEI": {
       "deployments": [
         {
           "chain": "ethereum",
           "contract": "0x2798b1cc5a993085e8a9d46e80499f1b63f42204",
-          "exchange_flows": {}
+          "exchange_flows": {
+            "Coinbase": {
+              "inflow": 0.0,
+              "outflow": 1065.0945,
+              "net_flow": -1065.0945,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 1
+            },
+            "Gate.io": {
+              "inflow": 0.0,
+              "outflow": 15195.2,
+              "net_flow": -15195.2,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 1
+            },
+            "HitBTC": {
+              "inflow": 15195.2,
+              "outflow": 8548.1659,
+              "net_flow": 6647.0341,
+              "inflow_tx_count": 1,
+              "outflow_tx_count": 1
+            }
+          }
         }
       ],
-      "total_inflow": 0,
-      "total_outflow": 0,
-      "net_flow": 0
+      "total_inflow": 15195.2,
+      "total_outflow": 24808.4604,
+      "net_flow": -9613.2604
     },
     "SPACE": {
       "deployments": [
@@ -153,32 +168,45 @@
           "chain": "ethereum",
           "contract": "0x87acFA3fD7A6e0d48677D070644D76905C2bDC00",
           "exchange_flows": {
-            "Upbit": {
+            "Coinone": {
               "inflow": 0.0,
-              "outflow": 6595.9168,
-              "net_flow": -6595.9168,
+              "outflow": 40908.0885,
+              "net_flow": -40908.0885,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 4
+            },
+            "GOPAX": {
+              "inflow": 48034.9874,
+              "outflow": 0.0,
+              "net_flow": 48034.9874,
+              "inflow_tx_count": 4,
+              "outflow_tx_count": 0
+            },
+            "MEXC": {
+              "inflow": 0.0,
+              "outflow": 10030.0,
+              "net_flow": -10030.0,
               "inflow_tx_count": 0,
               "outflow_tx_count": 1
+            },
+            "Upbit": {
+              "inflow": 0.0,
+              "outflow": 25904.1965,
+              "net_flow": -25904.1965,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 3
             }
           }
         },
         {
           "chain": "bsc",
           "contract": "0x87acFA3fD7A6e0d48677D070644D76905C2bDC00",
-          "exchange_flows": {
-            "Binance": {
-              "inflow": 10955.3682,
-              "outflow": 30310.7255,
-              "net_flow": -19355.3573,
-              "inflow_tx_count": 2,
-              "outflow_tx_count": 1
-            }
-          }
+          "exchange_flows": {}
         }
       ],
-      "total_inflow": 10955.3682,
-      "total_outflow": 36906.6423,
-      "net_flow": -25951.2741
+      "total_inflow": 48034.9874,
+      "total_outflow": 76842.285,
+      "net_flow": -28807.2976
     },
     "PUMP": {
       "deployments": [
@@ -187,60 +215,67 @@
           "contract": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
           "exchange_flows": {
             "Binance": {
-              "inflow": 1299557.2,
-              "outflow": 21237622.05,
-              "net_flow": -19938064.85,
-              "inflow_tx_count": 1,
-              "outflow_tx_count": 9
+              "inflow": 25697559.74,
+              "outflow": 9227.56,
+              "net_flow": 25688332.18,
+              "inflow_tx_count": 4,
+              "outflow_tx_count": 1
             },
             "Bitget": {
+              "inflow": 332963.5763,
+              "outflow": 0.0,
+              "net_flow": 332963.5763,
+              "inflow_tx_count": 1,
+              "outflow_tx_count": 0
+            },
+            "Bithumb": {
               "inflow": 0.0,
-              "outflow": 69093.0915,
-              "net_flow": -69093.0915,
+              "outflow": 175080.2576,
+              "net_flow": -175080.2576,
               "inflow_tx_count": 0,
               "outflow_tx_count": 1
             },
             "Bybit": {
+              "inflow": 9227.56,
+              "outflow": 0.0,
+              "net_flow": 9227.56,
+              "inflow_tx_count": 1,
+              "outflow_tx_count": 0
+            },
+            "CoinEx": {
               "inflow": 0.0,
-              "outflow": 31480.3784,
-              "net_flow": -31480.3784,
+              "outflow": 348512.9855,
+              "net_flow": -348512.9855,
               "inflow_tx_count": 0,
               "outflow_tx_count": 1
             },
             "Coinbase": {
-              "inflow": 6781671.47,
-              "outflow": 22073050.6678,
-              "net_flow": -15291379.1978,
-              "inflow_tx_count": 4,
-              "outflow_tx_count": 2
+              "inflow": 0.0,
+              "outflow": 332963.5763,
+              "net_flow": -332963.5763,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 1
             },
             "Kraken": {
-              "inflow": 597785.1424,
-              "outflow": 0.0,
-              "net_flow": 597785.1424,
-              "inflow_tx_count": 2,
-              "outflow_tx_count": 0
-            },
-            "OKX": {
-              "inflow": 14322990.0,
-              "outflow": 0.0,
-              "net_flow": 14322990.0,
-              "inflow_tx_count": 2,
-              "outflow_tx_count": 0
+              "inflow": 0.0,
+              "outflow": 8970524.5,
+              "net_flow": -8970524.5,
+              "inflow_tx_count": 0,
+              "outflow_tx_count": 2
             },
             "Wintermute": {
-              "inflow": 149373.3785,
-              "outflow": 289053.4773,
-              "net_flow": -139680.0988,
-              "inflow_tx_count": 3,
-              "outflow_tx_count": 6
+              "inflow": 344749.0224,
+              "outflow": 0.0,
+              "net_flow": 344749.0224,
+              "inflow_tx_count": 2,
+              "outflow_tx_count": 0
             }
           }
         }
       ],
-      "total_inflow": 23151377.1909,
-      "total_outflow": 43700299.665,
-      "net_flow": -20548922.4741
+      "total_inflow": 26384499.8987,
+      "total_outflow": 9836308.8794,
+      "net_flow": 16548191.0193
     }
   }
 }
