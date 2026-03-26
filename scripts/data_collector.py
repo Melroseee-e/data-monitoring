@@ -51,6 +51,25 @@ def get_env(name: str) -> str:
     return val
 
 
+def get_env_list(*names: str) -> list[str]:
+    """Read one or more env vars as a deduplicated list of comma-separated values."""
+    values = []
+    seen = set()
+    for name in names:
+        raw = os.environ.get(name, "")
+        if not raw:
+            continue
+        for part in raw.split(","):
+            value = part.strip()
+            if not value or value in seen:
+                continue
+            seen.add(value)
+            values.append(value)
+    if not values and names:
+        print(f"WARNING: none of {', '.join(names)} set, skipping related chains", file=sys.stderr)
+    return values
+
+
 def floor_to_hour_iso_utc(dt: datetime) -> str:
     """Floor datetime to UTC hour and format as ISO Z."""
     dt_utc = dt.astimezone(timezone.utc).replace(minute=0, second=0, microsecond=0)
@@ -205,6 +224,99 @@ def rpc_call(rpc_url: str, method: str, params: list, max_retries: int = 5) -> d
     return None
 
 
+def _helius_error_requires_rotation(status_code: int | None, err: dict | None) -> bool:
+    """Return True when the current Helius key is likely exhausted or blocked."""
+    if status_code in {401, 402, 403}:
+        return True
+    if status_code == 429:
+        return True
+    if not err:
+        return False
+
+    message = " ".join(
+        str(err.get(field, ""))
+        for field in ("message", "details", "data")
+    ).lower()
+    if any(
+        marker in message
+        for marker in ("credit", "quota", "billing", "exhaust", "insufficient", "limit exceeded")
+    ):
+        return True
+    return False
+
+
+def helius_rpc_call(
+    rpc_urls: list[str], method: str, params: list, max_retries_per_key: int = 5
+) -> dict | list | None:
+    """Call Helius RPC and rotate across multiple keys on quota/rate-limit failures."""
+    if not rpc_urls:
+        return None
+
+    for key_index, rpc_url in enumerate(rpc_urls, start=1):
+        for attempt in range(max_retries_per_key):
+            try:
+                resp = requests.post(
+                    rpc_url,
+                    json={"jsonrpc": "2.0", "method": method, "params": params, "id": 1},
+                    timeout=30,
+                )
+                if resp.status_code == 429:
+                    wait_s = min(30, 2 ** attempt)
+                    if key_index < len(rpc_urls):
+                        print(
+                            f"  RPC rate limited ({method}) on Helius key {key_index}, rotating..."
+                        )
+                        break
+                    print(f"  RPC rate limited ({method}), retry in {wait_s}s...")
+                    time.sleep(wait_s)
+                    continue
+
+                if resp.status_code in {401, 402, 403}:
+                    if key_index < len(rpc_urls):
+                        print(
+                            f"  RPC auth/quota error ({method}) on Helius key {key_index}, rotating..."
+                        )
+                        break
+                    print(f"  RPC auth/quota error ({method}): HTTP {resp.status_code}")
+                    return None
+
+                resp.raise_for_status()
+                data = resp.json()
+                err = data.get("error")
+                if err:
+                    if _helius_error_requires_rotation(None, err):
+                        if key_index < len(rpc_urls):
+                            print(
+                                f"  RPC error ({method}) on Helius key {key_index}: {err} -> rotating..."
+                            )
+                            break
+                        wait_s = min(30, 2 ** attempt)
+                        print(f"  RPC error ({method}): {err} -> retry in {wait_s}s...")
+                        time.sleep(wait_s)
+                        continue
+                    print(f"  RPC error ({method}): {err}")
+                    return None
+                return data.get("result")
+            except requests.exceptions.RequestException as e:
+                wait_s = min(30, 2 ** attempt)
+                if attempt < max_retries_per_key - 1:
+                    print(f"  ERROR in RPC {method}: {e} -> retry in {wait_s}s...")
+                    time.sleep(wait_s)
+                    continue
+                if key_index < len(rpc_urls):
+                    print(
+                        f"  ERROR in RPC {method} on Helius key {key_index}: {e} -> rotating..."
+                    )
+                    break
+                print(f"  ERROR in RPC {method}: {e}")
+                return None
+            except Exception as e:
+                print(f"  ERROR in RPC {method}: {e}")
+                return None
+
+    return None
+
+
 def get_bsc_transfers(api_key: str, contract: str, start_block: int) -> list[dict]:
     """Fetch ERC-20 Transfer events on BSC using eth_getLogs via NodeReal."""
     rpc_url = BSCTRACE_RPC.format(api_key=api_key)
@@ -283,7 +395,7 @@ def process_bsc_transfers(
 
 
 def get_solana_transfers_helius(
-    api_key: str, token_mint: str, exchange_addresses: list[str],
+    api_keys: list[str], token_mint: str, exchange_addresses: list[str],
     lookback_seconds: int = 3600,
 ) -> list[dict]:
     """
@@ -294,10 +406,10 @@ def get_solana_transfers_helius(
     2. getSignaturesForAddress per found token account (1 credit each)
     3. getTransaction per signature for transfer details (1 credit each)
     """
-    if not api_key:
+    if not api_keys:
         return []
 
-    rpc_url = HELIUS_RPC.format(api_key=api_key)
+    rpc_urls = [HELIUS_RPC.format(api_key=api_key) for api_key in api_keys]
     cutoff_time = int(time.time()) - lookback_seconds
     all_transfers = []
 
@@ -306,7 +418,7 @@ def get_solana_transfers_helius(
 
     # Step 1: Find ATAs for each exchange address
     for addr in exchange_addresses:
-        result = rpc_call(rpc_url, "getTokenAccountsByOwner", [
+        result = helius_rpc_call(rpc_urls, "getTokenAccountsByOwner", [
             addr,
             {"mint": token_mint},
             {"encoding": "jsonParsed"},
@@ -326,7 +438,7 @@ def get_solana_transfers_helius(
     # Step 2: Get recent signatures for each ATA
     signatures_to_fetch = []
     for ata_pubkey, _ex_addr in ata_to_exchange.items():
-        sigs = rpc_call(rpc_url, "getSignaturesForAddress", [
+        sigs = helius_rpc_call(rpc_urls, "getSignaturesForAddress", [
             ata_pubkey,
             {"limit": 20},
         ])
@@ -347,7 +459,7 @@ def get_solana_transfers_helius(
 
     # Step 3: Parse each transaction
     for sig in signatures_to_fetch:
-        tx_data = rpc_call(rpc_url, "getTransaction", [
+        tx_data = helius_rpc_call(rpc_urls, "getTransaction", [
             sig,
             {"encoding": "jsonParsed", "maxSupportedTransactionVersion": 0},
         ])
@@ -529,14 +641,14 @@ def collect_token_data(
         return process_bsc_transfers(transfers, chain_lookup)
 
     elif chain == "solana":
-        api_key = api_keys.get("solana", "")
-        if not api_key:
-            print(f"    Skipping — no HELIUS_API_KEY")
+        solana_api_keys = api_keys.get("solana", [])
+        if not solana_api_keys:
+            print(f"    Skipping — no HELIUS_API_KEY / HELIUS_API_KEYS")
             return {}
 
         sol_exchange_addrs = get_exchange_addresses_for_chain(exchanges_data, "solana")
         transfers = get_solana_transfers_helius(
-            api_key, contract, sol_exchange_addrs, LOOKBACK_SECONDS
+            solana_api_keys, contract, sol_exchange_addrs, LOOKBACK_SECONDS
         )
         print(f"    Found {len(transfers)} transfers")
         return process_solana_transfers(transfers, chain_lookup)
@@ -684,7 +796,7 @@ def main():
     api_keys = {
         "ethereum": get_env("ETHERSCAN_API_KEY"),
         "bsc": get_env("BSCTrace_API_KEY"),
-        "solana": get_env("HELIUS_API_KEY"),
+        "solana": get_env_list("HELIUS_API_KEYS", "HELIUS_API_KEY", "HELIUS_API_KEY_2"),
     }
 
     now = datetime.now(timezone.utc)
