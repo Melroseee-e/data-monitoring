@@ -1,0 +1,178 @@
+{
+  "generated_at": "2026-03-26T07:07:21Z",
+  "ledger_summary": {
+    "earliest_date": "2025-07-12",
+    "latest_date": "2026-03-25",
+    "total_transfers": 56423152,
+    "total_volume_B": 11861.780857884496,
+    "unique_receivers": 891807,
+    "unique_senders": 830921
+  },
+  "method1_cex_inflow_total": {
+    "status": "PASS",
+    "helius_total_B": 1116.69,
+    "helius_tx_count": 77276,
+    "helius_unique_sellers": 13647,
+    "dune_total_B": 1726.08,
+    "dune_unique_sellers": 830849,
+    "ratio": 1.55,
+    "note": "Dune is 1.55x Helius (Dune expected to be higher due to Helius cache gaps)"
+  },
+  "method2_top_holder_balance": {
+    "status": "FAIL",
+    "top20_coverage": "1/20 (5%)",
+    "note": "Checking if Top 20 Arkham holders appear in Dune's Top 500 CEX buyers.",
+    "comparisons": [
+      {
+        "address": "Cfq1ts1iFr1eUWWB...",
+        "entity": "pump.fun",
+        "arkham_balance_B": 365.4619,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "G8CcfRffqZWHSAQJ...",
+        "entity": "pump.fun",
+        "arkham_balance_B": 106.2607,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "8UhbNoBXmGoxJr2T...",
+        "entity": "pump.fun",
+        "arkham_balance_B": 80.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "9pkFKCR1mdS31Jxj...",
+        "entity": "Squads Vault \"\\\"",
+        "arkham_balance_B": 35.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "85WTujfJ9meJq5hf...",
+        "entity": "unknown",
+        "arkham_balance_B": 29.9999,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "9WzDXwBbmkg8ZTbN...",
+        "entity": "Binance",
+        "arkham_balance_B": 28.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "BBvQteuawKB2UtEx...",
+        "entity": "Squads Vault \"\\\"",
+        "arkham_balance_B": 25.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "GTeSSwovPiVirpvW...",
+        "entity": "Squads Vault \"SOLANA 3\"",
+        "arkham_balance_B": 25.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "AvqFxKNrYZNvxsj2...",
+        "entity": "pump.fun",
+        "arkham_balance_B": 24.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "96HiV4cGWTJNCjGV...",
+        "entity": "unknown",
+        "arkham_balance_B": 23.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "8UHpWBnhYNeAQURW...",
+        "entity": "unknown",
+        "arkham_balance_B": 19.1311,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "ERRGqu3dh6zYBg7M...",
+        "entity": "unknown",
+        "arkham_balance_B": 17.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "GhFaBi8sy3M5mgG9...",
+        "entity": "Squads Vault \"MF III\"",
+        "arkham_balance_B": 15.625,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "9SLPTL41SPsYkgds...",
+        "entity": "Hyperunit",
+        "arkham_balance_B": 10.4256,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "2WHL4XiNGKW9NgSw...",
+        "entity": "unknown",
+        "arkham_balance_B": 10.0,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "9UcygiamY92yGntG...",
+        "entity": "unknown",
+        "arkham_balance_B": 8.8,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "C68a6RCGLiPskbPY...",
+        "entity": "OKX",
+        "arkham_balance_B": 8.2063,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "4GZwzZgqSwwTTRVg...",
+        "entity": "unknown",
+        "arkham_balance_B": 7.1886,
+        "dune_cex_withdraw_B": 7.1886,
+        "in_top_500_buyers": true
+      },
+      {
+        "address": "H61va8NXmR72rJ5Z...",
+        "entity": "unknown",
+        "arkham_balance_B": 4.69,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      },
+      {
+        "address": "7TWnq4WeYcwQWBCw...",
+        "entity": "Bitget",
+        "arkham_balance_B": 4.5379,
+        "dune_cex_withdraw_B": null,
+        "in_top_500_buyers": false
+      }
+    ]
+  },
+  "method4_daily_netflow": {
+    "status": "PASS",
+    "total_days": 257,
+    "date_range": "2025-07-12 to 2026-03-25",
+    "days_with_cex_inflow": 256,
+    "total_cex_inflow_B": 1726.08,
+    "total_cex_outflow_B": 1643.79,
+    "issues": []
+  },
+  "overall_verdict": "FAIL — data quality issues detected"
+}

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUMP 抛压全周期溯源分析 | On-Chain Data Monitoring</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0e11;
+            --panel-bg: #181a20;
+            --text-primary: #EAECEF;
+            --text-secondary: #848E9C;
+            --border-color: #2b3139;
+            --accent-green: #0ECB81;
+            --accent-red: #F6465D;
+            --accent-yellow: #FCD535;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: rgba(43, 49, 57, 0.4);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-top: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .text-green { color: var(--accent-green); }
+        .text-red { color: var(--accent-red); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #2b3139;
+        }
+
+        .badge-entity {
+            background: rgba(246, 70, 93, 0.2);
+            color: var(--accent-red);
+            border: 1px solid rgba(246, 70, 93, 0.4);
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold">PUMP 抛压全周期溯源分析</h1>
+                <p class="text-sm text-gray-400 mt-1">CEX Deposit (Sell Pressure) & CEX Withdrawal (Buy Pressure) Tracking</p>
+            </div>
+            <div class="text-right">
+                <span id="update-time" class="text-sm text-gray-400">Loading...</span>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card">
+                <div class="stat-label">总 CEX 净流出/入 (Total Netflow)</div>
+                <div class="stat-value" id="kpi-netflow">...</div>
+            </div>
+            <div class="stat-card" style="border-left-color: var(--accent-red)">
+                <div class="stat-label">总抛压 (Total CEX Deposit)</div>
+                <div class="stat-value" id="kpi-deposit">...</div>
+            </div>
+            <div class="stat-card" style="border-left-color: var(--accent-green)">
+                <div class="stat-label">总买盘 (Total CEX Withdrawal)</div>
+                <div class="stat-value" id="kpi-withdraw">...</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #848E9C">
+                <div class="stat-label">独立交易地址数 (Unique Addresses)</div>
+                <div class="stat-value" id="kpi-addresses">...</div>
+            </div>
+        </div>
+
+        <!-- Main Chart -->
+        <div class="panel">
+            <h2 class="text-lg font-bold mb-4">全周期流入/流出趋势 (Daily Flow)</h2>
+            <div id="main-chart" style="height: 450px; width: 100%;"></div>
+        </div>
+
+        <!-- Seller Profile & Clusters -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <!-- Exchanges List -->
+            <div class="panel">
+                <h2 class="text-lg font-bold mb-4">Top CEX 流动分布 (Exchange Flows)</h2>
+                <div class="overflow-x-auto">
+                    <table id="exchanges-table">
+                        <thead>
+                            <tr>
+                                <th>交易所</th>
+                                <th class="text-right">总充值 (抛压)</th>
+                                <th class="text-right">总提现 (买盘)</th>
+                                <th class="text-right">净流出入</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Size Tier -->
+            <div class="panel">
+                <h2 class="text-lg font-bold mb-4">充值地址量级分布 (Size Tiers)</h2>
+                <div id="tier-chart" style="height: 300px; width: 100%;"></div>
+            </div>
+        </div>
+
+        <!-- Top Traders Table -->
+        <div class="panel">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Top 20 抛压地址溯源 (Top 20 Sellers)</h2>
+                <span class="text-xs text-gray-400"><i class="fas fa-info-circle"></i> Arkham entity labels applied where available</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table id="sellers-table">
+                    <thead>
+                        <tr>
+                            <th>地址 (Address)</th>
+                            <th>Arkham 实体 / 标签</th>
+                            <th class="text-right">充值量 (B PUMP)</th>
+                            <th class="text-right">充值笔数</th>
+                            <th>首日充值</th>
+                            <th>使用的 CEX</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const formatB = (val) => {
+            if (val === undefined || val === null) return "0.00B";
+            return val.toFixed(2) + "B";
+        };
+
+        const formatAddr = (addr) => {
+            if(!addr) return "-";
+            return `<a href="https://solscan.io/account/${addr}" target="_blank" class="text-blue-400 hover:text-blue-300">${addr.substring(0,6)}...${addr.substring(addr.length-4)}</a>`;
+        };
+
+        // Initialize ECharts
+        const mainChart = echarts.init(document.getElementById('main-chart'));
+        const tierChart = echarts.init(document.getElementById('tier-chart'));
+
+        // Load data
+        async function loadData() {
+            try {
+                // Fetch the tiered ledger
+                const ledgerRes = await fetch('../data/pump/derived/pump_dune_tiered_ledger.json');
+                const ledger = await ledgerRes.json();
+
+                // Fetch daily netflow
+                const netflowRes = await fetch('../data/pump/derived/pump_daily_netflow.json');
+                const netflow = await netflowRes.json();
+
+                // Check for enriched data (optional)
+                let sellers = ledger.top_sellers || [];
+                try {
+                    const enrichRes = await fetch('../data/pump/derived/pump_top_sellers_enriched.json');
+                    if(enrichRes.ok) {
+                        const enriched = await enrichRes.json();
+                        if (enriched.sellers && enriched.sellers.length > 0) {
+                            sellers = enriched.sellers;
+                        }
+                    }
+                } catch(e) { console.log("No enriched sellers found, using raw ledger."); }
+
+                renderDashboard(ledger, netflow, sellers);
+            } catch (err) {
+                console.error("Error loading data:", err);
+                document.getElementById("update-time").textContent = "Error loading data. See console.";
+            }
+        }
+
+        function renderDashboard(ledger, netflow, top_sellers) {
+            // Meta
+            document.getElementById("update-time").textContent = `Last updated: ${ledger.generated_at || new Date().toISOString()}`;
+
+            // KPIs
+            const stats = ledger.overall_stats[0] || {unique_senders: 0};
+            const inB = ledger.exchange_flow.reduce((sum, row) => sum + (row.inflow_B || 0), 0);
+            const outB = ledger.exchange_flow.reduce((sum, row) => sum + (row.outflow_B || 0), 0);
+            const netB = outB - inB; // Net flow (Positive = Outflow/Buy pressure)
+
+            document.getElementById("kpi-netflow").textContent = (netB > 0 ? "+" : "") + formatB(netB);
+            document.getElementById("kpi-netflow").className = `stat-value ${netB > 0 ? "text-green" : "text-red"}`;
+            document.getElementById("kpi-deposit").textContent = formatB(inB);
+            document.getElementById("kpi-withdraw").textContent = formatB(outB);
+            document.getElementById("kpi-addresses").textContent = stats.unique_senders.toLocaleString();
+
+            // Main Chart: Daily Inflow/Outflow/Net
+            const daily = netflow.daily || [];
+            const dates = daily.map(d => d.date);
+            const inflows = daily.map(d => -(d.cex_inflow_B || 0)); // Negative for sell pressure
+            const outflows = daily.map(d => (d.cex_outflow_B || 0)); // Positive for buy pressure
+            const nets = daily.map(d => (d.cex_outflow_B || 0) - (d.cex_inflow_B || 0));
+
+            const mainOption = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { type: 'shadow' },
+                    valueFormatter: (value) => value ? Math.abs(value).toFixed(2) + 'B PUMP' : '0'
+                },
+                legend: {
+                    data: ['提现 (Withdrawal/Buy)', '充值 (Deposit/Sell)', '净流出入 (Netflow)'],
+                    textStyle: { color: '#848E9C' }
+                },
+                grid: { left: '3%', right: '4%', bottom: '15%', containLabel: true },
+                dataZoom: [
+                    { type: 'slider', show: true, bottom: 0, textStyle: { color: '#848E9C' } },
+                    { type: 'inside' }
+                ],
+                xAxis: {
+                    type: 'category',
+                    data: dates,
+                    axisLine: { lineStyle: { color: '#2b3139' } },
+                    axisLabel: { color: '#848E9C' }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: { show: false },
+                    splitLine: { lineStyle: { color: '#2b3139', type: 'dashed' } },
+                    axisLabel: { color: '#848E9C' }
+                },
+                series: [
+                    {
+                        name: '提现 (Withdrawal/Buy)',
+                        type: 'bar',
+                        stack: 'Total',
+                        itemStyle: { color: '#0ECB81' }, // Green
+                        data: outflows
+                    },
+                    {
+                        name: '充值 (Deposit/Sell)',
+                        type: 'bar',
+                        stack: 'Total',
+                        itemStyle: { color: '#F6465D' }, // Red
+                        data: inflows
+                    },
+                    {
+                        name: '净流出入 (Netflow)',
+                        type: 'line',
+                        itemStyle: { color: '#FCD535' }, // Yellow
+                        lineStyle: { width: 2 },
+                        symbol: 'none',
+                        data: nets
+                    }
+                ]
+            };
+            mainChart.setOption(mainOption);
+
+            // Tier Chart
+            const tiers = ledger.size_tiers || [];
+            const tierOption = {
+                tooltip: { trigger: 'item', formatter: '{b}: {c}B PUMP ({d}%)' },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    textStyle: { color: '#848E9C' }
+                },
+                series: [
+                    {
+                        name: 'Size Tier Volume',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#181a20',
+                            borderWidth: 2
+                        },
+                        label: { show: false, position: 'center' },
+                        emphasis: {
+                            label: { show: true, fontSize: 16, fontWeight: 'bold', color: '#EAECEF' }
+                        },
+                        labelLine: { show: false },
+                        data: tiers.map(t => ({
+                            name: t.size_tier.split(' ')[0],
+                            value: parseFloat((t.total_sent_B || 0).toFixed(2))
+                        }))
+                    }
+                ]
+            };
+            tierChart.setOption(tierOption);
+
+            // Exchanges Table
+            const tbodyEx = document.querySelector("#exchanges-table tbody");
+            const topEx = (ledger.exchange_flow || []).slice(0, 10);
+            topEx.forEach(ex => {
+                const tr = document.createElement("tr");
+                const net = (ex.outflow_B || 0) - (ex.inflow_B || 0);
+                const netClass = net > 0 ? "text-green" : "text-red";
+                tr.innerHTML = `
+                    <td>${ex.exchange}</td>
+                    <td class="text-right text-red">${formatB(ex.inflow_B)}</td>
+                    <td class="text-right text-green">${formatB(ex.outflow_B)}</td>
+                    <td class="text-right ${netClass}">${net > 0 ? "+" : ""}${formatB(net)}</td>
+                `;
+                tbodyEx.appendChild(tr);
+            });
+
+            // Sellers Table
+            const tbodySellers = document.querySelector("#sellers-table tbody");
+            const top20 = top_sellers.slice(0, 20);
+
+            top20.forEach(s => {
+                const tr = document.createElement("tr");
+
+                // Entity label logic
+                let entityHtml = '<span class="text-gray-500">-</span>';
+                if (s.arkham_entity && s.arkham_entity.has_entity) {
+                    const name = s.arkham_entity.entity_name || s.arkham_entity.label;
+                    entityHtml = `<span class="badge badge-entity">${name}</span>`;
+                } else if (s.arkham_entity && s.arkham_entity.has_entity === false) {
+                    entityHtml = '<span class="text-gray-500 text-xs">(Unlabeled)</span>';
+                }
+
+                tr.innerHTML = `
+                    <td>${formatAddr(s.address)}</td>
+                    <td>${entityHtml}</td>
+                    <td class="text-right font-bold">${formatB(s.cex_deposit_B || s.volume_B)}</td>
+                    <td class="text-right">${s.tx_count}</td>
+                    <td>${s.first_sell_date}</td>
+                    <td>
+                        <div class="flex gap-1 flex-wrap">
+                            ${(s.exchanges_used || []).map(e => `<span class="badge">${e}</span>`).join('')}
+                        </div>
+                    </td>
+                `;
+                tbodySellers.appendChild(tr);
+            });
+        }
+
+        // Initialize
+        loadData();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            mainChart.resize();
+            tierChart.resize();
+        });
+    </script>
+</body>
+</html>

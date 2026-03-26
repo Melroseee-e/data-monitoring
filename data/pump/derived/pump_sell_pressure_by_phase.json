@@ -1,0 +1,2109 @@
+{
+  "metadata": {
+    "generated_at": "2026-03-26T07:10:07Z"
+  },
+  "phases": [
+    {
+      "name": "Pre-Listing & Initial",
+      "start": "2025-07-12",
+      "end": "2025-08-31",
+      "type": "accumulation",
+      "stats": {
+        "inflow_B": 501.52637582443134,
+        "outflow_B": 422.6393428111163,
+        "net_B": -78.88703301331478
+      }
+    },
+    {
+      "name": "Stagnation",
+      "start": "2025-09-01",
+      "end": "2025-11-30",
+      "type": "consolidation",
+      "stats": {
+        "inflow_B": 753.3457085741596,
+        "outflow_B": 724.4869032595141,
+        "net_B": -28.858805314645068
+      }
+    },
+    {
+      "name": "Major Rally",
+      "start": "2025-12-01",
+      "end": "2026-03-15",
+      "type": "rally",
+      "stats": {
+        "inflow_B": 435.84286939701667,
+        "outflow_B": 462.77393670539124,
+        "net_B": 26.931067308374537
+      }
+    },
+    {
+      "name": "Recent Action",
+      "start": "2026-03-16",
+      "end": "2026-12-31",
+      "type": "decline",
+      "stats": {
+        "inflow_B": 35.3698694086981,
+        "outflow_B": 33.88566334642877,
+        "net_B": -1.484206062269326
+      }
+    }
+  ],
+  "daily_series": [
+    {
+      "cex_inflow_B": 0.0,
+      "cex_inflow_txs": 0,
+      "cex_outflow_B": 0.0,
+      "cex_outflow_txs": 0,
+      "date": "2025-07-12",
+      "unique_senders": 17
+    },
+    {
+      "cex_inflow_B": 1e-08,
+      "cex_inflow_txs": 1,
+      "cex_outflow_B": 0.0,
+      "cex_outflow_txs": 0,
+      "date": "2025-07-13",
+      "unique_senders": 12
+    },
+    {
+      "cex_inflow_B": 65.96834238042682,
+      "cex_inflow_txs": 6767,
+      "cex_outflow_B": 13.2921902090969,
+      "cex_outflow_txs": 7754,
+      "date": "2025-07-14",
+      "unique_senders": 28128
+    },
+    {
+      "cex_inflow_B": 27.584014680143564,
+      "cex_inflow_txs": 10428,
+      "cex_outflow_B": 19.526813616270623,
+      "cex_outflow_txs": 15578,
+      "date": "2025-07-15",
+      "unique_senders": 32147
+    },
+    {
+      "cex_inflow_B": 31.513855449637017,
+      "cex_inflow_txs": 12319,
+      "cex_outflow_B": 27.05936851131914,
+      "cex_outflow_txs": 15245,
+      "date": "2025-07-16",
+      "unique_senders": 23769
+    },
+    {
+      "cex_inflow_B": 23.0410143623848,
+      "cex_inflow_txs": 11897,
+      "cex_outflow_B": 27.29896348145997,
+      "cex_outflow_txs": 18374,
+      "date": "2025-07-17",
+      "unique_senders": 21824
+    },
+    {
+      "cex_inflow_B": 30.752355603677408,
+      "cex_inflow_txs": 8939,
+      "cex_outflow_B": 31.96008248194049,
+      "cex_outflow_txs": 17155,
+      "date": "2025-07-18",
+      "unique_senders": 15542
+    },
+    {
+      "cex_inflow_B": 17.78573334717422,
+      "cex_inflow_txs": 5507,
+      "cex_outflow_B": 7.780779773293307,
+      "cex_outflow_txs": 8783,
+      "date": "2025-07-19",
+      "unique_senders": 9214
+    },
+    {
+      "cex_inflow_B": 6.943441660845003,
+      "cex_inflow_txs": 3648,
+      "cex_outflow_B": 7.136911210474916,
+      "cex_outflow_txs": 5716,
+      "date": "2025-07-20",
+      "unique_senders": 10178
+    },
+    {
+      "cex_inflow_B": 11.489703683672875,
+      "cex_inflow_txs": 2726,
+      "cex_outflow_B": 11.47591912436847,
+      "cex_outflow_txs": 5662,
+      "date": "2025-07-21",
+      "unique_senders": 9480
+    },
+    {
+      "cex_inflow_B": 20.02160804668133,
+      "cex_inflow_txs": 4348,
+      "cex_outflow_B": 12.511822427577842,
+      "cex_outflow_txs": 8286,
+      "date": "2025-07-22",
+      "unique_senders": 7955
+    },
+    {
+      "cex_inflow_B": 16.716614711576792,
+      "cex_inflow_txs": 6712,
+      "cex_outflow_B": 14.193319879568278,
+      "cex_outflow_txs": 9807,
+      "date": "2025-07-23",
+      "unique_senders": 8664
+    },
+    {
+      "cex_inflow_B": 24.744310047767748,
+      "cex_inflow_txs": 5537,
+      "cex_outflow_B": 18.177296846434956,
+      "cex_outflow_txs": 7044,
+      "date": "2025-07-24",
+      "unique_senders": 11786
+    },
+    {
+      "cex_inflow_B": 33.973083034067955,
+      "cex_inflow_txs": 4828,
+      "cex_outflow_B": 23.60418261498754,
+      "cex_outflow_txs": 9550,
+      "date": "2025-07-25",
+      "unique_senders": 7779
+    },
+    {
+      "cex_inflow_B": 7.065243971739042,
+      "cex_inflow_txs": 5839,
+      "cex_outflow_B": 8.935161189337489,
+      "cex_outflow_txs": 7382,
+      "date": "2025-07-26",
+      "unique_senders": 6424
+    },
+    {
+      "cex_inflow_B": 7.914578368107809,
+      "cex_inflow_txs": 3548,
+      "cex_outflow_B": 4.061091984034339,
+      "cex_outflow_txs": 5692,
+      "date": "2025-07-27",
+      "unique_senders": 7451
+    },
+    {
+      "cex_inflow_B": 7.346129865647351,
+      "cex_inflow_txs": 4728,
+      "cex_outflow_B": 9.447690455361656,
+      "cex_outflow_txs": 6120,
+      "date": "2025-07-28",
+      "unique_senders": 10388
+    },
+    {
+      "cex_inflow_B": 6.807414725722775,
+      "cex_inflow_txs": 3519,
+      "cex_outflow_B": 7.954165348963882,
+      "cex_outflow_txs": 5518,
+      "date": "2025-07-29",
+      "unique_senders": 5477
+    },
+    {
+      "cex_inflow_B": 8.467514930299043,
+      "cex_inflow_txs": 4039,
+      "cex_outflow_B": 6.061218176999679,
+      "cex_outflow_txs": 6005,
+      "date": "2025-07-30",
+      "unique_senders": 5480
+    },
+    {
+      "cex_inflow_B": 6.827755656684566,
+      "cex_inflow_txs": 5758,
+      "cex_outflow_B": 7.673995019218173,
+      "cex_outflow_txs": 10111,
+      "date": "2025-07-31",
+      "unique_senders": 7349
+    },
+    {
+      "cex_inflow_B": 8.046285802898646,
+      "cex_inflow_txs": 4083,
+      "cex_outflow_B": 8.305657680426595,
+      "cex_outflow_txs": 5708,
+      "date": "2025-08-01",
+      "unique_senders": 5588
+    },
+    {
+      "cex_inflow_B": 4.973451134265185,
+      "cex_inflow_txs": 2666,
+      "cex_outflow_B": 3.5320562171177183,
+      "cex_outflow_txs": 3503,
+      "date": "2025-08-02",
+      "unique_senders": 5287
+    },
+    {
+      "cex_inflow_B": 3.91272711782345,
+      "cex_inflow_txs": 2672,
+      "cex_outflow_B": 3.9921766314970446,
+      "cex_outflow_txs": 3845,
+      "date": "2025-08-03",
+      "unique_senders": 5479
+    },
+    {
+      "cex_inflow_B": 6.4285031241712405,
+      "cex_inflow_txs": 3117,
+      "cex_outflow_B": 6.844356041419398,
+      "cex_outflow_txs": 4428,
+      "date": "2025-08-04",
+      "unique_senders": 5318
+    },
+    {
+      "cex_inflow_B": 8.01902610399337,
+      "cex_inflow_txs": 3123,
+      "cex_outflow_B": 7.255766302067741,
+      "cex_outflow_txs": 5212,
+      "date": "2025-08-05",
+      "unique_senders": 5655
+    },
+    {
+      "cex_inflow_B": 4.103580949544198,
+      "cex_inflow_txs": 2445,
+      "cex_outflow_B": 3.4240410403597283,
+      "cex_outflow_txs": 3776,
+      "date": "2025-08-06",
+      "unique_senders": 4860
+    },
+    {
+      "cex_inflow_B": 5.861228261385614,
+      "cex_inflow_txs": 1841,
+      "cex_outflow_B": 6.230669619547744,
+      "cex_outflow_txs": 3042,
+      "date": "2025-08-07",
+      "unique_senders": 4346
+    },
+    {
+      "cex_inflow_B": 6.658851387683301,
+      "cex_inflow_txs": 2380,
+      "cex_outflow_B": 4.179611453053502,
+      "cex_outflow_txs": 2573,
+      "date": "2025-08-08",
+      "unique_senders": 5255
+    },
+    {
+      "cex_inflow_B": 4.958156730669648,
+      "cex_inflow_txs": 1548,
+      "cex_outflow_B": 3.7439694005539255,
+      "cex_outflow_txs": 2255,
+      "date": "2025-08-09",
+      "unique_senders": 5985
+    },
+    {
+      "cex_inflow_B": 2.1703691587845384,
+      "cex_inflow_txs": 1381,
+      "cex_outflow_B": 3.102339696746152,
+      "cex_outflow_txs": 2446,
+      "date": "2025-08-10",
+      "unique_senders": 4563
+    },
+    {
+      "cex_inflow_B": 7.107935034558397,
+      "cex_inflow_txs": 2482,
+      "cex_outflow_B": 7.4659705628361035,
+      "cex_outflow_txs": 4226,
+      "date": "2025-08-11",
+      "unique_senders": 7648
+    },
+    {
+      "cex_inflow_B": 6.887888392332459,
+      "cex_inflow_txs": 1952,
+      "cex_outflow_B": 12.756812158449886,
+      "cex_outflow_txs": 3352,
+      "date": "2025-08-12",
+      "unique_senders": 7472
+    },
+    {
+      "cex_inflow_B": 3.5225448903833865,
+      "cex_inflow_txs": 1010,
+      "cex_outflow_B": 6.059714149429865,
+      "cex_outflow_txs": 2509,
+      "date": "2025-08-13",
+      "unique_senders": 6919
+    },
+    {
+      "cex_inflow_B": 2.4814448736208234,
+      "cex_inflow_txs": 1117,
+      "cex_outflow_B": 2.661643846852415,
+      "cex_outflow_txs": 2631,
+      "date": "2025-08-14",
+      "unique_senders": 6596
+    },
+    {
+      "cex_inflow_B": 3.2946686168878423,
+      "cex_inflow_txs": 844,
+      "cex_outflow_B": 4.405808577228712,
+      "cex_outflow_txs": 1894,
+      "date": "2025-08-15",
+      "unique_senders": 4586
+    },
+    {
+      "cex_inflow_B": 1.057083584900829,
+      "cex_inflow_txs": 251,
+      "cex_outflow_B": 1.1638675129060527,
+      "cex_outflow_txs": 946,
+      "date": "2025-08-16",
+      "unique_senders": 2947
+    },
+    {
+      "cex_inflow_B": 3.2172907305073606,
+      "cex_inflow_txs": 482,
+      "cex_outflow_B": 1.260388110947235,
+      "cex_outflow_txs": 1200,
+      "date": "2025-08-17",
+      "unique_senders": 3476
+    },
+    {
+      "cex_inflow_B": 7.684240599469195,
+      "cex_inflow_txs": 769,
+      "cex_outflow_B": 9.822246178221185,
+      "cex_outflow_txs": 1886,
+      "date": "2025-08-18",
+      "unique_senders": 4806
+    },
+    {
+      "cex_inflow_B": 5.893675536837912,
+      "cex_inflow_txs": 429,
+      "cex_outflow_B": 8.177957497377195,
+      "cex_outflow_txs": 1556,
+      "date": "2025-08-19",
+      "unique_senders": 4500
+    },
+    {
+      "cex_inflow_B": 4.765282533924093,
+      "cex_inflow_txs": 1068,
+      "cex_outflow_B": 9.4603101009257,
+      "cex_outflow_txs": 1347,
+      "date": "2025-08-20",
+      "unique_senders": 4826
+    },
+    {
+      "cex_inflow_B": 4.440236050450606,
+      "cex_inflow_txs": 867,
+      "cex_outflow_B": 3.2996644050520465,
+      "cex_outflow_txs": 1363,
+      "date": "2025-08-21",
+      "unique_senders": 4836
+    },
+    {
+      "cex_inflow_B": 9.17191495048622,
+      "cex_inflow_txs": 1663,
+      "cex_outflow_B": 10.384419322461406,
+      "cex_outflow_txs": 2372,
+      "date": "2025-08-22",
+      "unique_senders": 4574
+    },
+    {
+      "cex_inflow_B": 3.9903211373474496,
+      "cex_inflow_txs": 1263,
+      "cex_outflow_B": 3.977295732315656,
+      "cex_outflow_txs": 2255,
+      "date": "2025-08-23",
+      "unique_senders": 4052
+    },
+    {
+      "cex_inflow_B": 3.6304607554553017,
+      "cex_inflow_txs": 1144,
+      "cex_outflow_B": 3.2281016195462913,
+      "cex_outflow_txs": 2769,
+      "date": "2025-08-24",
+      "unique_senders": 3795
+    },
+    {
+      "cex_inflow_B": 3.5619774566715323,
+      "cex_inflow_txs": 1189,
+      "cex_outflow_B": 4.839138058916827,
+      "cex_outflow_txs": 2697,
+      "date": "2025-08-25",
+      "unique_senders": 3445
+    },
+    {
+      "cex_inflow_B": 4.005322553931595,
+      "cex_inflow_txs": 1355,
+      "cex_outflow_B": 3.362194653877081,
+      "cex_outflow_txs": 1898,
+      "date": "2025-08-26",
+      "unique_senders": 2973
+    },
+    {
+      "cex_inflow_B": 4.581064663291641,
+      "cex_inflow_txs": 1979,
+      "cex_outflow_B": 5.998541144603129,
+      "cex_outflow_txs": 2455,
+      "date": "2025-08-27",
+      "unique_senders": 4082
+    },
+    {
+      "cex_inflow_B": 3.446165924295274,
+      "cex_inflow_txs": 2310,
+      "cex_outflow_B": 4.308355468581453,
+      "cex_outflow_txs": 2791,
+      "date": "2025-08-28",
+      "unique_senders": 5335
+    },
+    {
+      "cex_inflow_B": 4.624623770131516,
+      "cex_inflow_txs": 3397,
+      "cex_outflow_B": 5.833708709418883,
+      "cex_outflow_txs": 4861,
+      "date": "2025-08-29",
+      "unique_senders": 5421
+    },
+    {
+      "cex_inflow_B": 2.015371415649825,
+      "cex_inflow_txs": 1371,
+      "cex_outflow_B": 3.453341903700247,
+      "cex_outflow_txs": 2468,
+      "date": "2025-08-30",
+      "unique_senders": 3840
+    },
+    {
+      "cex_inflow_B": 2.0519680458226683,
+      "cex_inflow_txs": 786,
+      "cex_outflow_B": 1.958246663971876,
+      "cex_outflow_txs": 1396,
+      "date": "2025-08-31",
+      "unique_senders": 3118
+    },
+    {
+      "cex_inflow_B": 3.8524331639725813,
+      "cex_inflow_txs": 2681,
+      "cex_outflow_B": 4.120550764938458,
+      "cex_outflow_txs": 4473,
+      "date": "2025-09-01",
+      "unique_senders": 4521
+    },
+    {
+      "cex_inflow_B": 4.504312679079181,
+      "cex_inflow_txs": 4114,
+      "cex_outflow_B": 6.639526759918252,
+      "cex_outflow_txs": 5266,
+      "date": "2025-09-02",
+      "unique_senders": 5448
+    },
+    {
+      "cex_inflow_B": 2.376456853462688,
+      "cex_inflow_txs": 2008,
+      "cex_outflow_B": 2.79906611097661,
+      "cex_outflow_txs": 2376,
+      "date": "2025-09-03",
+      "unique_senders": 7325
+    },
+    {
+      "cex_inflow_B": 2.942659401233214,
+      "cex_inflow_txs": 2646,
+      "cex_outflow_B": 4.439824178187985,
+      "cex_outflow_txs": 3353,
+      "date": "2025-09-04",
+      "unique_senders": 9684
+    },
+    {
+      "cex_inflow_B": 4.6992806442761434,
+      "cex_inflow_txs": 2300,
+      "cex_outflow_B": 6.0483369505020494,
+      "cex_outflow_txs": 3115,
+      "date": "2025-09-05",
+      "unique_senders": 8003
+    },
+    {
+      "cex_inflow_B": 3.0016889088052885,
+      "cex_inflow_txs": 1454,
+      "cex_outflow_B": 3.1661520084978383,
+      "cex_outflow_txs": 1717,
+      "date": "2025-09-06",
+      "unique_senders": 6469
+    },
+    {
+      "cex_inflow_B": 2.3702725238765256,
+      "cex_inflow_txs": 1301,
+      "cex_outflow_B": 2.6877166677348967,
+      "cex_outflow_txs": 1666,
+      "date": "2025-09-07",
+      "unique_senders": 5593
+    },
+    {
+      "cex_inflow_B": 3.055523924612213,
+      "cex_inflow_txs": 1754,
+      "cex_outflow_B": 4.979601201871921,
+      "cex_outflow_txs": 2020,
+      "date": "2025-09-08",
+      "unique_senders": 8040
+    },
+    {
+      "cex_inflow_B": 2.5198279031540793,
+      "cex_inflow_txs": 1584,
+      "cex_outflow_B": 3.0716415059390427,
+      "cex_outflow_txs": 1542,
+      "date": "2025-09-09",
+      "unique_senders": 13924
+    },
+    {
+      "cex_inflow_B": 12.656860905290202,
+      "cex_inflow_txs": 3106,
+      "cex_outflow_B": 7.054025367120318,
+      "cex_outflow_txs": 3658,
+      "date": "2025-09-10",
+      "unique_senders": 17554
+    },
+    {
+      "cex_inflow_B": 24.18179041426875,
+      "cex_inflow_txs": 6667,
+      "cex_outflow_B": 21.951670392797443,
+      "cex_outflow_txs": 7103,
+      "date": "2025-09-11",
+      "unique_senders": 18952
+    },
+    {
+      "cex_inflow_B": 13.337777748831577,
+      "cex_inflow_txs": 4809,
+      "cex_outflow_B": 10.434790371148994,
+      "cex_outflow_txs": 4615,
+      "date": "2025-09-12",
+      "unique_senders": 16571
+    },
+    {
+      "cex_inflow_B": 10.166583138511784,
+      "cex_inflow_txs": 4561,
+      "cex_outflow_B": 9.38577993113074,
+      "cex_outflow_txs": 6222,
+      "date": "2025-09-13",
+      "unique_senders": 20236
+    },
+    {
+      "cex_inflow_B": 22.033366379365372,
+      "cex_inflow_txs": 6996,
+      "cex_outflow_B": 16.689646675575183,
+      "cex_outflow_txs": 9028,
+      "date": "2025-09-14",
+      "unique_senders": 26675
+    },
+    {
+      "cex_inflow_B": 24.98088991859459,
+      "cex_inflow_txs": 9034,
+      "cex_outflow_B": 21.60831395563639,
+      "cex_outflow_txs": 9045,
+      "date": "2025-09-15",
+      "unique_senders": 21933
+    },
+    {
+      "cex_inflow_B": 16.26591809270344,
+      "cex_inflow_txs": 4548,
+      "cex_outflow_B": 13.22572150641973,
+      "cex_outflow_txs": 7862,
+      "date": "2025-09-16",
+      "unique_senders": 19004
+    },
+    {
+      "cex_inflow_B": 12.608906275380656,
+      "cex_inflow_txs": 4360,
+      "cex_outflow_B": 12.298294606384747,
+      "cex_outflow_txs": 7200,
+      "date": "2025-09-17",
+      "unique_senders": 15501
+    },
+    {
+      "cex_inflow_B": 10.3892672513863,
+      "cex_inflow_txs": 4025,
+      "cex_outflow_B": 8.989068159870527,
+      "cex_outflow_txs": 6210,
+      "date": "2025-09-18",
+      "unique_senders": 12374
+    },
+    {
+      "cex_inflow_B": 11.321940848671858,
+      "cex_inflow_txs": 3657,
+      "cex_outflow_B": 9.380929171322894,
+      "cex_outflow_txs": 4943,
+      "date": "2025-09-19",
+      "unique_senders": 11882
+    },
+    {
+      "cex_inflow_B": 6.191907479045739,
+      "cex_inflow_txs": 4074,
+      "cex_outflow_B": 5.871273874980189,
+      "cex_outflow_txs": 4314,
+      "date": "2025-09-20",
+      "unique_senders": 11107
+    },
+    {
+      "cex_inflow_B": 8.648330522887427,
+      "cex_inflow_txs": 3416,
+      "cex_outflow_B": 7.492063434456288,
+      "cex_outflow_txs": 5191,
+      "date": "2025-09-21",
+      "unique_senders": 11903
+    },
+    {
+      "cex_inflow_B": 22.384063072912703,
+      "cex_inflow_txs": 3975,
+      "cex_outflow_B": 10.987761114156575,
+      "cex_outflow_txs": 7500,
+      "date": "2025-09-22",
+      "unique_senders": 11158
+    },
+    {
+      "cex_inflow_B": 8.813623532010324,
+      "cex_inflow_txs": 5819,
+      "cex_outflow_B": 11.378607827625986,
+      "cex_outflow_txs": 6717,
+      "date": "2025-09-23",
+      "unique_senders": 10231
+    },
+    {
+      "cex_inflow_B": 6.774792994029735,
+      "cex_inflow_txs": 3005,
+      "cex_outflow_B": 7.5311480695652335,
+      "cex_outflow_txs": 4220,
+      "date": "2025-09-24",
+      "unique_senders": 9010
+    },
+    {
+      "cex_inflow_B": 13.57414714639307,
+      "cex_inflow_txs": 2687,
+      "cex_outflow_B": 8.72471937585202,
+      "cex_outflow_txs": 4505,
+      "date": "2025-09-25",
+      "unique_senders": 10629
+    },
+    {
+      "cex_inflow_B": 31.456305601509033,
+      "cex_inflow_txs": 3380,
+      "cex_outflow_B": 13.512791167971832,
+      "cex_outflow_txs": 5082,
+      "date": "2025-09-26",
+      "unique_senders": 10120
+    },
+    {
+      "cex_inflow_B": 6.254169366537687,
+      "cex_inflow_txs": 2243,
+      "cex_outflow_B": 5.121874896698673,
+      "cex_outflow_txs": 3482,
+      "date": "2025-09-27",
+      "unique_senders": 7185
+    },
+    {
+      "cex_inflow_B": 4.892767588613523,
+      "cex_inflow_txs": 4168,
+      "cex_outflow_B": 7.389542948100656,
+      "cex_outflow_txs": 4143,
+      "date": "2025-09-28",
+      "unique_senders": 9078
+    },
+    {
+      "cex_inflow_B": 9.640414107924553,
+      "cex_inflow_txs": 4010,
+      "cex_outflow_B": 11.108884990094175,
+      "cex_outflow_txs": 6156,
+      "date": "2025-09-29",
+      "unique_senders": 9015
+    },
+    {
+      "cex_inflow_B": 5.032339554635448,
+      "cex_inflow_txs": 3530,
+      "cex_outflow_B": 8.607106571749409,
+      "cex_outflow_txs": 4803,
+      "date": "2025-09-30",
+      "unique_senders": 9904
+    },
+    {
+      "cex_inflow_B": 7.8180825562820315,
+      "cex_inflow_txs": 5306,
+      "cex_outflow_B": 8.751420691462803,
+      "cex_outflow_txs": 5177,
+      "date": "2025-10-01",
+      "unique_senders": 13728
+    },
+    {
+      "cex_inflow_B": 8.928727755407154,
+      "cex_inflow_txs": 4829,
+      "cex_outflow_B": 10.005698002987959,
+      "cex_outflow_txs": 5796,
+      "date": "2025-10-02",
+      "unique_senders": 12538
+    },
+    {
+      "cex_inflow_B": 7.3008639199021275,
+      "cex_inflow_txs": 4040,
+      "cex_outflow_B": 6.779943625956908,
+      "cex_outflow_txs": 5208,
+      "date": "2025-10-03",
+      "unique_senders": 10993
+    },
+    {
+      "cex_inflow_B": 4.996892657078341,
+      "cex_inflow_txs": 1945,
+      "cex_outflow_B": 4.673976859024214,
+      "cex_outflow_txs": 2373,
+      "date": "2025-10-04",
+      "unique_senders": 7510
+    },
+    {
+      "cex_inflow_B": 4.957272519042945,
+      "cex_inflow_txs": 2396,
+      "cex_outflow_B": 5.632206596609184,
+      "cex_outflow_txs": 2726,
+      "date": "2025-10-05",
+      "unique_senders": 8141
+    },
+    {
+      "cex_inflow_B": 10.30537357632484,
+      "cex_inflow_txs": 2661,
+      "cex_outflow_B": 7.49635324047557,
+      "cex_outflow_txs": 3541,
+      "date": "2025-10-06",
+      "unique_senders": 8289
+    },
+    {
+      "cex_inflow_B": 7.899986432740199,
+      "cex_inflow_txs": 3093,
+      "cex_outflow_B": 7.5232454753538684,
+      "cex_outflow_txs": 3132,
+      "date": "2025-10-07",
+      "unique_senders": 8833
+    },
+    {
+      "cex_inflow_B": 9.16949324723732,
+      "cex_inflow_txs": 2055,
+      "cex_outflow_B": 7.361077898961726,
+      "cex_outflow_txs": 3361,
+      "date": "2025-10-08",
+      "unique_senders": 6881
+    },
+    {
+      "cex_inflow_B": 7.1889443461752105,
+      "cex_inflow_txs": 1865,
+      "cex_outflow_B": 6.874925477527597,
+      "cex_outflow_txs": 2762,
+      "date": "2025-10-09",
+      "unique_senders": 6288
+    },
+    {
+      "cex_inflow_B": 10.788899822838225,
+      "cex_inflow_txs": 2622,
+      "cex_outflow_B": 12.141487934081404,
+      "cex_outflow_txs": 4409,
+      "date": "2025-10-10",
+      "unique_senders": 7371
+    },
+    {
+      "cex_inflow_B": 16.318721907394682,
+      "cex_inflow_txs": 5186,
+      "cex_outflow_B": 15.296416577401988,
+      "cex_outflow_txs": 5840,
+      "date": "2025-10-11",
+      "unique_senders": 7792
+    },
+    {
+      "cex_inflow_B": 12.791771794914697,
+      "cex_inflow_txs": 5324,
+      "cex_outflow_B": 15.609304545415513,
+      "cex_outflow_txs": 5907,
+      "date": "2025-10-12",
+      "unique_senders": 7326
+    },
+    {
+      "cex_inflow_B": 12.182519019516489,
+      "cex_inflow_txs": 3838,
+      "cex_outflow_B": 10.976310209147632,
+      "cex_outflow_txs": 5622,
+      "date": "2025-10-13",
+      "unique_senders": 7492
+    },
+    {
+      "cex_inflow_B": 10.752697812220582,
+      "cex_inflow_txs": 3811,
+      "cex_outflow_B": 10.426891124036189,
+      "cex_outflow_txs": 4564,
+      "date": "2025-10-14",
+      "unique_senders": 5873
+    },
+    {
+      "cex_inflow_B": 8.151884241552152,
+      "cex_inflow_txs": 2479,
+      "cex_outflow_B": 10.02429223060133,
+      "cex_outflow_txs": 3543,
+      "date": "2025-10-15",
+      "unique_senders": 5344
+    },
+    {
+      "cex_inflow_B": 9.550214813138343,
+      "cex_inflow_txs": 2917,
+      "cex_outflow_B": 7.7067988396599905,
+      "cex_outflow_txs": 3526,
+      "date": "2025-10-16",
+      "unique_senders": 6651
+    },
+    {
+      "cex_inflow_B": 15.22573996026426,
+      "cex_inflow_txs": 3398,
+      "cex_outflow_B": 11.830567764859357,
+      "cex_outflow_txs": 3400,
+      "date": "2025-10-17",
+      "unique_senders": 6959
+    },
+    {
+      "cex_inflow_B": 3.55190114938587,
+      "cex_inflow_txs": 3677,
+      "cex_outflow_B": 4.1337219511263745,
+      "cex_outflow_txs": 3316,
+      "date": "2025-10-18",
+      "unique_senders": 6107
+    },
+    {
+      "cex_inflow_B": 5.65087939526635,
+      "cex_inflow_txs": 2989,
+      "cex_outflow_B": 5.556445243686377,
+      "cex_outflow_txs": 3052,
+      "date": "2025-10-19",
+      "unique_senders": 5710
+    },
+    {
+      "cex_inflow_B": 5.327281375893654,
+      "cex_inflow_txs": 3187,
+      "cex_outflow_B": 8.852652163734883,
+      "cex_outflow_txs": 3939,
+      "date": "2025-10-20",
+      "unique_senders": 6916
+    },
+    {
+      "cex_inflow_B": 7.905123096164306,
+      "cex_inflow_txs": 3691,
+      "cex_outflow_B": 9.946232601104624,
+      "cex_outflow_txs": 4962,
+      "date": "2025-10-21",
+      "unique_senders": 7276
+    },
+    {
+      "cex_inflow_B": 6.186761265663558,
+      "cex_inflow_txs": 2724,
+      "cex_outflow_B": 6.435282067628474,
+      "cex_outflow_txs": 3509,
+      "date": "2025-10-22",
+      "unique_senders": 6179
+    },
+    {
+      "cex_inflow_B": 4.980829488631317,
+      "cex_inflow_txs": 2265,
+      "cex_outflow_B": 5.907980320957676,
+      "cex_outflow_txs": 2592,
+      "date": "2025-10-23",
+      "unique_senders": 6544
+    },
+    {
+      "cex_inflow_B": 6.122269898467618,
+      "cex_inflow_txs": 2842,
+      "cex_outflow_B": 5.387624797293975,
+      "cex_outflow_txs": 2350,
+      "date": "2025-10-24",
+      "unique_senders": 7244
+    },
+    {
+      "cex_inflow_B": 2.2682010521459484,
+      "cex_inflow_txs": 1151,
+      "cex_outflow_B": 2.6930334803409224,
+      "cex_outflow_txs": 1712,
+      "date": "2025-10-25",
+      "unique_senders": 4520
+    },
+    {
+      "cex_inflow_B": 6.065920066989392,
+      "cex_inflow_txs": 1965,
+      "cex_outflow_B": 6.2886583109040375,
+      "cex_outflow_txs": 2325,
+      "date": "2025-10-26",
+      "unique_senders": 6796
+    },
+    {
+      "cex_inflow_B": 6.1561923569638495,
+      "cex_inflow_txs": 2524,
+      "cex_outflow_B": 6.543100476403763,
+      "cex_outflow_txs": 3009,
+      "date": "2025-10-27",
+      "unique_senders": 6847
+    },
+    {
+      "cex_inflow_B": 5.513841186418494,
+      "cex_inflow_txs": 3036,
+      "cex_outflow_B": 9.955925659178254,
+      "cex_outflow_txs": 3586,
+      "date": "2025-10-28",
+      "unique_senders": 6939
+    },
+    {
+      "cex_inflow_B": 9.858953674283295,
+      "cex_inflow_txs": 4672,
+      "cex_outflow_B": 9.305010550137196,
+      "cex_outflow_txs": 4504,
+      "date": "2025-10-29",
+      "unique_senders": 6564
+    },
+    {
+      "cex_inflow_B": 9.963367760196492,
+      "cex_inflow_txs": 4420,
+      "cex_outflow_B": 14.388252714103675,
+      "cex_outflow_txs": 6202,
+      "date": "2025-10-30",
+      "unique_senders": 6968
+    },
+    {
+      "cex_inflow_B": 8.115599667476852,
+      "cex_inflow_txs": 4042,
+      "cex_outflow_B": 8.066883547608217,
+      "cex_outflow_txs": 4940,
+      "date": "2025-10-31",
+      "unique_senders": 5939
+    },
+    {
+      "cex_inflow_B": 5.408093302674284,
+      "cex_inflow_txs": 2677,
+      "cex_outflow_B": 4.913666709586946,
+      "cex_outflow_txs": 2796,
+      "date": "2025-11-01",
+      "unique_senders": 4869
+    },
+    {
+      "cex_inflow_B": 4.934635101529711,
+      "cex_inflow_txs": 2464,
+      "cex_outflow_B": 5.507682661678561,
+      "cex_outflow_txs": 3203,
+      "date": "2025-11-02",
+      "unique_senders": 5396
+    },
+    {
+      "cex_inflow_B": 9.465862732194383,
+      "cex_inflow_txs": 3409,
+      "cex_outflow_B": 10.65093154006883,
+      "cex_outflow_txs": 4341,
+      "date": "2025-11-03",
+      "unique_senders": 6700
+    },
+    {
+      "cex_inflow_B": 13.777829672617338,
+      "cex_inflow_txs": 3427,
+      "cex_outflow_B": 13.78260476534203,
+      "cex_outflow_txs": 3685,
+      "date": "2025-11-04",
+      "unique_senders": 6602
+    },
+    {
+      "cex_inflow_B": 4.733784194712707,
+      "cex_inflow_txs": 2452,
+      "cex_outflow_B": 5.525340507105462,
+      "cex_outflow_txs": 3024,
+      "date": "2025-11-05",
+      "unique_senders": 5796
+    },
+    {
+      "cex_inflow_B": 4.86874043257046,
+      "cex_inflow_txs": 1668,
+      "cex_outflow_B": 5.4651535621263125,
+      "cex_outflow_txs": 3203,
+      "date": "2025-11-06",
+      "unique_senders": 4590
+    },
+    {
+      "cex_inflow_B": 6.227977214327395,
+      "cex_inflow_txs": 3369,
+      "cex_outflow_B": 6.053550949561264,
+      "cex_outflow_txs": 3619,
+      "date": "2025-11-07",
+      "unique_senders": 5959
+    },
+    {
+      "cex_inflow_B": 3.9045495214666612,
+      "cex_inflow_txs": 1577,
+      "cex_outflow_B": 5.639656731166322,
+      "cex_outflow_txs": 3338,
+      "date": "2025-11-08",
+      "unique_senders": 4317
+    },
+    {
+      "cex_inflow_B": 5.802334203164477,
+      "cex_inflow_txs": 2722,
+      "cex_outflow_B": 6.483447746300526,
+      "cex_outflow_txs": 3247,
+      "date": "2025-11-09",
+      "unique_senders": 5784
+    },
+    {
+      "cex_inflow_B": 11.167780232540823,
+      "cex_inflow_txs": 4520,
+      "cex_outflow_B": 14.835370040759848,
+      "cex_outflow_txs": 5130,
+      "date": "2025-11-10",
+      "unique_senders": 7013
+    },
+    {
+      "cex_inflow_B": 12.130717215703774,
+      "cex_inflow_txs": 6121,
+      "cex_outflow_B": 11.284596739977262,
+      "cex_outflow_txs": 6911,
+      "date": "2025-11-11",
+      "unique_senders": 6232
+    },
+    {
+      "cex_inflow_B": 9.564993088530725,
+      "cex_inflow_txs": 7623,
+      "cex_outflow_B": 10.75835161053073,
+      "cex_outflow_txs": 9367,
+      "date": "2025-11-12",
+      "unique_senders": 5298
+    },
+    {
+      "cex_inflow_B": 9.161407426371268,
+      "cex_inflow_txs": 7182,
+      "cex_outflow_B": 9.136522052829276,
+      "cex_outflow_txs": 9177,
+      "date": "2025-11-13",
+      "unique_senders": 4586
+    },
+    {
+      "cex_inflow_B": 14.652993158267591,
+      "cex_inflow_txs": 7244,
+      "cex_outflow_B": 12.20552181086729,
+      "cex_outflow_txs": 6823,
+      "date": "2025-11-14",
+      "unique_senders": 5352
+    },
+    {
+      "cex_inflow_B": 2.9980969425410087,
+      "cex_inflow_txs": 3058,
+      "cex_outflow_B": 3.240077246600573,
+      "cex_outflow_txs": 3602,
+      "date": "2025-11-15",
+      "unique_senders": 3995
+    },
+    {
+      "cex_inflow_B": 6.664471997690974,
+      "cex_inflow_txs": 3459,
+      "cex_outflow_B": 6.877685004036984,
+      "cex_outflow_txs": 4131,
+      "date": "2025-11-16",
+      "unique_senders": 4384
+    },
+    {
+      "cex_inflow_B": 9.794378756319876,
+      "cex_inflow_txs": 5116,
+      "cex_outflow_B": 10.071794671612942,
+      "cex_outflow_txs": 8055,
+      "date": "2025-11-17",
+      "unique_senders": 5199
+    },
+    {
+      "cex_inflow_B": 11.187085858006258,
+      "cex_inflow_txs": 3402,
+      "cex_outflow_B": 10.451515383769703,
+      "cex_outflow_txs": 3842,
+      "date": "2025-11-18",
+      "unique_senders": 5193
+    },
+    {
+      "cex_inflow_B": 3.866029849050448,
+      "cex_inflow_txs": 2336,
+      "cex_outflow_B": 3.614151953392501,
+      "cex_outflow_txs": 2781,
+      "date": "2025-11-19",
+      "unique_senders": 4705
+    },
+    {
+      "cex_inflow_B": 3.77203114499238,
+      "cex_inflow_txs": 2126,
+      "cex_outflow_B": 3.630167080599298,
+      "cex_outflow_txs": 2317,
+      "date": "2025-11-20",
+      "unique_senders": 4609
+    },
+    {
+      "cex_inflow_B": 6.912558698624353,
+      "cex_inflow_txs": 3074,
+      "cex_outflow_B": 5.2710166879120415,
+      "cex_outflow_txs": 2853,
+      "date": "2025-11-21",
+      "unique_senders": 4495
+    },
+    {
+      "cex_inflow_B": 3.224524652179374,
+      "cex_inflow_txs": 1147,
+      "cex_outflow_B": 2.5650371043117013,
+      "cex_outflow_txs": 1601,
+      "date": "2025-11-22",
+      "unique_senders": 3221
+    },
+    {
+      "cex_inflow_B": 4.165136356173588,
+      "cex_inflow_txs": 1684,
+      "cex_outflow_B": 3.7769561897210493,
+      "cex_outflow_txs": 1765,
+      "date": "2025-11-23",
+      "unique_senders": 3576
+    },
+    {
+      "cex_inflow_B": 7.554651778617177,
+      "cex_inflow_txs": 2878,
+      "cex_outflow_B": 5.883054750684873,
+      "cex_outflow_txs": 2004,
+      "date": "2025-11-24",
+      "unique_senders": 4098
+    },
+    {
+      "cex_inflow_B": 2.619039838021935,
+      "cex_inflow_txs": 1663,
+      "cex_outflow_B": 2.284035091886697,
+      "cex_outflow_txs": 1923,
+      "date": "2025-11-25",
+      "unique_senders": 3480
+    },
+    {
+      "cex_inflow_B": 2.5824947796025928,
+      "cex_inflow_txs": 2254,
+      "cex_outflow_B": 2.9103674338951184,
+      "cex_outflow_txs": 2165,
+      "date": "2025-11-26",
+      "unique_senders": 3446
+    },
+    {
+      "cex_inflow_B": 3.6471496833097685,
+      "cex_inflow_txs": 765,
+      "cex_outflow_B": 6.556297656933069,
+      "cex_outflow_txs": 1831,
+      "date": "2025-11-27",
+      "unique_senders": 3046
+    },
+    {
+      "cex_inflow_B": 2.2979687153660904,
+      "cex_inflow_txs": 1017,
+      "cex_outflow_B": 2.617741548714322,
+      "cex_outflow_txs": 2146,
+      "date": "2025-11-28",
+      "unique_senders": 3207
+    },
+    {
+      "cex_inflow_B": 1.115262817061827,
+      "cex_inflow_txs": 426,
+      "cex_outflow_B": 1.2244899746023497,
+      "cex_outflow_txs": 2278,
+      "date": "2025-11-29",
+      "unique_senders": 2250
+    },
+    {
+      "cex_inflow_B": 2.2193034519777837,
+      "cex_inflow_txs": 1398,
+      "cex_outflow_B": 2.0019665179436266,
+      "cex_outflow_txs": 1957,
+      "date": "2025-11-30",
+      "unique_senders": 2754
+    },
+    {
+      "cex_inflow_B": 5.250859047280246,
+      "cex_inflow_txs": 1253,
+      "cex_outflow_B": 9.034098514552312,
+      "cex_outflow_txs": 3021,
+      "date": "2025-12-01",
+      "unique_senders": 3174
+    },
+    {
+      "cex_inflow_B": 4.714238087600216,
+      "cex_inflow_txs": 3121,
+      "cex_outflow_B": 7.11921168010027,
+      "cex_outflow_txs": 4350,
+      "date": "2025-12-02",
+      "unique_senders": 3238
+    },
+    {
+      "cex_inflow_B": 2.776452354781175,
+      "cex_inflow_txs": 1778,
+      "cex_outflow_B": 2.594764287611545,
+      "cex_outflow_txs": 3768,
+      "date": "2025-12-03",
+      "unique_senders": 3230
+    },
+    {
+      "cex_inflow_B": 3.981532581875897,
+      "cex_inflow_txs": 1786,
+      "cex_outflow_B": 2.3627705105976684,
+      "cex_outflow_txs": 5068,
+      "date": "2025-12-04",
+      "unique_senders": 2960
+    },
+    {
+      "cex_inflow_B": 8.932857909061987,
+      "cex_inflow_txs": 1078,
+      "cex_outflow_B": 6.72607568012852,
+      "cex_outflow_txs": 2877,
+      "date": "2025-12-05",
+      "unique_senders": 2650
+    },
+    {
+      "cex_inflow_B": 2.3297461912933977,
+      "cex_inflow_txs": 1119,
+      "cex_outflow_B": 1.9355878318975475,
+      "cex_outflow_txs": 2280,
+      "date": "2025-12-06",
+      "unique_senders": 2764
+    },
+    {
+      "cex_inflow_B": 1.2778084258768379,
+      "cex_inflow_txs": 538,
+      "cex_outflow_B": 1.2778748977618748,
+      "cex_outflow_txs": 2544,
+      "date": "2025-12-07",
+      "unique_senders": 2911
+    },
+    {
+      "cex_inflow_B": 3.861084111334969,
+      "cex_inflow_txs": 1448,
+      "cex_outflow_B": 4.249205239835628,
+      "cex_outflow_txs": 2125,
+      "date": "2025-12-08",
+      "unique_senders": 3272
+    },
+    {
+      "cex_inflow_B": 2.395878463796159,
+      "cex_inflow_txs": 730,
+      "cex_outflow_B": 2.2458475254654315,
+      "cex_outflow_txs": 2533,
+      "date": "2025-12-09",
+      "unique_senders": 3576
+    },
+    {
+      "cex_inflow_B": 2.4444642111054353,
+      "cex_inflow_txs": 454,
+      "cex_outflow_B": 2.7594347819730327,
+      "cex_outflow_txs": 2578,
+      "date": "2025-12-10",
+      "unique_senders": 3060
+    },
+    {
+      "cex_inflow_B": 8.763100058605918,
+      "cex_inflow_txs": 379,
+      "cex_outflow_B": 9.618617062148873,
+      "cex_outflow_txs": 2968,
+      "date": "2025-12-11",
+      "unique_senders": 2977
+    },
+    {
+      "cex_inflow_B": 3.9022877286330497,
+      "cex_inflow_txs": 578,
+      "cex_outflow_B": 1.454405003219025,
+      "cex_outflow_txs": 2107,
+      "date": "2025-12-12",
+      "unique_senders": 3062
+    },
+    {
+      "cex_inflow_B": 0.7015850560195731,
+      "cex_inflow_txs": 321,
+      "cex_outflow_B": 0.9843742796323078,
+      "cex_outflow_txs": 1866,
+      "date": "2025-12-13",
+      "unique_senders": 2380
+    },
+    {
+      "cex_inflow_B": 1.976976459511552,
+      "cex_inflow_txs": 239,
+      "cex_outflow_B": 1.9828081185417379,
+      "cex_outflow_txs": 1868,
+      "date": "2025-12-14",
+      "unique_senders": 2747
+    },
+    {
+      "cex_inflow_B": 5.011193686741382,
+      "cex_inflow_txs": 609,
+      "cex_outflow_B": 5.418927750704539,
+      "cex_outflow_txs": 2704,
+      "date": "2025-12-15",
+      "unique_senders": 3207
+    },
+    {
+      "cex_inflow_B": 6.206871075806212,
+      "cex_inflow_txs": 625,
+      "cex_outflow_B": 5.139280868150389,
+      "cex_outflow_txs": 2266,
+      "date": "2025-12-16",
+      "unique_senders": 3124
+    },
+    {
+      "cex_inflow_B": 4.104210767110236,
+      "cex_inflow_txs": 745,
+      "cex_outflow_B": 3.3545768347610507,
+      "cex_outflow_txs": 2218,
+      "date": "2025-12-17",
+      "unique_senders": 3054
+    },
+    {
+      "cex_inflow_B": 4.599865242313385,
+      "cex_inflow_txs": 838,
+      "cex_outflow_B": 3.9457698802967007,
+      "cex_outflow_txs": 2062,
+      "date": "2025-12-18",
+      "unique_senders": 3401
+    },
+    {
+      "cex_inflow_B": 7.845722856905014,
+      "cex_inflow_txs": 1981,
+      "cex_outflow_B": 6.198088257534534,
+      "cex_outflow_txs": 1381,
+      "date": "2025-12-19",
+      "unique_senders": 2866
+    },
+    {
+      "cex_inflow_B": 0.896801355343408,
+      "cex_inflow_txs": 369,
+      "cex_outflow_B": 1.2735370367885601,
+      "cex_outflow_txs": 2090,
+      "date": "2025-12-20",
+      "unique_senders": 2491
+    },
+    {
+      "cex_inflow_B": 6.4996806798852,
+      "cex_inflow_txs": 309,
+      "cex_outflow_B": 2.563012506130762,
+      "cex_outflow_txs": 1376,
+      "date": "2025-12-21",
+      "unique_senders": 2385
+    },
+    {
+      "cex_inflow_B": 7.158236472486498,
+      "cex_inflow_txs": 501,
+      "cex_outflow_B": 3.4383359709585344,
+      "cex_outflow_txs": 2332,
+      "date": "2025-12-22",
+      "unique_senders": 2973
+    },
+    {
+      "cex_inflow_B": 5.179945741716601,
+      "cex_inflow_txs": 420,
+      "cex_outflow_B": 7.25244003511827,
+      "cex_outflow_txs": 3343,
+      "date": "2025-12-23",
+      "unique_senders": 3084
+    },
+    {
+      "cex_inflow_B": 2.6103424499901373,
+      "cex_inflow_txs": 322,
+      "cex_outflow_B": 3.176140873005925,
+      "cex_outflow_txs": 2362,
+      "date": "2025-12-24",
+      "unique_senders": 2784
+    },
+    {
+      "cex_inflow_B": 2.5033117549269552,
+      "cex_inflow_txs": 453,
+      "cex_outflow_B": 2.989856761502349,
+      "cex_outflow_txs": 2488,
+      "date": "2025-12-25",
+      "unique_senders": 2783
+    },
+    {
+      "cex_inflow_B": 1.692308103667196,
+      "cex_inflow_txs": 470,
+      "cex_outflow_B": 1.9799843845341047,
+      "cex_outflow_txs": 2382,
+      "date": "2025-12-26",
+      "unique_senders": 2715
+    },
+    {
+      "cex_inflow_B": 1.624978513260426,
+      "cex_inflow_txs": 419,
+      "cex_outflow_B": 2.0554030411170605,
+      "cex_outflow_txs": 2475,
+      "date": "2025-12-27",
+      "unique_senders": 2374
+    },
+    {
+      "cex_inflow_B": 1.1488711813700312,
+      "cex_inflow_txs": 371,
+      "cex_outflow_B": 1.2566048349560075,
+      "cex_outflow_txs": 1823,
+      "date": "2025-12-28",
+      "unique_senders": 2235
+    },
+    {
+      "cex_inflow_B": 3.33830310893842,
+      "cex_inflow_txs": 665,
+      "cex_outflow_B": 6.4465313923328935,
+      "cex_outflow_txs": 1957,
+      "date": "2025-12-29",
+      "unique_senders": 3044
+    },
+    {
+      "cex_inflow_B": 1.8785968429471007,
+      "cex_inflow_txs": 472,
+      "cex_outflow_B": 4.818606263456619,
+      "cex_outflow_txs": 2515,
+      "date": "2025-12-30",
+      "unique_senders": 2233
+    },
+    {
+      "cex_inflow_B": 2.6683162652732917,
+      "cex_inflow_txs": 1063,
+      "cex_outflow_B": 9.336778116331526,
+      "cex_outflow_txs": 1964,
+      "date": "2025-12-31",
+      "unique_senders": 3464
+    },
+    {
+      "cex_inflow_B": 3.090336911054246,
+      "cex_inflow_txs": 833,
+      "cex_outflow_B": 3.579039989601858,
+      "cex_outflow_txs": 2318,
+      "date": "2026-01-01",
+      "unique_senders": 3773
+    },
+    {
+      "cex_inflow_B": 5.959765001754476,
+      "cex_inflow_txs": 1270,
+      "cex_outflow_B": 5.258753672004648,
+      "cex_outflow_txs": 2775,
+      "date": "2026-01-02",
+      "unique_senders": 4968
+    },
+    {
+      "cex_inflow_B": 4.187936460395228,
+      "cex_inflow_txs": 1043,
+      "cex_outflow_B": 3.8531612022729544,
+      "cex_outflow_txs": 2428,
+      "date": "2026-01-03",
+      "unique_senders": 4029
+    },
+    {
+      "cex_inflow_B": 2.623510665637308,
+      "cex_inflow_txs": 1723,
+      "cex_outflow_B": 3.1577080601672187,
+      "cex_outflow_txs": 1623,
+      "date": "2026-01-04",
+      "unique_senders": 4027
+    },
+    {
+      "cex_inflow_B": 5.811569308738812,
+      "cex_inflow_txs": 2202,
+      "cex_outflow_B": 4.53546478040909,
+      "cex_outflow_txs": 2165,
+      "date": "2026-01-05",
+      "unique_senders": 4630
+    },
+    {
+      "cex_inflow_B": 7.728469110009464,
+      "cex_inflow_txs": 1902,
+      "cex_outflow_B": 7.727106386059306,
+      "cex_outflow_txs": 2889,
+      "date": "2026-01-06",
+      "unique_senders": 5252
+    },
+    {
+      "cex_inflow_B": 2.2459868202719195,
+      "cex_inflow_txs": 1514,
+      "cex_outflow_B": 3.109381414685418,
+      "cex_outflow_txs": 2681,
+      "date": "2026-01-07",
+      "unique_senders": 4464
+    },
+    {
+      "cex_inflow_B": 3.315084408730833,
+      "cex_inflow_txs": 802,
+      "cex_outflow_B": 5.861712685520389,
+      "cex_outflow_txs": 3722,
+      "date": "2026-01-08",
+      "unique_senders": 4681
+    },
+    {
+      "cex_inflow_B": 5.264436475356692,
+      "cex_inflow_txs": 2848,
+      "cex_outflow_B": 5.637324417011457,
+      "cex_outflow_txs": 4208,
+      "date": "2026-01-09",
+      "unique_senders": 6522
+    },
+    {
+      "cex_inflow_B": 3.699448215599292,
+      "cex_inflow_txs": 1839,
+      "cex_outflow_B": 4.144249070713022,
+      "cex_outflow_txs": 2601,
+      "date": "2026-01-10",
+      "unique_senders": 4823
+    },
+    {
+      "cex_inflow_B": 3.240102192032391,
+      "cex_inflow_txs": 1222,
+      "cex_outflow_B": 3.9206695982082267,
+      "cex_outflow_txs": 2598,
+      "date": "2026-01-11",
+      "unique_senders": 4569
+    },
+    {
+      "cex_inflow_B": 4.187044342294432,
+      "cex_inflow_txs": 2476,
+      "cex_outflow_B": 4.052806402583228,
+      "cex_outflow_txs": 3616,
+      "date": "2026-01-12",
+      "unique_senders": 7236
+    },
+    {
+      "cex_inflow_B": 5.153332869639651,
+      "cex_inflow_txs": 3498,
+      "cex_outflow_B": 7.045301303416882,
+      "cex_outflow_txs": 5661,
+      "date": "2026-01-13",
+      "unique_senders": 9382
+    },
+    {
+      "cex_inflow_B": 5.454610180515437,
+      "cex_inflow_txs": 4648,
+      "cex_outflow_B": 6.1210035703041275,
+      "cex_outflow_txs": 5776,
+      "date": "2026-01-14",
+      "unique_senders": 9754
+    },
+    {
+      "cex_inflow_B": 9.539676484325243,
+      "cex_inflow_txs": 3717,
+      "cex_outflow_B": 9.79725153667973,
+      "cex_outflow_txs": 5062,
+      "date": "2026-01-15",
+      "unique_senders": 9255
+    },
+    {
+      "cex_inflow_B": 5.798491107122565,
+      "cex_inflow_txs": 2421,
+      "cex_outflow_B": 6.562391372775877,
+      "cex_outflow_txs": 4906,
+      "date": "2026-01-16",
+      "unique_senders": 8726
+    },
+    {
+      "cex_inflow_B": 3.0209728951104116,
+      "cex_inflow_txs": 1881,
+      "cex_outflow_B": 3.468885591435065,
+      "cex_outflow_txs": 3085,
+      "date": "2026-01-17",
+      "unique_senders": 5928
+    },
+    {
+      "cex_inflow_B": 2.9509900818701085,
+      "cex_inflow_txs": 710,
+      "cex_outflow_B": 3.645033417012468,
+      "cex_outflow_txs": 2142,
+      "date": "2026-01-18",
+      "unique_senders": 4900
+    },
+    {
+      "cex_inflow_B": 4.980192726973544,
+      "cex_inflow_txs": 2142,
+      "cex_outflow_B": 5.362693704419033,
+      "cex_outflow_txs": 2568,
+      "date": "2026-01-19",
+      "unique_senders": 5858
+    },
+    {
+      "cex_inflow_B": 5.356684502002415,
+      "cex_inflow_txs": 3025,
+      "cex_outflow_B": 5.0149102109497505,
+      "cex_outflow_txs": 4108,
+      "date": "2026-01-20",
+      "unique_senders": 7070
+    },
+    {
+      "cex_inflow_B": 3.6144860936774044,
+      "cex_inflow_txs": 3103,
+      "cex_outflow_B": 3.4654833135445187,
+      "cex_outflow_txs": 3622,
+      "date": "2026-01-21",
+      "unique_senders": 6803
+    },
+    {
+      "cex_inflow_B": 1.6751261765216972,
+      "cex_inflow_txs": 1164,
+      "cex_outflow_B": 2.725928639219732,
+      "cex_outflow_txs": 4175,
+      "date": "2026-01-22",
+      "unique_senders": 5542
+    },
+    {
+      "cex_inflow_B": 1.996334323781777,
+      "cex_inflow_txs": 986,
+      "cex_outflow_B": 4.055241927774518,
+      "cex_outflow_txs": 2438,
+      "date": "2026-01-23",
+      "unique_senders": 5697
+    },
+    {
+      "cex_inflow_B": 4.44206522191343,
+      "cex_inflow_txs": 2318,
+      "cex_outflow_B": 3.499957430242499,
+      "cex_outflow_txs": 2333,
+      "date": "2026-01-24",
+      "unique_senders": 5953
+    },
+    {
+      "cex_inflow_B": 7.5622899156463435,
+      "cex_inflow_txs": 1319,
+      "cex_outflow_B": 5.063053613754213,
+      "cex_outflow_txs": 3571,
+      "date": "2026-01-25",
+      "unique_senders": 6225
+    },
+    {
+      "cex_inflow_B": 3.555022016158911,
+      "cex_inflow_txs": 1164,
+      "cex_outflow_B": 5.847338110061471,
+      "cex_outflow_txs": 4420,
+      "date": "2026-01-26",
+      "unique_senders": 6065
+    },
+    {
+      "cex_inflow_B": 13.791051519357055,
+      "cex_inflow_txs": 5061,
+      "cex_outflow_B": 11.609282446041671,
+      "cex_outflow_txs": 5219,
+      "date": "2026-01-27",
+      "unique_senders": 8324
+    },
+    {
+      "cex_inflow_B": 5.11900636113608,
+      "cex_inflow_txs": 2066,
+      "cex_outflow_B": 5.526184466639643,
+      "cex_outflow_txs": 5262,
+      "date": "2026-01-28",
+      "unique_senders": 7769
+    },
+    {
+      "cex_inflow_B": 5.4336882518244884,
+      "cex_inflow_txs": 1959,
+      "cex_outflow_B": 5.194340563583428,
+      "cex_outflow_txs": 4297,
+      "date": "2026-01-29",
+      "unique_senders": 7195
+    },
+    {
+      "cex_inflow_B": 5.072009293250155,
+      "cex_inflow_txs": 1845,
+      "cex_outflow_B": 5.917153211456223,
+      "cex_outflow_txs": 4524,
+      "date": "2026-01-30",
+      "unique_senders": 6870
+    },
+    {
+      "cex_inflow_B": 4.661030473783935,
+      "cex_inflow_txs": 2498,
+      "cex_outflow_B": 4.090287654354411,
+      "cex_outflow_txs": 3339,
+      "date": "2026-01-31",
+      "unique_senders": 7218
+    },
+    {
+      "cex_inflow_B": 2.618050907023649,
+      "cex_inflow_txs": 1695,
+      "cex_outflow_B": 3.045109613481119,
+      "cex_outflow_txs": 2967,
+      "date": "2026-02-01",
+      "unique_senders": 5529
+    },
+    {
+      "cex_inflow_B": 4.402247216522499,
+      "cex_inflow_txs": 1825,
+      "cex_outflow_B": 4.945530973431458,
+      "cex_outflow_txs": 4106,
+      "date": "2026-02-02",
+      "unique_senders": 6235
+    },
+    {
+      "cex_inflow_B": 5.6005592564079745,
+      "cex_inflow_txs": 2767,
+      "cex_outflow_B": 4.812932201579269,
+      "cex_outflow_txs": 3103,
+      "date": "2026-02-03",
+      "unique_senders": 6427
+    },
+    {
+      "cex_inflow_B": 6.937153830181474,
+      "cex_inflow_txs": 1736,
+      "cex_outflow_B": 7.5290397120153605,
+      "cex_outflow_txs": 3419,
+      "date": "2026-02-04",
+      "unique_senders": 5746
+    },
+    {
+      "cex_inflow_B": 7.257118664018222,
+      "cex_inflow_txs": 2786,
+      "cex_outflow_B": 8.91440990248794,
+      "cex_outflow_txs": 3442,
+      "date": "2026-02-05",
+      "unique_senders": 6608
+    },
+    {
+      "cex_inflow_B": 5.1441331349038935,
+      "cex_inflow_txs": 2133,
+      "cex_outflow_B": 6.641702737863973,
+      "cex_outflow_txs": 4702,
+      "date": "2026-02-06",
+      "unique_senders": 5722
+    },
+    {
+      "cex_inflow_B": 2.7421303452749486,
+      "cex_inflow_txs": 1033,
+      "cex_outflow_B": 3.433778047118889,
+      "cex_outflow_txs": 2600,
+      "date": "2026-02-07",
+      "unique_senders": 3500
+    },
+    {
+      "cex_inflow_B": 1.8577256777697526,
+      "cex_inflow_txs": 751,
+      "cex_outflow_B": 3.4049842164127164,
+      "cex_outflow_txs": 3293,
+      "date": "2026-02-08",
+      "unique_senders": 4151
+    },
+    {
+      "cex_inflow_B": 3.091311961743694,
+      "cex_inflow_txs": 1063,
+      "cex_outflow_B": 3.686785256825699,
+      "cex_outflow_txs": 1937,
+      "date": "2026-02-09",
+      "unique_senders": 3561
+    },
+    {
+      "cex_inflow_B": 3.6076856118264193,
+      "cex_inflow_txs": 785,
+      "cex_outflow_B": 4.935604968872028,
+      "cex_outflow_txs": 2409,
+      "date": "2026-02-10",
+      "unique_senders": 3177
+    },
+    {
+      "cex_inflow_B": 2.180311919958588,
+      "cex_inflow_txs": 1484,
+      "cex_outflow_B": 2.6251612997447475,
+      "cex_outflow_txs": 1663,
+      "date": "2026-02-11",
+      "unique_senders": 3646
+    },
+    {
+      "cex_inflow_B": 3.321181189491037,
+      "cex_inflow_txs": 1839,
+      "cex_outflow_B": 3.506389776721283,
+      "cex_outflow_txs": 1421,
+      "date": "2026-02-12",
+      "unique_senders": 3655
+    },
+    {
+      "cex_inflow_B": 3.5433071741359665,
+      "cex_inflow_txs": 1796,
+      "cex_outflow_B": 2.9247662167483353,
+      "cex_outflow_txs": 1666,
+      "date": "2026-02-13",
+      "unique_senders": 3427
+    },
+    {
+      "cex_inflow_B": 2.789149569541205,
+      "cex_inflow_txs": 1856,
+      "cex_outflow_B": 2.6484988109743606,
+      "cex_outflow_txs": 1919,
+      "date": "2026-02-14",
+      "unique_senders": 3627
+    },
+    {
+      "cex_inflow_B": 3.0663310775974653,
+      "cex_inflow_txs": 1298,
+      "cex_outflow_B": 2.302480763776098,
+      "cex_outflow_txs": 2485,
+      "date": "2026-02-15",
+      "unique_senders": 3705
+    },
+    {
+      "cex_inflow_B": 2.6106453880019984,
+      "cex_inflow_txs": 1378,
+      "cex_outflow_B": 1.94047364452826,
+      "cex_outflow_txs": 1054,
+      "date": "2026-02-16",
+      "unique_senders": 3232
+    },
+    {
+      "cex_inflow_B": 2.410228711119698,
+      "cex_inflow_txs": 1468,
+      "cex_outflow_B": 1.8729325896132771,
+      "cex_outflow_txs": 2089,
+      "date": "2026-02-17",
+      "unique_senders": 3545
+    },
+    {
+      "cex_inflow_B": 4.557847104960754,
+      "cex_inflow_txs": 1098,
+      "cex_outflow_B": 4.0133926276814265,
+      "cex_outflow_txs": 1985,
+      "date": "2026-02-18",
+      "unique_senders": 3274
+    },
+    {
+      "cex_inflow_B": 1.7445927493443492,
+      "cex_inflow_txs": 1080,
+      "cex_outflow_B": 1.4969118330430133,
+      "cex_outflow_txs": 1108,
+      "date": "2026-02-19",
+      "unique_senders": 2510
+    },
+    {
+      "cex_inflow_B": 2.8234716204001047,
+      "cex_inflow_txs": 962,
+      "cex_outflow_B": 1.3969321211147991,
+      "cex_outflow_txs": 1341,
+      "date": "2026-02-20",
+      "unique_senders": 2740
+    },
+    {
+      "cex_inflow_B": 0.6816696756317548,
+      "cex_inflow_txs": 541,
+      "cex_outflow_B": 0.8866514313451438,
+      "cex_outflow_txs": 863,
+      "date": "2026-02-21",
+      "unique_senders": 2423
+    },
+    {
+      "cex_inflow_B": 1.028328415993584,
+      "cex_inflow_txs": 317,
+      "cex_outflow_B": 1.6307541893223674,
+      "cex_outflow_txs": 1465,
+      "date": "2026-02-22",
+      "unique_senders": 2305
+    },
+    {
+      "cex_inflow_B": 3.0589320389167027,
+      "cex_inflow_txs": 662,
+      "cex_outflow_B": 4.874820580643285,
+      "cex_outflow_txs": 3071,
+      "date": "2026-02-23",
+      "unique_senders": 2979
+    },
+    {
+      "cex_inflow_B": 5.849510885476555,
+      "cex_inflow_txs": 644,
+      "cex_outflow_B": 5.009331540352862,
+      "cex_outflow_txs": 2863,
+      "date": "2026-02-24",
+      "unique_senders": 3136
+    },
+    {
+      "cex_inflow_B": 4.799307504584154,
+      "cex_inflow_txs": 1925,
+      "cex_outflow_B": 5.522958075286984,
+      "cex_outflow_txs": 2744,
+      "date": "2026-02-25",
+      "unique_senders": 3782
+    },
+    {
+      "cex_inflow_B": 16.72109274198532,
+      "cex_inflow_txs": 1364,
+      "cex_outflow_B": 6.594557262621367,
+      "cex_outflow_txs": 2508,
+      "date": "2026-02-26",
+      "unique_senders": 2845
+    },
+    {
+      "cex_inflow_B": 5.036610786793254,
+      "cex_inflow_txs": 1843,
+      "cex_outflow_B": 6.686978418874722,
+      "cex_outflow_txs": 2957,
+      "date": "2026-02-27",
+      "unique_senders": 3175
+    },
+    {
+      "cex_inflow_B": 3.6900265111782735,
+      "cex_inflow_txs": 1836,
+      "cex_outflow_B": 4.954824083794894,
+      "cex_outflow_txs": 2993,
+      "date": "2026-02-28",
+      "unique_senders": 3201
+    },
+    {
+      "cex_inflow_B": 4.479776120050497,
+      "cex_inflow_txs": 2093,
+      "cex_outflow_B": 5.316339487424787,
+      "cex_outflow_txs": 2423,
+      "date": "2026-03-01",
+      "unique_senders": 3523
+    },
+    {
+      "cex_inflow_B": 4.690689118846645,
+      "cex_inflow_txs": 1821,
+      "cex_outflow_B": 5.487183911390554,
+      "cex_outflow_txs": 2897,
+      "date": "2026-03-02",
+      "unique_senders": 4072
+    },
+    {
+      "cex_inflow_B": 4.539237140153924,
+      "cex_inflow_txs": 1272,
+      "cex_outflow_B": 4.381096157269194,
+      "cex_outflow_txs": 2655,
+      "date": "2026-03-03",
+      "unique_senders": 3257
+    },
+    {
+      "cex_inflow_B": 3.189579530519694,
+      "cex_inflow_txs": 2135,
+      "cex_outflow_B": 4.99179661028893,
+      "cex_outflow_txs": 3260,
+      "date": "2026-03-04",
+      "unique_senders": 3889
+    },
+    {
+      "cex_inflow_B": 2.251118346238208,
+      "cex_inflow_txs": 1533,
+      "cex_outflow_B": 3.363504476042138,
+      "cex_outflow_txs": 2300,
+      "date": "2026-03-05",
+      "unique_senders": 4479
+    },
+    {
+      "cex_inflow_B": 7.506790895248311,
+      "cex_inflow_txs": 1317,
+      "cex_outflow_B": 6.524009824069236,
+      "cex_outflow_txs": 4139,
+      "date": "2026-03-06",
+      "unique_senders": 4294
+    },
+    {
+      "cex_inflow_B": 2.3017315597259054,
+      "cex_inflow_txs": 797,
+      "cex_outflow_B": 3.224884358772427,
+      "cex_outflow_txs": 973,
+      "date": "2026-03-07",
+      "unique_senders": 3469
+    },
+    {
+      "cex_inflow_B": 3.115753062819353,
+      "cex_inflow_txs": 1716,
+      "cex_outflow_B": 4.7650276603646065,
+      "cex_outflow_txs": 4076,
+      "date": "2026-03-08",
+      "unique_senders": 4105
+    },
+    {
+      "cex_inflow_B": 3.031168960679179,
+      "cex_inflow_txs": 3148,
+      "cex_outflow_B": 5.887519319102276,
+      "cex_outflow_txs": 3996,
+      "date": "2026-03-09",
+      "unique_senders": 4362
+    },
+    {
+      "cex_inflow_B": 7.475925148085559,
+      "cex_inflow_txs": 2673,
+      "cex_outflow_B": 5.342373989110754,
+      "cex_outflow_txs": 3584,
+      "date": "2026-03-10",
+      "unique_senders": 4732
+    },
+    {
+      "cex_inflow_B": 2.5803585178651245,
+      "cex_inflow_txs": 1497,
+      "cex_outflow_B": 3.8666382142033733,
+      "cex_outflow_txs": 2565,
+      "date": "2026-03-11",
+      "unique_senders": 4190
+    },
+    {
+      "cex_inflow_B": 2.3669417844906566,
+      "cex_inflow_txs": 2247,
+      "cex_outflow_B": 3.8959030840230073,
+      "cex_outflow_txs": 3148,
+      "date": "2026-03-12",
+      "unique_senders": 4852
+    },
+    {
+      "cex_inflow_B": 4.129150866186404,
+      "cex_inflow_txs": 1366,
+      "cex_outflow_B": 4.528147871235669,
+      "cex_outflow_txs": 4409,
+      "date": "2026-03-13",
+      "unique_senders": 4490
+    },
+    {
+      "cex_inflow_B": 1.1164048538995899,
+      "cex_inflow_txs": 256,
+      "cex_outflow_B": 2.3560905753144894,
+      "cex_outflow_txs": 1896,
+      "date": "2026-03-14",
+      "unique_senders": 2828
+    },
+    {
+      "cex_inflow_B": 1.0904046294807,
+      "cex_inflow_txs": 374,
+      "cex_outflow_B": 2.7666782864564223,
+      "cex_outflow_txs": 2774,
+      "date": "2026-03-15",
+      "unique_senders": 2933
+    },
+    {
+      "cex_inflow_B": 7.988180784878492,
+      "cex_inflow_txs": 3358,
+      "cex_outflow_B": 6.153991351963428,
+      "cex_outflow_txs": 3494,
+      "date": "2026-03-16",
+      "unique_senders": 4133
+    },
+    {
+      "cex_inflow_B": 3.6032028484147514,
+      "cex_inflow_txs": 1099,
+      "cex_outflow_B": 4.371815540154139,
+      "cex_outflow_txs": 2735,
+      "date": "2026-03-17",
+      "unique_senders": 3546
+    },
+    {
+      "cex_inflow_B": 3.2449008466447173,
+      "cex_inflow_txs": 1573,
+      "cex_outflow_B": 3.7693791077504573,
+      "cex_outflow_txs": 3200,
+      "date": "2026-03-18",
+      "unique_senders": 3642
+    },
+    {
+      "cex_inflow_B": 4.236347372107371,
+      "cex_inflow_txs": 708,
+      "cex_outflow_B": 4.1984899005794745,
+      "cex_outflow_txs": 3828,
+      "date": "2026-03-19",
+      "unique_senders": 3647
+    },
+    {
+      "cex_inflow_B": 3.083091428320601,
+      "cex_inflow_txs": 521,
+      "cex_outflow_B": 3.531010501331309,
+      "cex_outflow_txs": 3062,
+      "date": "2026-03-20",
+      "unique_senders": 3777
+    },
+    {
+      "cex_inflow_B": 0.792752704479276,
+      "cex_inflow_txs": 214,
+      "cex_outflow_B": 1.539810813517691,
+      "cex_outflow_txs": 1652,
+      "date": "2026-03-21",
+      "unique_senders": 2692
+    },
+    {
+      "cex_inflow_B": 1.205474767914448,
+      "cex_inflow_txs": 191,
+      "cex_outflow_B": 1.5643317701822308,
+      "cex_outflow_txs": 2995,
+      "date": "2026-03-22",
+      "unique_senders": 3146
+    },
+    {
+      "cex_inflow_B": 3.003455114131229,
+      "cex_inflow_txs": 702,
+      "cex_outflow_B": 2.0286143815511655,
+      "cex_outflow_txs": 2892,
+      "date": "2026-03-23",
+      "unique_senders": 3802
+    },
+    {
+      "cex_inflow_B": 1.106988546251416,
+      "cex_inflow_txs": 527,
+      "cex_outflow_B": 1.6557048675207733,
+      "cex_outflow_txs": 2233,
+      "date": "2026-03-24",
+      "unique_senders": 3409
+    },
+    {
+      "cex_inflow_B": 7.1054749955558,
+      "cex_inflow_txs": 1454,
+      "cex_outflow_B": 5.072515111878107,
+      "cex_outflow_txs": 2094,
+      "date": "2026-03-25",
+      "unique_senders": 3846
+    }
+  ]
+}
