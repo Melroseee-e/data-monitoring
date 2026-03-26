@@ -213,7 +213,7 @@ tbody tr:hover td { background: var(--bg); }
 <body>
 
 <nav class="nav">
-  <a class="nav-back" href="pump_analysis.html">← 返回总览</a>
+  <a class="nav-back" href="terminal.html">← 返回主监控</a>
   <div>
     <div class="nav-logo">PUMP Whale Behavior</div>
     <div class="nav-sub" id="subtitle">加载中...</div>
@@ -337,6 +337,8 @@ tbody tr:hover td { background: var(--bg); }
 let rawData = null;
 let chart = null;
 let activeCategories = new Set(['whale_netflow', 'official_exchange', 'buyback']);
+let currentZoom = { start: 0, end: 100 };
+let syncingZoom = false;
 
 const COLOR_BUY = '#00C087';   // OKX Green
 const COLOR_SELL = '#FF4D4D';  // OKX Red
@@ -443,6 +445,30 @@ function getFilteredEvents() {
     }
     return true;
   });
+}
+
+function normalizeZoomRange(start, end) {
+  const safeStart = Number.isFinite(Number(start)) ? Number(start) : 0;
+  const safeEnd = Number.isFinite(Number(end)) ? Number(end) : 100;
+  const clampedStart = Math.max(0, Math.min(100, safeStart));
+  const clampedEnd = Math.max(clampedStart, Math.min(100, safeEnd));
+  return { start: clampedStart, end: clampedEnd };
+}
+
+function updateZoomRange(start, end) {
+  const next = normalizeZoomRange(start, end);
+  if (next.start === currentZoom.start && next.end === currentZoom.end) return false;
+  currentZoom = next;
+  return true;
+}
+
+function getVisibleCandles(candles) {
+  if (!candles.length) return candles;
+  const zoom = normalizeZoomRange(currentZoom.start, currentZoom.end);
+  const maxIndex = candles.length - 1;
+  const startIndex = Math.max(0, Math.floor((zoom.start / 100) * maxIndex));
+  const endIndex = Math.min(maxIndex, Math.ceil((zoom.end / 100) * maxIndex));
+  return candles.slice(startIndex, endIndex + 1);
 }
 
 function buildDailyEventMap(events) {
@@ -696,6 +722,7 @@ function renderProfileTable() {
 
 function renderChart() {
   const candles = rawData.price.candles;
+  const visibleCandles = getVisibleCandles(candles);
   const events = getFilteredEvents();
   const dailyEventsMap = buildDailyEventMap(events);
   const dates = candles.map(c => c.date);
@@ -708,14 +735,14 @@ function renderChart() {
   const netData = candles.map(c => dailyNet.get(c.date) || 0);
 
   const candleByDate = new Map(candles.map(c => [c.date, c]));
-  const lows = candles.map(c => Number(c.low));
-  const highs = candles.map(c => Number(c.high));
+  const lows = visibleCandles.map(c => Number(c.low));
+  const highs = visibleCandles.map(c => Number(c.high));
   const minLow = Math.min(...lows);
   const maxHigh = Math.max(...highs);
-  const range = Math.max(maxHigh - minLow, minLow * 0.2, 0.000001);
+  const range = Math.max(maxHigh - minLow, Math.abs(minLow) * 0.12, 0.000001);
 
-  const priceAxisMin = minLow - range * 0.18;
-  const priceAxisMax = maxHigh + range * 0.18;
+  const priceAxisMin = minLow - range * 0.12;
+  const priceAxisMax = maxHigh + range * 0.12;
   const buybackBaseY = priceAxisMin + range * 0.06;
 
   const buyPoints = [];
@@ -788,6 +815,20 @@ function renderChart() {
       // Switching to canvas for sharper pixel rendering of thousands of elements
       { renderer: 'canvas', useDirtyRect: true, devicePixelRatio: window.devicePixelRatio || 2 }
     );
+    chart.on('datazoom', params => {
+      if (syncingZoom) return;
+      const payload = Array.isArray(params.batch) && params.batch.length ? params.batch[0] : params;
+      if (!payload) return;
+      const nextStart = payload.start ?? currentZoom.start;
+      const nextEnd = payload.end ?? currentZoom.end;
+      if (!updateZoomRange(nextStart, nextEnd)) return;
+      syncingZoom = true;
+      try {
+        renderChart();
+      } finally {
+        syncingZoom = false;
+      }
+    });
   }
   chart.setOption({
     animation: false,
@@ -873,11 +914,13 @@ function renderChart() {
       }
     ],
     dataZoom: [
-      { type: 'inside', xAxisIndex: [0, 1], start: 0, end: 100 },
+      { type: 'inside', xAxisIndex: [0, 1], start: currentZoom.start, end: currentZoom.end },
       {
         show: true,
         type: 'slider',
         xAxisIndex: [0, 1],
+        start: currentZoom.start,
+        end: currentZoom.end,
         bottom: 4,
         height: 20,
         borderColor: 'transparent',
@@ -1033,7 +1076,7 @@ function bindControls() {
 }
 
 async function init() {
-  const resp = await fetch('../data/pump_behavior_chart_data.json');
+  const resp = await fetch('../data/pump/derived/pump_behavior_chart_data.json');
   if (!resp.ok) throw new Error(`load failed: ${resp.status}`);
   rawData = await resp.json();
   const profileCount = (rawData.address_profile_stats && rawData.address_profile_stats.total_profiles) || (rawData.address_profiles || []).length;

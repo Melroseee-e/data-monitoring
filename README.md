@@ -1,6 +1,6 @@
-# On-Chain Exchange Flow Monitor
+# PUMP Research Workspace
 
-实时监控代币在中心化交易所的流入流出数据。
+当前仓库已经收口为以 PUMP 研究为主，保留原有链上数据采集数据层，公开页面只保留 PUMP 行为图。
 
 ## 功能特性
 
@@ -12,7 +12,7 @@
 
 ## 在线访问
 
-🌐 **[查看实时数据](https://melroseee-e.github.io/data-monitoring/)**
+🌐 **[查看页面](https://melroseee-e.github.io/data-monitoring/)**
 
 ## 本地运行
 
@@ -35,6 +35,10 @@ cp .env.example .env
 ETHERSCAN_API_KEY=your_etherscan_api_key
 BSCTrace_API_KEY=your_nodereal_api_key
 HELIUS_API_KEY=your_helius_api_key
+# 可选：备用 key，主 key 没额度/被限流时自动切换
+HELIUS_API_KEY_2=your_backup_helius_api_key
+# 或者直接用逗号分隔的列表
+# HELIUS_API_KEYS=key1,key2
 ```
 
 ### 3. 运行数据采集
@@ -47,25 +51,34 @@ python scripts/normalize_labels.py
 python scripts/data_collector.py
 ```
 
-### 4. 查看前端
+### 4. 查看页面
 
 ```bash
-open web/index.html
+open web/pump_behavior_chart.html
 ```
 
 ## 项目结构
 
 ```
 ├── scripts/
+│   ├── data_collector.py        # 主采集器
 │   ├── normalize_labels.py      # 交易所标签归并
-│   └── data_collector.py        # 数据采集器
+│   ├── pump/                    # PUMP 研究脚本
+│   ├── ops/                     # 运维脚本
+│   └── archive/                 # 调试/实验脚本归档
 ├── data/
-│   ├── tokens.json              # 监控的代币列表
-│   ├── exchange_addresses.json  # 交易所地址
-│   ├── latest_data.json         # 最新数据
-│   └── history/                 # 历史数据
-├── web/
-│   └── index.html               # 前端界面
+│   ├── latest_data.json         # 主线最新数据
+│   ├── history/                 # 主线历史数据
+│   └── pump/                    # PUMP 数据分层
+├── web/                         # 公开页面
+│   └── pump_behavior_chart.html
+├── docs/
+│   ├── pump/                    # PUMP 研究报告
+│   └── archive/                 # 历史项目文档
+├── screenshots/
+│   ├── pump/                    # PUMP 页面校验截图
+│   └── archive/                 # 历史截图归档
+├── archive/                     # 日志、旧页面、内部笔记归档
 └── .github/workflows/
     └── update-data.yml          # 自动化工作流
 ```
