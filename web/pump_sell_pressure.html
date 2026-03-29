@@ -298,6 +298,15 @@
                             <td class="text-right font-mono text-red">-82.30 B</td>
                             <td class="text-right font-mono text-red">≈-$622M</td>
                         </tr>
+                        <tr style="background:#F0FDF4;border-top:2px solid #A7F3D0">
+                            <td class="font-bold text-xs text-green-700">📈 官方回购<br/><span class="text-gray-400 font-normal">Buyback</span></td>
+                            <td class="text-xs text-green-600">2025-07-16 → 2026-03-17</td>
+                            <td class="text-right font-mono text-gray-400" colspan="2">—（非抛压）</td>
+                            <td class="text-right font-mono text-green-700 font-bold">≈97.9 B PUMP</td>
+                            <td class="text-right font-mono text-green-700 font-bold">$328M</td>
+                            <td class="text-right font-mono text-green-700">+97.9 B</td>
+                            <td class="text-right font-mono text-green-700">+$328M</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -341,23 +350,24 @@
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Top 59 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">821.13 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $4,777M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 47.6%</div>
+                            <div class="text-xl font-bold text-blue-700">942.40 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $5,554M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 54.6%</div>
                         </div>
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Top 10 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">404.83 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $2,450M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 23.5%</div>
+                            <div class="text-xl font-bold text-blue-700">461.83 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $2,722M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 26.8%</div>
                         </div>
                     </div>
                     <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DBEAFE">
                         <strong>Top 1：</strong>3ADzk5...（Binance）77.63B ≈ $457M，首次卖出 2025-09-11。<br/>
-                        <strong>Top 2：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
-                        <strong>Top 3：</strong>5uB6r9h...（Bybit）49.69B ≈ $293M，首次 2025-07-14。<br/>
+                        <strong>Top 2：</strong>9SLPTL4...（Hyperunit，做市商/blockchain-infra）69.34B ≈ $409M，首次 2025-09-11。<br/>
+                        <strong>Top 3：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
                         USD 以各地址首次卖出日收盘价估算，非加权均价，仅供参考。<br/>
-                        已排除：Hyperunit Hot Wallet（官方标注鲸鱼）、Meteora/PumpSwap DEX 流动性池等协议地址。
+                        已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）及 DEX/协议流动性池地址。<br/>
+                        <strong>含：</strong>Hyperunit Hot Wallet（blockchain-infra，做市商/流动性提供商，<span style="color:#DC2626">非 CEX</span>）。
                     </div>
                 </div>
             </div>
@@ -560,9 +570,15 @@
         };
 
         // ── Exclusion sets for Top 59 rendering ──
-        // CEX / DEX / Protocol addresses to exclude from whale table
+        // Only exclude official/team types; 'whale' type stays in the list
+        const OFFICIAL_TYPES_EXCLUDE = new Set([
+            'buyback','treasury','token_custodian','team','investor',
+            'official_allocation','vesting','insider','ico_distribution'
+        ]);
         const EXCLUDE_FROM_WHALES = new Set([
-            ...Object.keys(KNOWN_ADDRS),
+            ...Object.entries(KNOWN_ADDRS)
+                .filter(([, info]) => OFFICIAL_TYPES_EXCLUDE.has(info.type))
+                .map(([addr]) => addr),
             // Arkham-identified CEX wallets (from pump_top_holders_arkham.json)
             "9WzDXwBbmkg8ZTbNMqUxFjBRT1TCjVjFbXdCtze4MXT","C68a6RCGLiPskbPYtAcsuAu1kMNYeXDZ5FQ3kERHmHe",
             "7TWnq4WeYcwQWBCwKeEXyiRN8jzm1GNGePa3Y9n4fKVL","3B7XAQrLoEMDEGvX8569jSnnrP3kYgvV61gNBrR7ei9z",
