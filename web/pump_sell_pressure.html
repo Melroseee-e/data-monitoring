@@ -345,20 +345,20 @@
                 <div style="border:1px solid #93C5FD;border-radius:10px;padding:20px;background:#EFF6FF">
                     <div class="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
                         <span style="background:#3B82F6;color:white;padding:2px 8px;border-radius:12px;font-size:11px">Top 59 地址</span>
-                        已排除官方、CEX 自有钱包、DEX 协议地址
+                        已排除官方、CEX 自有钱包、DEX/协议市场、可疑执行/中转地址
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Top 59 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">886.08 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $5,160M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 51.3%</div>
+                            <div class="text-xl font-bold text-blue-700" id="top59-total-b">...</div>
+                            <div class="text-sm text-blue-600 font-semibold">净化后按当前榜单自动计算</div>
+                            <div class="text-xs text-gray-400 mt-1" id="top59-share">...</div>
                         </div>
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Top 10 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">454.08 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $2,740M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 26.3%</div>
+                            <div class="text-xl font-bold text-blue-700" id="top10-total-b">...</div>
+                            <div class="text-sm text-blue-600 font-semibold">净化后按当前榜单自动计算</div>
+                            <div class="text-xs text-gray-400 mt-1" id="top10-share">...</div>
                         </div>
                     </div>
                     <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DBEAFE">
@@ -366,7 +366,7 @@
                         <strong>Top 2：</strong>9SLPTL4...（Hyperunit，做市商/blockchain-infra）69.34B ≈ $409M，首次 2025-09-11。<br/>
                         <strong>Top 3：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
                         USD 以各地址首次卖出日收盘价估算，非加权均价，仅供参考。<br/>
-                        已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）及 DEX/协议市场地址（Meteora Market ×2、PumpSwap Market）。<br/>
+                        已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）、DEX/协议市场地址（Meteora Market ×2、PumpSwap Market），以及 4 个高频执行/中转地址（8ekCy...、45ssP...、EtPcW...、Dwgak...）。<br/>
                         <strong>含：</strong>Hyperunit Hot Wallet（blockchain-infra，做市商/流动性提供商，<span style="color:#DC2626">非 CEX 非 DEX 市场</span>）。<br/>
                         <strong>注：</strong>此处为 Top 59 地址（按地址排序），非独立实体去重。
                     </div>
@@ -507,9 +507,9 @@
             <div class="flex justify-between items-center mb-4">
                 <div class="section-title mb-0">
                     <div class="dot" style="background:#8B5CF6"></div>
-                    Top 59 地址抛压（已排除官方、CEX 自有钱包、DEX/协议市场地址）
+                    Top 59 地址抛压（已排除官方、CEX 自有钱包、DEX/协议市场、可疑执行/中转地址）
                 </div>
-                <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i>合计：886.08B PUMP ≈ $5,160M · 占全市场抛压 51.3%</span>
+                <span class="text-xs text-gray-400" id="top59-header-summary"><i class="fas fa-info-circle mr-1"></i>合计：...</span>
             </div>
             <div class="overflow-x-auto">
                 <table id="sellers-table">
@@ -594,6 +594,11 @@
             "HbjYfcWZBjCBYTJpZkLGxqArVmZVu3mQcRudb6Wg1sVh",  // Meteora (Prev. Mercurial) - Market
             "9SMp4yLKGtW9TnLimfVPkDARsyNSfJw43WMke4r7KoZj",  // Meteora (Prev. Mercurial) - Market
             "2uF4Xh61rDwxnG9woyxsVQP7zuA6kLFpb3NvnRQeoiSd",  // pump.fun - PumpSwap Market
+            // High-frequency execution / relay wallets; not representative of standalone whale supply
+            "8ekCy2jHHUbW2yeNGFWYJT9Hm9FW7SvZcZK66dSZCDiF",
+            "45ssPkUQs1ssbeDqxD2mZrMdJYAXF7GyQyhS5xDXuWC5",
+            "EtPcWELeHvrwaUwESUJTtvSAtmJS4DRbqtzMcY82s58J",
+            "Dwgaka8QiSkFQ3bGXhZpmncM63DwhjK5zzQRiqt9WA8K",
         ]);
 
         const SELLING_ADDRS = new Set([
@@ -784,11 +789,24 @@
                     tbodyOff.appendChild(tr);
                 });
 
-            // ── Top 59 Sellers Table (cleaned: no official/CEX/DEX) ──
+            // ── Top 59 Sellers Table (cleaned: no official/CEX/DEX/protocol/relay) ──
             const tbodySellers = document.querySelector("#sellers-table tbody");
             const cleanSellers = top_sellers.filter(s => !EXCLUDE_FROM_WHALES.has(s.address));
+            const displayedSellers = cleanSellers.slice(0, 59);
+            const top59Total = displayedSellers.reduce((sum, s) => sum + (s.cex_deposit_B || s.volume_B || 0), 0);
+            const top10Total = displayedSellers.slice(0, 10).reduce((sum, s) => sum + (s.cex_deposit_B || s.volume_B || 0), 0);
+            const top59Pct = inB > 0 ? (top59Total / inB) * 100 : 0;
+            const top10Pct = inB > 0 ? (top10Total / inB) * 100 : 0;
+
+            document.getElementById("top59-total-b").textContent = formatB(top59Total);
+            document.getElementById("top10-total-b").textContent = formatB(top10Total);
+            document.getElementById("top59-share").textContent = `占全市场抛压 ${top59Pct.toFixed(1)}%`;
+            document.getElementById("top10-share").textContent = `占全市场抛压 ${top10Pct.toFixed(1)}%`;
+            document.getElementById("top59-header-summary").innerHTML =
+                `<i class="fas fa-info-circle mr-1"></i>合计：${formatB(top59Total)} · 占全市场抛压 ${top59Pct.toFixed(1)}%`;
+
             let whaleRank = 0;
-            cleanSellers.slice(0, 59).forEach((s) => {
+            displayedSellers.forEach((s) => {
                 whaleRank++;
                 const rank      = whaleRank;
                 const knownInfo = KNOWN_ADDRS[s.address];
