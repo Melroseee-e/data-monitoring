@@ -361,6 +361,26 @@
                             <div class="text-xs text-gray-400 mt-1" id="top10-share">...</div>
                         </div>
                     </div>
+                    <div style="border:1px solid #BFDBFE;border-radius:10px;padding:14px;background:#F8FBFF;margin-bottom:12px">
+                        <div class="text-xs font-semibold text-blue-700 mb-2">同批 Top 59 地址的买入情况（CEX Withdrawal）</div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div>
+                                <div class="text-xs text-gray-500 mb-1">Top 59 买入合计</div>
+                                <div class="text-lg font-bold text-green-700" id="top59-buy-total-b">...</div>
+                                <div class="text-xs text-gray-400 mt-1" id="top59-buy-share">...</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500 mb-1">Top 10 买入合计</div>
+                                <div class="text-lg font-bold text-green-700" id="top10-buy-total-b">...</div>
+                                <div class="text-xs text-gray-400 mt-1" id="top10-buy-share">...</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500 mb-1">Top 59 净抛压</div>
+                                <div class="text-lg font-bold text-red-600" id="top59-net-sell-b">...</div>
+                                <div class="text-xs text-gray-400 mt-1" id="top59-buy-addresses">...</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DBEAFE">
                         目标：尽量保留更偏向真实市场卖盘的地址，减少做市、库存轮转、协议市场和执行层钱包对榜单的污染。<br/>
                         已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）、DEX/协议市场地址（Meteora Market ×2、PumpSwap Market）、4 个高频执行/中转地址，以及 15 个高置信做市/库存轮转地址（包含 Hyperunit 与多组买卖双向近似对称、跨多交易所调仓的钱包）。<br/>
@@ -648,6 +668,7 @@
                 const netflow = await netflowRes.json();
 
                 let sellers = ledger.top_sellers || [];
+                let buyers  = ledger.top_buyers || [];
                 try {
                     const enrichRes = await fetch('../data/pump/derived/pump_top_sellers_enriched.json');
                     if (enrichRes.ok) {
@@ -655,15 +676,22 @@
                         if (enriched.sellers && enriched.sellers.length > 0) sellers = enriched.sellers;
                     }
                 } catch (e) {}
+                try {
+                    const buyersRes = await fetch('../data/pump/derived/pump_top_buyers_enriched.json');
+                    if (buyersRes.ok) {
+                        const enrichedBuyers = await buyersRes.json();
+                        if (enrichedBuyers.buyers && enrichedBuyers.buyers.length > 0) buyers = enrichedBuyers.buyers;
+                    }
+                } catch (e) {}
 
-                renderDashboard(ledger, netflow, sellers);
+                renderDashboard(ledger, netflow, sellers, buyers);
             } catch (err) {
                 console.error("Error loading data:", err);
                 document.getElementById("update-time").textContent = "Error loading data.";
             }
         }
 
-        function renderDashboard(ledger, netflow, top_sellers) {
+        function renderDashboard(ledger, netflow, top_sellers, top_buyers) {
             document.getElementById("update-time").textContent =
                 `数据截至 2026-03-25 · 更新于 ${(ledger.generated_at || '').substring(0,10)}`;
 
@@ -808,6 +836,8 @@
 
             // ── Top 59 Sellers Table (cleaned: no official/CEX/DEX/protocol/relay) ──
             const tbodySellers = document.querySelector("#sellers-table tbody");
+            const buyerMap = {};
+            (top_buyers || []).forEach((b) => { buyerMap[b.address] = b; });
             const cleanSellers = top_sellers.filter(s =>
                 !EXCLUDE_FROM_WHALES.has(s.address) &&
                 !MARKET_MAKER_EXCLUDE.has(s.address)
@@ -815,13 +845,25 @@
             const displayedSellers = cleanSellers.slice(0, 59);
             const top59Total = displayedSellers.reduce((sum, s) => sum + (s.cex_deposit_B || s.volume_B || 0), 0);
             const top10Total = displayedSellers.slice(0, 10).reduce((sum, s) => sum + (s.cex_deposit_B || s.volume_B || 0), 0);
+            const top59BuyTotal = displayedSellers.reduce((sum, s) => sum + (buyerMap[s.address]?.cex_withdraw_B || 0), 0);
+            const top10BuyTotal = displayedSellers.slice(0, 10).reduce((sum, s) => sum + (buyerMap[s.address]?.cex_withdraw_B || 0), 0);
+            const top59NetSell = top59Total - top59BuyTotal;
             const top59Pct = inB > 0 ? (top59Total / inB) * 100 : 0;
             const top10Pct = inB > 0 ? (top10Total / inB) * 100 : 0;
+            const top59BuyPct = outB > 0 ? (top59BuyTotal / outB) * 100 : 0;
+            const top10BuyPct = outB > 0 ? (top10BuyTotal / outB) * 100 : 0;
+            const buyActiveCount = displayedSellers.filter(s => (buyerMap[s.address]?.cex_withdraw_B || 0) > 0).length;
 
             document.getElementById("top59-total-b").textContent = formatB(top59Total);
             document.getElementById("top10-total-b").textContent = formatB(top10Total);
             document.getElementById("top59-share").textContent = `占全市场抛压 ${top59Pct.toFixed(1)}%`;
             document.getElementById("top10-share").textContent = `占全市场抛压 ${top10Pct.toFixed(1)}%`;
+            document.getElementById("top59-buy-total-b").textContent = formatB(top59BuyTotal);
+            document.getElementById("top10-buy-total-b").textContent = formatB(top10BuyTotal);
+            document.getElementById("top59-buy-share").textContent = `占全市场买盘 ${top59BuyPct.toFixed(1)}%`;
+            document.getElementById("top10-buy-share").textContent = `占全市场买盘 ${top10BuyPct.toFixed(1)}%`;
+            document.getElementById("top59-net-sell-b").textContent = formatB(top59NetSell);
+            document.getElementById("top59-buy-addresses").textContent = `${buyActiveCount}/59 地址有 CEX 提现记录`;
             document.getElementById("top59-header-summary").innerHTML =
                 `<i class="fas fa-info-circle mr-1"></i>合计：${formatB(top59Total)} · 占全市场抛压 ${top59Pct.toFixed(1)}%`;
 
