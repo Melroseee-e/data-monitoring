@@ -335,29 +335,65 @@
                 <!-- Whale -->
                 <div style="border:1px solid #93C5FD;border-radius:10px;padding:20px;background:#EFF6FF">
                     <div class="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
-                        <span style="background:#3B82F6;color:white;padding:2px 8px;border-radius:12px;font-size:11px">Top 50 大户</span>
-                        非官方地址中排名前 50 的 CEX 存入量
+                        <span style="background:#3B82F6;color:white;padding:2px 8px;border-radius:12px;font-size:11px">Top 59 独立大户</span>
+                        已排除官方、CEX 自有钱包、DEX 协议地址
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
-                            <div class="text-xs text-gray-500 mb-1">Top 50 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">897.74 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $5,239M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 52.0%</div>
+                            <div class="text-xs text-gray-500 mb-1">Top 59 抛压合计</div>
+                            <div class="text-xl font-bold text-blue-700">821.13 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $4,777M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 47.6%</div>
                         </div>
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Top 10 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">461.83 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $2,786M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 26.8%</div>
+                            <div class="text-xl font-bold text-blue-700">404.83 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $2,450M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 23.5%</div>
                         </div>
                     </div>
                     <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DBEAFE">
                         <strong>Top 1：</strong>3ADzk5...（Binance）77.63B ≈ $457M，首次卖出 2025-09-11。<br/>
-                        <strong>Top 2：</strong>Hyperunit Hot Wallet（Gate.io + Wintermute）69.34B ≈ $409M，首次 2025-07-17。<br/>
-                        <strong>Top 3：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
-                        USD 以各地址首次卖出日收盘价估算，非加权均价，仅供参考。
+                        <strong>Top 2：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
+                        <strong>Top 3：</strong>5uB6r9h...（Bybit）49.69B ≈ $293M，首次 2025-07-14。<br/>
+                        USD 以各地址首次卖出日收盘价估算，非加权均价，仅供参考。<br/>
+                        已排除：Hyperunit Hot Wallet（官方标注鲸鱼）、Meteora/PumpSwap DEX 流动性池等协议地址。
                     </div>
+                </div>
+            </div>
+
+            <!-- Buyback Summary -->
+            <div style="border:1px solid #A7F3D0;border-radius:10px;padding:20px;background:#F0FDF4;margin-top:16px">
+                <div class="text-sm font-bold text-green-700 mb-3 flex items-center gap-2">
+                    <span style="background:#10B981;color:white;padding:2px 8px;border-radius:12px;font-size:11px">官方回购</span>
+                    Pump.fun 平台费回购 PUMP（截至 2026-03-17）
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1">累计回购花费 (USD)</div>
+                        <div class="text-xl font-bold text-green-700">$328M</div>
+                        <div class="text-xs text-gray-400">平台费 30% 用于回购</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1">回购均价</div>
+                        <div class="text-xl font-bold text-green-700">≈ $0.00335</div>
+                        <div class="text-xs text-gray-400">$328M / ~97.9B PUMP</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1">回购库存 (Treasury)</div>
+                        <div class="text-xl font-bold text-green-700">~103.96 B PUMP</div>
+                        <div class="text-xs text-gray-400">占流通量 ≈ 16.4%</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1">首次回购</div>
+                        <div class="text-xl font-bold text-green-700">2025-07-16</div>
+                        <div class="text-xs text-gray-400">TGE 后第 4 天</div>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DCFCE7">
+                    <strong>回购路径：</strong>平台交易费收入 → Buyback Wallet（<code>3vkpy5YH...</code>）在二级市场购入 PUMP → 转入 Buyback Treasury（<code>G8CcfRff...</code>，Squads 多签）长期锁定，60% 计划销毁，40% 用于质押奖励。<br/>
+                    <strong>里程碑：</strong>2025-07-25 首 9 天回购 $19.6M → 2025-08-13 累计 $43.4M（7.4B PUMP）→ 2025-12-11 累计 $205M → 2026-03-03 累计 $311M → 2026-03-17 累计 $328M（占流通量 29.5%）。<br/>
+                    <strong>注：</strong>Tokenomist 数据为 97.9B PUMP / $328M，Treasury 链上实际持仓 103.96B，与官方数据基本吻合。
                 </div>
             </div>
         </div>
@@ -455,14 +491,14 @@
             </div>
         </div>
 
-        <!-- Top 50 Sellers -->
+        <!-- Top 59 Sellers -->
         <div class="panel">
             <div class="flex justify-between items-center mb-4">
                 <div class="section-title mb-0">
                     <div class="dot" style="background:#8B5CF6"></div>
-                    Top 50 抛压地址溯源（按全周期 CEX 存入量排名）
+                    Top 59 独立大户抛压地址（已排除官方、CEX 自有钱包、DEX 协议地址）
                 </div>
-                <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i>橙色行 = 已知官方/团队地址；蓝色 = 大型机构鲸鱼</span>
+                <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i>合计：821.13B PUMP ≈ $4,777M · 占全市场抛压 47.6%</span>
             </div>
             <div class="overflow-x-auto">
                 <table id="sellers-table">
@@ -523,7 +559,25 @@
             whale:               { cls: "badge-whale",    text: "Whale" },
         };
 
-        // Addresses with active selling activity
+        // ── Exclusion sets for Top 59 rendering ──
+        // CEX / DEX / Protocol addresses to exclude from whale table
+        const EXCLUDE_FROM_WHALES = new Set([
+            ...Object.keys(KNOWN_ADDRS),
+            // Arkham-identified CEX wallets (from pump_top_holders_arkham.json)
+            "9WzDXwBbmkg8ZTbNMqUxFjBRT1TCjVjFbXdCtze4MXT","C68a6RCGLiPskbPYtAcsuAu1kMNYeXDZ5FQ3kERHmHe",
+            "7TWnq4WeYcwQWBCwKeEXyiRN8jzm1GNGePa3Y9n4fKVL","3B7XAQrLoEMDEGvX8569jSnnrP3kYgvV61gNBrR7ei9z",
+            "u6PJ8DtQuPFnfmwHbGFU81YBB8RTNhHmnnBDMz2xkvLM","5PAhQiYdLBd6SVdjzBQDQ6vUEMzHWRnfPrkmHrFMJPKv",
+            "8wM44Ryv9DFCSfkgUnPEcxVMR2rTbXrNQPVQKUfHJQ8T","6FEVkH17P9y8Q9aCkDdPfH58vHJNVUSCUoLkwNSoQUqg",
+            "FWMrpLyjDnpaMcRrD83bXEWfGrwFjBLcKJeD7pzNaVB4","8Mm46CsqxiyAputDUp2cdXuFyiF9VQRJpxeVGJXf7hJb",
+            "DLUzWHBuZ4THC5gmeY3onU8c15XmLm6aE3GHPo9pwD8r","AZj4GPWqekwy4PGfpZ8AGkqj2R1xYS12vaCaMMTEXZEF",
+            "FixDET3jRBMjT9M69WimrdAR5fUrJeKL2yZrQAi7SN9P","5z7gxL5u4jCW9D6acu283eLpZ9YS1cVNPbSvbUApYrco",
+            "9CKnC2kmqG9ZBtQXDfxRycFYxNrsuGQfhCfcqb2HkybT","38xCLm9kSExfGU1GdyVuWMV8dqfnJJh5bKEMJEKqwZEj",
+            "6BhBoBB47wSGjK5uzcGWZnmCKBnXYivUcZD6cGXXw3Sj","22Wnk8PwyWZV7BfkZGJE6Q8bNx5sGVrqQMrCMBb8tz4o",
+            // DEX/Protocol
+            "HbjYfcWZBjCBYTJpN3hMCF6Y3gbNzFBXVKvfmPMFcRLJ","9SMp4yLKGtW9TnLiLAzjf8PRsRU64ZXbBCvvpVFjBxRa",
+            "2uF4Xh61rDwxnG9wzNkJm76bTFQkGHJp1R6VBXK8RaJo",
+        });
+
         const SELLING_ADDRS = new Set([
             "GhFaBi8sy3M5mgG97YguQ6J3f7XH4JwV5CoW8MbzRgAU",
             "5v7ZZg1D1si417WhUQF9Br2dRQEnd1sTbCfesscUCVKE",
@@ -712,10 +766,13 @@
                     tbodyOff.appendChild(tr);
                 });
 
-            // ── Top 50 Sellers Table ──
+            // ── Top 59 Sellers Table (cleaned: no official/CEX/DEX) ──
             const tbodySellers = document.querySelector("#sellers-table tbody");
-            top_sellers.slice(0, 50).forEach((s, i) => {
-                const rank      = i + 1;
+            const cleanSellers = top_sellers.filter(s => !EXCLUDE_FROM_WHALES.has(s.address));
+            let whaleRank = 0;
+            cleanSellers.slice(0, 59).forEach((s) => {
+                whaleRank++;
+                const rank      = whaleRank;
                 const knownInfo = KNOWN_ADDRS[s.address];
                 const isOfficial= knownInfo && ['token_custodian','treasury','buyback','team','investor','official_allocation','vesting','insider'].includes(knownInfo.type);
                 const isWhale   = knownInfo && knownInfo.type === 'whale';
