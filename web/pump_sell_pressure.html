@@ -344,21 +344,21 @@
                 <!-- Whale -->
                 <div style="border:1px solid #93C5FD;border-radius:10px;padding:20px;background:#EFF6FF">
                     <div class="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
-                        <span style="background:#3B82F6;color:white;padding:2px 8px;border-radius:12px;font-size:11px">Top 59 独立大户</span>
+                        <span style="background:#3B82F6;color:white;padding:2px 8px;border-radius:12px;font-size:11px">Top 59 地址</span>
                         已排除官方、CEX 自有钱包、DEX 协议地址
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Top 59 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">942.40 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $5,554M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 54.6%</div>
+                            <div class="text-xl font-bold text-blue-700">886.08 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $5,160M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 51.3%</div>
                         </div>
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Top 10 抛压合计</div>
-                            <div class="text-xl font-bold text-blue-700">461.83 B PUMP</div>
-                            <div class="text-sm text-blue-600 font-semibold">≈ $2,722M USD</div>
-                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 26.8%</div>
+                            <div class="text-xl font-bold text-blue-700">454.08 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $2,740M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 26.3%</div>
                         </div>
                     </div>
                     <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DBEAFE">
@@ -366,8 +366,9 @@
                         <strong>Top 2：</strong>9SLPTL4...（Hyperunit，做市商/blockchain-infra）69.34B ≈ $409M，首次 2025-09-11。<br/>
                         <strong>Top 3：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
                         USD 以各地址首次卖出日收盘价估算，非加权均价，仅供参考。<br/>
-                        已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）及 DEX/协议流动性池地址。<br/>
-                        <strong>含：</strong>Hyperunit Hot Wallet（blockchain-infra，做市商/流动性提供商，<span style="color:#DC2626">非 CEX</span>）。
+                        已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）及 DEX/协议市场地址（Meteora Market ×2、PumpSwap Market）。<br/>
+                        <strong>含：</strong>Hyperunit Hot Wallet（blockchain-infra，做市商/流动性提供商，<span style="color:#DC2626">非 CEX 非 DEX 市场</span>）。<br/>
+                        <strong>注：</strong>此处为 Top 59 地址（按地址排序），非独立实体去重。
                     </div>
                 </div>
             </div>
@@ -506,9 +507,9 @@
             <div class="flex justify-between items-center mb-4">
                 <div class="section-title mb-0">
                     <div class="dot" style="background:#8B5CF6"></div>
-                    Top 59 独立大户抛压地址（已排除官方、CEX 自有钱包、DEX 协议地址）
+                    Top 59 地址抛压（已排除官方、CEX 自有钱包、DEX/协议市场地址）
                 </div>
-                <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i>合计：821.13B PUMP ≈ $4,777M · 占全市场抛压 47.6%</span>
+                <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i>合计：886.08B PUMP ≈ $5,160M · 占全市场抛压 51.3%</span>
             </div>
             <div class="overflow-x-auto">
                 <table id="sellers-table">
@@ -589,9 +590,10 @@
             "FixDET3jRBMjT9M69WimrdAR5fUrJeKL2yZrQAi7SN9P","5z7gxL5u4jCW9D6acu283eLpZ9YS1cVNPbSvbUApYrco",
             "9CKnC2kmqG9ZBtQXDfxRycFYxNrsuGQfhCfcqb2HkybT","38xCLm9kSExfGU1GdyVuWMV8dqfnJJh5bKEMJEKqwZEj",
             "6BhBoBB47wSGjK5uzcGWZnmCKBnXYivUcZD6cGXXw3Sj","22Wnk8PwyWZV7BfkZGJE6Q8bNx5sGVrqQMrCMBb8tz4o",
-            // DEX/Protocol
-            "HbjYfcWZBjCBYTJpN3hMCF6Y3gbNzFBXVKvfmPMFcRLJ","9SMp4yLKGtW9TnLiLAzjf8PRsRU64ZXbBCvvpVFjBxRa",
-            "2uF4Xh61rDwxnG9wzNkJm76bTFQkGHJp1R6VBXK8RaJo",
+            // DEX/Protocol market addresses (corrected from wrong addresses)
+            "HbjYfcWZBjCBYTJpZkLGxqArVmZVu3mQcRudb6Wg1sVh",  // Meteora (Prev. Mercurial) - Market
+            "9SMp4yLKGtW9TnLimfVPkDARsyNSfJw43WMke4r7KoZj",  // Meteora (Prev. Mercurial) - Market
+            "2uF4Xh61rDwxnG9woyxsVQP7zuA6kLFpb3NvnRQeoiSd",  // pump.fun - PumpSwap Market
         ]);
 
         const SELLING_ADDRS = new Set([
