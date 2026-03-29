@@ -345,7 +345,7 @@
                 <div style="border:1px solid #93C5FD;border-radius:10px;padding:20px;background:#EFF6FF">
                     <div class="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
                         <span style="background:#3B82F6;color:white;padding:2px 8px;border-radius:12px;font-size:11px">Top 59 地址</span>
-                        已排除官方、CEX 自有钱包、DEX/协议市场、可疑执行/中转地址
+                        已排除官方、CEX 自有钱包、DEX/协议市场、执行/中转、高置信做市/库存轮转地址
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
@@ -362,13 +362,10 @@
                         </div>
                     </div>
                     <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DBEAFE">
-                        <strong>Top 1：</strong>3ADzk5...（Binance）77.63B ≈ $457M，首次卖出 2025-09-11。<br/>
-                        <strong>Top 2：</strong>9SLPTL4...（Hyperunit，做市商/blockchain-infra）69.34B ≈ $409M，首次 2025-09-11。<br/>
-                        <strong>Top 3：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
-                        USD 以各地址首次卖出日收盘价估算，非加权均价，仅供参考。<br/>
-                        已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）、DEX/协议市场地址（Meteora Market ×2、PumpSwap Market），以及 4 个高频执行/中转地址（8ekCy...、45ssP...、EtPcW...、Dwgak...）。<br/>
-                        <strong>含：</strong>Hyperunit Hot Wallet（blockchain-infra，做市商/流动性提供商，<span style="color:#DC2626">非 CEX 非 DEX 市场</span>）。<br/>
-                        <strong>注：</strong>此处为 Top 59 地址（按地址排序），非独立实体去重。
+                        目标：尽量保留更偏向真实市场卖盘的地址，减少做市、库存轮转、协议市场和执行层钱包对榜单的污染。<br/>
+                        已排除：Arkham 标注的 CEX 自有钱包（entity_type=cex/exchange）、DEX/协议市场地址（Meteora Market ×2、PumpSwap Market）、4 个高频执行/中转地址，以及 15 个高置信做市/库存轮转地址（包含 Hyperunit 与多组买卖双向近似对称、跨多交易所调仓的钱包）。<br/>
+                        判定原则：若某地址同时存在大额 CEX 存入和大额 CEX 提现，且买卖规模近似对称、跨所路径较多，则更倾向于库存轮转/做市，而不是单向真实抛压。<br/>
+                        <strong>注：</strong>此处仍然是 Top 59 地址（按地址排序），不是独立实体去重后的 Top 59。
                     </div>
                 </div>
             </div>
@@ -507,7 +504,7 @@
             <div class="flex justify-between items-center mb-4">
                 <div class="section-title mb-0">
                     <div class="dot" style="background:#8B5CF6"></div>
-                    Top 59 地址抛压（已排除官方、CEX 自有钱包、DEX/协议市场、可疑执行/中转地址）
+                    Top 59 地址抛压（更偏真实市场卖盘，已排除做市/库存轮转地址）
                 </div>
                 <span class="text-xs text-gray-400" id="top59-header-summary"><i class="fas fa-info-circle mr-1"></i>合计：...</span>
             </div>
@@ -599,6 +596,26 @@
             "45ssPkUQs1ssbeDqxD2mZrMdJYAXF7GyQyhS5xDXuWC5",
             "EtPcWELeHvrwaUwESUJTtvSAtmJS4DRbqtzMcY82s58J",
             "Dwgaka8QiSkFQ3bGXhZpmncM63DwhjK5zzQRiqt9WA8K",
+        ]);
+        const MARKET_MAKER_EXCLUDE = new Set([
+            // Explicit infra / market-making wallet
+            "9SLPTL41SPsYkgdsMzdfJsxymEANKr5bYoBsQzJyKpKS",  // Hyperunit Hot Wallet
+            // High-confidence inventory rotation / market-making wallets:
+            // large two-way CEX flows, near-symmetric buy/sell, multi-exchange routing
+            "3ADzk5YDP9sgorvPSs9YPxigJiSqhgddpwHwwPwmEFib",
+            "4DTTpRo9BtATsVgxtiLtnFRLxiYGhCtuXrJ2njs2tgJC",
+            "53AXjkQHZQEbHZvV55VHtcZtFzBzArLZZG5AF4ufkRhv",
+            "AvxAnXhZjFDvcq5aFvL25n44NGtArxdR5vYooiBQhmM",
+            "9E4fv9BsJ2BwkNBXDeUgpJYtrYPheMQWYFcxGYxDFshX",
+            "F9KFgEZ1skvdk3kSa5mMC3UCBHrPrNEQJJWRtfsjyVZF",
+            "G56HkiSheuhfjnTPGjGC1nNddu7NBtTqedueYKCrEHW2",
+            "FdZEnRPJwFLwCGu7dJAqrui44MooUMAxETwWSAwpTEZf",
+            "EX7CsKTseCPekuCXavJLLkHrcEP8WRnJfvGTSiLumrUB",
+            "GL8T72PKygWaYrLKtSteN9UUvYYnuC8azNDunk4eaqqQ",
+            "DBmae92YTQKLsNzXcPscxiwPqMcz9stQr2prB5ZCAHPd",
+            "GFbzkxKE6wWgFmhdvmp13vfF6kVCvQ4k6dCZahLqL8Lg",
+            "234WJPZw4DQvJr2REhSqzNikpfSw1Hkff11Mec5y8Y3j",
+            "3avW2sD2wdoRNjXMXxaGBqVEtCu98WsV2VjafKqhBkET",
         ]);
 
         const SELLING_ADDRS = new Set([
@@ -791,7 +808,10 @@
 
             // ── Top 59 Sellers Table (cleaned: no official/CEX/DEX/protocol/relay) ──
             const tbodySellers = document.querySelector("#sellers-table tbody");
-            const cleanSellers = top_sellers.filter(s => !EXCLUDE_FROM_WHALES.has(s.address));
+            const cleanSellers = top_sellers.filter(s =>
+                !EXCLUDE_FROM_WHALES.has(s.address) &&
+                !MARKET_MAKER_EXCLUDE.has(s.address)
+            );
             const displayedSellers = cleanSellers.slice(0, 59);
             const top59Total = displayedSellers.reduce((sum, s) => sum + (s.cex_deposit_B || s.volume_B || 0), 0);
             const top10Total = displayedSellers.slice(0, 10).reduce((sum, s) => sum + (s.cex_deposit_B || s.volume_B || 0), 0);
