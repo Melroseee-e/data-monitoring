@@ -1,0 +1,247 @@
+{
+  "generated_at_utc": "2026-03-25T03:46:54Z",
+  "site_disclosed_holders": {
+    "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm": "fees.pump.fun disclosed holder",
+    "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey": "fees.pump.fun disclosed holder"
+  },
+  "candidates": [
+    {
+      "address": "2KEsnhnFiey3iA5zaenFVRSmuAGZdm7RbuG5VuAN69e1",
+      "label": "fees.pump.fun secondary holder token account",
+      "cluster": "pump_buyback_audit",
+      "role": "program_executor_candidate",
+      "confidence": "probable",
+      "first_seen": "2026-03-18T03:16:54Z",
+      "last_seen": "2026-03-20T22:59:11Z",
+      "current_pump_balance": 3630359758.001998,
+      "token_accounts": [
+        "2KEsnhnFiey3iA5zaenFVRSmuAGZdm7RbuG5VuAN69e1"
+      ],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [],
+      "related_programs": [
+        "SOLANA_PROGRAM_LIBRARY"
+      ],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+      "label": "Pump.fun buyback wallet",
+      "cluster": "pump_buyback_audit",
+      "role": "direct_executor",
+      "confidence": "confirmed",
+      "first_seen": "2025-07-15T12:49:04Z",
+      "last_seen": "2026-02-22T22:06:11Z",
+      "current_pump_balance": 62.311512,
+      "token_accounts": [
+        "Cz2xubgPSvqGqdxCL5ri4y9FTtBDLJNXQhhj2muw8kbt"
+      ],
+      "observed_treasury_inflow_pump": 3069818434.623949,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [],
+      "related_programs": [
+        "SYSTEM_PROGRAM",
+        "BUBBLEGUM",
+        "ASSOCIATED_TOKEN_PROGRAM",
+        "SQUADS_V4",
+        "PHANTOM",
+        "PUMP_AMM",
+        "SOLANA_PROGRAM_LIBRARY",
+        "STREAMFLOW_TIMELOCK",
+        "OKX",
+        "UNKNOWN"
+      ],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+      "label": "fees.pump.fun secondary holder",
+      "cluster": "pump_buyback_audit",
+      "role": "program_executor_candidate",
+      "confidence": "probable",
+      "first_seen": "2026-03-05T20:24:41Z",
+      "last_seen": "2026-03-10T00:28:27Z",
+      "current_pump_balance": 3630359758.001998,
+      "token_accounts": [
+        "2KEsnhnFiey3iA5zaenFVRSmuAGZdm7RbuG5VuAN69e1"
+      ],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [
+        "Owner activity includes SQUADS_V4 interactions.",
+        "Owner activity includes CREATE_MULTISIG.",
+        "fees.pump.fun discloses this holder alongside G8 treasury."
+      ],
+      "related_programs": [
+        "SQUADS_V4",
+        "BUBBLEGUM",
+        "UNKNOWN",
+        "SYSTEM_PROGRAM"
+      ],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "99mRw3EzdJZWEUjgp1nrU4WeHsukUBjbh7gYE7pm4F3c",
+      "label": "PUMP staking distributor",
+      "cluster": "pump_buyback_audit",
+      "role": "staking_related",
+      "confidence": "confirmed",
+      "first_seen": null,
+      "last_seen": null,
+      "current_pump_balance": 0,
+      "token_accounts": [],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [],
+      "related_programs": [],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM",
+      "label": "secondary-holder execution relay candidate",
+      "cluster": "pump_buyback_audit",
+      "role": "program_executor_candidate",
+      "confidence": "probable",
+      "first_seen": "2026-03-20T10:41:47Z",
+      "last_seen": "2026-03-20T23:11:21Z",
+      "current_pump_balance": 2071.856596,
+      "token_accounts": [
+        "HxT8kiUKxJ7jdvWfDeRZQzQia4wyRCNN2iRBjMUzcimN"
+      ],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 1685616751.901246,
+      "discovery_basis": [],
+      "related_programs": [
+        "SYSTEM_PROGRAM",
+        "SOLANA_PROGRAM_LIBRARY",
+        "JUPITER",
+        "PUMP_AMM",
+        "SQUADS_V4"
+      ],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "DZboAojTvNwYbhW5rCARYLnWSKNumnd4khQG63aCxTfR",
+      "label": "address lookup table used by Squads flow",
+      "cluster": "pump_buyback_audit",
+      "role": "automation_lookup_table",
+      "confidence": "probable",
+      "first_seen": null,
+      "last_seen": null,
+      "current_pump_balance": 0,
+      "token_accounts": [],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [
+        "Account is an address lookup table used in Squads flow."
+      ],
+      "related_programs": [],
+      "account_owner": "AddressLookupTab1e1111111111111111111111111",
+      "account_executable": false
+    },
+    {
+      "address": "DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL",
+      "label": "shared Squads flow account",
+      "cluster": "pump_buyback_audit",
+      "role": "shared_squads_account",
+      "confidence": "probable",
+      "first_seen": null,
+      "last_seen": null,
+      "current_pump_balance": 0,
+      "token_accounts": [],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [],
+      "related_programs": [],
+      "account_owner": "T1pyyaTNZsKv2WcRAB8oVnk93mLJw2XzjtVYqCsaHqt",
+      "account_executable": false
+    },
+    {
+      "address": "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm",
+      "label": "Pump.fun treasury owner",
+      "cluster": "pump_buyback_audit",
+      "role": "treasury_holder",
+      "confidence": "confirmed",
+      "first_seen": "2025-11-30T11:43:41Z",
+      "last_seen": "2026-02-25T01:42:14Z",
+      "current_pump_balance": 105712225829.32861,
+      "token_accounts": [
+        "HdtUyEC7TeLGrA7ddRRJWM6nUYk5UZsL9pJuWnXAFQ32"
+      ],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [],
+      "related_programs": [
+        "SYSTEM_PROGRAM",
+        "SOLANA_PROGRAM_LIBRARY",
+        "PUMP_FUN",
+        "PHANTOM"
+      ],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "HdtUyEC7TeLGrA7ddRRJWM6nUYk5UZsL9pJuWnXAFQ32",
+      "label": "Pump.fun treasury token account",
+      "cluster": "pump_buyback_audit",
+      "role": "treasury_holder",
+      "confidence": "confirmed",
+      "first_seen": "2025-07-15T17:28:29Z",
+      "last_seen": "2025-07-18T20:28:22Z",
+      "current_pump_balance": 105712225829.32861,
+      "token_accounts": [
+        "HdtUyEC7TeLGrA7ddRRJWM6nUYk5UZsL9pJuWnXAFQ32"
+      ],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [],
+      "related_programs": [
+        "SOLANA_PROGRAM_LIBRARY"
+      ],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "HxT8kiUKxJ7jdvWfDeRZQzQia4wyRCNN2iRBjMUzcimN",
+      "label": "secondary-holder execution relay token account",
+      "cluster": "pump_buyback_audit",
+      "role": "program_executor_candidate",
+      "confidence": "probable",
+      "first_seen": null,
+      "last_seen": null,
+      "current_pump_balance": 0,
+      "token_accounts": [],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [],
+      "related_programs": [],
+      "account_owner": null,
+      "account_executable": null
+    },
+    {
+      "address": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "label": "Squads V4 program",
+      "cluster": "pump_buyback_audit",
+      "role": "automation_program",
+      "confidence": "confirmed",
+      "first_seen": null,
+      "last_seen": null,
+      "current_pump_balance": 0,
+      "token_accounts": [],
+      "observed_treasury_inflow_pump": 0.0,
+      "observed_secondary_holder_inflow_pump": 0.0,
+      "discovery_basis": [
+        "Executable program account."
+      ],
+      "related_programs": [],
+      "account_owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "account_executable": true
+    }
+  ]
+}

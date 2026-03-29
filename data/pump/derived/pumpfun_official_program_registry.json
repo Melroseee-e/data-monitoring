@@ -1,0 +1,203 @@
+{
+  "metadata": {
+    "generated_at": "2026-03-25T05:49:57+00:00",
+    "source_priority": [
+      "official GitHub repo",
+      "official fees frontend/API",
+      "on-chain Solana RPC verification"
+    ],
+    "repo": "pump-fun/pump-public-docs",
+    "scope": "Official Pump.fun Solana program surface"
+  },
+  "official_surface": {
+    "repo_root_entries": [
+      ".gitignore",
+      "README.md",
+      "docs",
+      "idl"
+    ],
+    "docs_files": [
+      "FAQ.md",
+      "FEE_PROGRAM_README.md",
+      "PUMP_CASHBACK_README.md",
+      "PUMP_CREATOR_FEE_README.md",
+      "PUMP_PROGRAM_README.md",
+      "PUMP_SWAP_CREATOR_FEE_README.md",
+      "PUMP_SWAP_README.md",
+      "PUMP_SWAP_SDK_README.md",
+      "fees.png"
+    ],
+    "idl_files": [
+      "pump.json",
+      "pump.ts",
+      "pump_amm.json",
+      "pump_amm.ts",
+      "pump_fees.json",
+      "pump_fees.ts"
+    ],
+    "fees_site_bundle": "/_next/static/chunks/f2162d8eeab6cc47.js?dpl=dpl_AfwEpNTRbEH6fnZgwHFVL8FPNELy",
+    "fees_api_snapshot": {
+      "totalPumpTokensBought": 109130459843.94774,
+      "totalBuybackUsd": 337407151.94578016,
+      "totalDays": 249,
+      "lastUpdated": "2026-03-24T23:40:32.168Z"
+    }
+  },
+  "programs": [
+    {
+      "program_name": "pump",
+      "program_address": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P",
+      "official_source": "https://raw.githubusercontent.com/pump-fun/pump-public-docs/main/idl/pump.json",
+      "docs_path": "docs/PUMP_PROGRAM_README.md",
+      "idl_present": true,
+      "is_executable": true,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "programdata_address": "B5MvUwXdiW1NMM6QFFD3ssPKBujD4zMohncbM73Z2BQu",
+      "upgrade_authority": "7gZufwwAo17y5kg8FMyJy2phgpvv9RSdzWtdXiWHjFr8",
+      "programdata_slot": 404296915,
+      "main_global_pda": "4wTV1YmiEkRvAtNtsSGPtUrqRYQMe5SKy2uB4Jjaxnjf",
+      "related_fee_recipients": [
+        "62qc2CNXwrYqQScmEdiZFFAnJR262PxWEuNQtxfafNgV",
+        "FFWtrEQ4B4PKQoVuHYzZq8FabGkVatYzDpEVHsK5rrhF"
+      ],
+      "key_instructions": [
+        "admin_set_creator",
+        "buy",
+        "buy_exact_sol_in",
+        "claim_cashback",
+        "collect_creator_fee",
+        "distribute_creator_fees",
+        "migrate_bonding_curve_creator",
+        "set_creator",
+        "set_mayhem_virtual_params",
+        "set_metaplex_creator",
+        "toggle_cashback_enabled",
+        "toggle_mayhem_mode"
+      ],
+      "instruction_count": 29,
+      "buyback_relevance": "direct_execution_candidate",
+      "buyback_rationale": "Official trading program with buy and buy_exact_sol_in instructions. No public buyback-only instruction exists.",
+      "source_code_status": "public IDL only",
+      "notes": [
+        "README documents a single Global PDA and a Global authority.",
+        "No official buyback instruction name appears in the public IDL."
+      ]
+    },
+    {
+      "program_name": "pump_amm",
+      "program_address": "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA",
+      "official_source": "https://raw.githubusercontent.com/pump-fun/pump-public-docs/main/idl/pump_amm.json",
+      "docs_path": "docs/PUMP_SWAP_README.md",
+      "idl_present": true,
+      "is_executable": true,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "programdata_address": "6naEzKeUuFh1Jeeu51NXQgr5qkXgXtc9WKNct4xynVJc",
+      "upgrade_authority": "7gZufwwAo17y5kg8FMyJy2phgpvv9RSdzWtdXiWHjFr8",
+      "programdata_slot": 402862694,
+      "main_global_pda": "ADyA8hdefvWN2dbGGWFotbzWxrAvLW83WG6QCVXvJKqw",
+      "related_fee_recipients": [
+        "FFWtrEQ4B4PKQoVuHYzZq8FabGkVatYzDpEVHsK5rrhF",
+        "62qc2CNXwrYqQScmEdiZFFAnJR262PxWEuNQtxfafNgV",
+        "7VtfL8fvgNfhz17qKRMjzQEXgbdpnHHHQRh54R9jP2RJ",
+        "7hTckgnGnLQR6sdH7YkqFTAA7VwTfYFaZ6EhEsU3saCX",
+        "9rPYyANsfQZw3DnDmKE3YCQF5E8oD89UXoHn9JFEhJUz",
+        "AVmoTthdrX6tKt4nDjco2D775W2YK3sDhxPcMmzUAmTY",
+        "FWsW1xNtWscwNmKv6wVsU1iTzRN6wmmk3MjxRP5tT7hz",
+        "G5UZAVbAf46s7cKWoyKu8kYTip9DGTpbLZ2qa9Aq69dP",
+        "JCRGumoE9Qi5BBgULTgdgTLjSgkCMSbF62ZZfGs84JeU"
+      ],
+      "key_instructions": [
+        "admin_set_coin_creator",
+        "buy",
+        "buy_exact_quote_in",
+        "claim_cashback",
+        "collect_coin_creator_fee",
+        "migrate_pool_coin_creator",
+        "set_coin_creator",
+        "set_reserved_fee_recipients",
+        "toggle_cashback_enabled",
+        "toggle_mayhem_mode",
+        "transfer_creator_fees_to_pump",
+        "update_fee_config"
+      ],
+      "instruction_count": 25,
+      "buyback_relevance": "direct_execution_candidate",
+      "buyback_rationale": "Official AMM trading program with buy and buy_exact_quote_in instructions. Likely execution layer for treasury purchases after pool migration.",
+      "source_code_status": "public IDL only",
+      "notes": [
+        "README documents a GlobalConfig PDA and protocol fee recipients.",
+        "transfer_creator_fees_to_pump appears in the official IDL but no buyback-only instruction exists."
+      ]
+    },
+    {
+      "program_name": "pump_fees",
+      "program_address": "pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ",
+      "official_source": "https://raw.githubusercontent.com/pump-fun/pump-public-docs/main/idl/pump_fees.json",
+      "docs_path": "docs/FEE_PROGRAM_README.md",
+      "idl_present": true,
+      "is_executable": true,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "programdata_address": "75Uu23mqWBb8LM8vDppqC1mQAnCcBuLXhVaDezVMQLRw",
+      "upgrade_authority": "7gZufwwAo17y5kg8FMyJy2phgpvv9RSdzWtdXiWHjFr8",
+      "programdata_slot": 408577984,
+      "main_global_pda": null,
+      "related_fee_recipients": [],
+      "key_instructions": [
+        "claim_social_fee_pda",
+        "create_fee_sharing_config",
+        "create_social_fee_pda",
+        "get_fees",
+        "initialize_fee_config",
+        "initialize_fee_program_global",
+        "reset_fee_sharing_config",
+        "revoke_fee_sharing_authority",
+        "set_claim_rate_limit",
+        "set_social_claim_authority",
+        "transfer_fee_sharing_authority",
+        "update_fee_config",
+        "update_fee_shares",
+        "upsert_fee_tiers"
+      ],
+      "instruction_count": 17,
+      "buyback_relevance": "fee_accounting_support",
+      "buyback_rationale": "Official fee program with get_fees and fee config instructions. Supports accounting and fee routing rather than direct purchase execution.",
+      "source_code_status": "public IDL only",
+      "notes": [
+        "Public fee program documentation focuses on fee calculation and sharing config.",
+        "No public buyback instruction name appears in the fee program IDL."
+      ]
+    },
+    {
+      "program_name": "mayhem",
+      "program_address": "MAyhSmzXzV1pTf7LsNkrNwkWKTo4ougAJ1PPg47MD4e",
+      "official_source": "https://raw.githubusercontent.com/pump-fun/pump-public-docs/main/README.md",
+      "docs_path": "README.md",
+      "idl_present": false,
+      "is_executable": true,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "programdata_address": "4TXghKDfUy26yBMjicyfSfAp995GbLtNvW1d1uPSknub",
+      "upgrade_authority": "7gZufwwAo17y5kg8FMyJy2phgpvv9RSdzWtdXiWHjFr8",
+      "programdata_slot": 405512259,
+      "main_global_pda": null,
+      "related_fee_recipients": [
+        "GesfTA3X2arioaHp8bbKdjG9vJtskViWACZoYvxp4twS",
+        "4budycTjhs9fD6xw62VBducVTNgMgJJ5BgtKq7mAZwn6",
+        "8SBKzEQU4nLSzcwF4a74F2iaUDQyTfjGndn6qUWBnrpR",
+        "4UQeTP1T39KZ9Sfxzo3WR5skgsaP6NZa87BAkuazLEKH",
+        "8sNeir4QsLsJdYpc9RZacohhK1Y5FLU3nC5LXgYB4aa6",
+        "Fh9HmeLNUMVCvejxCtCL2DbYaRyBFVJ5xrWkLnMH6fdk",
+        "463MEnMeGyJekNZFQSTUABBEbLnvMTALbT6ZmsxAbAdq",
+        "6AUH3WEHucYZyC61hqpqYUWVto5qA5hjHuNQ32GNnNxA"
+      ],
+      "key_instructions": [],
+      "instruction_count": 0,
+      "buyback_relevance": "execution_support",
+      "buyback_rationale": "Official mode-specific program disclosed in the main README. Acts as trading/fee-mode infrastructure, not a public buyback-only program.",
+      "source_code_status": "public docs only",
+      "notes": [
+        "Official README discloses a Mayhem program id and Mayhem fee recipients.",
+        "No public IDL or source file for Mayhem exists in pump-public-docs."
+      ]
+    }
+  ]
+}

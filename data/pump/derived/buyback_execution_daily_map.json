@@ -1,0 +1,2229 @@
+{
+  "generated_at_utc": "2026-03-25T04:32:48Z",
+  "official_last_updated": "2026-03-24T23:40:32.168Z",
+  "official_start_date": "2025-07-15",
+  "prep_window_start_date": "2025-07-12",
+  "prep_window_end_date": "2025-07-14",
+  "summary": {
+    "official_total_pump": 109130459843.9483,
+    "explained_total_pump": 2291880833.548578,
+    "unresolved_total_pump": 106838579010.39972,
+    "coverage_ratio": 0.021001
+  },
+  "days": [
+    {
+      "date": "2025-07-15",
+      "official_pump_bought": 2367765120.316843,
+      "official_tx_count": 375,
+      "matched_clusters": [
+        {
+          "cluster_id": "cluster_3vk_legacy",
+          "label": "3VK legacy direct executor",
+          "evidence_level": "confirmed",
+          "direct_buy_pump": 410873914.474417,
+          "forward_to_disclosed_holder_pump": 0.0,
+          "supporting_holder_net_pump": 0.0,
+          "execution_equivalent_pump": 410873914.474417,
+          "key_signatures": [
+            "26sMjoLP1EZFGSByizRqYLWZaviTSgEVqQJX3gRREQUFSRVw6RGeJiU4zyKaJd91bXoRUXQBk9zXCYyJNa5josgU",
+            "283VgecDJaZrMZ5Y4tC387PxkyUUHprrnxE4QNZ7kxvmWjkdyJaFzTN1smEiPwhMdpcs4645egq4WsMwQAUB8YL5",
+            "299avgxXQovx3w79DX6dK6cFNkKw1TCGQazbBY4Cryjw92FDeXyXWXhKnMi7RxcWb8yGNsLggkvkzXsXFxhGVD6n",
+            "29H2ALD8NSveSM7C1ZXi6wRnUt8bMiMigJqfx6gPa3k3GEEH4pDuwBzdWQKY5jLnucFtkyf5uVHgmXNqpEDEcAYz",
+            "2DUAyZqrtKRSc4vbjRfeKDdkSL5BQoHnRGv6VMyLqis1p1dFWRs5cjoy2BQcvYPTpvR9g46jvBj1oa5XEXQfUMFG",
+            "2ER2JTNFv59P5FGfZEg88QHwz92DqkHAP8ah5yMQvRbyi4ns9Lb5sLsqz7wJTxg8GFpQnu1Tp2kkYgm5stMiEvn",
+            "2FAouq9xzn4cRad5NHgwn2PowpvXiVrF9nrMYfYLE6cfbFVML7xpwmho39QJJM2XQspw5uqFWZHKzeerBLyqfoSv",
+            "2RyEafiFwq8iMo38r8prrx9ZmG2regoV8TrEjfUZPj7HL1MreYE5EpoeHPzFn2EZvNqcA5h3WcdVNJ6DFBX2ZaYN",
+            "2UGk3Yj4C3k4WUxfHApDruXHsL72j5tx4XTZggrYpwaLfmURdY84q2hUks98iKCj6zMeW5cGGhS52szKqUkkbFZm",
+            "2UWz8JQt7Xz8obNRrnx9U41XtdirNFBnru5q5yYEhY3kMmZ1SW6NqYSYrjGqUAWdnqaCcrbS3S6CvoHzvA4uQgPV",
+            "33wMYvgfps4PJp74iRBT4zBpxkDV5Gaw2fX2RUGXqEgYwYpGvLavW8MtvdSsj6tEQcgbMFbN4WjaejHbY7ZYoYaL",
+            "39zEUt9ZaXnjRXHMRgYkEZChiXEaejxD9pvLTTsNVNTvjpPgGWD2y7KvS1MxBvAEgqqeaHoRb5LpgHXyGVCBYW5y",
+            "3E6sPnXBodvaBFUqRW2Y8kCxaPxEUNmHQzockBoQ1LTVpgYqufZe2VJKh3uZXD1RsAXXBj3e3YKjLQ5NHP6w2t8S",
+            "3R2y9723tSJdfKx4eA7MykRNxacZZb5fXurkHbLjXvuqV87CfzdG4fdVZYwTgdhVNXxFprtfrN9YSYw8LUzNLqKE",
+            "3UzX1ofkFJpif29YPR46hadT4E8bcSTBWzQhjXbMtqvm7WtSqM1Yjo95LNwKwA5zC9etrzNkrH1zSfhoBzAgxqsC",
+            "3ezytWW5k6gxSzjDnYh6gNAuPDAsfbGykedn3DR9S1SADcVs2pRiWcEubfAYX1YsjgpdAMubX5dXnZfMJyFH3jet",
+            "3guG9rwHG2CcSgzSSms3jQ2GVb5e75yKJmk16VXi68a9wK1igBafGq4i1V4UfcWXLLkFoj58Nv1CfZVW1EAnekxJ",
+            "3iXH7dkpiVD2kpxhLTM16xc5bpz8tTmAP4ZTFATPccLnjoVLosXLznuBYJVoEYoZE6JjzTitowChS36Wpk7oGKZA",
+            "3kbMRK6zMAzG6FVkeGV9kR7Vdgn4A9nH5QXrtnNBwDxA8WfUc26hnFQscGwT219MhsSnZW5z9kFZ4CkZTZ19mTmG",
+            "3km4NwdN4mGrmMYSEFWRqKeJQttZJuMcJmQkA3u2rz4pPe6QSRLEKzCsn1DM1NnTznjCenSLiEUrdeRwUALKQD5S"
+          ]
+        }
+      ],
+      "explained_pump": 410873914.474417,
+      "unresolved_pump": 1956891205.842426
+    },
+    {
+      "date": "2025-07-16",
+      "official_pump_bought": 625574741.537666,
+      "official_tx_count": 63,
+      "matched_clusters": [
+        {
+          "cluster_id": "cluster_3vk_legacy",
+          "label": "3VK legacy direct executor",
+          "evidence_level": "confirmed",
+          "direct_buy_pump": 162544410.966325,
+          "forward_to_disclosed_holder_pump": 0.0,
+          "supporting_holder_net_pump": 0.0,
+          "execution_equivalent_pump": 162544410.966325,
+          "key_signatures": [
+            "2D474MSHbjRg3AR3RKwxCx9qgZibdFgDzVnfpr2P6bGbr2iw28gEHEwGsibLmKjJVDNz17zppTQfiBpwvjUhWvtP",
+            "2EnupinByJaYAZNxDxrSN3rS8waxzzQMmhkfnUe6ohyowBaYGiZMdJtagVrZ41NyMgQas2PGJb2FtZqdtaHK337p",
+            "2nHpJ6pzVKLQiVF93i4zLbKYuDynZzuzEymwnukKkiobzjszHagpvMHfJaZxTRCd9i2YZJSV2NBWmMpo3QsYV9MK",
+            "35Er5Nhhc5GbZm8bKYSgyMYmjJr9EF4kvyWMiLx4VQ4dm3JZTUSLXtAurYiLfA5GuorYgKT2jJBFmZo9Qmzb6rPg",
+            "3EwxktYPtarZKfUJ1tYYGwkpLwtJtJqbc7p446ckZq6r15D38cyAs4DQoZGHWJRP6v68jMATmbLFyKM47ahDYtgj",
+            "3bpddpqX3nsJKkJh18V1mEJBoFWJZaZkoPAJtqkaKKS64gxbahvL3ozeFwvSvDDLRGwTqafzskncs19wdZQtN7s9",
+            "4BA64A1ovaAQiddCRc4yxzYhqZYoTyfTjqD9Hj1vxD9yT6uJWEExnSG4jLb4Yw4RvDeBZygz3rbd61Vpks1ZPoPa",
+            "4R9uDPPRSdmdLaYTCfMqVZ63oZTUKymEh51w2VRqvNXH3XGhVGnU1fZqfmcxdfQFbwAL59kTHExhd226LrBiDwqR",
+            "4WquGEs8A75BYnCJZsnC8ieTM4aBeQqAhNzSLCxCPfcwSpSgzey1rxCYbBk6wkePcrFKiCuCYtTUhydsQKLh4BN2",
+            "4esMNMW2rPoYj6BwGpcFiaLmU7i7EDHpmCgzLRJ2EyfD4HhqPi4bvHBphi5A1xbe4bRpEnxcQMWQzJyqVZNym4r2",
+            "5HAaUjM3qHBv9ysEPUPjwNQxo7nsgFX6BCJVBDW1ib7Zh2YEJKCT7jqC5qzowsDQKXiMfDvP7e8kQctfQXLJtvMg",
+            "5ZqbntPrmZKur5Yj6Ctq831Khng5H3tWfNDWceBLGkNXthF48Uj9gNDhre425wAENzYmRw6DrKpMSxVTPCnYzqCF",
+            "5qysBcmYWV8HkDR6TZYTVsVPvAQRuS3odxYZESndqc5e55njFQWehu6LX4qcvJAUmQJdPn6wDArXR9NVuEXfEFCg",
+            "63YXX5h4y5TqaSPDzyrUyfCW9FbitpTWRYnEv6M9JjPkDUSKXmiuupA3V6AgvyYD67qZJ9DbbrDyKCJWtfhUqwrm",
+            "ETtVePrNtyohT4UrEZ1aMjgeWzUQtE6sirtjNkrTdxi2vprfGCmB36qCCyN82MaTAmocMqjsDV1eJd4Gjdwy4EE",
+            "y6sBx5NB8ejtCS4rYpqK1j4Q2tinbYfegH5A5faiixogQ1b9rbWDgVY12wdNWBGhX3n5eqXSw7t7VupEeJ5Qwhj"
+          ]
+        }
+      ],
+      "explained_pump": 162544410.966325,
+      "unresolved_pump": 463030330.571341
+    },
+    {
+      "date": "2025-07-17",
+      "official_pump_bought": 36502681.03907,
+      "official_tx_count": 3,
+      "matched_clusters": [
+        {
+          "cluster_id": "cluster_3vk_legacy",
+          "label": "3VK legacy direct executor",
+          "evidence_level": "confirmed",
+          "direct_buy_pump": 13008956.900827,
+          "forward_to_disclosed_holder_pump": 0.0,
+          "supporting_holder_net_pump": 0.0,
+          "execution_equivalent_pump": 13008956.900827,
+          "key_signatures": [
+            "5EpJxTRXMbELm92gjLsxxi9tsWJNjUnsquARWANK1AXvbHHzKk63rMps9kyAbBTZp1zE1VCjFHZ8HTjY33pafshB"
+          ]
+        }
+      ],
+      "explained_pump": 13008956.900827,
+      "unresolved_pump": 23493724.138243
+    },
+    {
+      "date": "2025-07-18",
+      "official_pump_bought": 39975813.031157,
+      "official_tx_count": 2,
+      "matched_clusters": [
+        {
+          "cluster_id": "cluster_3vk_legacy",
+          "label": "3VK legacy direct executor",
+          "evidence_level": "confirmed",
+          "direct_buy_pump": 19836799.305761,
+          "forward_to_disclosed_holder_pump": 0.0,
+          "supporting_holder_net_pump": 0.0,
+          "execution_equivalent_pump": 19836799.305761,
+          "key_signatures": [
+            "oqUC8jCjBAL4Y5u9Z7dAtScfufPnxtEp2WCXpKeaRdzARB4GWsLQAJ3WJxfJKkK5AchykUUqG2RVgU567cjQuCc"
+          ]
+        }
+      ],
+      "explained_pump": 19836799.305761,
+      "unresolved_pump": 20139013.725396
+    },
+    {
+      "date": "2025-07-19",
+      "official_pump_bought": 0.0,
+      "official_tx_count": 0,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 0.0
+    },
+    {
+      "date": "2025-07-20",
+      "official_pump_bought": 29351978.378576,
+      "official_tx_count": 31,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 29351978.378576
+    },
+    {
+      "date": "2025-07-21",
+      "official_pump_bought": 0.0,
+      "official_tx_count": 0,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 0.0
+    },
+    {
+      "date": "2025-07-22",
+      "official_pump_bought": 72163248.198474,
+      "official_tx_count": 216,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 72163248.198474
+    },
+    {
+      "date": "2025-07-23",
+      "official_pump_bought": 46129797.516881,
+      "official_tx_count": 122,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 46129797.516881
+    },
+    {
+      "date": "2025-07-24",
+      "official_pump_bought": 41758943.491282,
+      "official_tx_count": 36,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 41758943.491282
+    },
+    {
+      "date": "2025-07-25",
+      "official_pump_bought": 37006613.204352,
+      "official_tx_count": 25,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 37006613.204352
+    },
+    {
+      "date": "2025-07-26",
+      "official_pump_bought": 29574973.157469,
+      "official_tx_count": 20,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 29574973.157469
+    },
+    {
+      "date": "2025-07-27",
+      "official_pump_bought": 22141887.674863,
+      "official_tx_count": 11,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 22141887.674863
+    },
+    {
+      "date": "2025-07-28",
+      "official_pump_bought": 91943731.636143,
+      "official_tx_count": 43,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 91943731.636143
+    },
+    {
+      "date": "2025-07-29",
+      "official_pump_bought": 185712339.322725,
+      "official_tx_count": 99,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 185712339.322725
+    },
+    {
+      "date": "2025-07-30",
+      "official_pump_bought": 114930630.807853,
+      "official_tx_count": 49,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 114930630.807853
+    },
+    {
+      "date": "2025-07-31",
+      "official_pump_bought": 72394926.103574,
+      "official_tx_count": 47,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 72394926.103574
+    },
+    {
+      "date": "2025-08-01",
+      "official_pump_bought": 92561714.668081,
+      "official_tx_count": 123,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 92561714.668081
+    },
+    {
+      "date": "2025-08-02",
+      "official_pump_bought": 72322184.636175,
+      "official_tx_count": 73,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 72322184.636175
+    },
+    {
+      "date": "2025-08-03",
+      "official_pump_bought": 111975347.715304,
+      "official_tx_count": 162,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 111975347.715304
+    },
+    {
+      "date": "2025-08-04",
+      "official_pump_bought": 68702702.282047,
+      "official_tx_count": 91,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 68702702.282047
+    },
+    {
+      "date": "2025-08-05",
+      "official_pump_bought": 99305545.984373,
+      "official_tx_count": 175,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 99305545.984373
+    },
+    {
+      "date": "2025-08-06",
+      "official_pump_bought": 242577501.690983,
+      "official_tx_count": 454,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 242577501.690983
+    },
+    {
+      "date": "2025-08-07",
+      "official_pump_bought": 488174022.986987,
+      "official_tx_count": 804,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 488174022.986987
+    },
+    {
+      "date": "2025-08-08",
+      "official_pump_bought": 427341999.579584,
+      "official_tx_count": 547,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 427341999.579584
+    },
+    {
+      "date": "2025-08-09",
+      "official_pump_bought": 0.0,
+      "official_tx_count": 0,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 0.0
+    },
+    {
+      "date": "2025-08-10",
+      "official_pump_bought": 890342634.345023,
+      "official_tx_count": 1028,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 890342634.345023
+    },
+    {
+      "date": "2025-08-11",
+      "official_pump_bought": 425236481.201649,
+      "official_tx_count": 634,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 425236481.201649
+    },
+    {
+      "date": "2025-08-12",
+      "official_pump_bought": 557019659.488989,
+      "official_tx_count": 774,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 557019659.488989
+    },
+    {
+      "date": "2025-08-13",
+      "official_pump_bought": 521255474.928494,
+      "official_tx_count": 860,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 521255474.928494
+    },
+    {
+      "date": "2025-08-14",
+      "official_pump_bought": 665848522.625136,
+      "official_tx_count": 387,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 665848522.625136
+    },
+    {
+      "date": "2025-08-15",
+      "official_pump_bought": 530359685.48253,
+      "official_tx_count": 579,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 530359685.48253
+    },
+    {
+      "date": "2025-08-16",
+      "official_pump_bought": 477635753.347041,
+      "official_tx_count": 646,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 477635753.347041
+    },
+    {
+      "date": "2025-08-17",
+      "official_pump_bought": 444308026.502071,
+      "official_tx_count": 670,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 444308026.502071
+    },
+    {
+      "date": "2025-08-18",
+      "official_pump_bought": 451335099.378969,
+      "official_tx_count": 522,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 451335099.378969
+    },
+    {
+      "date": "2025-08-19",
+      "official_pump_bought": 631339562.890248,
+      "official_tx_count": 605,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 631339562.890248
+    },
+    {
+      "date": "2025-08-20",
+      "official_pump_bought": 458559560.299443,
+      "official_tx_count": 298,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 458559560.299443
+    },
+    {
+      "date": "2025-08-21",
+      "official_pump_bought": 530206083.845036,
+      "official_tx_count": 289,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 530206083.845036
+    },
+    {
+      "date": "2025-08-22",
+      "official_pump_bought": 381830376.854112,
+      "official_tx_count": 598,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 381830376.854112
+    },
+    {
+      "date": "2025-08-23",
+      "official_pump_bought": 670930483.844941,
+      "official_tx_count": 830,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 670930483.844941
+    },
+    {
+      "date": "2025-08-24",
+      "official_pump_bought": 508694031.903091,
+      "official_tx_count": 2328,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 508694031.903091
+    },
+    {
+      "date": "2025-08-25",
+      "official_pump_bought": 473801671.216807,
+      "official_tx_count": 1986,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 473801671.216807
+    },
+    {
+      "date": "2025-08-26",
+      "official_pump_bought": 591218890.944135,
+      "official_tx_count": 1354,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 591218890.944135
+    },
+    {
+      "date": "2025-08-27",
+      "official_pump_bought": 667057161.523014,
+      "official_tx_count": 1261,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 667057161.523014
+    },
+    {
+      "date": "2025-08-28",
+      "official_pump_bought": 752083676.651289,
+      "official_tx_count": 1022,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 752083676.651289
+    },
+    {
+      "date": "2025-08-29",
+      "official_pump_bought": 631918567.913748,
+      "official_tx_count": 1231,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 631918567.913748
+    },
+    {
+      "date": "2025-08-30",
+      "official_pump_bought": 471106783.999667,
+      "official_tx_count": 874,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 471106783.999667
+    },
+    {
+      "date": "2025-08-31",
+      "official_pump_bought": 392693460.158039,
+      "official_tx_count": 1158,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 392693460.158039
+    },
+    {
+      "date": "2025-09-01",
+      "official_pump_bought": 384831245.419219,
+      "official_tx_count": 1037,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 384831245.419219
+    },
+    {
+      "date": "2025-09-02",
+      "official_pump_bought": 401030814.740571,
+      "official_tx_count": 495,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 401030814.740571
+    },
+    {
+      "date": "2025-09-03",
+      "official_pump_bought": 481051050.968565,
+      "official_tx_count": 328,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 481051050.968565
+    },
+    {
+      "date": "2025-09-04",
+      "official_pump_bought": 567622257.100259,
+      "official_tx_count": 1292,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 567622257.100259
+    },
+    {
+      "date": "2025-09-05",
+      "official_pump_bought": 458699116.864142,
+      "official_tx_count": 926,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 458699116.864142
+    },
+    {
+      "date": "2025-09-06",
+      "official_pump_bought": 412507838.704343,
+      "official_tx_count": 918,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 412507838.704343
+    },
+    {
+      "date": "2025-09-07",
+      "official_pump_bought": 335013203.077863,
+      "official_tx_count": 886,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 335013203.077863
+    },
+    {
+      "date": "2025-09-08",
+      "official_pump_bought": 264302568.15317,
+      "official_tx_count": 519,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 264302568.15317
+    },
+    {
+      "date": "2025-09-09",
+      "official_pump_bought": 538419464.949993,
+      "official_tx_count": 1374,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 538419464.949993
+    },
+    {
+      "date": "2025-09-10",
+      "official_pump_bought": 394482287.269242,
+      "official_tx_count": 1464,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 394482287.269242
+    },
+    {
+      "date": "2025-09-11",
+      "official_pump_bought": 463097667.107824,
+      "official_tx_count": 1468,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 463097667.107824
+    },
+    {
+      "date": "2025-09-12",
+      "official_pump_bought": 373209961.236418,
+      "official_tx_count": 1796,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 373209961.236418
+    },
+    {
+      "date": "2025-09-13",
+      "official_pump_bought": 349978871.648496,
+      "official_tx_count": 1626,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 349978871.648496
+    },
+    {
+      "date": "2025-09-14",
+      "official_pump_bought": 253755565.882218,
+      "official_tx_count": 1604,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 253755565.882218
+    },
+    {
+      "date": "2025-09-15",
+      "official_pump_bought": 368680803.408097,
+      "official_tx_count": 1907,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 368680803.408097
+    },
+    {
+      "date": "2025-09-16",
+      "official_pump_bought": 405894469.822745,
+      "official_tx_count": 1933,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 405894469.822745
+    },
+    {
+      "date": "2025-09-17",
+      "official_pump_bought": 366670732.109204,
+      "official_tx_count": 1480,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 366670732.109204
+    },
+    {
+      "date": "2025-09-18",
+      "official_pump_bought": 287238708.957334,
+      "official_tx_count": 1072,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 287238708.957334
+    },
+    {
+      "date": "2025-09-19",
+      "official_pump_bought": 244165702.781909,
+      "official_tx_count": 934,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 244165702.781909
+    },
+    {
+      "date": "2025-09-20",
+      "official_pump_bought": 278518571.249444,
+      "official_tx_count": 1006,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 278518571.249444
+    },
+    {
+      "date": "2025-09-21",
+      "official_pump_bought": 203090286.778525,
+      "official_tx_count": 861,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 203090286.778525
+    },
+    {
+      "date": "2025-09-22",
+      "official_pump_bought": 202972403.371993,
+      "official_tx_count": 571,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 202972403.371993
+    },
+    {
+      "date": "2025-09-23",
+      "official_pump_bought": 229367606.345365,
+      "official_tx_count": 1103,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 229367606.345365
+    },
+    {
+      "date": "2025-09-24",
+      "official_pump_bought": 220008800.101261,
+      "official_tx_count": 615,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 220008800.101261
+    },
+    {
+      "date": "2025-09-25",
+      "official_pump_bought": 214996985.746454,
+      "official_tx_count": 1019,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 214996985.746454
+    },
+    {
+      "date": "2025-09-26",
+      "official_pump_bought": 217238719.305288,
+      "official_tx_count": 1206,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 217238719.305288
+    },
+    {
+      "date": "2025-09-27",
+      "official_pump_bought": 224297719.314191,
+      "official_tx_count": 1386,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 224297719.314191
+    },
+    {
+      "date": "2025-09-28",
+      "official_pump_bought": 175354180.919142,
+      "official_tx_count": 534,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 175354180.919142
+    },
+    {
+      "date": "2025-09-29",
+      "official_pump_bought": 168683388.885759,
+      "official_tx_count": 1242,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 168683388.885759
+    },
+    {
+      "date": "2025-09-30",
+      "official_pump_bought": 274739152.447719,
+      "official_tx_count": 1191,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 274739152.447719
+    },
+    {
+      "date": "2025-10-01",
+      "official_pump_bought": 259826574.175679,
+      "official_tx_count": 872,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 259826574.175679
+    },
+    {
+      "date": "2025-10-02",
+      "official_pump_bought": 270082515.600055,
+      "official_tx_count": 1286,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 270082515.600055
+    },
+    {
+      "date": "2025-10-03",
+      "official_pump_bought": 239682326.705588,
+      "official_tx_count": 907,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 239682326.705588
+    },
+    {
+      "date": "2025-10-04",
+      "official_pump_bought": 243663612.577601,
+      "official_tx_count": 1308,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 243663612.577601
+    },
+    {
+      "date": "2025-10-05",
+      "official_pump_bought": 177684673.539333,
+      "official_tx_count": 1467,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 177684673.539333
+    },
+    {
+      "date": "2025-10-06",
+      "official_pump_bought": 204537723.909004,
+      "official_tx_count": 1239,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 204537723.909004
+    },
+    {
+      "date": "2025-10-07",
+      "official_pump_bought": 257977295.363385,
+      "official_tx_count": 1278,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 257977295.363385
+    },
+    {
+      "date": "2025-10-08",
+      "official_pump_bought": 184652163.388336,
+      "official_tx_count": 807,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 184652163.388336
+    },
+    {
+      "date": "2025-10-09",
+      "official_pump_bought": 139531016.693607,
+      "official_tx_count": 802,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 139531016.693607
+    },
+    {
+      "date": "2025-10-10",
+      "official_pump_bought": 187903334.196966,
+      "official_tx_count": 1949,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 187903334.196966
+    },
+    {
+      "date": "2025-10-11",
+      "official_pump_bought": 210304950.299264,
+      "official_tx_count": 1579,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 210304950.299264
+    },
+    {
+      "date": "2025-10-12",
+      "official_pump_bought": 188574786.729004,
+      "official_tx_count": 1380,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 188574786.729004
+    },
+    {
+      "date": "2025-10-13",
+      "official_pump_bought": 179394901.097524,
+      "official_tx_count": 1164,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 179394901.097524
+    },
+    {
+      "date": "2025-10-14",
+      "official_pump_bought": 231295357.413488,
+      "official_tx_count": 1821,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 231295357.413488
+    },
+    {
+      "date": "2025-10-15",
+      "official_pump_bought": 290219692.830302,
+      "official_tx_count": 1319,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 290219692.830302
+    },
+    {
+      "date": "2025-10-16",
+      "official_pump_bought": 279880627.230827,
+      "official_tx_count": 1467,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 279880627.230827
+    },
+    {
+      "date": "2025-10-17",
+      "official_pump_bought": 334569174.045517,
+      "official_tx_count": 1689,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 334569174.045517
+    },
+    {
+      "date": "2025-10-18",
+      "official_pump_bought": 271350431.358111,
+      "official_tx_count": 1410,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 271350431.358111
+    },
+    {
+      "date": "2025-10-19",
+      "official_pump_bought": 267620066.334596,
+      "official_tx_count": 1287,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 267620066.334596
+    },
+    {
+      "date": "2025-10-20",
+      "official_pump_bought": 279481416.962473,
+      "official_tx_count": 820,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 279481416.962473
+    },
+    {
+      "date": "2025-10-21",
+      "official_pump_bought": 333632889.122751,
+      "official_tx_count": 1199,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 333632889.122751
+    },
+    {
+      "date": "2025-10-22",
+      "official_pump_bought": 343291305.922163,
+      "official_tx_count": 933,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 343291305.922163
+    },
+    {
+      "date": "2025-10-23",
+      "official_pump_bought": 320050515.362841,
+      "official_tx_count": 1156,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 320050515.362841
+    },
+    {
+      "date": "2025-10-24",
+      "official_pump_bought": 322333990.402149,
+      "official_tx_count": 1690,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 322333990.402149
+    },
+    {
+      "date": "2025-10-25",
+      "official_pump_bought": 282118630.011502,
+      "official_tx_count": 1811,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 282118630.011502
+    },
+    {
+      "date": "2025-10-26",
+      "official_pump_bought": 216599344.476848,
+      "official_tx_count": 1229,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 216599344.476848
+    },
+    {
+      "date": "2025-10-27",
+      "official_pump_bought": 219536710.530511,
+      "official_tx_count": 1350,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 219536710.530511
+    },
+    {
+      "date": "2025-10-28",
+      "official_pump_bought": 285229762.194647,
+      "official_tx_count": 69,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 285229762.194647
+    },
+    {
+      "date": "2025-10-29",
+      "official_pump_bought": 289951648.759338,
+      "official_tx_count": 967,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 289951648.759338
+    },
+    {
+      "date": "2025-10-30",
+      "official_pump_bought": 292979484.521393,
+      "official_tx_count": 1468,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 292979484.521393
+    },
+    {
+      "date": "2025-10-31",
+      "official_pump_bought": 343298934.625647,
+      "official_tx_count": 1533,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 343298934.625647
+    },
+    {
+      "date": "2025-11-01",
+      "official_pump_bought": 303941091.479453,
+      "official_tx_count": 1557,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 303941091.479453
+    },
+    {
+      "date": "2025-11-02",
+      "official_pump_bought": 310300605.88406,
+      "official_tx_count": 1289,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 310300605.88406
+    },
+    {
+      "date": "2025-11-03",
+      "official_pump_bought": 298485413.170444,
+      "official_tx_count": 1118,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 298485413.170444
+    },
+    {
+      "date": "2025-11-04",
+      "official_pump_bought": 337320065.382341,
+      "official_tx_count": 1790,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 337320065.382341
+    },
+    {
+      "date": "2025-11-05",
+      "official_pump_bought": 318354834.371565,
+      "official_tx_count": 1545,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 318354834.371565
+    },
+    {
+      "date": "2025-11-06",
+      "official_pump_bought": 329445043.367253,
+      "official_tx_count": 997,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 329445043.367253
+    },
+    {
+      "date": "2025-11-07",
+      "official_pump_bought": 311328225.285829,
+      "official_tx_count": 1249,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 311328225.285829
+    },
+    {
+      "date": "2025-11-08",
+      "official_pump_bought": 335127073.562308,
+      "official_tx_count": 1378,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 335127073.562308
+    },
+    {
+      "date": "2025-11-09",
+      "official_pump_bought": 298434700.436892,
+      "official_tx_count": 1715,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 298434700.436892
+    },
+    {
+      "date": "2025-11-10",
+      "official_pump_bought": 254328640.117656,
+      "official_tx_count": 1493,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 254328640.117656
+    },
+    {
+      "date": "2025-11-11",
+      "official_pump_bought": 339316974.619649,
+      "official_tx_count": 1228,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 339316974.619649
+    },
+    {
+      "date": "2025-11-12",
+      "official_pump_bought": 341355031.029614,
+      "official_tx_count": 35,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 341355031.029614
+    },
+    {
+      "date": "2025-11-13",
+      "official_pump_bought": 334056083.219997,
+      "official_tx_count": 43,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 334056083.219997
+    },
+    {
+      "date": "2025-11-14",
+      "official_pump_bought": 303829074.528118,
+      "official_tx_count": 15,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 303829074.528118
+    },
+    {
+      "date": "2025-11-15",
+      "official_pump_bought": 316942921.522559,
+      "official_tx_count": 21,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 316942921.522559
+    },
+    {
+      "date": "2025-11-16",
+      "official_pump_bought": 270572154.368252,
+      "official_tx_count": 12,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 270572154.368252
+    },
+    {
+      "date": "2025-11-17",
+      "official_pump_bought": 302084157.74,
+      "official_tx_count": 0,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 302084157.74
+    },
+    {
+      "date": "2025-11-18",
+      "official_pump_bought": 332746631.24,
+      "official_tx_count": 1059,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 332746631.24
+    },
+    {
+      "date": "2025-11-19",
+      "official_pump_bought": 354926130.637374,
+      "official_tx_count": 1172,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 354926130.637374
+    },
+    {
+      "date": "2025-11-20",
+      "official_pump_bought": 382689900.297331,
+      "official_tx_count": 1392,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 382689900.297331
+    },
+    {
+      "date": "2025-11-21",
+      "official_pump_bought": 339039595.926397,
+      "official_tx_count": 1496,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 339039595.926397
+    },
+    {
+      "date": "2025-11-22",
+      "official_pump_bought": 328184492.451135,
+      "official_tx_count": 921,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 328184492.451135
+    },
+    {
+      "date": "2025-11-23",
+      "official_pump_bought": 325391113.421832,
+      "official_tx_count": 1125,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 325391113.421832
+    },
+    {
+      "date": "2025-11-24",
+      "official_pump_bought": 263270031.800238,
+      "official_tx_count": 909,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 263270031.800238
+    },
+    {
+      "date": "2025-11-25",
+      "official_pump_bought": 306106321.029537,
+      "official_tx_count": 1140,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 306106321.029537
+    },
+    {
+      "date": "2025-11-26",
+      "official_pump_bought": 337084371.538562,
+      "official_tx_count": 1174,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 337084371.538562
+    },
+    {
+      "date": "2025-11-27",
+      "official_pump_bought": 418901340.505342,
+      "official_tx_count": 1546,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 418901340.505342
+    },
+    {
+      "date": "2025-11-28",
+      "official_pump_bought": 361335804.60396,
+      "official_tx_count": 1310,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 361335804.60396
+    },
+    {
+      "date": "2025-11-29",
+      "official_pump_bought": 410006076.941039,
+      "official_tx_count": 1486,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 410006076.941039
+    },
+    {
+      "date": "2025-11-30",
+      "official_pump_bought": 355069303.859881,
+      "official_tx_count": 1105,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 355069303.859881
+    },
+    {
+      "date": "2025-12-01",
+      "official_pump_bought": 354424765.738583,
+      "official_tx_count": 1212,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 354424765.738583
+    },
+    {
+      "date": "2025-12-02",
+      "official_pump_bought": 390191038.948637,
+      "official_tx_count": 1578,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 390191038.948637
+    },
+    {
+      "date": "2025-12-03",
+      "official_pump_bought": 436282785.467149,
+      "official_tx_count": 1876,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 436282785.467149
+    },
+    {
+      "date": "2025-12-04",
+      "official_pump_bought": 397929382.468695,
+      "official_tx_count": 1615,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 397929382.468695
+    },
+    {
+      "date": "2025-12-05",
+      "official_pump_bought": 439839781.029616,
+      "official_tx_count": 1470,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 439839781.029616
+    },
+    {
+      "date": "2025-12-06",
+      "official_pump_bought": 403486252.905582,
+      "official_tx_count": 1325,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 403486252.905582
+    },
+    {
+      "date": "2025-12-07",
+      "official_pump_bought": 350742644.680051,
+      "official_tx_count": 1471,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 350742644.680051
+    },
+    {
+      "date": "2025-12-08",
+      "official_pump_bought": 287631630.654681,
+      "official_tx_count": 892,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 287631630.654681
+    },
+    {
+      "date": "2025-12-09",
+      "official_pump_bought": 404616264.056185,
+      "official_tx_count": 1402,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 404616264.056185
+    },
+    {
+      "date": "2025-12-10",
+      "official_pump_bought": 401467837.45807,
+      "official_tx_count": 1306,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 401467837.45807
+    },
+    {
+      "date": "2025-12-11",
+      "official_pump_bought": 394906917.887086,
+      "official_tx_count": 1538,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 394906917.887086
+    },
+    {
+      "date": "2025-12-12",
+      "official_pump_bought": 436923777.419462,
+      "official_tx_count": 1033,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 436923777.419462
+    },
+    {
+      "date": "2025-12-13",
+      "official_pump_bought": 389614289.353821,
+      "official_tx_count": 1264,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 389614289.353821
+    },
+    {
+      "date": "2025-12-14",
+      "official_pump_bought": 311773230.782559,
+      "official_tx_count": 834,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 311773230.782559
+    },
+    {
+      "date": "2025-12-15",
+      "official_pump_bought": 329320723.53935,
+      "official_tx_count": 1231,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 329320723.53935
+    },
+    {
+      "date": "2025-12-16",
+      "official_pump_bought": 377157346.35491,
+      "official_tx_count": 1027,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 377157346.35491
+    },
+    {
+      "date": "2025-12-17",
+      "official_pump_bought": 422851389.141626,
+      "official_tx_count": 1275,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 422851389.141626
+    },
+    {
+      "date": "2025-12-18",
+      "official_pump_bought": 452116998.277024,
+      "official_tx_count": 1156,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 452116998.277024
+    },
+    {
+      "date": "2025-12-19",
+      "official_pump_bought": 452540973.579526,
+      "official_tx_count": 1037,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 452540973.579526
+    },
+    {
+      "date": "2025-12-20",
+      "official_pump_bought": 468035021.038838,
+      "official_tx_count": 1423,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 468035021.038838
+    },
+    {
+      "date": "2025-12-21",
+      "official_pump_bought": 449736429.756155,
+      "official_tx_count": 1265,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 449736429.756155
+    },
+    {
+      "date": "2025-12-22",
+      "official_pump_bought": 466921003.194548,
+      "official_tx_count": 1155,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 466921003.194548
+    },
+    {
+      "date": "2025-12-23",
+      "official_pump_bought": 694924379.646464,
+      "official_tx_count": 1489,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 694924379.646464
+    },
+    {
+      "date": "2025-12-24",
+      "official_pump_bought": 626070651.413601,
+      "official_tx_count": 1633,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 626070651.413601
+    },
+    {
+      "date": "2025-12-25",
+      "official_pump_bought": 552858418.929136,
+      "official_tx_count": 1333,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 552858418.929136
+    },
+    {
+      "date": "2025-12-26",
+      "official_pump_bought": 531003715.508347,
+      "official_tx_count": 1426,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 531003715.508347
+    },
+    {
+      "date": "2025-12-27",
+      "official_pump_bought": 530234560.205763,
+      "official_tx_count": 1447,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 530234560.205763
+    },
+    {
+      "date": "2025-12-28",
+      "official_pump_bought": 530095111.482827,
+      "official_tx_count": 1285,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 530095111.482827
+    },
+    {
+      "date": "2025-12-29",
+      "official_pump_bought": 610307857.931631,
+      "official_tx_count": 669,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 610307857.931631
+    },
+    {
+      "date": "2025-12-30",
+      "official_pump_bought": 672733897.213089,
+      "official_tx_count": 1379,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 672733897.213089
+    },
+    {
+      "date": "2025-12-31",
+      "official_pump_bought": 638381229.831702,
+      "official_tx_count": 861,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 638381229.831702
+    },
+    {
+      "date": "2026-01-01",
+      "official_pump_bought": 497445984.83209,
+      "official_tx_count": 844,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 497445984.83209
+    },
+    {
+      "date": "2026-01-02",
+      "official_pump_bought": 463499218.920361,
+      "official_tx_count": 1055,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 463499218.920361
+    },
+    {
+      "date": "2026-01-03",
+      "official_pump_bought": 474493798.170422,
+      "official_tx_count": 1546,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 474493798.170422
+    },
+    {
+      "date": "2026-01-04",
+      "official_pump_bought": 375724560.00999,
+      "official_tx_count": 780,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 375724560.00999
+    },
+    {
+      "date": "2026-01-05",
+      "official_pump_bought": 371861639.886899,
+      "official_tx_count": 506,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 371861639.886899
+    },
+    {
+      "date": "2026-01-06",
+      "official_pump_bought": 528200236.251499,
+      "official_tx_count": 1434,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 528200236.251499
+    },
+    {
+      "date": "2026-01-07",
+      "official_pump_bought": 663395477.488953,
+      "official_tx_count": 1048,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 663395477.488953
+    },
+    {
+      "date": "2026-01-08",
+      "official_pump_bought": 654948930.975159,
+      "official_tx_count": 1782,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 654948930.975159
+    },
+    {
+      "date": "2026-01-09",
+      "official_pump_bought": 646830590.339627,
+      "official_tx_count": 1928,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 646830590.339627
+    },
+    {
+      "date": "2026-01-10",
+      "official_pump_bought": 578681058.032969,
+      "official_tx_count": 1731,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 578681058.032969
+    },
+    {
+      "date": "2026-01-11",
+      "official_pump_bought": 646866549.247956,
+      "official_tx_count": 1314,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 646866549.247956
+    },
+    {
+      "date": "2026-01-12",
+      "official_pump_bought": 588015539.052289,
+      "official_tx_count": 869,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 588015539.052289
+    },
+    {
+      "date": "2026-01-13",
+      "official_pump_bought": 666257869.934051,
+      "official_tx_count": 1648,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 666257869.934051
+    },
+    {
+      "date": "2026-01-14",
+      "official_pump_bought": 637350286.545716,
+      "official_tx_count": 1635,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 637350286.545716
+    },
+    {
+      "date": "2026-01-15",
+      "official_pump_bought": 628769583.690889,
+      "official_tx_count": 1289,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 628769583.690889
+    },
+    {
+      "date": "2026-01-16",
+      "official_pump_bought": 658531050.027867,
+      "official_tx_count": 1782,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 658531050.027867
+    },
+    {
+      "date": "2026-01-17",
+      "official_pump_bought": 431277630.108718,
+      "official_tx_count": 937,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 431277630.108718
+    },
+    {
+      "date": "2026-01-18",
+      "official_pump_bought": 407627982.559959,
+      "official_tx_count": 871,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 407627982.559959
+    },
+    {
+      "date": "2026-01-19",
+      "official_pump_bought": 455231229.709313,
+      "official_tx_count": 1241,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 455231229.709313
+    },
+    {
+      "date": "2026-01-20",
+      "official_pump_bought": 497032577.845105,
+      "official_tx_count": 1218,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 497032577.845105
+    },
+    {
+      "date": "2026-01-21",
+      "official_pump_bought": 461115295.077221,
+      "official_tx_count": 1059,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 461115295.077221
+    },
+    {
+      "date": "2026-01-22",
+      "official_pump_bought": 447099650.473668,
+      "official_tx_count": 1016,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 447099650.473668
+    },
+    {
+      "date": "2026-01-23",
+      "official_pump_bought": 459537012.718308,
+      "official_tx_count": 1343,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 459537012.718308
+    },
+    {
+      "date": "2026-01-24",
+      "official_pump_bought": 473009076.283504,
+      "official_tx_count": 652,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 473009076.283504
+    },
+    {
+      "date": "2026-01-25",
+      "official_pump_bought": 668268708.694881,
+      "official_tx_count": 1723,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 668268708.694881
+    },
+    {
+      "date": "2026-01-26",
+      "official_pump_bought": 780073450.153206,
+      "official_tx_count": 2023,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 780073450.153206
+    },
+    {
+      "date": "2026-01-27",
+      "official_pump_bought": 756529623.885892,
+      "official_tx_count": 1072,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 756529623.885892
+    },
+    {
+      "date": "2026-01-28",
+      "official_pump_bought": 695217015.426549,
+      "official_tx_count": 1442,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 695217015.426549
+    },
+    {
+      "date": "2026-01-29",
+      "official_pump_bought": 658661389.312303,
+      "official_tx_count": 1555,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 658661389.312303
+    },
+    {
+      "date": "2026-01-30",
+      "official_pump_bought": 666705706.026347,
+      "official_tx_count": 1203,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 666705706.026347
+    },
+    {
+      "date": "2026-01-31",
+      "official_pump_bought": 790400058.284616,
+      "official_tx_count": 1706,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 790400058.284616
+    },
+    {
+      "date": "2026-02-01",
+      "official_pump_bought": 571422726.629956,
+      "official_tx_count": 1477,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 571422726.629956
+    },
+    {
+      "date": "2026-02-02",
+      "official_pump_bought": 547328428.295018,
+      "official_tx_count": 988,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 547328428.295018
+    },
+    {
+      "date": "2026-02-03",
+      "official_pump_bought": 590074993.359728,
+      "official_tx_count": 1415,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 590074993.359728
+    },
+    {
+      "date": "2026-02-04",
+      "official_pump_bought": 616331179.020582,
+      "official_tx_count": 1150,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 616331179.020582
+    },
+    {
+      "date": "2026-02-05",
+      "official_pump_bought": 596793409.345436,
+      "official_tx_count": 424,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 596793409.345436
+    },
+    {
+      "date": "2026-02-06",
+      "official_pump_bought": 599059570.637566,
+      "official_tx_count": 1411,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 599059570.637566
+    },
+    {
+      "date": "2026-02-07",
+      "official_pump_bought": 632855725.164388,
+      "official_tx_count": 1034,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 632855725.164388
+    },
+    {
+      "date": "2026-02-08",
+      "official_pump_bought": 582306434.329234,
+      "official_tx_count": 1109,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 582306434.329234
+    },
+    {
+      "date": "2026-02-09",
+      "official_pump_bought": 565965771.301782,
+      "official_tx_count": 1020,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 565965771.301782
+    },
+    {
+      "date": "2026-02-10",
+      "official_pump_bought": 624685813.264131,
+      "official_tx_count": 1279,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 624685813.264131
+    },
+    {
+      "date": "2026-02-11",
+      "official_pump_bought": 664449041.212093,
+      "official_tx_count": 688,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 664449041.212093
+    },
+    {
+      "date": "2026-02-12",
+      "official_pump_bought": 644080297.118516,
+      "official_tx_count": 1300,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 644080297.118516
+    },
+    {
+      "date": "2026-02-13",
+      "official_pump_bought": 620782956.364005,
+      "official_tx_count": 1350,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 620782956.364005
+    },
+    {
+      "date": "2026-02-14",
+      "official_pump_bought": 615440527.457355,
+      "official_tx_count": 688,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 615440527.457355
+    },
+    {
+      "date": "2026-02-15",
+      "official_pump_bought": 496076403.879446,
+      "official_tx_count": 976,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 496076403.879446
+    },
+    {
+      "date": "2026-02-16",
+      "official_pump_bought": 519728058.493518,
+      "official_tx_count": 536,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 519728058.493518
+    },
+    {
+      "date": "2026-02-17",
+      "official_pump_bought": 609533098.894333,
+      "official_tx_count": 1403,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 609533098.894333
+    },
+    {
+      "date": "2026-02-18",
+      "official_pump_bought": 738275405.066099,
+      "official_tx_count": 884,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 738275405.066099
+    },
+    {
+      "date": "2026-02-19",
+      "official_pump_bought": 705752168.969317,
+      "official_tx_count": 1065,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 705752168.969317
+    },
+    {
+      "date": "2026-02-20",
+      "official_pump_bought": 628457878.516448,
+      "official_tx_count": 1065,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 628457878.516448
+    },
+    {
+      "date": "2026-02-21",
+      "official_pump_bought": 683861877.415487,
+      "official_tx_count": 728,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 683861877.415487
+    },
+    {
+      "date": "2026-02-22",
+      "official_pump_bought": 601603734.140459,
+      "official_tx_count": 1006,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 601603734.140459
+    },
+    {
+      "date": "2026-02-23",
+      "official_pump_bought": 644838951.373706,
+      "official_tx_count": 871,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 644838951.373706
+    },
+    {
+      "date": "2026-02-24",
+      "official_pump_bought": 750612311.940871,
+      "official_tx_count": 932,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 750612311.940871
+    },
+    {
+      "date": "2026-02-25",
+      "official_pump_bought": 791751255.213904,
+      "official_tx_count": 956,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 791751255.213904
+    },
+    {
+      "date": "2026-02-26",
+      "official_pump_bought": 835708138.008653,
+      "official_tx_count": 1054,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 835708138.008653
+    },
+    {
+      "date": "2026-02-27",
+      "official_pump_bought": 627131655.958788,
+      "official_tx_count": 734,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 627131655.958788
+    },
+    {
+      "date": "2026-02-28",
+      "official_pump_bought": 735663435.563325,
+      "official_tx_count": 801,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 735663435.563325
+    },
+    {
+      "date": "2026-03-01",
+      "official_pump_bought": 656813466.30108,
+      "official_tx_count": 598,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 656813466.30108
+    },
+    {
+      "date": "2026-03-02",
+      "official_pump_bought": 607982785.430528,
+      "official_tx_count": 1294,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 607982785.430528
+    },
+    {
+      "date": "2026-03-03",
+      "official_pump_bought": 728075086.206276,
+      "official_tx_count": 1312,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 728075086.206276
+    },
+    {
+      "date": "2026-03-04",
+      "official_pump_bought": 652944277.556495,
+      "official_tx_count": 1334,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 652944277.556495
+    },
+    {
+      "date": "2026-03-05",
+      "official_pump_bought": 661150699.875858,
+      "official_tx_count": 1235,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 661150699.875858
+    },
+    {
+      "date": "2026-03-06",
+      "official_pump_bought": 620034353.539906,
+      "official_tx_count": 1306,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 620034353.539906
+    },
+    {
+      "date": "2026-03-07",
+      "official_pump_bought": 746627435.671038,
+      "official_tx_count": 1520,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 746627435.671038
+    },
+    {
+      "date": "2026-03-08",
+      "official_pump_bought": 606173078.024727,
+      "official_tx_count": 1307,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 606173078.024727
+    },
+    {
+      "date": "2026-03-09",
+      "official_pump_bought": 552011284.679017,
+      "official_tx_count": 3319,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 552011284.679017
+    },
+    {
+      "date": "2026-03-10",
+      "official_pump_bought": 625228445.560584,
+      "official_tx_count": 1129,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 625228445.560584
+    },
+    {
+      "date": "2026-03-11",
+      "official_pump_bought": 601674704.047984,
+      "official_tx_count": 629,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 601674704.047984
+    },
+    {
+      "date": "2026-03-12",
+      "official_pump_bought": 611606954.521584,
+      "official_tx_count": 1210,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 611606954.521584
+    },
+    {
+      "date": "2026-03-13",
+      "official_pump_bought": 669221760.335599,
+      "official_tx_count": 1310,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 669221760.335599
+    },
+    {
+      "date": "2026-03-14",
+      "official_pump_bought": 633638301.9349,
+      "official_tx_count": 1986,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 633638301.9349
+    },
+    {
+      "date": "2026-03-15",
+      "official_pump_bought": 573861682.988966,
+      "official_tx_count": 1372,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 573861682.988966
+    },
+    {
+      "date": "2026-03-16",
+      "official_pump_bought": 568520655.774274,
+      "official_tx_count": 1078,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 568520655.774274
+    },
+    {
+      "date": "2026-03-17",
+      "official_pump_bought": 694343199.132209,
+      "official_tx_count": 1230,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 694343199.132209
+    },
+    {
+      "date": "2026-03-18",
+      "official_pump_bought": 600578362.855767,
+      "official_tx_count": 1670,
+      "matched_clusters": [
+        {
+          "cluster_id": "cluster_9jhrtcwp",
+          "label": "9jHrTCwp execution cluster",
+          "evidence_level": "probable",
+          "direct_buy_pump": 0.0,
+          "forward_to_disclosed_holder_pump": 557441793.566139,
+          "supporting_holder_net_pump": 557441793.566139,
+          "execution_equivalent_pump": 557441793.566139,
+          "key_signatures": [
+            "121naR7zUhfHWogw93Z53fx8uqSeb9zHHVdXKDxorYiaeUmVyVQiicUqn9nTW9PLajWUz8vFqPUBDfji9FnkzXex",
+            "187VDZciZqfka3tDqCAYQF84CDoFvDy7GtG9XWjubHqBH6yKcW8UYVoH1PkBJi5zQQ8hHeJGWrzDEjjqw4cqFXq",
+            "1AFQuyP9awMaR5hv4B8Z3jaTpj8GAN2pvFKccuC4r4CvHN6ZuuHbyDRkUKFKufxwjkfiW3mJqGqG9MzNKgx9uHC",
+            "1ApfnXsVHuh339RJZPRdcgZycQQbYp1YRancCmRVWFJw2uQq3rc2s6zHw1Whe6aiAoJAd5CiCkEafrmkNbBSHFQ",
+            "1C7Mfg66YgqfdravpU9gFh6AJ5JYwDyRyE5KcMEKwwHM3SQvseVnUHaP2hT8tGfD9UxZSyuniH9pMJSsKKVzZAM",
+            "1Uy6WtfmN8ZFTEwu7RssvykvJa9wUVsPjcDt5i5HnVW4zejzhYBrGB5GCJcGGd47E6RLqbvemwSda4GVUJkjbf6",
+            "1V1JnUFj7s4Z8otY9MkKvHaSwPDu76ygwAkMj3v1of1sHCkmvj32e7PHvmU7uCRLLtyTkshg7YMLYuxR7oeTxMj",
+            "1hSrZuXwD7hWwQpezRm5HbVS8DWw1dRBDqUK7avrmQKdL29JWUXvyHpEPD89jJfFS6twGQ1FjxwWLShgASYoDuA",
+            "214d9vUH1ENAawmiUvFNXbwWJGDiC4yXXBCtfG6MYozSRJVgjWc2zr8bA2dxAmSyZcNKabsari6Pqu7ZTgYJsCa3",
+            "21LS1mgGb56Rr6LtWwxwFuRp3r9jgxoqNN18oizFefhqLwpqoaD6dBSrLU6xVhh6FC4maRxuDDEhSS6rDdxjJrVZ",
+            "21P4Ng5XsNc4NddF1GyoNghJmxZuNeAmLCJbTMna2DDrerFydDEPgZ8E1SvBeqmrLgzoVNBdZ2o3x7wjkgMMxWQg",
+            "21uEAyaDjBviTmpYoxW2EESQnnuk8Yo6ebS7ASMp9A6hJUpRLECBbrncEAAWp7xfifuqXMSKAkupWvbFCRTpBDYR",
+            "223XrB3CPgNY4V53SZjT1uCgTbqvSEm3NpbD6bTqGH9ayBuidwjmBwxGHKNUyQFMgbX2SYxTaF25guAEoSLH5cBS",
+            "22dkPH86S93ebDuSPLckfAcsXRDJo3jARkiYStPixCH1vXwU4S4jqaYQBLw1DugwBvfqt85TQsRPdNYProGo3oY1",
+            "22g6bK9etkR82ka2VgSXmtewxWAvEzk4yZFJiQKgv7BotHyieZRB7wt82nLxAALhMANbWxj4e3HvD26NsWDibW6k",
+            "232ayxKVKNk3JyMJaBsaBU3zobVze3fcLTzyVqsPsUnFh8vM6ETeCqDjqsmMj9dB3rK3H9DrT6RtKUjaW8rZASnH",
+            "23D4dBWU5ePW1trKbG8169Gdt9hYAdtb8bZaMMjpyyXL51hqcauScWFdwya9FBcUHapJQ3qspvHkb4Fri3JQqu1h",
+            "23STuDdMLqZwk3s93NCKp9aQ8ENG8i3oi3T91WASmYnYnyZW4mnREYi7YvtqXDPsWgdz99EU82z8eaairXurrTr8",
+            "23bzh5M5wDNcAfMbxXNcjybJ57LWF4aismxVjNJ4cbxh39bwDgpxhZEfW2CNGkCCxdXDmfKHiHjpJWHpm8Us42ta",
+            "23stNMCDAWcKbQzDWth2AQkmZSYjG3uKVgoSQsBiDEiSLvHSMgPewUDQGWsHCDe4yvszi6Dk17SuacFNbmocCkde"
+          ]
+        }
+      ],
+      "explained_pump": 557441793.566139,
+      "unresolved_pump": 43136569.289628
+    },
+    {
+      "date": "2026-03-19",
+      "official_pump_bought": 581293764.923232,
+      "official_tx_count": 723,
+      "matched_clusters": [
+        {
+          "cluster_id": "cluster_9jhrtcwp",
+          "label": "9jHrTCwp execution cluster",
+          "evidence_level": "probable",
+          "direct_buy_pump": 0.0,
+          "forward_to_disclosed_holder_pump": 581303596.481982,
+          "supporting_holder_net_pump": 581303596.481982,
+          "execution_equivalent_pump": 581303596.481982,
+          "key_signatures": [
+            "1bBf8NCKGHFCXZt8n5tSX7r3fKsZyNa3n54PcUS7NCxupoD1wVoWNChVrDGue2YQur7Ti9DeNYzFzgjJ459hrja",
+            "21ginhsnniwcixEeGhmHJXbQfTiK85okkeFKwdQ1d88TMsc9u1M1LJcp68o4EbZyzbBvKXv28sTqqzxwhScBWqgb",
+            "21hAQ6xaiUAWXFhqc3gL9EZgFfXLkgpiGPhUsuYrKfo3ukcRMfg52tfVrCzdHXpsijDg96Hd2EPkdmRmpHzgh2Ea",
+            "22gx5LcrK57s3ViLkRvNdGamxccMvTKpDyrJSXXFC3JAdjZWWYEydrkwhhXTjDVn9cmH5SNsW3fumXb1wKf8158n",
+            "2358z5kzcXnsW524KEPpywRbzLLgPkQdXchLBCBDTbC6kWppnqbPPzrVT1jHJE3udSH1KpWHii248UgDUqWjyirm",
+            "23D5oskFXjUDUDSHTGY7Z1M9UYhbanwEwKbHoF7S2sdwoyzxQXaNHkgEVQYbcDQ76Uyd9guM8juZNETfWQ7PEWaB",
+            "23KvkPMKzRRPKC3rqz615oQmRzRq6B2FW8eNM6yqBQS62u2LhcARgaJenNcy3VENyBNcr4bja1iRouQiZRBFCMsJ",
+            "23SSRJt2y3RPoZeKPgKnnzjgXFHFZiXoCADZGFUudAmtTqb8j7xUnpuPmFXPyJ2TsQvhfBwJvBBUoGoDNik6y9FC",
+            "23bb8zHCWc1rCnKUa9V4abscu62RmN9jtXEcVrYBzsszG3dAaMyQ3KeGXQ5mUVX2352Jim1vdDPABS3RsDbC9FDn",
+            "242aos4NghrY3zDy7S1GbfQPgDL25M2TYh8j25uH2AMmLoXJkNAJ8S6krQEvAe3ab6Vv8TK5GVoSAvZWCRzpinKa",
+            "24NbGDJcJjTZAykJH417A7vJjbPn4e7tckMUKu8nwZDrKJpiFPQUJurUPShfwsrng6EQXRLhMbnKTYFtMGhVXXjR",
+            "24TyW3eP7hEfk39ztqF11g99fYtgJPLcGf6Qess1d56KVeb19XiYWqau81shQMrXvYLd3BREZBrckUFXCVWTPfut",
+            "24Yd5JzyDDUdLsk5d2YVjhoNcEWfdj17TURmRj2kEUX5kkUaxHVhspxz4PLhby4C1qzk4NbzCjJxVaZncDMtjieX",
+            "24jLrpWuC9LnmG8LAZxpWkdcMkt4VxpzDHdEQYzMXaVVD5sfCDwz9vGV3H6dxYNBRyMyuWge2oNG6xdsySVn4Ksa",
+            "24qYhZWKLTgYN1zsXPhthCvqFBryAx8ToUuxzGBBoTDLqsgRAgWNCotrcbbfG9ee7TeU23erxcACSeshL8f6Dbh8",
+            "25B2eAridekhqaPUUYBNjFdjLWkeSM3MBk6d6am5ccZ44y43ZAhCaQXk4uevsTQao3wzMzEX3tt3keUSvNyKCJgy",
+            "25CXHxTv6jJjDgBBK7xWKdSLRKayntuksva5TsnwVAGtQ2yDyBDjtcF5B8zkuFbYa7VrB2VaxKEaWTXCELeTPWVf",
+            "25GzhS9xm61tvy4va3JSgsuzJEzJjyjnyeU7qsBxBufmWnvCDxzG7JZ64Ze2mBjM6zxQukxLQmDNdgCHPVTRUXJ1",
+            "25mVkFScr49UZt5kMMM227bHird4WnTuvPmkqjJtGdV7G1d168AW4qrMePN4g57wsNzKfSaPbmqNtwNLPic7vDxK",
+            "264g3h336DH2uZUNA89zf5ATASPwMbxrwprX6CLHoHFGcEDXb5FBY6FDFci2WerX723WUHvnBBNY89oEkb15xsmj"
+          ]
+        }
+      ],
+      "explained_pump": 581303596.481982,
+      "unresolved_pump": -9831.55875
+    },
+    {
+      "date": "2026-03-20",
+      "official_pump_bought": 546873433.709723,
+      "official_tx_count": 1805,
+      "matched_clusters": [
+        {
+          "cluster_id": "cluster_9jhrtcwp",
+          "label": "9jHrTCwp execution cluster",
+          "evidence_level": "confirmed",
+          "direct_buy_pump": 61293149.985992,
+          "forward_to_disclosed_holder_pump": 546871361.853127,
+          "supporting_holder_net_pump": 546871361.853127,
+          "execution_equivalent_pump": 546871361.853127,
+          "key_signatures": [
+            "127U2SjyWZzChYeYc6G8WowTqpEjuMDyXmVT71Yvq9TvdUDT2MbwyjinBjK8F65EgFExvcusffh42CUAubLnq6Rm",
+            "19T2s6tJr5qxhqXPc9K7qzAL71P25GC41DFNT5foZGWHms1fTX7ENk7GQn4bFfUjosNPC2z2ZFcuqGoE2dJmZnZ",
+            "1AqBXZKsenjSpRoQc4VynyR5a5c25sn9sg9z1xz5qtaSfw6q3AHvgvtMyTXUwe2MnN6VJ8hRPr7LaqSMCW5tPNJ",
+            "1D33yjQ1LtCZRKc6W7N5r7TDfjYPh5jygxYeTr3tgPdRnR94yEt9cvMok8ZBRS2Nf4a3sTpLetZYHjgVxzjZPT7",
+            "1JDZ9BxnRRaJnwhfZ2PnMTPmhHsjvFXkb5QWZaZF1m8zW4wcTDaDAMsGt3Txpfc9v4jLkLqGvPsP9kJnjFiCDro",
+            "1PXXrfbSDCAG3c4kAPvXBMWkhc46CRmvAe2hMhp82cT2AH3kF6XZM7w1qRsa4nW5jrz3A3AdwgGmz4VFNUHRBbG",
+            "1Xoz7S7X61eNKA1J3LmVNZoss6j9Bqx5ugEDd7qRcrfwBxReavioBfX8fh9Rw8MrtQwQt85dypbcBsboPpFs22a",
+            "1iSoSMt5osoR9pyAMv6r3tE9H6cgE1jgFNZ5HYha1PJdeNnBJjYRhPLPNahHoEVKF3JMzdsWGkFjUWbmJ5xae33",
+            "1j7W5NB1gtoDmVDUcZGpej6q2Kqb7nLTheqKuBsjXwF1yf7bWdqCPZeshHdfhHuac2aXLRuDFXk8KCiiUt3bPQe",
+            "1zEoXXSCwFMRHSZP9p6q2Cr98rJW6KEawg3afN2phwqhQwTrd6b1k3fPPzcuBym2wC1gpzVhsS7d54ZhhwjM5JW",
+            "2189fFfxbgD5xvn48huqy5DHR3krUjpRt1AQRUVnQGx5oaB6C5PC1i4w6Tc2p16QiE5fKgspua96pvWZk1UVGHKz",
+            "218HLcFH1isY2ACaPpb89M33dXbsNBnABrbykTbHCWNo1dGjQHmWUJSmngMzGXDQQ15vgSM6C4PcgSa5im2647Z4",
+            "21CPErNaTeR1iafdpGMrmMxTQaeTwqQws8FWjR7fesZ8i15qR4Jkz3aXKrA5NsH9u6KtMwwCvVuZnKRuzCxLPKrY",
+            "21KexV5nJMRhRP9DqLdqPDn5bvBf6QaTqvieuGvMewVyAdH18965WfbBuCAXF1MKnP5zkSoYymf8XGCTWPPqp6hd",
+            "21MrmX14UPZLaXANKHtYi2g9JoMZ2GPiWNsV5fzDtPGnLsmrh3iiwcY1JMcL1gekYVvyZNUPjvNvtXupp15EkWR2",
+            "21Q5Zgk7G31VDXGKbyueWmgdSjGThmmWiUXQxUjjRJqUJPjb3SrDWLuKsg4Pf4XjQdNUXQw579YKmFEccYyJkz9j",
+            "21Wa2UiFUf9Yo97SoscizngcSYhMhGpHRw3rp8chM2m29nmMCNtD8uxPoP8Yj31bUhkdwtGTFSHU4CBWCEQAjwhc",
+            "21XvnQ7dRpXhARTvsXPpXjdB5Ja6pME14srWtLKitreirhKwmxpbKzM53JfCtCysu3mPUZ4u8M4uWr28A9e6qenk",
+            "21hGHrRPVci8GzueSU2eCC98r8V7TL8szZRK3JsXhhkqT8EFYf58zaabCzgwF94MgKZSqGXRKn5cLHe1nt9u9X1F",
+            "221HerM8jzaibqCrxgUZb1Pkobp7M9VRrFQAVUWDufsnFUSUrm6EMft495RLn11oR8DRwhwpAppBkpGaxVcSbzu1"
+          ]
+        }
+      ],
+      "explained_pump": 546871361.853127,
+      "unresolved_pump": 2071.856596
+    },
+    {
+      "date": "2026-03-21",
+      "official_pump_bought": 514300725.264676,
+      "official_tx_count": 289,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 514300725.264676
+    },
+    {
+      "date": "2026-03-22",
+      "official_pump_bought": 314812882.141145,
+      "official_tx_count": 797,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 314812882.141145
+    },
+    {
+      "date": "2026-03-23",
+      "official_pump_bought": 373104223.937669,
+      "official_tx_count": 748,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 373104223.937669
+    },
+    {
+      "date": "2026-03-24",
+      "official_pump_bought": 547418647.050122,
+      "official_tx_count": 1535,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 547418647.050122
+    },
+    {
+      "date": "2026-03-25",
+      "official_pump_bought": 0.0,
+      "official_tx_count": 0,
+      "matched_clusters": [],
+      "explained_pump": 0,
+      "unresolved_pump": 0.0
+    }
+  ]
+}

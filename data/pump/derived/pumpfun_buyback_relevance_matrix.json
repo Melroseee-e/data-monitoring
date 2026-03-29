@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "generated_at": "2026-03-25T05:49:57+00:00",
+    "scope": "Official Pump.fun program buyback relevance matrix"
+  },
+  "matrix": [
+    {
+      "program_name": "pump",
+      "program_address": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P",
+      "category": "direct_execution_candidate",
+      "evidence": [
+        "official_public_idl",
+        "official_docs",
+        "onchain_executable",
+        "upgradeable_loader_program",
+        "contains_buy_instruction",
+        "contains_fee_instruction",
+        "contains_cashback_instruction"
+      ],
+      "rationale": "Official trading program with buy and buy_exact_sol_in instructions. No public buyback-only instruction exists."
+    },
+    {
+      "program_name": "pump_amm",
+      "program_address": "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA",
+      "category": "direct_execution_candidate",
+      "evidence": [
+        "official_public_idl",
+        "official_docs",
+        "onchain_executable",
+        "upgradeable_loader_program",
+        "contains_buy_instruction",
+        "contains_fee_instruction",
+        "contains_cashback_instruction"
+      ],
+      "rationale": "Official AMM trading program with buy and buy_exact_quote_in instructions. Likely execution layer for treasury purchases after pool migration."
+    },
+    {
+      "program_name": "pump_fees",
+      "program_address": "pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ",
+      "category": "fee_accounting_support",
+      "evidence": [
+        "official_public_idl",
+        "official_docs",
+        "onchain_executable",
+        "upgradeable_loader_program",
+        "contains_fee_instruction"
+      ],
+      "rationale": "Official fee program with get_fees and fee config instructions. Supports accounting and fee routing rather than direct purchase execution."
+    },
+    {
+      "program_name": "mayhem",
+      "program_address": "MAyhSmzXzV1pTf7LsNkrNwkWKTo4ougAJ1PPg47MD4e",
+      "category": "execution_support",
+      "evidence": [
+        "official_docs",
+        "onchain_executable",
+        "upgradeable_loader_program"
+      ],
+      "rationale": "Official mode-specific program disclosed in the main README. Acts as trading/fee-mode infrastructure, not a public buyback-only program."
+    }
+  ]
+}

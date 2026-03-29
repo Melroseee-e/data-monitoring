@@ -1,0 +1,643 @@
+{
+  "metadata": {
+    "generated_at_utc": "2026-03-24T02:29:47Z",
+    "start_date": "2025-07-12",
+    "end_date": "2026-03-24",
+    "batch_window_minutes": 30,
+    "fetch_meta": {
+      "pages_fetched": 18,
+      "oldest_seen_ts": 1752583744,
+      "oldest_seen_date": "2025-07-15",
+      "reached_min_ts": false,
+      "max_pages_hit": false
+    },
+    "rpc_verify_limit": 300,
+    "rpc_verified_signatures": 83,
+    "source_a_summary": {
+      "buy_leg_source_counts": {
+        "PUMP_AMM": 59,
+        "OKX": 10
+      },
+      "buy_leg_type_counts": {
+        "SWAP": 69
+      },
+      "buy_leg_monthly_counts": {
+        "2025-07": 69
+      }
+    },
+    "sol_price_source": "Binance SOLUSDT 1d close",
+    "pump_price_source": "pump_behavior_chart_data.json::price.candles.close",
+    "addresses": {
+      "buyback_wallet": "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+      "buyback_token_account": "Cz2xubgPSvqGqdxCL5ri4y9FTtBDLJNXQhhj2muw8kbt",
+      "treasury_wallet": "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm",
+      "treasury_token_account": "HdtUyEC7TeLGrA7ddRRJWM6nUYk5UZsL9pJuWnXAFQ32",
+      "staking_distributor": "99mRw3EzdJZWEUjgp1nrU4WeHsukUBjbh7gYE7pm4F3c"
+    }
+  },
+  "source_a_buy_leg_count": 69,
+  "source_a_transfer_leg_count": 14,
+  "source_b_rpc_checked": 83,
+  "source_c_milestones": [
+    {
+      "date": "2025-07-16",
+      "event": "First buyback transaction",
+      "cumulative_usd": 0,
+      "notes": "4 days after TGE"
+    },
+    {
+      "date": "2025-07-25",
+      "event": "$19.6M in first 9 days",
+      "cumulative_usd": 19600000,
+      "source": "Reddit CryptoCurrency"
+    },
+    {
+      "date": "2025-08-13",
+      "event": "$43.4M spent, 7.4B PUMP removed",
+      "cumulative_usd": 43400000,
+      "pump_tokens_B": 7.4,
+      "source": "AInvest Aug 2025"
+    },
+    {
+      "date": "2025-12-11",
+      "event": "$205M+ cumulative (highest among Solana protocols)",
+      "cumulative_usd": 205000000,
+      "source": "Yahoo Finance Dec 2025"
+    },
+    {
+      "date": "2026-03-03",
+      "event": "$311.45M cumulative (27.1% circulating)",
+      "cumulative_usd": 311450294,
+      "supply_offset_pct": 27.1,
+      "source": "CoinLive / ChainCatcher"
+    },
+    {
+      "date": "2026-03-09",
+      "event": "$320.1M cumulative, circulating reduced 28.35%",
+      "cumulative_usd": 320100000,
+      "source": "Phemex Mar 9 2026"
+    },
+    {
+      "date": "2026-03-17",
+      "event": "$328M cumulative (29.52% circulating)",
+      "cumulative_usd": 328000000,
+      "supply_offset_pct": 29.52,
+      "source": "Phemex / CryptoRank Mar 17 2026"
+    }
+  ],
+  "milestone_mapping": [
+    {
+      "milestone_date": "2025-07-16",
+      "milestone_event": "First buyback transaction",
+      "milestone_cumulative_usd": 0,
+      "same_day_buy_batch_count": 0,
+      "same_day_buy_pump_amount": 0,
+      "same_day_transfer_batch_count": 1,
+      "same_day_transfer_pump_amount": 712882976.781477,
+      "same_day_buy_batch_ids": [],
+      "same_day_transfer_batch_ids": [
+        "transfer_0006"
+      ]
+    },
+    {
+      "milestone_date": "2025-07-25",
+      "milestone_event": "$19.6M in first 9 days",
+      "milestone_cumulative_usd": 19600000,
+      "same_day_buy_batch_count": 0,
+      "same_day_buy_pump_amount": 0,
+      "same_day_transfer_batch_count": 0,
+      "same_day_transfer_pump_amount": 0,
+      "same_day_buy_batch_ids": [],
+      "same_day_transfer_batch_ids": []
+    },
+    {
+      "milestone_date": "2025-08-13",
+      "milestone_event": "$43.4M spent, 7.4B PUMP removed",
+      "milestone_cumulative_usd": 43400000,
+      "same_day_buy_batch_count": 0,
+      "same_day_buy_pump_amount": 0,
+      "same_day_transfer_batch_count": 0,
+      "same_day_transfer_pump_amount": 0,
+      "same_day_buy_batch_ids": [],
+      "same_day_transfer_batch_ids": []
+    },
+    {
+      "milestone_date": "2025-12-11",
+      "milestone_event": "$205M+ cumulative (highest among Solana protocols)",
+      "milestone_cumulative_usd": 205000000,
+      "same_day_buy_batch_count": 0,
+      "same_day_buy_pump_amount": 0,
+      "same_day_transfer_batch_count": 0,
+      "same_day_transfer_pump_amount": 0,
+      "same_day_buy_batch_ids": [],
+      "same_day_transfer_batch_ids": []
+    },
+    {
+      "milestone_date": "2026-03-03",
+      "milestone_event": "$311.45M cumulative (27.1% circulating)",
+      "milestone_cumulative_usd": 311450294,
+      "same_day_buy_batch_count": 0,
+      "same_day_buy_pump_amount": 0,
+      "same_day_transfer_batch_count": 0,
+      "same_day_transfer_pump_amount": 0,
+      "same_day_buy_batch_ids": [],
+      "same_day_transfer_batch_ids": []
+    },
+    {
+      "milestone_date": "2026-03-09",
+      "milestone_event": "$320.1M cumulative, circulating reduced 28.35%",
+      "milestone_cumulative_usd": 320100000,
+      "same_day_buy_batch_count": 0,
+      "same_day_buy_pump_amount": 0,
+      "same_day_transfer_batch_count": 0,
+      "same_day_transfer_pump_amount": 0,
+      "same_day_buy_batch_ids": [],
+      "same_day_transfer_batch_ids": []
+    },
+    {
+      "milestone_date": "2026-03-17",
+      "milestone_event": "$328M cumulative (29.52% circulating)",
+      "milestone_cumulative_usd": 328000000,
+      "same_day_buy_batch_count": 0,
+      "same_day_buy_pump_amount": 0,
+      "same_day_transfer_batch_count": 0,
+      "same_day_transfer_pump_amount": 0,
+      "same_day_buy_batch_ids": [],
+      "same_day_transfer_batch_ids": []
+    }
+  ],
+  "rpc_verification": {
+    "26sMjoLP1EZFGSByizRqYLWZaviTSgEVqQJX3gRREQUFSRVw6RGeJiU4zyKaJd91bXoRUXQBk9zXCYyJNa5josgU": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11340751.295953,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "283VgecDJaZrMZ5Y4tC387PxkyUUHprrnxE4QNZ7kxvmWjkdyJaFzTN1smEiPwhMdpcs4645egq4WsMwQAUB8YL5": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10291485.316071,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "299avgxXQovx3w79DX6dK6cFNkKw1TCGQazbBY4Cryjw92FDeXyXWXhKnMi7RxcWb8yGNsLggkvkzXsXFxhGVD6n": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1886218.24763,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "29H2ALD8NSveSM7C1ZXi6wRnUt8bMiMigJqfx6gPa3k3GEEH4pDuwBzdWQKY5jLnucFtkyf5uVHgmXNqpEDEcAYz": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10352017.471201,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2D474MSHbjRg3AR3RKwxCx9qgZibdFgDzVnfpr2P6bGbr2iw28gEHEwGsibLmKjJVDNz17zppTQfiBpwvjUhWvtP": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10121359.008447,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2DUAyZqrtKRSc4vbjRfeKDdkSL5BQoHnRGv6VMyLqis1p1dFWRs5cjoy2BQcvYPTpvR9g46jvBj1oa5XEXQfUMFG": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11382120.86654,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2ER2JTNFv59P5FGfZEg88QHwz92DqkHAP8ah5yMQvRbyi4ns9Lb5sLsqz7wJTxg8GFpQnu1Tp2kkYgm5stMiEvn": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10151483.968728,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2EnupinByJaYAZNxDxrSN3rS8waxzzQMmhkfnUe6ohyowBaYGiZMdJtagVrZ41NyMgQas2PGJb2FtZqdtaHK337p": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10130883.707192,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2FAouq9xzn4cRad5NHgwn2PowpvXiVrF9nrMYfYLE6cfbFVML7xpwmho39QJJM2XQspw5uqFWZHKzeerBLyqfoSv": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1679274.679346,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2HfjDibVSQreEwsd4VtAzXPfuk5UtV81VT9J1ditPBW9GcqCox5LA47db1q6rbTUdaBxewkRsoHNBaTpPh2XbwCX": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -39975825.907994,
+      "treasury_token_account_delta_pump": 39975825.907994
+    },
+    "2RyEafiFwq8iMo38r8prrx9ZmG2regoV8TrEjfUZPj7HL1MreYE5EpoeHPzFn2EZvNqcA5h3WcdVNJ6DFBX2ZaYN": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1839674.992123,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2UGk3Yj4C3k4WUxfHApDruXHsL72j5tx4XTZggrYpwaLfmURdY84q2hUks98iKCj6zMeW5cGGhS52szKqUkkbFZm": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10454449.489819,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2UWz8JQt7Xz8obNRrnx9U41XtdirNFBnru5q5yYEhY3kMmZ1SW6NqYSYrjGqUAWdnqaCcrbS3S6CvoHzvA4uQgPV": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10436076.784235,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "2nHpJ6pzVKLQiVF93i4zLbKYuDynZzuzEymwnukKkiobzjszHagpvMHfJaZxTRCd9i2YZJSV2NBWmMpo3QsYV9MK": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10196443.138615,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "33wMYvgfps4PJp74iRBT4zBpxkDV5Gaw2fX2RUGXqEgYwYpGvLavW8MtvdSsj6tEQcgbMFbN4WjaejHbY7ZYoYaL": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1883325.048427,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "35Er5Nhhc5GbZm8bKYSgyMYmjJr9EF4kvyWMiLx4VQ4dm3JZTUSLXtAurYiLfA5GuorYgKT2jJBFmZo9Qmzb6rPg": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10221527.963088,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "39zEUt9ZaXnjRXHMRgYkEZChiXEaejxD9pvLTTsNVNTvjpPgGWD2y7KvS1MxBvAEgqqeaHoRb5LpgHXyGVCBYW5y": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11196450.552731,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3E6sPnXBodvaBFUqRW2Y8kCxaPxEUNmHQzockBoQ1LTVpgYqufZe2VJKh3uZXD1RsAXXBj3e3YKjLQ5NHP6w2t8S": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11208732.542204,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3EwxktYPtarZKfUJ1tYYGwkpLwtJtJqbc7p446ckZq6r15D38cyAs4DQoZGHWJRP6v68jMATmbLFyKM47ahDYtgj": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10207507.551194,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3R2y9723tSJdfKx4eA7MykRNxacZZb5fXurkHbLjXvuqV87CfzdG4fdVZYwTgdhVNXxFprtfrN9YSYw8LUzNLqKE": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10646024.181725,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3UzX1ofkFJpif29YPR46hadT4E8bcSTBWzQhjXbMtqvm7WtSqM1Yjo95LNwKwA5zC9etrzNkrH1zSfhoBzAgxqsC": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11355348.016655,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3ZqVaEK4hXDRehhorTMf1oNn8wxqFRMX1fjfhntPaEvQCWUHZ1z28KiRAfchG6GJU874yDrptv33T9fi4GQBqQA4": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -1000000.0,
+      "treasury_token_account_delta_pump": 1000000.0
+    },
+    "3bpddpqX3nsJKkJh18V1mEJBoFWJZaZkoPAJtqkaKKS64gxbahvL3ozeFwvSvDDLRGwTqafzskncs19wdZQtN7s9": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10237683.244862,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3ezytWW5k6gxSzjDnYh6gNAuPDAsfbGykedn3DR9S1SADcVs2pRiWcEubfAYX1YsjgpdAMubX5dXnZfMJyFH3jet": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1845749.3484,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3guG9rwHG2CcSgzSSms3jQ2GVb5e75yKJmk16VXi68a9wK1igBafGq4i1V4UfcWXLLkFoj58Nv1CfZVW1EAnekxJ": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 2738689.596062,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3iXH7dkpiVD2kpxhLTM16xc5bpz8tTmAP4ZTFATPccLnjoVLosXLznuBYJVoEYoZE6JjzTitowChS36Wpk7oGKZA": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 13894240.344852,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3kbMRK6zMAzG6FVkeGV9kR7Vdgn4A9nH5QXrtnNBwDxA8WfUc26hnFQscGwT219MhsSnZW5z9kFZ4CkZTZ19mTmG": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 13866264.494439,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3km4NwdN4mGrmMYSEFWRqKeJQttZJuMcJmQkA3u2rz4pPe6QSRLEKzCsn1DM1NnTznjCenSLiEUrdeRwUALKQD5S": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10437332.168955,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "3wQ3JGz4bfSUesn1T2376fiRxXR5261EHauYTEqSgCd5HgD2AfNhcy9Tkm3Lf8ZQ3VpQFDqm2TAh2rfkMkadi9XF": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1694207.738369,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "43WYdQy2jLiXQ3DxsUSMzXfThKHkgJV2MVYktJ8v66cnBzc9HhRR7Q6sfCrzqKfA5hYxAaVpBpmdzNJLe1aQL8C1": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10970613.560026,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "489AqY8FbtQsFGpDY9CFxh9Ahdi37jtX8QgoyTe8usjwhapBVpbZEZKkMdpq1uZdhCZQMWYMqxsgEsy72BXV1fPp": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10313914.402202,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4B8uSGvVAme1ygSP3oLutEVydpJtv1rFEWTs8Qizs5t3peuURozSJXRnsnvsRLrEWjoQM1WpMBMEp5jcEoGsLvPa": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11326486.172193,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4BA64A1ovaAQiddCRc4yxzYhqZYoTyfTjqD9Hj1vxD9yT6uJWEExnSG4jLb4Yw4RvDeBZygz3rbd61Vpks1ZPoPa": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10223383.436859,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4NEn8H9zP5G2kDTgv7o51fjTA7kjL2GU82rrkPShKGdduXaNQd83WYNbNRwvx3g9s2yLGg7p28GDkmi8DWVN5Qqu": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1658582.579718,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4NmiiuC8uL2GTF8uRZTSm2ZWTjz789SAy6SgLfFe6XNmnWwuxcQSgfqDZmZBnDhZcBAzPu89z4AZecxuqhtqKFdz": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10336562.551828,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4QFpdfunZsvrW6vCoZi6vKiBY4XxNk1k7Yty4o79aGqizCryXucrMjeyKE3Px5F52Vo7ot9nrkCjqFn9s3fSPjHy": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10202218.372034,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4R9uDPPRSdmdLaYTCfMqVZ63oZTUKymEh51w2VRqvNXH3XGhVGnU1fZqfmcxdfQFbwAL59kTHExhd226LrBiDwqR": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10197831.65366,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4WW7CGuj9pzgpCwRbUP59YRzHNmZ3MdKRUETVQN4Mn3CgHADVMjazJzpkReQsyHjEdpJFNP2JvMaHLAVfuS9HD4J": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1714501.336293,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4WquGEs8A75BYnCJZsnC8ieTM4aBeQqAhNzSLCxCPfcwSpSgzey1rxCYbBk6wkePcrFKiCuCYtTUhydsQKLh4BN2": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10125250.952632,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4XhdtQdWxbapJcjfjonmX9zgpKvNL5JcSvxvwMUYPkP6y1jg5KC7DtMiNUmCuJ4gD1xRY3gqvkB45HXED8qoVjK5": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1863187.294257,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4aw5R7ik4Wr3F1QoB2E7xyqLFy7ytScQ3j3kXEE76Bv2yhvRHLSGpmHZMydKq1jeXEsbs25N2cyVH2GVtbEnKL8D": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 8279146.243814,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4esMNMW2rPoYj6BwGpcFiaLmU7i7EDHpmCgzLRJ2EyfD4HhqPi4bvHBphi5A1xbe4bRpEnxcQMWQzJyqVZNym4r2": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10112213.752091,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4otQ1eJZnewDzRTLsr68aZkvqK9SoGUp7mCTCcjpEifkBRWCto5JZDrXf6apqFcEwDZRe1Fdhhbd52HcbYDPu8wC": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11351276.796278,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "4rAoEVN3zhAr97pgT2r6b5eoVZPWMCV4qBxraXy74nwpwDQ71tUonqw7WTQsYJMA4DvBVp3ebeD3xdaYSogC3A2f": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -36502710.194593,
+      "treasury_token_account_delta_pump": 36502710.194593
+    },
+    "4sfF1ZzJxyqKD1HQoz2aCKxZYnUxvjqCapweapyny18FsDGjFz1WeUCzBAmvNX8eNqPd3BKsFU5CnNpUHGEHJvYD": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 5623379.759429,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "52a7Mb4G8AF6XADKmt79dA4Ffgm65AmZgUVGWYvt2Lh5UuD4N9gcaHhDyn52i1HSMnJ3aT7NySbZj4DQoLTQYFpX": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -700933316.302963,
+      "treasury_token_account_delta_pump": 700933316.302963
+    },
+    "58YqB6JEuBL7NjUYPZt9y8bdtZnUGAgP5mLFwnVgnahnceqWrh6intDAPQSmxcur6mJgHKWMt9JPRkk6CPLS6hAa": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11386819.58869,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "59xpLm7nFY31kPPe3BdsT2BDo5pdDLCoyF1iVmNJ8aEnoTkCULgaBfPmUVMPonG6qm8VmCrSaic4xcVP4nQJ8ohx": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1657224.074597,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5CHQJRC4Uv1EcAXUeF1sozJBnwU62Abu4ouZMJZsZZYWpgAuuYPTJEu17vv2NkeJ8u6JMsRd94n2BzviXFWCgrtg": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 11051682.840876,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5EpJxTRXMbELm92gjLsxxi9tsWJNjUnsquARWANK1AXvbHHzKk63rMps9kyAbBTZp1zE1VCjFHZ8HTjY33pafshB": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 13008956.900827,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5GBZV7fFmZwoWSrd7gSWW3JKeTWwDuJZTfZGepCHZTL9DRrcamg9Q3R6LJ5wRm9xcC9h3j1Qby7YphufxGTQnEFJ": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10218210.208321,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5HAaUjM3qHBv9ysEPUPjwNQxo7nsgFX6BCJVBDW1ib7Zh2YEJKCT7jqC5qzowsDQKXiMfDvP7e8kQctfQXLJtvMg": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10164946.124736,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5PnS3QuPkTGpoLtVsYr8iitweKjcBJH9QQGoZFeexU3PCVppnJNw7NptsNQudnZ3ZQp1nicLtyDKZoQDe24Jcd4Z": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -10000.0,
+      "treasury_token_account_delta_pump": 10000.0
+    },
+    "5Xs3394ADkLemge45CMnMpieiPQHFwWVEFFoe2tNWnUqS4Qga2zVXfKks42oBCPqjXUo5GaKggmhPQfecZHXAhW9": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 13543353.510536,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5ZqbntPrmZKur5Yj6Ctq831Khng5H3tWfNDWceBLGkNXthF48Uj9gNDhre425wAENzYmRw6DrKpMSxVTPCnYzqCF": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10171994.405021,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5ZxQxD7BkML35odGC17Wy1Qcw67tGg5EAPoKQzNdqtEhej1FCNVezstvscvuf1mghSj6QJQTT9r5tQP9o3ZHL8ex": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1659159.464529,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5e7cXRp4fnZQDJjGkJM1Ui7ZxfBkAhVdJeqizr1mDPuHEVF7trpCVgxmaGMZEL264oWachrQreCurQeuyhexktt9": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -10000000.0,
+      "treasury_token_account_delta_pump": 10000000.0
+    },
+    "5ebzbGjvaKhS9qeU25yFQNsLKX2PJwZFvWdNYNvPzKSaiVkBPrH8VwzHNHSto3geW7dtiP2aDPBZWvzDQdjzSSwK": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -1000000.0,
+      "treasury_token_account_delta_pump": 1000000.0
+    },
+    "5gy6LV3kEVX6RZReS4i1Rxnin7TytuYGBP7qTiHphyQFyTGNdf5Pma1wUSxrgjZpBoZRPpNHGfpoM5tTPN9MTEfB": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -170031259.389462,
+      "treasury_token_account_delta_pump": 170031259.389462
+    },
+    "5htzJrijrLGxY2t3Hi9F4uECDkuSTqHufhAZvqdyXe7Z8UUi7VPEuXbfcUvuBWjihPquwFnNa22P6psY3Pig9cdY": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1887739.670498,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5kt1NQcGEdV6WcxSWmXsKb4k7UWKZiAyRyz5Fnk8tETc7k4gmqaE1Eigvr481bgnoVsnhz4ninVRMHYkDwGSDah8": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10116727.881006,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5ow48PqwmSfcmgJHrufLny6SyjLkHWSioj62UgCWeJWGRR3SrpAEQw3PhuYkbbyE7CZSmLuSyckoXTHQudoT4EFw": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10039773.801341,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5qk5YMnLEtSXJnUdNTfwqpBUjjPCy4GeadZBso2W7VjNCd7p6HgUwTWMja66nckDnvr2Qa7bE265vAAhtpdJPQt1": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10037008.093986,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5qysBcmYWV8HkDR6TZYTVsVPvAQRuS3odxYZESndqc5e55njFQWehu6LX4qcvJAUmQJdPn6wDArXR9NVuEXfEFCg": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10139353.161838,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "5wKj9aGq3fiVr5RNsgxpJk3UBjv2bvJovY7a4jZVw8ArS2tWPRsJ1y9gGQN8782EJvaHnvSBe4GqKjD87hpS4UbY": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1695593.167902,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "62jnEAk7RQaSvzWPfwGaLuN2LLap5FpSJMcGXWnvNxbZ8wpMtnRHbm4WxLUMrkpbYSSke2obiy6JAngAebR8b8B5": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10230189.554782,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "63YXX5h4y5TqaSPDzyrUyfCW9FbitpTWRYnEv6M9JjPkDUSKXmiuupA3V6AgvyYD67qZJ9DbbrDyKCJWtfhUqwrm": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10076780.056497,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "ETtVePrNtyohT4UrEZ1aMjgeWzUQtE6sirtjNkrTdxi2vprfGCmB36qCCyN82MaTAmocMqjsDV1eJd4Gjdwy4EE": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10099163.733593,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "HKxGrRixBHpGrrE6ZS17qUzKGcMcAWmJktwj5oyNDGeEU2PhXFGQYYaieR8wttaUayMWuFMfBYTjd8in3wtxKc6": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1677243.005017,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "KEVxyTPLjmVWHb4tdQGV8hxdR6YDhpeETBHTjBaCdMstg1gbGf83nXuUX7KS3Hsb3CQDVmYcRV4rmjoG1WzmJjJ": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 1657997.672533,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "MDN2Amo26UbheFcvtzjScFSPizSW8K8nZZCGm7cRoRpVR5cXGiTgn8sAGqLuhBZs6J36527agKS8rJBuPLaGv8q": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -631094219.51364,
+      "treasury_token_account_delta_pump": 631094219.51364
+    },
+    "Vkw7SVdmzav7NwduHxNKJxVUHA7yaNQxKUxJSTDA5qQWKbUd3UcWgpGbqrhB4gGP8set58ENsPHg9VDg4Mb8B41": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -10000000.0,
+      "treasury_token_account_delta_pump": 10000000.0
+    },
+    "ceKBx1QqZk3hTfZEPiE1gDQwSgJVhghyhH5hy5LeNZcx6QVg6HjT6mHgH6217SkCBPoDAz6xhnW6ox7V3Y443n1": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10117952.125912,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "m67sG1TngRmmGG2o7LvNU5NGLVy1cscmP61EEJW1rF3Kf5RZE1SWU3Chh5vX4mBkAYYSVaR4YCvncsMUARZKroj": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -10000000.0,
+      "treasury_token_account_delta_pump": 10000000.0
+    },
+    "nqtD9kgaVqauWw6MiDw1w6pTr1gcWb7jBxzL4TFkMZGDgzB6fysVPDzCPwmxW8Ed7kobym7huAVaQB9mzQohRDn": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10445031.42696,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "oCVGpUVofV3P8csAUAzhDg3DS2iYHvSQv4hnGzL5H4gZ2vcF5qFnk7pJ5r7aXjzCcNburEgBPY5PzMFzFQJF12t": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10116292.484786,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "oqUC8jCjBAL4Y5u9Z7dAtScfufPnxtEp2WCXpKeaRdzARB4GWsLQAJ3WJxfJKkK5AchykUUqG2RVgU567cjQuCc": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 19836799.305761,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "qoDFgmrBNmbB7mu9sCd4wk973BzTJWEcFr9t7gP1opxXRukANrzLqaeDhVoNLxvyXR8nT2D7MruYgz6Jxz1NMER": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -67137853.632075,
+      "treasury_token_account_delta_pump": 67137853.632075
+    },
+    "tzbrt9JfyvrSZaiNBuY3P3HoJa3WqFor5rBBW4dnKbxj72c8GXzriDZ3jfkHhLvCD8rRBE1U8LCWYXcHga24TZw": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -689250272.901745,
+      "treasury_token_account_delta_pump": 689250272.901745
+    },
+    "ueqxKG1vti8qDbmxyJqegZ3yKquF1Yg4R2PJVpdqm1PAG7vXaycua5rW9HXx65xBPWsyqs4Yp1VNxzPBSXc3dLe": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 15651499.159687,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "wVhZg8qDVtpphocHmKHW1zRJr2HAaRgwmxTiQ9zgA6vPeNJnK5rsuydavXCiMgWiFY5pVnGekmw7tW8msXUJ8Lj": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 13464630.529921,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "y6sBx5NB8ejtCS4rYpqK1j4Q2tinbYfegH5A5faiixogQ1b9rbWDgVY12wdNWBGhX3n5eqXSw7t7VupEeJ5Qwhj": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": 10118089.076,
+      "treasury_token_account_delta_pump": 0.0
+    },
+    "y8o9FAtqG8krL22a81CUBqVGncQg42KhA2qvEacLRQJPJD3WPp67vcuTfaYuX5DNWNamyz85N3FNXXr1aufNDNq": {
+      "rpc_found": true,
+      "buyback_token_account_delta_pump": -702882976.781477,
+      "treasury_token_account_delta_pump": 702882976.781477
+    }
+  },
+  "execution_style": {
+    "style": "twap_like_fragmented",
+    "reason": "Most observed direct buy volume is executed via multi-trade fragmented sessions.",
+    "buy_leg_count": 69,
+    "buy_batch_count": 5,
+    "active_day_count": 4,
+    "avg_trades_per_active_day": 17.25,
+    "twap_like_amount_ratio": 0.945823,
+    "median_intertrade_minutes": 2.167,
+    "day_breakdown": [
+      {
+        "date": "2025-07-15",
+        "trade_count": 51,
+        "span_minutes": 402.82,
+        "pump_amount": 410873914.474417,
+        "twap_like_day": true
+      },
+      {
+        "date": "2025-07-16",
+        "trade_count": 16,
+        "span_minutes": 45.02,
+        "pump_amount": 162544410.966325,
+        "twap_like_day": true
+      },
+      {
+        "date": "2025-07-17",
+        "trade_count": 1,
+        "span_minutes": 0.0,
+        "pump_amount": 13008956.900827,
+        "twap_like_day": false
+      },
+      {
+        "date": "2025-07-18",
+        "trade_count": 1,
+        "span_minutes": 0.0,
+        "pump_amount": 19836799.305761,
+        "twap_like_day": false
+      }
+    ]
+  },
+  "buy_cost_estimation": {
+    "total_pump": 606264081.64733,
+    "total_sol_spent": 23599.7433,
+    "usd_est_close_total": 3945646.21,
+    "avg_price_usd_est_close": 0.00650813,
+    "pump_price_coverage_ratio": 1.0,
+    "usd_method": "usd_est_sol_close"
+  },
+  "transfer_cost_estimation": {
+    "total_pump": 3069818434.623949,
+    "total_sol_spent": 0.0,
+    "usd_est_close_total": 0,
+    "avg_price_usd_est_close": null,
+    "pump_price_coverage_ratio": 0.0,
+    "usd_method": "usd_est_close",
+    "usd_est_from_buy_avg_price": 19978777.45
+  }
+}

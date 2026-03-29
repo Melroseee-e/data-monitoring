@@ -1,0 +1,266 @@
+{
+  "generated_at_utc": "2026-03-25T04:32:48Z",
+  "official_start_date": "2025-07-15",
+  "prep_window_start_date": "2025-07-12",
+  "prep_window_end_date": "2025-07-14",
+  "clusters": [
+    {
+      "cluster_id": "cluster_3vk_legacy",
+      "label": "3VK legacy direct executor",
+      "classification": "direct_executor",
+      "evidence_level": "confirmed",
+      "first_seen": "2025-07-15T12:49:04Z",
+      "last_seen": "2026-02-22T22:06:11Z",
+      "direct_buy_pump_total": 606264081.64733,
+      "forward_to_disclosed_holder_pump_total": 0,
+      "shared_squads_accounts": [
+        {
+          "address": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 135,
+          "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+          "executable": true
+        },
+        {
+          "address": "DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 134,
+          "owner": "T1pyyaTNZsKv2WcRAB8oVnk93mLJw2XzjtVYqCsaHqt",
+          "executable": false
+        },
+        {
+          "address": "DZboAojTvNwYbhW5rCARYLnWSKNumnd4khQG63aCxTfR",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 134,
+          "owner": "AddressLookupTab1e1111111111111111111111111",
+          "executable": false
+        }
+      ],
+      "members": [
+        {
+          "address": "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+          "role": "owner",
+          "account_owner": null,
+          "account_executable": null,
+          "current_pump_balance": 62.311512,
+          "first_seen": "2025-07-15T12:49:04Z",
+          "last_seen": "2026-02-22T22:06:11Z",
+          "source_counts": {
+            "SYSTEM_PROGRAM": 633,
+            "BUBBLEGUM": 446,
+            "ASSOCIATED_TOKEN_PROGRAM": 271,
+            "SQUADS_V4": 127,
+            "PHANTOM": 59,
+            "PUMP_AMM": 59,
+            "SOLANA_PROGRAM_LIBRARY": 40,
+            "STREAMFLOW_TIMELOCK": 26,
+            "OKX": 10,
+            "UNKNOWN": 6,
+            "PUMP_FUN": 3,
+            "DFLOW": 1
+          },
+          "type_counts": {
+            "TRANSFER": 857,
+            "COMPRESSED_NFT_MINT": 441,
+            "INITIALIZE_ACCOUNT": 271,
+            "SWAP": 73,
+            "WITHDRAW": 13,
+            "CREATE": 13,
+            "UNKNOWN": 6,
+            "COMPRESSED_NFT_TRANSFER": 5,
+            "CLOSE_ACCOUNT": 2
+          }
+        },
+        {
+          "address": "Cz2xubgPSvqGqdxCL5ri4y9FTtBDLJNXQhhj2muw8kbt",
+          "role": "token_account",
+          "account_owner": "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+          "account_executable": false,
+          "current_pump_balance": 62.311512,
+          "first_seen": null,
+          "last_seen": null,
+          "source_counts": {},
+          "type_counts": {}
+        }
+      ],
+      "notes": [
+        "Direct buyback wallet with observable swap legs."
+      ]
+    },
+    {
+      "cluster_id": "cluster_8ps_secondary_holder",
+      "label": "8PS secondary holder / squads holder",
+      "classification": "holder_support",
+      "evidence_level": "probable",
+      "first_seen": "2026-03-05T20:24:41Z",
+      "last_seen": "2026-03-10T00:28:27Z",
+      "direct_buy_pump_total": 0,
+      "forward_to_disclosed_holder_pump_total": 0,
+      "shared_squads_accounts": [
+        {
+          "address": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 135,
+          "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+          "executable": true
+        },
+        {
+          "address": "DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 134,
+          "owner": "T1pyyaTNZsKv2WcRAB8oVnk93mLJw2XzjtVYqCsaHqt",
+          "executable": false
+        },
+        {
+          "address": "DZboAojTvNwYbhW5rCARYLnWSKNumnd4khQG63aCxTfR",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 134,
+          "owner": "AddressLookupTab1e1111111111111111111111111",
+          "executable": false
+        }
+      ],
+      "members": [
+        {
+          "address": "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+          "role": "owner",
+          "account_owner": null,
+          "account_executable": null,
+          "current_pump_balance": 3630359758.001998,
+          "first_seen": "2026-03-05T20:24:41Z",
+          "last_seen": "2026-03-10T00:28:27Z",
+          "source_counts": {
+            "SQUADS_V4": 4,
+            "BUBBLEGUM": 2,
+            "UNKNOWN": 1,
+            "SYSTEM_PROGRAM": 1
+          },
+          "type_counts": {
+            "TRANSFER": 4,
+            "COMPRESSED_NFT_TRANSFER": 2,
+            "UNKNOWN": 1,
+            "CREATE_MULTISIG": 1
+          }
+        },
+        {
+          "address": "2KEsnhnFiey3iA5zaenFVRSmuAGZdm7RbuG5VuAN69e1",
+          "role": "token_account",
+          "account_owner": "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+          "account_executable": false,
+          "current_pump_balance": 3630359758.001998,
+          "first_seen": null,
+          "last_seen": null,
+          "source_counts": {},
+          "type_counts": {}
+        }
+      ],
+      "notes": [
+        "fees.pump.fun disclosed holder with Squads multisig activity."
+      ]
+    },
+    {
+      "cluster_id": "cluster_9jhrtcwp",
+      "label": "9jHrTCwp execution cluster",
+      "classification": "relay_executor",
+      "evidence_level": "probable",
+      "first_seen": "2026-03-20T01:39:11Z",
+      "last_seen": "2026-03-20T23:11:21Z",
+      "direct_buy_pump_total": 61293149.985992,
+      "forward_to_disclosed_holder_pump_total": 1685616751.901248,
+      "shared_squads_accounts": [
+        {
+          "address": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 135,
+          "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+          "executable": true
+        },
+        {
+          "address": "DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 134,
+          "owner": "T1pyyaTNZsKv2WcRAB8oVnk93mLJw2XzjtVYqCsaHqt",
+          "executable": false
+        },
+        {
+          "address": "DZboAojTvNwYbhW5rCARYLnWSKNumnd4khQG63aCxTfR",
+          "owners": [
+            "3vkpy5YHqnqJTnA5doWTpcgKyZiYsaXYzYM9wm8s3WTi",
+            "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+            "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM"
+          ],
+          "appearances": 134,
+          "owner": "AddressLookupTab1e1111111111111111111111111",
+          "executable": false
+        }
+      ],
+      "members": [
+        {
+          "address": "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM",
+          "role": "owner",
+          "account_owner": null,
+          "account_executable": null,
+          "current_pump_balance": 2071.856596,
+          "first_seen": "2026-03-20T01:39:11Z",
+          "last_seen": "2026-03-20T23:11:21Z",
+          "source_counts": {
+            "SYSTEM_PROGRAM": 2002,
+            "SOLANA_PROGRAM_LIBRARY": 1765,
+            "JUPITER": 201,
+            "PUMP_AMM": 28,
+            "SQUADS_V4": 4
+          },
+          "type_counts": {
+            "TRANSFER": 3771,
+            "SWAP": 229
+          }
+        },
+        {
+          "address": "HxT8kiUKxJ7jdvWfDeRZQzQia4wyRCNN2iRBjMUzcimN",
+          "role": "token_account",
+          "account_owner": "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM",
+          "account_executable": false,
+          "current_pump_balance": 2071.856596,
+          "first_seen": null,
+          "last_seen": null,
+          "source_counts": {},
+          "type_counts": {}
+        }
+      ],
+      "notes": [
+        "Receives PUMP from swap legs and forwards into disclosed holder path."
+      ]
+    }
+  ]
+}
