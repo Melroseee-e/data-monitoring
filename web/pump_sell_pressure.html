@@ -220,6 +220,144 @@
                     数据来源：Dune Analytics <code>tokens_solana.transfers</code> 全量查询，覆盖 PUMP 代币（<code>pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn</code>）从 TGE 当天起所有流入/流出 CEX 的链上转账记录。
                     <strong>充值（Deposit）= CEX 存入 = 卖出意图（抛压）；提现（Withdrawal）= CEX 取出 = 买入意图（买盘）。</strong>
                     共覆盖 34 家 CEX，5,642 万笔链上转账，83 万独立地址。数据更新至 2026-03-26 06:20 UTC。
+                    价格数据来自 Binance PUMP/USDT，上所前（2025-07-12～09-10）的 USD 折算以首个上所日收盘价 $0.005893 估算，仅供参考。
+                </div>
+            </div>
+        </div>
+
+        <!-- Overall Summary -->
+        <div class="panel mb-5">
+            <div class="section-title mb-4">
+                <div class="dot" style="background:#1A1D23"></div>
+                全周期抛压总览 · Overall Summary（2025-07-12 → 2026-03-25）
+            </div>
+
+            <!-- Phase table -->
+            <div class="overflow-x-auto mb-6">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>阶段</th>
+                            <th>时间段</th>
+                            <th class="text-right">卖出 / 抛压 (PUMP)</th>
+                            <th class="text-right">卖出 / 抛压 (USD≈)</th>
+                            <th class="text-right">买盘 / 买入 (PUMP)</th>
+                            <th class="text-right">买盘 / 买入 (USD≈)</th>
+                            <th class="text-right">净流出入 (PUMP)</th>
+                            <th class="text-right">净流出入 (USD≈)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold text-xs">Pre-Listing<br/><span class="text-gray-400 font-normal">上所前</span></td>
+                            <td class="text-xs text-gray-500">2025-07-12 → 09-10</td>
+                            <td class="text-right font-mono text-red font-semibold">543.51 B</td>
+                            <td class="text-right font-mono text-red">≈$3,203M</td>
+                            <td class="text-right font-mono text-green font-semibold">467.65 B</td>
+                            <td class="text-right font-mono text-green">≈$2,756M</td>
+                            <td class="text-right font-mono text-red">-75.86 B</td>
+                            <td class="text-right font-mono text-red">≈-$447M</td>
+                        </tr>
+                        <tr style="background:#FAFAFA">
+                            <td class="font-semibold text-xs">Stagnation<br/><span class="text-gray-400 font-normal">震荡低迷</span></td>
+                            <td class="text-xs text-gray-500">2025-09-11 → 11-30</td>
+                            <td class="text-right font-mono text-red font-semibold">711.37 B</td>
+                            <td class="text-right font-mono text-red">≈$3,662M</td>
+                            <td class="text-right font-mono text-green font-semibold">679.48 B</td>
+                            <td class="text-right font-mono text-green">≈$3,433M</td>
+                            <td class="text-right font-mono text-red">-31.89 B</td>
+                            <td class="text-right font-mono text-red">≈-$229M</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-xs">Major Rally<br/><span class="text-gray-400 font-normal">主升浪</span></td>
+                            <td class="text-xs text-gray-500">2025-12-01 → 2026-03-15</td>
+                            <td class="text-right font-mono text-red font-semibold">435.84 B</td>
+                            <td class="text-right font-mono text-red">≈$1,018M</td>
+                            <td class="text-right font-mono text-green font-semibold">462.77 B</td>
+                            <td class="text-right font-mono text-green">≈$1,074M</td>
+                            <td class="text-right font-mono text-green">+26.93 B</td>
+                            <td class="text-right font-mono text-green">≈+$57M</td>
+                        </tr>
+                        <tr style="background:#FAFAFA">
+                            <td class="font-semibold text-xs">Recent<br/><span class="text-gray-400 font-normal">近期</span></td>
+                            <td class="text-xs text-gray-500">2026-03-16 → 03-25</td>
+                            <td class="text-right font-mono text-red font-semibold">35.37 B</td>
+                            <td class="text-right font-mono text-red">≈$68M</td>
+                            <td class="text-right font-mono text-green font-semibold">33.89 B</td>
+                            <td class="text-right font-mono text-green">≈$65M</td>
+                            <td class="text-right font-mono text-red">-1.48 B</td>
+                            <td class="text-right font-mono text-red">≈-$3M</td>
+                        </tr>
+                        <tr style="background:#F0F4FF;font-weight:700;border-top:2px solid #BFDBFE">
+                            <td class="font-bold text-xs text-blue-700">全周期合计</td>
+                            <td class="text-xs text-blue-600">2025-07-12 → 2026-03-25</td>
+                            <td class="text-right font-mono text-red">1,726.08 B</td>
+                            <td class="text-right font-mono text-red">≈$7,951M</td>
+                            <td class="text-right font-mono text-green">1,643.79 B</td>
+                            <td class="text-right font-mono text-green">≈$7,329M</td>
+                            <td class="text-right font-mono text-red">-82.30 B</td>
+                            <td class="text-right font-mono text-red">≈-$622M</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Team vs Whale summary cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <!-- Team -->
+                <div style="border:1px solid #FCA5A5;border-radius:10px;padding:20px;background:#FFF5F5">
+                    <div class="text-sm font-bold text-red-700 mb-3 flex items-center gap-2">
+                        <span style="background:#EF4444;color:white;padding:2px 8px;border-radius:12px;font-size:11px">官方 / 团队</span>
+                        已标注地址 CEX 直接存入总量
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">抛压 (CEX Deposit)</div>
+                            <div class="text-xl font-bold text-red-600">14.69 B PUMP</div>
+                            <div class="text-sm text-red-500 font-semibold">≈ $83.1M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 0.85%</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">买盘 (CEX Withdrawal)</div>
+                            <div class="text-xl font-bold text-gray-400">0 B PUMP</div>
+                            <div class="text-sm text-gray-400">—</div>
+                            <div class="text-xs text-gray-400 mt-1">无已知 CEX 提现记录</div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#FEF2F2">
+                        <strong>注意：</strong>仅含可直接关联至已标注官方地址的 CEX 存入量。<br/>
+                        主要构成：Token Custodian → Wintermute（13.75B，2025-07-13，上所前 2 笔）；Team Wallet #1 → Wintermute（0.94B，2026-02-16）。<br/>
+                        Vault #4（→OKX）和 Vault #5（Active Selling）<strong>未出现在 Dune Top 500 卖家</strong>中，说明其通过中间钱包或 OTC 出货，并非直接存入 CEX。
+                    </div>
+                </div>
+
+                <!-- Whale -->
+                <div style="border:1px solid #93C5FD;border-radius:10px;padding:20px;background:#EFF6FF">
+                    <div class="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
+                        <span style="background:#3B82F6;color:white;padding:2px 8px;border-radius:12px;font-size:11px">Top 50 大户</span>
+                        非官方地址中排名前 50 的 CEX 存入量
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Top 50 抛压合计</div>
+                            <div class="text-xl font-bold text-blue-700">897.74 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $5,239M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 52.0%</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Top 10 抛压合计</div>
+                            <div class="text-xl font-bold text-blue-700">461.83 B PUMP</div>
+                            <div class="text-sm text-blue-600 font-semibold">≈ $2,786M USD</div>
+                            <div class="text-xs text-gray-400 mt-1">占全市场抛压 26.8%</div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500 leading-relaxed p-3 rounded" style="background:#DBEAFE">
+                        <strong>Top 1：</strong>3ADzk5...（Binance）77.63B ≈ $457M，首次卖出 2025-09-11。<br/>
+                        <strong>Top 2：</strong>Hyperunit Hot Wallet（Gate.io + Wintermute）69.34B ≈ $409M，首次 2025-07-17。<br/>
+                        <strong>Top 3：</strong>4DTTpRo...（OKX）62.58B ≈ $369M，首次 2025-07-18。<br/>
+                        USD 以各地址首次卖出日收盘价估算，非加权均价，仅供参考。
+                    </div>
                 </div>
             </div>
         </div>
