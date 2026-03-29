@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUMP Full Attribution Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07111f;
+  --bg-2: #050b15;
+  --panel: rgba(9, 15, 29, 0.9);
+  --panel-strong: rgba(7, 12, 24, 0.96);
+  --panel-soft: rgba(255,255,255,0.03);
+  --text: #eef4ff;
+  --text-secondary: #a7b6cf;
+  --text-muted: #6f7d95;
+  --accent: #4f8cff;
+  --accent-2: #2ce6c7;
+  --accent-3: #f5b84b;
+  --danger: #ff6b6b;
+  --border: rgba(159, 176, 208, 0.16);
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.22);
+  --mono: "JetBrains Mono", monospace;
+  --body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--body);
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 12%, rgba(79, 140, 255, 0.18), transparent 30%),
+    radial-gradient(circle at 88% 18%, rgba(44, 230, 199, 0.12), transparent 24%),
+    radial-gradient(circle at 82% 88%, rgba(245, 184, 75, 0.1), transparent 22%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg) 38%, var(--bg-2) 100%);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.4), transparent 78%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { color: inherit; }
+
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 22px 22px 56px;
+}
+
+.hero {
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(10, 18, 34, 0.98), rgba(7, 13, 24, 0.94));
+  box-shadow: var(--shadow);
+}
+
+.hero-inner {
+  padding: 28px 28px 24px;
+}
+
+.topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(34px, 4vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  max-width: 980px;
+}
+
+.subtitle {
+  max-width: 980px;
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.meta-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.pill strong {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.section {
+  margin-top: 18px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(10, 18, 34, 0.94), rgba(7, 13, 24, 0.88));
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.section-inner {
+  padding: 22px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.section-desc {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  color: var(--text-secondary);
+  padding: 6px 10px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tag.ok { color: var(--accent-2); border-color: rgba(44,230,199,0.24); }
+.tag.warn { color: var(--accent-3); border-color: rgba(245,184,75,0.24); }
+.tag.danger { color: var(--danger); border-color: rgba(255,107,107,0.24); }
+.tag.link { text-decoration: none; transition: transform 0.2s, border-color 0.2s; }
+.tag.link:hover { transform: translateY(-1px); border-color: rgba(79,140,255,0.4); color: var(--text); }
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--panel-soft);
+  padding: 16px;
+}
+
+.card-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.card-value {
+  margin-top: 10px;
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.card-value.buy { color: var(--accent-2); }
+.card-value.sell { color: var(--danger); }
+.card-value.danger { color: var(--danger); }
+.card-value.highlight { color: var(--accent); }
+.card-value.warn { color: var(--accent-3); }
+
+.card-meta {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.statement {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.03);
+  padding: 20px;
+}
+
+.statement-main {
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.list li + li { margin-top: 6px; }
+
+.numbered {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.numbered li + li { margin-top: 8px; }
+
+.mono { font-family: var(--mono); }
+.muted { color: var(--text-muted); }
+
+.table-card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+}
+
+.table-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.table-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.table-note {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.table-scroll { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 920px;
+}
+
+thead th {
+  text-align: left;
+  padding: 14px 18px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(159,176,208,0.08);
+  font-size: 13px;
+  color: var(--text);
+  vertical-align: top;
+}
+
+tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kpi {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+}
+
+.kpi-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.kpi-value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+}
+
+.callout {
+  border-left: 3px solid var(--accent);
+  padding-left: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.empty {
+  padding: 18px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1180px) {
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .columns { grid-template-columns: 1fr; }
+  .kpi-strip { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 780px) {
+  .shell { padding: 14px 14px 32px; }
+  .hero-inner, .section-inner { padding: 16px; }
+  .topline, .meta-stack, .section-head { flex-direction: column; align-items: flex-start; }
+  .grid-4, .grid-2 { grid-template-columns: 1fr; }
+  .title { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="topline">
+        <div>
+          <p class="eyebrow">PUMP Forensic Research Report</p>
+          <h1 class="title">Complete on-chain attribution for why buybacks did not re-rate price</h1>
+          <p class="subtitle" id="heroSubtitle">Loading report dataset...</p>
+          <div class="pill-row">
+            <a class="tag link" href="pump_analysis.html">Overview</a>
+            <a class="tag link" href="pump_price_attribution.html">Summary View</a>
+            <span class="tag ok">Full Report</span>
+            <span class="tag" id="statusTag">Loading</span>
+          </div>
+        </div>
+        <div class="meta-stack">
+          <div class="pill">Generated <strong id="generatedAt">-</strong></div>
+          <div class="pill">Price Range <strong id="priceRange">-</strong></div>
+          <div class="pill">Contract <strong id="contractText">-</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Executive Summary</h2>
+          <div class="section-desc">One-screen answer before drilling into ledgers and clusters.</div>
+        </div>
+        <div class="tag ok">Attribution first</div>
+      </div>
+      <div class="statement">
+        <div class="statement-main" id="headlineBox">—</div>
+      </div>
+      <div class="grid-4" id="summaryCards" style="margin-top:14px"></div>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Key Takeaways</div>
+          <ol class="numbered" id="takeawayList"></ol>
+        </div>
+        <div class="card">
+          <div class="card-label">Direct Answer</div>
+          <ol class="numbered" id="directAnswerList"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Buyback Verification Baseline</h2>
+          <div class="section-desc">Forensic lower bound, treasury reconciliation, and how much of the program is directly visible on-chain.</div>
+        </div>
+        <div class="tag warn">Direct trace is a floor, not the full program</div>
+      </div>
+      <div class="kpi-strip" id="buybackKpis"></div>
+      <div class="columns" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Interpretation</div>
+          <ul class="list" id="buybackInterpretation"></ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Method Summary</div>
+          <ul class="list" id="confidenceTiers"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Official Market Pressure</h2>
+          <div class="section-desc">Confirmed official and official-linked entities that created market-facing supply.</div>
+        </div>
+        <div class="tag danger">Official overhang</div>
+      </div>
+      <div class="grid-4" id="officialCards"></div>
+      <div class="table-card" style="margin-top:14px">
+        <div class="table-head">
+          <div>
+            <h3 class="table-title">Official Pressure by Entity</h3>
+            <div class="table-note">Entity type, pressure route, current balance, and share of the conservative buyback volume.</div>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Entity</th>
+                <th>Type</th>
+                <th>Pressure Type</th>
+                <th>Pressure</th>
+                <th>Balance</th>
+                <th>Share of Buyback</th>
+                <th>Route</th>
+              </tr>
+            </thead>
+            <tbody id="officialEntityBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-card" style="margin-top:14px">
+        <div class="table-head">
+          <div>
+            <h3 class="table-title">Official Sell Ledger</h3>
+            <div class="table-note">Chronological list of confirmed market-facing official flows.</div>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Entity</th>
+                <th>Flow Type</th>
+                <th>Exchange / Route</th>
+                <th>Amount</th>
+                <th>USD</th>
+              </tr>
+            </thead>
+            <tbody id="sellLedgerBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">59-Holder Whale Sample</h2>
+          <div class="section-desc">Proxy flow profile for the whale universe already tracked in the behavior layer.</div>
+        </div>
+        <div class="tag">Whale proxy, not direct exchange proof</div>
+      </div>
+      <div class="grid-4" id="whaleCards"></div>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="table-card">
+          <div class="table-head">
+            <div>
+              <h3 class="table-title">Top Accumulators</h3>
+              <div class="table-note">Addresses with the strongest positive proxy netflow.</div>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>Current Balance</th>
+                  <th>Proxy Buy</th>
+                  <th>Proxy Sell</th>
+                  <th>Proxy Net</th>
+                </tr>
+              </thead>
+              <tbody id="accumulatorBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-head">
+            <div>
+              <h3 class="table-title">Top Distributors</h3>
+              <div class="table-note">Addresses with the strongest negative proxy netflow.</div>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>Current Balance</th>
+                  <th>Proxy Buy</th>
+                  <th>Proxy Sell</th>
+                  <th>Proxy Net</th>
+                </tr>
+              </thead>
+              <tbody id="distributorBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="card-label">Whale Interpretation</div>
+        <ul class="list" id="whaleInterpretation"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Event Window Analysis</h2>
+          <div class="section-desc">Buyback milestones and official sell bursts, compared to whale proxy flows and post-event returns.</div>
+        </div>
+        <div class="tag warn">T+3 and T+7 return tracking</div>
+      </div>
+      <div class="table-card">
+        <div class="table-head">
+          <div>
+            <h3 class="table-title">Window Ledger</h3>
+            <div class="table-note">Official pressure is in billions of PUMP. Buyback is in USD.</div>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Window</th>
+                <th>Date</th>
+                <th>Official Pressure</th>
+                <th>Whale Sell</th>
+                <th>Whale Buy</th>
+                <th>Whale Net</th>
+                <th>Buyback USD</th>
+                <th>T+3</th>
+                <th>T+7</th>
+              </tr>
+            </thead>
+            <tbody id="windowBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="card-label">Window Readout</div>
+        <ul class="list" id="windowReadout"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Cost Basis & Overhang</h2>
+          <div class="section-desc">Where price sits relative to buyback cost anchors and treasury mark value.</div>
+        </div>
+        <div class="tag">Overhead supply framing</div>
+      </div>
+      <div class="grid-4" id="costCards"></div>
+      <div class="columns" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Cost Interpretation</div>
+          <ul class="list" id="costInterpretation"></ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Current Mark</div>
+          <div class="callout" id="currentMark"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Final Attribution</h2>
+          <div class="section-desc">What is well supported by the ledger, and what remains inference or open work.</div>
+        </div>
+        <div class="tag ok">Evidence split</div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">Well Supported</div>
+          <ul class="list" id="supportedList"></ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Still Uncertain</div>
+          <ul class="list" id="uncertainList"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Data Quality & Sources</h2>
+          <div class="section-desc">Coverage flags, known conflicts, explicit limitations, and the source registry behind this page.</div>
+        </div>
+        <div class="tag">Audit trail</div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">Coverage Flags</div>
+          <ul class="list" id="coverageList"></ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Known Conflicts</div>
+          <ul class="list" id="conflictList"></ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="card-label">Limitations</div>
+        <ul class="list" id="limitationList"></ul>
+      </div>
+      <div class="table-card" style="margin-top:14px">
+        <div class="table-head">
+          <div>
+            <h3 class="table-title">Source Registry</h3>
+            <div class="table-note">Exact source files and the role each one plays in the attribution stack.</div>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Source ID</th>
+                <th>Path</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody id="sourceBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const DATA_URL = "../data/pump/core/pump_price_attribution.json";
+let report = null;
+
+function normalizeList(value) {
+  if (Array.isArray(value)) return value;
+  if (value && typeof value === "object") {
+    return Object.entries(value).map(([key, val]) => ({ key, ...((val && typeof val === "object") ? val : { value: val }) }));
+  }
+  return [];
+}
+
+function pick(obj, keys, fallback = null) {
+  if (!obj || typeof obj !== "object") return fallback;
+  for (const key of keys) {
+    if (obj[key] !== undefined && obj[key] !== null && obj[key] !== "") return obj[key];
+  }
+  return fallback;
+}
+
+function toNumber(value) {
+  if (value === null || value === undefined || value === "") return null;
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    const suffixMatch = trimmed.match(/([kmbt])$/i);
+    const suffix = suffixMatch ? suffixMatch[1].toLowerCase() : null;
+    const cleaned = trimmed.replace(/[$,\s]/g, "").replace(/[kmbt]$/i, "");
+    const parsed = Number(cleaned);
+    if (!Number.isFinite(parsed)) return null;
+    const scale = suffix === "k" ? 1e3 : suffix === "m" ? 1e6 : suffix === "b" ? 1e9 : suffix === "t" ? 1e12 : 1;
+    return parsed * scale;
+  }
+  return null;
+}
+
+function fmtCompact(value, digits = 2) {
+  const n = toNumber(value);
+  if (!Number.isFinite(n)) return "—";
+  const abs = Math.abs(n);
+  if (abs >= 1e12) return `${(n / 1e12).toFixed(digits)}T`;
+  if (abs >= 1e9) return `${(n / 1e9).toFixed(digits)}B`;
+  if (abs >= 1e6) return `${(n / 1e6).toFixed(digits)}M`;
+  if (abs >= 1e3) return `${(n / 1e3).toFixed(digits)}K`;
+  return n.toFixed(digits);
+}
+
+function fmtUsd(value, digits = 2) {
+  const n = toNumber(value);
+  if (!Number.isFinite(n)) return "—";
+  if (Math.abs(n) >= 1e6) return `$${fmtCompact(n, digits)}`;
+  return `$${n.toLocaleString("en-US", { maximumFractionDigits: digits, minimumFractionDigits: digits })}`;
+}
+
+function fmtPct(value, digits = 2) {
+  const n = toNumber(value);
+  if (!Number.isFinite(n)) return "—";
+  return `${n.toFixed(digits)}%`;
+}
+
+function fmtBillions(value, digits = 3) {
+  const n = toNumber(value);
+  if (!Number.isFinite(n)) return "—";
+  return `${n.toFixed(digits)}B`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function renderList(id, items) {
+  const root = document.getElementById(id);
+  const list = normalizeList(items).map(item => typeof item === "string" ? item : (item.value ?? item.key ?? JSON.stringify(item)));
+  if (!root) return;
+  if (!list.length) {
+    root.innerHTML = "<li>—</li>";
+    return;
+  }
+  root.innerHTML = list.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+}
+
+function buildHero() {
+  const md = report?.metadata || {};
+  const summary = report?.summary || {};
+  document.getElementById("heroSubtitle").textContent = summary.headline || "Complete attribution across buyback, official pressure, whale behavior, and cost-basis structure.";
+  document.getElementById("generatedAt").textContent = pick(md, ["generated_at"], "—").replace("T", " ").replace("Z", " UTC");
+  document.getElementById("priceRange").textContent = `${pick(md, ["price_range_start"], "—")} → ${pick(md, ["price_range_end"], "—")}`;
+  document.getElementById("contractText").textContent = pick(md, ["contract"], "—");
+  document.getElementById("statusTag").textContent = "Loaded";
+}
+
+function buildExecutiveSummary() {
+  const summary = report?.summary || {};
+  const cost = report?.cost_basis || {};
+  document.getElementById("headlineBox").textContent = summary.headline || "—";
+
+  const cards = [
+    {
+      label: "Claimed Buyback",
+      value: fmtUsd(summary.buyback_claimed_usd),
+      meta: `Treasury hold: ${fmtBillions(summary.buyback_treasury_hold_B)} PUMP`,
+      cls: "buy",
+    },
+    {
+      label: "Official CEX Pressure",
+      value: `${fmtBillions(summary.official_cex_pressure_B)} PUMP`,
+      meta: `${fmtPct(summary.official_cex_pressure_pct_of_claimed_buyback_B)} of conservative claimed buyback volume`,
+      cls: "sell",
+    },
+    {
+      label: "Official Market Pressure",
+      value: `${fmtBillions((toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0))} PUMP`,
+      meta: `${fmtPct(summary.official_total_market_pressure_pct_of_claimed_buyback_B)} of conservative claimed buyback volume`,
+      cls: "sell",
+    },
+    {
+      label: "Current Price vs Buyback Avg",
+      value: fmtPct(cost.distance_from_claimed_buyback_avg_pct),
+      meta: `Spot ${fmtUsd(cost.current_price_usd, 6)} vs claimed avg ${fmtUsd(cost.claimed_buyback_avg_price_usd, 6)}`,
+      cls: "warn",
+    },
+  ];
+
+  const root = document.getElementById("summaryCards");
+  root.innerHTML = cards.map(card => `
+    <div class="card">
+      <div class="card-label">${card.label}</div>
+      <div class="card-value ${card.cls}">${card.value}</div>
+      <div class="card-meta">${card.meta}</div>
+    </div>
+  `).join("");
+
+  renderList("takeawayList", summary.key_takeaways || []);
+
+  const direct = [
+    `Confirmed official and official-linked market-facing supply reached ${fmtBillions((toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0))} PUMP, large enough to materially dilute buyback support.`,
+    "The March 2026 sell windows do not line up with broad whale proxy distribution; the tracked 59-holder sample was mostly net accumulating in those windows.",
+    "Post-July buybacks are less directly observable than the sell side, so the market may have seen official overhang more clearly than buyback execution.",
+    "Spot remains below both buyback cost anchors, which means buybacks did not reset the market clearing price upward."
+  ];
+  renderList("directAnswerList", direct);
+}
+
+function buildBuybackSection() {
+  const buyback = report?.buyback || {};
+  const method = report?.methodology || {};
+  const kpis = [
+    {
+      label: "Observable Direct Buy Floor",
+      value: fmtUsd(buyback.observable_direct_buy_usd),
+      meta: `${fmtBillions(buyback.observable_direct_buy_pump_B, 3)} PUMP at avg ${fmtUsd(buyback.observable_direct_buy_avg_price_usd, 6)}`,
+      cls: "buy",
+    },
+    {
+      label: "Transfer-to-Treasury Floor",
+      value: `${fmtBillions(buyback.observable_transfer_to_treasury_pump_B, 3)} PUMP`,
+      meta: `Implied ${fmtUsd(buyback.observable_transfer_implied_usd)} using observable direct-buy average`,
+      cls: "highlight",
+    },
+    {
+      label: "Conservative Claimed Total",
+      value: `${fmtBillions(buyback.claimed_conservative_bought_B, 3)} PUMP`,
+      meta: `${fmtUsd(buyback.claimed_cumulative_usd)} at avg ${fmtUsd(buyback.claimed_avg_price_usd, 6)}`,
+      cls: "buy",
+    },
+  ];
+  document.getElementById("buybackKpis").innerHTML = kpis.map(kpi => `
+    <div class="kpi">
+      <div class="kpi-label">${kpi.label}</div>
+      <div class="kpi-value ${kpi.cls || ""}">${kpi.value}</div>
+      <div class="card-meta">${kpi.meta}</div>
+    </div>
+  `).join("");
+
+  const interpretation = [
+    "The forensic layer proves buyback execution existed and can be tied to direct transaction activity.",
+    "Directly observable buyback legs are concentrated in July 2025, so the direct trace is a lower bound rather than the full program total.",
+    "Treasury holdings and milestone reconciliation imply a much larger economic footprint than the direct execution floor alone.",
+    buyback.observability_note || "Later buybacks likely route through Squads internals or other program-controlled accounts, which reduces direct observability."
+  ];
+  renderList("buybackInterpretation", interpretation);
+  renderList("confidenceTiers", method.confidence_tiers || []);
+}
+
+function buildOfficialSection() {
+  const summary = report?.summary || {};
+  const entities = normalizeList(report?.official_entities);
+  const ledger = normalizeList(report?.official_sell_ledger);
+  const totalOfficial = (toNumber(summary.official_cex_pressure_B) || 0) + (toNumber(summary.official_market_pressure_B) || 0);
+  const cards = [
+    {
+      label: "Confirmed CEX Pressure",
+      value: `${fmtBillions(summary.official_cex_pressure_B)} PUMP`,
+      meta: `${fmtPct(summary.official_cex_pressure_pct_of_claimed_buyback_B)} of conservative buyback`,
+      cls: "sell",
+    },
+    {
+      label: "Market-Maker / DEX Pressure",
+      value: `${fmtBillions(summary.official_market_pressure_B)} PUMP`,
+      meta: "Wintermute and DEX-style release paths",
+      cls: "sell",
+    },
+    {
+      label: "Combined Official Market Pressure",
+      value: `${fmtBillions(totalOfficial)} PUMP`,
+      meta: `${fmtPct(summary.official_total_market_pressure_pct_of_claimed_buyback_B)} of conservative buyback`,
+      cls: "danger",
+    },
+    {
+      label: "Confirmed Sell Events",
+      value: String(ledger.length),
+      meta: "Structured ledger entries currently in scope",
+      cls: "highlight",
+    }
+  ];
+  document.getElementById("officialCards").innerHTML = cards.map(card => `
+    <div class="card">
+      <div class="card-label">${card.label}</div>
+      <div class="card-value ${card.cls}">${card.value}</div>
+      <div class="card-meta">${card.meta}</div>
+    </div>
+  `).join("");
+
+  const body = document.getElementById("officialEntityBody");
+  body.innerHTML = entities.length ? entities.map(row => `
+    <tr>
+      <td><strong>${escapeHtml(row.label || "—")}</strong><div class="muted" style="margin-top:4px">${escapeHtml(row.note || "")}</div></td>
+      <td>${escapeHtml(row.entity_type || "—")}</td>
+      <td><span class="tag ${row.pressure_type === "confirmed_cex" ? "danger" : row.pressure_type === "market_maker_and_dex" ? "warn" : ""}">${escapeHtml(row.pressure_type || "—")}</span></td>
+      <td>${fmtBillions(row.confirmed_pressure_B)}</td>
+      <td>${fmtBillions(row.current_balance_B)}</td>
+      <td>${fmtPct(row.share_of_conservative_buyback_pct)}</td>
+      <td>${escapeHtml(row.exchange_name || "n/a")}</td>
+    </tr>
+  `).join("") : '<tr><td colspan="7" class="empty">No official entities available.</td></tr>';
+
+  const ledgerBody = document.getElementById("sellLedgerBody");
+  ledgerBody.innerHTML = ledger.length ? ledger.map(row => `
+    <tr>
+      <td class="mono">${escapeHtml(row.date || "—")}</td>
+      <td><strong>${escapeHtml(row.label || "—")}</strong></td>
+      <td>${escapeHtml(row.flow_type || "—")}</td>
+      <td>${escapeHtml(row.exchange || "n/a")}</td>
+      <td>${fmtBillions(row.amount_pump_B, 4)}</td>
+      <td>${row.amount_usd !== null && row.amount_usd !== undefined ? fmtUsd(row.amount_usd) : "n/a"}</td>
+    </tr>
+  `).join("") : '<tr><td colspan="6" class="empty">No official sell ledger available.</td></tr>';
+}
+
+function buildWhaleSection() {
+  const summary = report?.summary || {};
+  const acc = normalizeList(report?.whale_accumulators);
+  const dist = normalizeList(report?.whale_distributors);
+  const cards = [
+    {
+      label: "Proxy Buy",
+      value: `${fmtBillions(summary.whale_proxy_buy_B, 3)} PUMP`,
+      meta: "59-holder sample cumulative proxy buy",
+      cls: "buy",
+    },
+    {
+      label: "Proxy Sell",
+      value: `${fmtBillions(summary.whale_proxy_sell_B, 3)} PUMP`,
+      meta: "59-holder sample cumulative proxy sell",
+      cls: "sell",
+    },
+    {
+      label: "Proxy Net",
+      value: `${fmtBillions((toNumber(summary.whale_proxy_buy_B) || 0) - (toNumber(summary.whale_proxy_sell_B) || 0), 3)} PUMP`,
+      meta: "Aggregate whale sample netflow",
+      cls: "highlight",
+    },
+    {
+      label: "Top Whale Rows",
+      value: String(normalizeList(report?.whale_clusters).length),
+      meta: "Detailed whale rows currently promoted into attribution",
+      cls: "warn",
+    }
+  ];
+  document.getElementById("whaleCards").innerHTML = cards.map(card => `
+    <div class="card">
+      <div class="card-label">${card.label}</div>
+      <div class="card-value ${card.cls}">${card.value}</div>
+      <div class="card-meta">${card.meta}</div>
+    </div>
+  `).join("");
+
+  function renderWhaleRows(id, rows) {
+    const root = document.getElementById(id);
+    root.innerHTML = rows.length ? rows.map(row => `
+      <tr>
+        <td><strong>${escapeHtml(row.label || "—")}</strong><div class="muted" style="margin-top:4px">${escapeHtml(row.exchange_name || "")}</div></td>
+        <td>${fmtBillions(row.current_balance_B)}</td>
+        <td>${fmtBillions(row.proxy_buy_B, 4)}</td>
+        <td>${fmtBillions(row.proxy_sell_B, 4)}</td>
+        <td><span class="tag ${(toNumber(row.proxy_net_B) || 0) >= 0 ? "ok" : "danger"}">${fmtBillions(row.proxy_net_B, 4)}</span></td>
+      </tr>
+    `).join("") : '<tr><td colspan="5" class="empty">No whale rows available.</td></tr>';
+  }
+
+  renderWhaleRows("accumulatorBody", acc);
+  renderWhaleRows("distributorBody", dist);
+
+  const interpretation = [
+    "The tracked 59-holder sample does not support a simple claim that whales broadly dumped into buyback support during the major March 2026 windows.",
+    "Several large holders were still accumulating or at least not materially distributing during official sell windows.",
+    "Hyperunit hot wallet is the largest negative proxy-flow row, but its pattern is more consistent with inventory or market-making behavior than a clean directional dump wallet.",
+    "Whale flows here remain proxy signals from balance changes, not direct exchange-deposit proof."
+  ];
+  renderList("whaleInterpretation", interpretation);
+}
+
+function buildWindowSection() {
+  const windows = normalizeList(report?.event_windows);
+  const body = document.getElementById("windowBody");
+  body.innerHTML = windows.length ? windows.map(row => `
+    <tr>
+      <td><strong>${escapeHtml(row.label || "—")}</strong></td>
+      <td class="mono">${escapeHtml(row.date || "—")}</td>
+      <td>${fmtBillions(row.official_confirmed_pressure_B_window, 3)}</td>
+      <td>${fmtBillions(row.whale_proxy_sell_B_window, 3)}</td>
+      <td>${fmtBillions(row.whale_proxy_buy_B_window, 3)}</td>
+      <td><span class="tag ${(toNumber(row.whale_proxy_net_B_window) || 0) >= 0 ? "ok" : "danger"}">${fmtBillions(row.whale_proxy_net_B_window, 3)}</span></td>
+      <td>${fmtUsd(row.buyback_usd_window)}</td>
+      <td>${fmtPct(row.return_t_plus_3_pct)}</td>
+      <td>${fmtPct(row.return_t_plus_7_pct)}</td>
+    </tr>
+  `).join("") : '<tr><td colspan="9" class="empty">No event windows available.</td></tr>';
+
+  const readout = windows.map(row => {
+    const official = toNumber(row.official_confirmed_pressure_B_window) || 0;
+    const whaleNet = toNumber(row.whale_proxy_net_B_window) || 0;
+    const direction = whaleNet >= 0 ? "sampled whales were net accumulating" : "sampled whales were net distributing";
+    const t7 = row.return_t_plus_7_pct === null || row.return_t_plus_7_pct === undefined ? "n/a" : fmtPct(row.return_t_plus_7_pct);
+    return `${row.label}: official pressure ${fmtBillions(official, 3)} PUMP; ${direction}; T+7 return ${t7}.`;
+  });
+  renderList("windowReadout", readout);
+}
+
+function buildCostSection() {
+  const cost = report?.cost_basis || {};
+  const cards = [
+    {
+      label: "Current Price",
+      value: fmtUsd(cost.current_price_usd, 6),
+      meta: `Date ${escapeHtml(cost.current_price_date || "—")}`,
+      cls: "highlight",
+    },
+    {
+      label: "Claimed Buyback Avg",
+      value: fmtUsd(cost.claimed_buyback_avg_price_usd, 6),
+      meta: `Distance ${fmtPct(cost.distance_from_claimed_buyback_avg_pct)}`,
+      cls: "warn",
+    },
+    {
+      label: "Observed July Direct-Buy Avg",
+      value: fmtUsd(cost.observed_buyback_avg_price_usd, 6),
+      meta: `Distance ${fmtPct(cost.distance_from_observed_buyback_avg_pct)}`,
+      cls: "warn",
+    },
+    {
+      label: "Treasury Hold Mark",
+      value: fmtUsd(cost.treasury_hold_value_usd_current),
+      meta: "Marked at current spot price",
+      cls: "buy",
+    }
+  ];
+  document.getElementById("costCards").innerHTML = cards.map(card => `
+    <div class="card">
+      <div class="card-label">${card.label}</div>
+      <div class="card-value ${card.cls}">${card.value}</div>
+      <div class="card-meta">${card.meta}</div>
+    </div>
+  `).join("");
+
+  const interpretation = [
+    "Spot remains materially below both buyback cost anchors used in this report.",
+    "If the buyback average is even directionally correct, the program did not lift the market clearing level enough to remove overhead supply.",
+    "This is consistent with a structure where official overhang and unlock-related fear dominate the support value of buybacks.",
+    cost.note || "Cost comparisons frame pressure relative to estimated anchors; they do not prove realized PnL."
+  ];
+  renderList("costInterpretation", interpretation);
+  document.getElementById("currentMark").textContent = `Current price is ${fmtPct(cost.distance_from_claimed_buyback_avg_pct)} versus the claimed cumulative buyback average and ${fmtPct(cost.distance_from_observed_buyback_avg_pct)} versus the observable July direct-buy average. Treasury hold marked at spot is ${fmtUsd(cost.treasury_hold_value_usd_current)}.`;
+}
+
+function buildFinalAttribution() {
+  const supported = [
+    "Buybacks were real and economically meaningful.",
+    "Official and official-linked market-facing supply was also real and large.",
+    "The largest confirmed sell-side sources in scope were official or official-linked wallets, not unlabeled whales.",
+    "In the major March 2026 windows, the tracked whale sample was more net bid than net offered."
+  ];
+  const uncertain = [
+    "The full direct execution footprint of buybacks after July 2025.",
+    "Precise realized cost basis for many unlabeled whales and custodial addresses.",
+    "Whether some unlabeled large holders are indirect official affiliates beyond the confirmed set."
+  ];
+  renderList("supportedList", supported);
+  renderList("uncertainList", uncertain);
+}
+
+function buildDataQuality() {
+  const dq = report?.data_quality || {};
+  const sources = normalizeList(report?.source_registry);
+  renderList("coverageList", dq.coverage_flags || []);
+  renderList("conflictList", dq.known_conflicts || []);
+  renderList("limitationList", dq.limitations || report?.methodology?.limitations || []);
+
+  const body = document.getElementById("sourceBody");
+  body.innerHTML = sources.length ? sources.map(src => `
+    <tr>
+      <td class="mono">${escapeHtml(src.id || src.key || "—")}</td>
+      <td class="mono">${escapeHtml(src.path || "—")}</td>
+      <td>${escapeHtml(src.role || "—")}</td>
+    </tr>
+  `).join("") : '<tr><td colspan="3" class="empty">No source registry available.</td></tr>';
+}
+
+async function loadReport() {
+  try {
+    const resp = await fetch(DATA_URL, { cache: "no-store" });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    report = await resp.json();
+  } catch (error) {
+    document.getElementById("statusTag").textContent = "Fallback";
+    document.getElementById("heroSubtitle").textContent = `Data file unavailable: ${error.message}`;
+    report = {
+      metadata: {},
+      summary: {},
+      buyback: {},
+      official_entities: [],
+      official_sell_ledger: [],
+      whale_accumulators: [],
+      whale_distributors: [],
+      event_windows: [],
+      cost_basis: {},
+      methodology: {},
+      data_quality: {},
+      source_registry: [],
+      whale_clusters: []
+    };
+  }
+
+  buildHero();
+  buildExecutiveSummary();
+  buildBuybackSection();
+  buildOfficialSection();
+  buildWhaleSection();
+  buildWindowSection();
+  buildCostSection();
+  buildFinalAttribution();
+  buildDataQuality();
+}
+
+loadReport();
+</script>
+</body>
+</html>
