@@ -1,6 +1,6 @@
 # PUMP Research Workspace
 
-当前仓库已经收口为以 PUMP 研究为主，保留原有链上数据采集数据层，公开页面只保留 PUMP 行为图。
+当前仓库以 PUMP 研究为主，同时补充了独立的 PRL 筹码结构公开页；链上数据采集与研究脚本仍按数据层 + 专题页分离维护。
 
 ## 功能特性
 
@@ -12,7 +12,10 @@
 
 ## 在线访问
 
-🌐 **[查看页面](https://melroseee-e.github.io/data-monitoring/)**
+🌐 **公开页面**
+
+- 主页: https://melroseee-e.github.io/data-monitoring/
+- PRL 筹码结构: https://melroseee-e.github.io/data-monitoring/web/prl_holder_structure.html
 
 ## 本地运行
 
@@ -55,6 +58,7 @@ python scripts/data_collector.py
 
 ```bash
 open web/pump_behavior_chart.html
+open web/prl_holder_structure.html
 ```
 
 ## 项目结构
@@ -64,14 +68,17 @@ open web/pump_behavior_chart.html
 │   ├── data_collector.py        # 主采集器
 │   ├── normalize_labels.py      # 交易所标签归并
 │   ├── pump/                    # PUMP 研究脚本
+│   ├── prl/                     # PRL 研究脚本
 │   ├── ops/                     # 运维脚本
 │   └── archive/                 # 调试/实验脚本归档
 ├── data/
 │   ├── latest_data.json         # 主线最新数据
 │   ├── history/                 # 主线历史数据
-│   └── pump/                    # PUMP 数据分层
+│   ├── pump/                    # PUMP 数据分层
+│   └── prl/                     # PRL 数据分层
 ├── web/                         # 公开页面
-│   └── pump_behavior_chart.html
+│   ├── pump_behavior_chart.html
+│   └── prl_holder_structure.html
 ├── docs/
 │   ├── pump/                    # PUMP 研究报告
 │   └── archive/                 # 历史项目文档
