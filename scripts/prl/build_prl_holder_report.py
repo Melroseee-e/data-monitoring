@@ -41,6 +41,7 @@ from core.rpc import rpc_call
 from scripts.ops.build_exchange_addresses import fetch_top_holders
 
 TOKEN_ADDRESS = "0xd20fB09A49a8e75Fef536A2dBc68222900287BAc"
+TOKEN_SOLANA_ADDRESS = "PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs"
 TOKEN_CHAIN = "bsc"
 TOP_HOLDER_COUNT = 500
 PREFERRED_LOG_CHUNK = 5_000
@@ -210,6 +211,11 @@ def fetch_token_metadata() -> dict[str, Any]:
         "total_supply": total_supply_raw / (10 ** decimals),
         "chain": TOKEN_CHAIN,
         "contract": TOKEN_ADDRESS,
+        "solana_address": TOKEN_SOLANA_ADDRESS,
+        "deployments": [
+            {"chain": "bsc", "contract": TOKEN_ADDRESS, "role": "analysis_primary"},
+            {"chain": "solana", "contract": TOKEN_SOLANA_ADDRESS, "role": "reference"},
+        ],
         "as_of": NOW_UTC.strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
 
@@ -248,6 +254,8 @@ def fetch_bubblemaps_snapshot(metadata: dict[str, Any]) -> list[dict[str, Any]]:
             "name": metadata["name"],
             "chain": TOKEN_CHAIN,
             "contract": TOKEN_ADDRESS,
+            "solana_address": TOKEN_SOLANA_ADDRESS,
+            "deployments": metadata["deployments"],
             "count": len(holders),
             "source": "BubbleMaps Top 500 snapshot",
         },
@@ -792,8 +800,9 @@ def build_report(
     lines: list[str] = []
     lines.append(f"# {metadata['name']} ({metadata['symbol']}) 筹码结构研究")
     lines.append("")
-    lines.append(f"- 合约: `{metadata['contract']}`")
-    lines.append(f"- 链: {metadata['chain'].upper()}")
+    lines.append(f"- BSC 研究合约: `{metadata['contract']}`")
+    lines.append(f"- Solana 地址: `{metadata['solana_address']}`")
+    lines.append(f"- 主研究链: {metadata['chain'].upper()}")
     lines.append(f"- 总供应量: {fmt_num(metadata['total_supply'], 4)} {metadata['symbol']}")
     lines.append(f"- 生成时间: {NOW_UTC.strftime('%Y-%m-%d %H:%M UTC')}")
     lines.append(f"- BubbleMaps 快照: Top {len(holders)} holders")

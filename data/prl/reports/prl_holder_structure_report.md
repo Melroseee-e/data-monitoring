@@ -1,9 +1,10 @@
 # Perle (PRL) 筹码结构研究
 
-- 合约: `0xd20fB09A49a8e75Fef536A2dBc68222900287BAc`
-- 链: BSC
+- BSC 研究合约: `0xd20fB09A49a8e75Fef536A2dBc68222900287BAc`
+- Solana 地址: `PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs`
+- 主研究链: BSC
 - 总供应量: 84,315,132.1586 PRL
-- 生成时间: 2026-03-30 08:13 UTC
+- 生成时间: 2026-03-30 08:33 UTC
 - BubbleMaps 快照: Top 500 holders
 - 已知本地交易所地址数: 40
 

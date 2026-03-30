@@ -7,7 +7,20 @@
     "total_supply": 84315132.158643,
     "chain": "bsc",
     "contract": "0xd20fB09A49a8e75Fef536A2dBc68222900287BAc",
-    "as_of": "2026-03-30T08:01:12Z"
+    "as_of": "2026-03-30T08:01:12Z",
+    "solana_address": "PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs",
+    "deployments": [
+      {
+        "chain": "bsc",
+        "contract": "0xd20fB09A49a8e75Fef536A2dBc68222900287BAc",
+        "role": "analysis_primary"
+      },
+      {
+        "chain": "solana",
+        "contract": "PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs",
+        "role": "reference"
+      }
+    ]
   },
   "summary": {
     "snapshot": {
@@ -214,7 +227,20 @@
       "total_supply": 84315132.158643,
       "chain": "bsc",
       "contract": "0xd20fB09A49a8e75Fef536A2dBc68222900287BAc",
-      "as_of": "2026-03-30T08:01:12Z"
+      "as_of": "2026-03-30T08:01:12Z",
+      "solana_address": "PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs",
+      "deployments": [
+        {
+          "chain": "bsc",
+          "contract": "0xd20fB09A49a8e75Fef536A2dBc68222900287BAc",
+          "role": "analysis_primary"
+        },
+        {
+          "chain": "solana",
+          "contract": "PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs",
+          "role": "reference"
+        }
+      ]
     }
   },
   "holders": [

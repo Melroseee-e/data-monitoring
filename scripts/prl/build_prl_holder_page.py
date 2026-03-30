@@ -571,11 +571,12 @@ code {{
             <h1 class="title">{esc(metadata['name'])} ({esc(metadata['symbol'])})</h1>
             <p class="subtitle">
               基于 BubbleMaps Top 500 持仓快照、BSC 全历史 Transfer 聚合与本地交易所地址表生成的公开版筹码结构页。
-              BubbleMaps 仅作为显式标签源，持仓量以链上 <code>balanceOf</code> 校验后的结果为准。
+              当前结论以 BSC 上的 PRL 合约为主；Solana 地址仅作多链部署参考。BubbleMaps 仅作为显式标签源，持仓量以链上 <code>balanceOf</code> 校验后的结果为准。
             </p>
             <div class="pill-row">
-              <div class="pill"><span>合约</span><strong>{esc(metadata['contract'])}</strong></div>
-              <div class="pill"><span>链</span><strong>{esc(str(metadata['chain']).upper())}</strong></div>
+              <div class="pill"><span>BSC</span><strong>{esc(metadata['contract'])}</strong></div>
+              <div class="pill"><span>Solana</span><strong>{esc(metadata.get('solana_address') or '-')}</strong></div>
+              <div class="pill"><span>主研究链</span><strong>{esc(str(metadata['chain']).upper())}</strong></div>
               <div class="pill"><span>总供应</span><strong>{esc(fmt_num(metadata['total_supply'], 4))}</strong></div>
               <div class="pill"><span>更新时间</span><strong>{esc(metadata['as_of'])}</strong></div>
             </div>
