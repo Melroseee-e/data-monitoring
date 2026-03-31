@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Monitoring Reports</title>
+  <style>
+    :root {
+      --bg: #f6f1e7;
+      --card: rgba(255, 255, 255, 0.86);
+      --ink: #1d1713;
+      --muted: #6e645b;
+      --line: rgba(29, 23, 19, 0.10);
+      --accent: #0c6b58;
+      --accent-2: #b17d2c;
+      --shadow: 0 18px 50px rgba(42, 28, 19, 0.10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(12,107,88,0.15), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(177,125,44,0.20), transparent 32%),
+        linear-gradient(180deg, #fcfaf6 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(980px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 36px 0 60px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 30px;
+      margin-bottom: 22px;
+    }
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.02;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      padding: 22px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(12,107,88,0.10);
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .tag.secondary {
+      background: rgba(177,125,44,0.12);
+      color: var(--accent-2);
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+    .card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      min-height: 78px;
+    }
+    a.link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: var(--ink);
+      color: white;
+      font-weight: 700;
+    }
+    .sub {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+    @media (max-width: 680px) {
+      .page { width: min(100vw - 18px, 980px); padding-top: 18px; }
+      .hero, .card { border-radius: 22px; }
+      .hero, .card { padding: 20px; }
+      .card p { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">GitHub Pages</div>
+      <h1>On-Chain Research Reports</h1>
+      <p>这里是公开的静态研究页入口。之前 `.../web/` 会 404，因为目录下没有 `index.html`。现在统一从这个落地页进入各个报告。</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="tag">PRL</div>
+        <h2>Perle Solana Holder Structure</h2>
+        <p>Solana PRL 的 Top 10 筹码结构页，重点拆分官方、高概率官方、大户、交易所和 DEX 池子。</p>
+        <a class="link" href="./prl_holder_structure.html">Open PRL Report</a>
+        <div class="sub">/web/prl_holder_structure.html</div>
+      </article>
+
+      <article class="card">
+        <div class="tag secondary">PUMP</div>
+        <h2>PUMP Behavior Chart</h2>
+        <p>PUMP 行为和资金流图表入口。保留原有页面，不再作为唯一首页跳转目标。</p>
+        <a class="link" href="./pump_behavior_chart.html">Open PUMP Page</a>
+        <div class="sub">/web/pump_behavior_chart.html</div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
