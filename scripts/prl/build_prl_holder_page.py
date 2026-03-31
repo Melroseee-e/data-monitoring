@@ -45,7 +45,15 @@ def bucket_label(bucket: str) -> str:
 
 
 def holder_title(row: dict[str, Any]) -> str:
-    return row.get("resolved_entity_name") or "No BubbleMaps / Arkham label"
+    return row.get("research_label") or row.get("resolved_entity_name") or "No BubbleMaps / Arkham label"
+
+
+def counterparty_text(entry: dict[str, Any] | None) -> str:
+    if not entry:
+        return "-"
+    counterparty = entry.get("counterparty") or "unknown"
+    amount = float(entry.get("amount") or 0.0)
+    return f"{short_addr(counterparty)} / {fmt_num(amount, 2)} PRL"
 
 
 def stat_card(label: str, value: str, note: str, tone: str = "warm") -> str:
@@ -101,6 +109,8 @@ def build_page(data: dict[str, Any]) -> str:
     holders = data["holders"]
     label_inventory = data["label_inventory"]
     top10_layers = data["top10_layer_summary"]
+    tokenomics_alignment = data["tokenomics_alignment"]
+    official_flows = data["official_distribution_flows"]
 
     symbol = metadata["token"]
     name = metadata["name"]
@@ -108,48 +118,88 @@ def build_page(data: dict[str, Any]) -> str:
     total_supply = metadata["total_supply"]
 
     top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
-    unlabeled_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] == "whale")
     official_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"})
-
     official_top10 = [row for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"}]
     exchange_rows = [row for row in holders if row["resolved_bucket"] == "exchange"][:8]
     fresh_rows = data["fresh_wallet_cluster"][:8]
 
     stat_cards = "".join([
-        stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "Top 10 仍然决定当前绝大多数流通盘。"),
-        stat_card("Whale Layer", fmt_pct(unlabeled_top10_share), "Top 10 内未标注大户层占比。", "cool"),
-        stat_card("Official Layer", fmt_pct(official_top10_share), "已公开官方 + 高概率官方合计。", "blue"),
-        stat_card("CEX Lower Bound", fmt_pct(summary["exchange_share"]), "BubbleMaps / Arkham 当前识别到的交易所下限仓位。", "rose"),
+        stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "Top 10 仍然决定当前绝大多数供应。"),
+        stat_card("Official Layer", fmt_pct(official_top10_share), "链上证据支持 Top 10 主要属于官方配额 / 分发层。", "blue"),
+        stat_card("TGE Unlocked", fmt_num(summary["tge_unlocked_amount"], 0), "按 docs 口径，TGE 理论已解锁 175M PRL。", "cool"),
+        stat_card("Still Locked", fmt_num(summary["locked_after_tge_amount"], 0), "按 docs 口径，TGE 后理论仍锁定 / 待释放 825M。", "rose"),
     ])
 
     layer_cards = "".join(
         info_card(
             item["bucket_label"],
             (
-                f"<strong>{fmt_pct(item['share_of_supply'])}</strong> of supply, "
-                f"{item['address_count']} addresses in Top 10."
+                f"<strong>{esc(fmt_pct(item['share_of_supply']))}</strong> of supply, "
+                f"{esc(str(item['address_count']))} addresses in Top 10."
             ),
-            "sand" if item["bucket"] == "whale" else "ink",
+            "sand" if item["bucket"] == "official_inferred" else "ink",
         )
         for item in top10_layers
     )
+
+    allocation_cards = []
+    for item in tokenomics_alignment:
+        matched = "<br>".join(
+            f"{esc(addr['role'] or '地址')} · <code>{esc(short_addr(addr['address']))}</code> · {esc(fmt_pct(addr['share'], 3))}"
+            for addr in item["matched_addresses"]
+        ) or "链上暂未识别"
+        body = (
+            f"<strong>{esc(fmt_num(item['allocation_amount'], 0))} PRL</strong> / {esc(fmt_pct(item['allocation_pct']))}"
+            f"<br>TGE unlock: {esc(fmt_num(item['tge_unlocked_amount'], 0))}"
+            f"<br>Locked after TGE: {esc(fmt_num(item['locked_after_tge'], 0))}"
+            f"<br>{esc(item['summary'])}"
+            f"<br>{matched}"
+        )
+        allocation_cards.append(info_card(item["bucket"], body, "sand" if item["bucket"] in {"Community", "Ecosystem"} else "ink"))
+
+    top10_matrix_rows = [
+        [
+            esc(str(row["rank"])),
+            f"<code>{esc(short_addr(row['address']))}</code>",
+            esc(fmt_pct(row["share"], 3)),
+            esc(row.get("tokenomics_bucket") or "-"),
+            esc(row.get("top_holder_role") or "-"),
+            esc(counterparty_text(row.get("tx_primary_inbound"))),
+            esc(counterparty_text(row.get("tx_primary_outbound"))),
+            esc(row.get("tx_release_status_label") or "-"),
+        ]
+        for row in top10
+    ]
+
+    flow_rows = [
+        [
+            f"<code>{esc(short_addr(item['upstream']))}</code>" if item.get("upstream") else "-",
+            f"<code>{esc(short_addr(item['downstream']))}</code>",
+            esc(fmt_num(item["amount"], 2)),
+            esc(item.get("tokenomics_bucket") or "-"),
+            esc(item.get("downstream_role") or "-"),
+        ]
+        for item in official_flows[:12]
+    ]
 
     dossier_cards = []
     for row in top10:
         facts = [
             ("Amount", f"{fmt_num(row['amount'], 2)} PRL"),
-            ("First Seen", row.get("first_activity_date") or "-"),
-            ("Degree", str(row.get("degree", 0))),
-            ("Bucket", bucket_label(row["resolved_bucket"])),
+            ("Docs Bucket", row.get("tokenomics_bucket") or "-"),
+            ("Release", row.get("tx_release_status_label") or "-"),
+            ("Primary In", counterparty_text(row.get("tx_primary_inbound"))),
+            ("Primary Out", counterparty_text(row.get("tx_primary_outbound"))),
+            ("PRL Txs", str(row.get("tx_prl_transfer_count", 0))),
         ]
         facts_html = "".join(
             f"<div><dt>{esc(k)}</dt><dd>{esc(v)}</dd></div>"
             for k, v in facts
         )
-        label = holder_title(row)
         tags = [
             bucket_label(row["resolved_bucket"]),
             row.get("top_holder_role") or "Top holder",
+            row.get("tx_release_status_label") or "Release n/a",
             f"Confidence: {row.get('confidence', 'n/a')}",
         ]
         tag_html = "".join(f"<span class=\"pill\">{esc(tag)}</span>" for tag in tags if tag)
@@ -159,14 +209,27 @@ def build_page(data: dict[str, Any]) -> str:
             <div class="rank-chip">#{row['rank']}</div>
             <a class="address-link" href="{esc(solscan_url(row['address']))}" target="_blank" rel="noreferrer">{esc(short_addr(row['address']))}</a>
           </div>
-          <div class="dossier-label">{esc(label)}</div>
+          <div class="dossier-label">{esc(holder_title(row))}</div>
           <div class="pill-row">{tag_html}</div>
           <div class="dossier-metric">{esc(fmt_pct(row['share']))}</div>
           <div class="dossier-sub">Current share of total supply</div>
           <dl class="facts">{facts_html}</dl>
-          <p class="note">{esc(row.get('evidence_summary') or row.get('classification_reason') or '')}</p>
+          <p class="note">{esc(row.get('classification_reason') or '')}</p>
+          <p class="note">{esc(row.get('evidence_summary') or '')}</p>
         </article>
         """)
+
+    official_rows = [
+        [
+            f"<code>{esc(short_addr(row['address']))}</code>",
+            esc(bucket_label(row["resolved_bucket"])),
+            esc(row.get("tokenomics_bucket") or "-"),
+            esc(row.get("top_holder_role") or "-"),
+            esc(fmt_pct(row["share"], 3)),
+            esc(row.get("classification_reason") or "-"),
+        ]
+        for row in official_top10
+    ]
 
     label_rows = [
         [
@@ -177,17 +240,6 @@ def build_page(data: dict[str, Any]) -> str:
             esc(", ".join(short_addr(addr) for addr in item["sample_addresses"][:3])),
         ]
         for item in label_inventory[:20]
-    ]
-
-    official_rows = [
-        [
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(bucket_label(row["resolved_bucket"])),
-            esc(row.get("resolved_entity_name") or "-"),
-            esc(fmt_pct(row["share"], 3)),
-            esc(row.get("classification_reason") or "-"),
-        ]
-        for row in official_top10
     ]
 
     exchange_table_rows = [
@@ -214,6 +266,7 @@ def build_page(data: dict[str, Any]) -> str:
     source_path = "https://github.com/Melroseee-e/data-monitoring"
     report_md = "../data/prl/reports/prl_holder_structure_report.md"
     analysis_json = "../data/prl/derived/prl_holder_analysis.json"
+    tx_json = "../data/prl/derived/prl_top10_transaction_summary.json"
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -593,7 +646,7 @@ td {{
             这份页面沿用上一版 intelligence UI，只重写内容口径。
             现在研究对象只保留 Solana 主部署，Top 10 当前合计控制
             <strong>{esc(fmt_pct(summary['top10_share']))}</strong> 的总供应。
-            重点不是长尾，而是把 Top 10 里的官方、高概率官方、大户、交易所和 DEX 层彻底分清楚。
+            重点不是长尾，而是把 Top 10 里的官方总控、配额主仓、分仓、交易所和 DEX 层彻底分清楚。
           </p>
         </div>
         <div class="meta-box">
@@ -623,7 +676,7 @@ td {{
           <div class="eyebrow">Control Layers</div>
           <h2>Top 10 分层</h2>
         </div>
-        <p>这版直接用你之前那套 UI 去读 Solana PRL。先看 Top 10 的层，再看每个地址的 dossier，不把 500 个地址平铺稀释掉。</p>
+        <p>这次最重要的更新是：Top 10 已经不再按“未标注鲸鱼层”理解，而是按“官方配额层 + 官方分发层”理解。</p>
       </div>
       <div class="layer-grid">{layer_cards}</div>
     </section>
@@ -631,18 +684,43 @@ td {{
     <section class="section">
       <div class="section-head">
         <div>
+          <div class="eyebrow">Tokenomics Map</div>
+          <h2>代币经济对照</h2>
+        </div>
+        <p>docs 给的是配额和释放规则；这里把它们和当前链上候选地址直接对起来。</p>
+      </div>
+      <div class="layer-grid">{''.join(allocation_cards)}</div>
+    </section>
+
+    {table_section(
+        "官方分发路径",
+        "把 Helius Top 10 流水里的主入账链路直接摊开看，先看官方总控，再看配额主仓和分仓。",
+        ["Upstream", "Downstream", "Amount", "Bucket", "Role"],
+        flow_rows,
+    )}
+
+    {table_section(
+        "Top 10 Control Matrix",
+        "先用一张表看清 Top 10 每个地址现在到底属于哪个配额桶、由谁打进来、是否已经开始释放。",
+        ["Rank", "Address", "Share", "Bucket", "Role", "Primary In", "Primary Out", "Release"],
+        top10_matrix_rows,
+    )}
+
+    <section class="section">
+      <div class="section-head">
+        <div>
           <div class="eyebrow">Top 10 Dossiers</div>
           <h2>逐个地址研究</h2>
         </div>
-        <p>每个卡片都保留上一版的情报档案式阅读方式，但内容改成 Solana 版本的官方识别、账户形态和证据摘要。</p>
+        <p>每个卡片都给出当前角色判断、主入账、主出账和释放状态，避免只看到地址而看不到理由。</p>
       </div>
       <div class="dossier-grid">{''.join(dossier_cards)}</div>
     </section>
 
     {table_section(
         "官方地址与高概率官方",
-        f"公开官方现在只有 1 个硬证据地址；其余只放进高概率官方层，不和公开事实混写。",
-        ["Address", "Bucket", "Label", "Share", "Reason"],
+        "已公开官方和链上高概率官方分开看，但两者的推断理由都直接写出来。",
+        ["Address", "Bucket", "Docs Bucket", "Role", "Share", "Reason"],
         official_rows,
     )}
 
@@ -673,12 +751,12 @@ td {{
           <div class="eyebrow">Reading Notes</div>
           <h2>如何读这份结构</h2>
         </div>
-        <p>你之前那版 UI 的重点就是“快速看懂控制层”。这版也保持一样：先官方，再大户，再交易所和 DEX。Top 10 之外所有地址加起来只占 {esc(fmt_pct(1 - summary['top10_share']))}。</p>
+        <p>这版还是沿用你之前那套 UI，但阅读顺序改成“先代币经济，再官方分发，再 Top 10 dossiers”。Top 10 之外所有地址加起来只占 {esc(fmt_pct(1 - summary['top10_share']))}。</p>
       </div>
       <div class="layer-grid">
         {info_card("官方口径", f"Docs 明确把 PRL 定义在 Solana，公开 authority 地址是 {short_addr(docs['metadata_update_authority'])}。", "sand")}
-        {info_card("核心风险", f"Top 10 占 {fmt_pct(summary['top10_share'])}，而且其中大户层就有 {fmt_pct(unlabeled_top10_share)}。", "ink")}
-        {info_card("交易所侧", f"交易所下限仓位目前只有 {fmt_pct(summary['exchange_share'])}，并不主导顶层筹码。", "ink")}
+        {info_card("关键更新", f"现在最强的链上证据是：{short_addr(docs['metadata_update_authority'])} 直接打出 375M / 276.619M / 178.381M / 170M 四条主配额路径。", "ink")}
+        {info_card("交易所侧", f"交易所下限仓位目前只有 {fmt_pct(summary['exchange_share'])}，而且第一个交易所只到第 {summary['first_exchange_rank']} 名。", "ink")}
         {info_card("流动性侧", f"DEX / LP 下限仓位约 {fmt_pct(summary['dex_share'])}，不在 Top 10 主控制层。", "ink")}
       </div>
     </section>
@@ -687,7 +765,8 @@ td {{
       Source:
       <a href="{esc(source_path)}" target="_blank" rel="noreferrer">GitHub Repo</a> |
       <a href="{esc(report_md)}" target="_blank" rel="noreferrer">Markdown Report</a> |
-      <a href="{esc(analysis_json)}" target="_blank" rel="noreferrer">Analysis JSON</a>
+      <a href="{esc(analysis_json)}" target="_blank" rel="noreferrer">Analysis JSON</a> |
+      <a href="{esc(tx_json)}" target="_blank" rel="noreferrer">Top 10 Tx JSON</a>
     </footer>
   </main>
 </body>

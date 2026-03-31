@@ -1,0 +1,1294 @@
+{
+  "metadata": {
+    "generated_at": "2026-03-31T06:04:08Z",
+    "token": "PRL",
+    "mint": "PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs",
+    "address_count": 10,
+    "helius_key_suffixes_used": [
+      "2d5b90",
+      "6648bb"
+    ],
+    "helius_request_counts": {
+      "2d5b90": 19,
+      "6648bb": 18
+    }
+  },
+  "addresses": [
+    {
+      "address": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+      "rank": 1,
+      "amount": 317980209.13,
+      "share": 0.3179802094479802,
+      "resolved_bucket": "whale",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1771429708,
+        "total_before_filter": 37,
+        "total_after_filter": 37
+      },
+      "prl_transfer_count": 12,
+      "inbound_transfer_count": 2,
+      "outbound_transfer_count": 10,
+      "inbound_total": 375000000.0,
+      "outbound_total": 57019790.87,
+      "net_flow": 317980209.13,
+      "unique_incoming_counterparties": 1,
+      "unique_outgoing_counterparties": 5,
+      "top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 375000000.0,
+          "count": 2
+        }
+      ],
+      "top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 30000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 25000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "XJMfBczNcaTV2fsmd5b4CvMkm4rrVvEjPJ4cH6Lf7zT",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "WC69LwqcA9eU2rcgTA98UjQ12GxbPEVjfRYr7p9weUF",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6UfKUMFXQQ1gELHhyEFqP1wUqvp5kGzqvz4PZAY3enYu",
+          "amount": 19790.87,
+          "count": 2
+        }
+      ],
+      "first_prl_transfer_ts": 1772669083,
+      "last_prl_transfer_ts": 1774657884,
+      "sample_events": [
+        {
+          "signature": "5ymDrjzurMPHQeF8SQjK7CwmUo5fAjfWzyASmAyNA26teT7yfy7BpLmdBZBkZNG5nUUWd7UiHXR1ouue4iRxcpDC",
+          "timestamp": 1774657884,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "6UfKUMFXQQ1gELHhyEFqP1wUqvp5kGzqvz4PZAY3enYu",
+          "amount": 19780.87
+        },
+        {
+          "signature": "3xDC1MPpYKbtyJFy6MYrHYwyasJFL3FUKjBP2YocSXjLMqYbi5CufKUgqRgkw5WTf1m5oeodqcr93jMjujAqQS4Q",
+          "timestamp": 1774578567,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "6UfKUMFXQQ1gELHhyEFqP1wUqvp5kGzqvz4PZAY3enYu",
+          "amount": 10.0
+        },
+        {
+          "signature": "3dcKbhffrDoKHpiQA4TCEDKq3vf3fLZzfZAfZYRCFMSkKhgw7Sx2va9oHebsbAadU3nRRCZkHmiTndqmYTXZieWU",
+          "timestamp": 1774414702,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 24999990.0
+        },
+        {
+          "signature": "5H1k8ojS19BtNqNyGq4mYoypkrt7b5ZkuraUxguVG8YvAdwUFnHKbqE6SNPcV7Zzws3XB5z6vL3tbjmVjhjprKxr",
+          "timestamp": 1774414060,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 10.0
+        },
+        {
+          "signature": "1UunWcYJT54soSktQARiShh8UuSEfJHDmfffLKyq3oXmDRCi1n6vqt1C19z23g3bq7M77o7eepJzsWF5VyH5Gi7",
+          "timestamp": 1774404353,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "XJMfBczNcaTV2fsmd5b4CvMkm4rrVvEjPJ4cH6Lf7zT",
+          "amount": 999990.0
+        },
+        {
+          "signature": "62Lpg9zJeJTSZV4KhXqXzDk9GztM8EDyXW8SeJT18ix5ELzi1rxFGkdrSZH84cJB4kYotzbib3rPXUp2bzaqLXuv",
+          "timestamp": 1774384283,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "XJMfBczNcaTV2fsmd5b4CvMkm4rrVvEjPJ4cH6Lf7zT",
+          "amount": 10.0
+        },
+        {
+          "signature": "4w93VcCTnixhoWV5BXXUgrDxKwiys6xBvxZAyg2YGiAogp8AUGWDnijEhykwFkwyVgjGLBoDQuhGfuCaxRALzDcm",
+          "timestamp": 1774364050,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "WC69LwqcA9eU2rcgTA98UjQ12GxbPEVjfRYr7p9weUF",
+          "amount": 999990.0
+        },
+        {
+          "signature": "57GaLMBhhiiMXxpKoe7irvdLeTrrVJf7No4Dka76BM7LEs19CyHMaJdmanq9qwJSUuAVUotrEAMMMxABT26Ubdez",
+          "timestamp": 1774362627,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "WC69LwqcA9eU2rcgTA98UjQ12GxbPEVjfRYr7p9weUF",
+          "amount": 10.0
+        },
+        {
+          "signature": "26Ftke9ZPZ5rDqtQHReiF8skLKCGsDgQs4XpyGoSBNf6FAw1KyypoRWna9iEroKHUyAwPjtiwNv3i13mBBC53Zor",
+          "timestamp": 1774228220,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 29999999.0
+        },
+        {
+          "signature": "5GDJY5VVy6PxNPyzugBk2zfTVW47jDYLixTsXBwg6aLwtY7wygw51JBxPZY94a6FG3T8awMxxX8MSrvbyEGjthrP",
+          "timestamp": 1774227033,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 1.0
+        },
+        {
+          "signature": "4ZmT5BnBtFRruPCepDSpFUtnqfWpyYs55hAAnE2ZqCt4brVtGXxn8xQsqRD7sxpGh655Kj1Cfetm8b4zpcuuRByt",
+          "timestamp": 1772734972,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 374999999.0
+        },
+        {
+          "signature": "SfhQsxXkFJc5x4Wp4UPMaEQHWnk6BCzT84tBLCCyRMWcRSbiDSRL1wLaaUKA8foFQfWjLtjQWxcqQFNEu1ki54y",
+          "timestamp": 1772669083,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 1.0
+        }
+      ],
+      "release_status": "moderate_distribution",
+      "role_inference": "likely_community_treasury_or_locked_master"
+    },
+    {
+      "address": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+      "rank": 2,
+      "amount": 276619098.0,
+      "share": 0.2766190982766191,
+      "resolved_bucket": "whale",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1770665751,
+        "total_before_filter": 24,
+        "total_after_filter": 24
+      },
+      "prl_transfer_count": 2,
+      "inbound_transfer_count": 2,
+      "outbound_transfer_count": 0,
+      "inbound_total": 276619098.0,
+      "outbound_total": 0,
+      "net_flow": 276619098.0,
+      "unique_incoming_counterparties": 1,
+      "unique_outgoing_counterparties": 0,
+      "top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 276619098.0,
+          "count": 2
+        }
+      ],
+      "top_outgoing_counterparties": [],
+      "first_prl_transfer_ts": 1772669166,
+      "last_prl_transfer_ts": 1772734906,
+      "sample_events": [
+        {
+          "signature": "5m3QZJAishQhpJRtrkW73XjLKBeasPiHGTAU8HeAE5bL5XTjmq7iSoziitnwST9jpeRmbsbYGJMmW45PAGhxBcuG",
+          "timestamp": 1772734906,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 276619097.0
+        },
+        {
+          "signature": "4N9kTPcVS9b9CuFWFVYvjKHBiZAnRBaF1AsD2bSVoGbcinevPFuFeviDYu6qXuZ4eQmiyeyCmQAz6EMvcNdGYub1",
+          "timestamp": 1772669166,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 1.0
+        }
+      ],
+      "release_status": "static_unreleased_like",
+      "role_inference": "likely_investor_vesting_master"
+    },
+    {
+      "address": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+      "rank": 3,
+      "amount": 94080066.0,
+      "share": 0.09408006609408007,
+      "resolved_bucket": "whale",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1770665774,
+        "total_before_filter": 75,
+        "total_after_filter": 75
+      },
+      "prl_transfer_count": 17,
+      "inbound_transfer_count": 3,
+      "outbound_transfer_count": 14,
+      "inbound_total": 181380902.0,
+      "outbound_total": 87300836.0,
+      "net_flow": 94080066.0,
+      "unique_incoming_counterparties": 2,
+      "unique_outgoing_counterparties": 8,
+      "top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 3000000.0,
+          "count": 1
+        }
+      ],
+      "top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 80000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 4500000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "84kP3YqMmJZpd34SoHu3vS93aXBCJMqA5vRhA5PKkb6M",
+          "amount": 1500000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GXU89jmgYV3dHDqcDuJoAXc9FELYnb7jULfR1Sk4Q7Aa",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "AxVbkcuiA5DAwh2MXippzVg7byKnDQXEvHCEir6MzwsC",
+          "amount": 300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "FcXAKVNKnkb9S22LbHsXF87VGnEVrf23sFNnQm6thp4o",
+          "amount": 700.0,
+          "count": 1
+        },
+        {
+          "counterparty": "37iuXv1jgdDCnSMRcDMyzD2GFTZc6xzGMAoxP98V9cY8",
+          "amount": 135.0,
+          "count": 1
+        },
+        {
+          "counterparty": "9v1UM66nwJXGbE9pnAocy1J8ri364oTgCBdHGBm2T4Wo",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "first_prl_transfer_ts": 1772669015,
+      "last_prl_transfer_ts": 1774478724,
+      "sample_events": [
+        {
+          "signature": "3rpbQLVTXCU9uRK5WttsCns9PSWdMrQPUwvrhYyWMHphoAp62LDDFkzAYEyNEn3pKPea9Npiha7pjwiudTNxv5cy",
+          "timestamp": 1774478724,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 3000000.0
+        },
+        {
+          "signature": "21i7KYutWLbq3QSLRKNv8bCygyG6ZK2xeenwPAHRUiH9UaesBBsv41ED5Nd1Diwxkpz7uvKKNbJ7wEhJeckRV3yB",
+          "timestamp": 1774468823,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 1500000.0
+        },
+        {
+          "signature": "5fa64qq78WfeMHsAG227azbffhpY6oYYpJ3D4H7YbUstEzyVShFBcEq2o3xH6XH54H3w28XfYGGFRiSHTJa1uc5o",
+          "timestamp": 1774440015,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 1500000.0
+        },
+        {
+          "signature": "3kXoWPjhB1gHA5HdKzgJXfvhGZA2BmzUjtf5etNhmu6J1twWLuM2SmS4Zt6Li6CQ8GgHaHfM21iRDsCw3VJ8d2hg",
+          "timestamp": 1774436786,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "GXU89jmgYV3dHDqcDuJoAXc9FELYnb7jULfR1Sk4Q7Aa",
+          "amount": 999990.0
+        },
+        {
+          "signature": "5Ggs9uVMiYPsDyYEoaM3ZUVpGDAT5Hs8knDt6j4Sei7RTS5dT4b5CwC6wKYztRZfn8nteUBsdjbJWtmDe71RyKre",
+          "timestamp": 1774436365,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "GXU89jmgYV3dHDqcDuJoAXc9FELYnb7jULfR1Sk4Q7Aa",
+          "amount": 10.0
+        },
+        {
+          "signature": "4tEnJ5uAJTgwZcSfJN3PfGRJgBw6tztP9hykfB3K4GkqMHyUE5dJmJWd8HNYFTMc9H4eSSnSBceXJGht2Qtzrsah",
+          "timestamp": 1774389621,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 1500000.0
+        },
+        {
+          "signature": "4Q572ngbvJD9cp2pjQLDFB3WDgZD4iG151rarwNJfB4WfmpWKBhgNWvNsfgQGhUkTaeLF7PFkrskKa5A3JhqGQ6F",
+          "timestamp": 1774384360,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "84kP3YqMmJZpd34SoHu3vS93aXBCJMqA5vRhA5PKkb6M",
+          "amount": 1499990.0
+        },
+        {
+          "signature": "3sg6DbXTAXNgXrPWg6W9QW46pGkWBBbk9LwFVAoPt9rLws4Kz5zKGjRbY8zRQDf3KWUx55dqFoAQ8LrSQwuCEZi5",
+          "timestamp": 1774370720,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "84kP3YqMmJZpd34SoHu3vS93aXBCJMqA5vRhA5PKkb6M",
+          "amount": 10.0
+        },
+        {
+          "signature": "2x3nBoQvdw27W5oMuLW7qcUQ8NvgiKqtm4mCEchHckbEae3WV2CCwGGM1sqrFi6eLW4a7kPLtRDJxQBgBR7AMaui",
+          "timestamp": 1774361437,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "AxVbkcuiA5DAwh2MXippzVg7byKnDQXEvHCEir6MzwsC",
+          "amount": 299990.0
+        },
+        {
+          "signature": "2xNDaax8cMkF8MsXdy5aa12hpSLLSKoxmkNVbs8HQE8jtzgP4jy4M1bgJcgVGFHfU3yC5w4168dR2m8bVBwhvk5C",
+          "timestamp": 1774360052,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "AxVbkcuiA5DAwh2MXippzVg7byKnDQXEvHCEir6MzwsC",
+          "amount": 10.0
+        },
+        {
+          "signature": "2BGpCxwp2qEmm75ziQiirScj1V1NCHT2eKQwAcYJM9Hxit45VbjKuLfZsNwK6a2JZo4weqnerU7P62LtRX1CdwCf",
+          "timestamp": 1774228113,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 79999999.0
+        },
+        {
+          "signature": "283xbZBLETyps4knKmQHXCqh4URutWyYYX6VJdCpsf4Zjuy2ZddfKKNCAiGXuBotW9Zh4RA5WfQkZw6vHydC9LqC",
+          "timestamp": 1774226989,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 1.0
+        },
+        {
+          "signature": "5WbLmveX2GTK7BkJhWLSgkwLzmF7wgA92wrDFaim12vzAYp7YV7APBZw3aDFN5zx9WXtBBeT92398NEqPUcWzU4w",
+          "timestamp": 1774039205,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "9v1UM66nwJXGbE9pnAocy1J8ri364oTgCBdHGBm2T4Wo",
+          "amount": 1.0
+        },
+        {
+          "signature": "2NUuHJTAWTsvA69XLDNB7YbnoQk7m31rUCEQuYWHLLbmrTiaxfrCi1yPxpf1sSzAtP4nAKngWRVNfjtQnXKhjMuU",
+          "timestamp": 1773181571,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "37iuXv1jgdDCnSMRcDMyzD2GFTZc6xzGMAoxP98V9cY8",
+          "amount": 135.0
+        },
+        {
+          "signature": "3Y3CRpY4HGSXewPrEX7p1azz672y64KYGotjiQxaNKeKkHZW3L7p6SdDdWt41CoPCF8bh8mX8GyEQKc1A3fzU2v",
+          "timestamp": 1773088511,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "FcXAKVNKnkb9S22LbHsXF87VGnEVrf23sFNnQm6thp4o",
+          "amount": 700.0
+        },
+        {
+          "signature": "3h1oLFPqc4YMYnv2aBw1N7x9VgEVjiK83A6yFvwx9pnEYTtjLBEWRkSqnQQXUaPB1kceNnTNzc5NyCdjHXYYwqqf",
+          "timestamp": 1772734948,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 178380901.0
+        },
+        {
+          "signature": "2SQe8ey8FHRr32fJHKPiJuCy65SFAYEuz7J5kw3NwTBnBCLCzp5j5Zxa3upTJZK4cGLurpeLzxAUKaD88fgxzj7A",
+          "timestamp": 1772669015,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 1.0
+        }
+      ],
+      "release_status": "moderate_distribution",
+      "role_inference": "unlabeled_whale_or_secondary_vault"
+    },
+    {
+      "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+      "rank": 4,
+      "amount": 92650000.0,
+      "share": 0.09265000009265,
+      "resolved_bucket": "whale",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1773101457,
+        "total_before_filter": 1,
+        "total_after_filter": 1
+      },
+      "prl_transfer_count": 1,
+      "inbound_transfer_count": 1,
+      "outbound_transfer_count": 0,
+      "inbound_total": 92650000.0,
+      "outbound_total": 0,
+      "net_flow": 92650000.0,
+      "unique_incoming_counterparties": 1,
+      "unique_outgoing_counterparties": 0,
+      "top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 92650000.0,
+          "count": 1
+        }
+      ],
+      "top_outgoing_counterparties": [],
+      "first_prl_transfer_ts": 1773101457,
+      "last_prl_transfer_ts": 1773101457,
+      "sample_events": [
+        {
+          "signature": "4bNV9PqyY93piNegBQFmq5uurvrZg6NpSnoF1JshssEVax4vfLBoTCAmh4LsWgHSngYMCWuMVKR57QhgAWvdQSbL",
+          "timestamp": 1773101457,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 92650000.0
+        }
+      ],
+      "release_status": "static_unreleased_like",
+      "role_inference": "static_shard_or_split_vault"
+    },
+    {
+      "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+      "rank": 5,
+      "amount": 83386620.025191,
+      "share": 0.08338662010857761,
+      "resolved_bucket": "official_inferred",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 10,
+        "oldest_seen_ts": 1774034530,
+        "total_before_filter": 861,
+        "total_after_filter": 861
+      },
+      "prl_transfer_count": 842,
+      "inbound_transfer_count": 146,
+      "outbound_transfer_count": 696,
+      "inbound_total": 91666084.409439,
+      "outbound_total": 8279464.384248,
+      "net_flow": 83386620.025191,
+      "unique_incoming_counterparties": 26,
+      "unique_outgoing_counterparties": 98,
+      "top10_counterparties": [],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+          "amount": 90000000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 604585.660118,
+          "count": 15
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 385876.456993,
+          "count": 16
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 224105.425242,
+          "count": 11
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 89175.8869,
+          "count": 2
+        },
+        {
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 73245.07102300001,
+          "count": 33
+        },
+        {
+          "counterparty": "ASMDWH1eXUYgdwrGeYwnfv5UdYQEKMhDkjEbvzjVp66C",
+          "amount": 63449.19,
+          "count": 3
+        },
+        {
+          "counterparty": "G4ijzY1JSgRTvsy32FHNdYSKCTfEpNx52doKC7iBsm9u",
+          "amount": 51291.649777,
+          "count": 5
+        },
+        {
+          "counterparty": "8yooz52cK1pA9kqRj5LfXkJqLF4XpeVaMadtbRXKzXds",
+          "amount": 39210.56,
+          "count": 2
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 24465.402560000002,
+          "count": 3
+        }
+      ],
+      "top_outgoing_counterparties": [
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 2237232.8453570013,
+          "count": 54
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 801501.9782730001,
+          "count": 35
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 735931.6767010003,
+          "count": 33
+        },
+        {
+          "counterparty": "B9jk8ySZycWcmKSPNRB5emjcWRTRvKAhS8zDZpexsCBG",
+          "amount": 427765.68329699995,
+          "count": 14
+        },
+        {
+          "counterparty": "8EKzaL3JMY7jXwdQSQTStevnUJZXTto5HAcWK7G9n7Lc",
+          "amount": 368430.34149799997,
+          "count": 9
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 335726.98993,
+          "count": 12
+        },
+        {
+          "counterparty": "9xBSRFCahDvuPX2rM3HvpF8UURwmuQBXQcfDD2a9uusT",
+          "amount": 330029.862441,
+          "count": 29
+        },
+        {
+          "counterparty": "5qpfP5GQR4HnrB2gSqCcagEjkH71bQaSRWdHrLLBDiWE",
+          "amount": 251254.667527,
+          "count": 10
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 236421.10072099997,
+          "count": 24
+        },
+        {
+          "counterparty": "2B6Z9mNdbqavTHYhXntG9wChp6AWtoTLyn6UnWZLxcNe",
+          "amount": 229664.60434400002,
+          "count": 13
+        }
+      ],
+      "first_prl_transfer_ts": 1774040905,
+      "last_prl_transfer_ts": 1774925373,
+      "sample_events": [
+        {
+          "signature": "4mUHq7hBGJ5vDf3vrPjveiF2kp6Zm5J7bQps2TNjAYSp1HF5a3sFgEx9gx5xfBd51Y15oQnovfPtoC9jQet32LsX",
+          "timestamp": 1774925373,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "in",
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 3306.381156
+        },
+        {
+          "signature": "4iwSoGrJ6JY62zrZcigM2romKmEsxx7pXtK2w5cYof1DZ8Qx8SxgRHtD34jRbK1YUrhbAPAwnPVCK5fHQ1pFLezt",
+          "timestamp": 1774917618,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "in",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 59042.543962
+        },
+        {
+          "signature": "4nZNL2eu7E96jKCZvwTupSjDce4uMh22MnodVpwxUppFNWPQftgG55PMxMQE9jX8mkhxcMLYSYyYPh824aaYLavY",
+          "timestamp": 1774901735,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 41609.398098
+        },
+        {
+          "signature": "5LKH9JmBcvn1yU5XKyQBtSqfiTSjzFHRnxGeCpgWRkcEryL8d1fXmMprbru4SwUY6VaT5abnmbzfPD9rwVXC33ux",
+          "timestamp": 1774896081,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 58593.012123
+        },
+        {
+          "signature": "5D495VhTjiyGrzM9TbjLvqVccPQ4itT7APT3AxEC1LUfoUJVonniFs85RyLhaaTE8nnj5Yp97fzm9nZqv8qidJQ6",
+          "timestamp": 1774895946,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "ASMDWH1eXUYgdwrGeYwnfv5UdYQEKMhDkjEbvzjVp66C",
+          "amount": 11995.493169
+        },
+        {
+          "signature": "vcM974XCnPE3SHD67KJBpFSG7emhUacSJpZZPsBaBZgDcgH2W8wREtSPosuXPr1QQ2tLBN1GGpw4ye5K6ySK1Fw",
+          "timestamp": 1774894581,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 40761.891489
+        },
+        {
+          "signature": "292pshKJijNCNu2C5RVj7cfirdz9DhAB7t3jPDN51WUYDUuK6RcRPmvcodgfV6EiX2oCBUfi3gAptg18saVYjKYt",
+          "timestamp": 1774892784,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 56898.823551
+        },
+        {
+          "signature": "3VdU4DQjZRxwQiSdM1zLQ4WwF4ZgDykiriGsZVm19GgF5D9paunm6AfEjc7fZbqwz1LDfK1umzBkZuBNtb8DASgg",
+          "timestamp": 1774892418,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 41610.187242
+        },
+        {
+          "signature": "Nio7T4WYGJePYEugbytvKFJrN2dS3pUEWhdVsqSnQjiARfiTmJRrRsuKEWoR6JS1CGrMjEYF4S7SXdYA7zTjFYz",
+          "timestamp": 1774892150,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 40760.10441
+        },
+        {
+          "signature": "Ae7D1xtZpNWV7eSXYEfEaKdd14FLJA6hdxAcXJrUWy3uCRNGoc5X7q3L75Nx4Fu1bNDbXwcw2heSKeMt96bhgLz",
+          "timestamp": 1774891162,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 50097.559828
+        },
+        {
+          "signature": "e58L6JpGyTgZmHpucCuWZKobC4vZRASKWKH3zbW7Zmjgk4xj69RTqC9Rvt4WpYiES2raS2MS8KDd66XGwGZPsUB",
+          "timestamp": 1774890889,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 55221.66578
+        },
+        {
+          "signature": "2UV5eWoCvgABFFzNcN8cKL56D5fLZrssLbtLjjvHj2TqFaczao5YsvNXq1fcU8RhK4qp5uMVKXrX1AX4eaX9xuK8",
+          "timestamp": 1774890370,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "ASMDWH1eXUYgdwrGeYwnfv5UdYQEKMhDkjEbvzjVp66C",
+          "amount": 35000.574129
+        },
+        {
+          "signature": "5gQDx2TZuAhw5ZxMCAckUyuxTvdiCkDN8t4132ecTDRtUxcZvHWjcunA1SWqwyLtC4tiKnVXyHRhj3YHYA9vgfRW",
+          "timestamp": 1774890072,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "ASMDWH1eXUYgdwrGeYwnfv5UdYQEKMhDkjEbvzjVp66C",
+          "amount": 43999.762337
+        },
+        {
+          "signature": "7viqvxtYkJKCq96Mthqg6C38MLt74JuSAtSbXcTv8TqKENHd6h5KosxZrmPHFZDSw4AMyzY4yWndVy9adWH9nSm",
+          "timestamp": 1774890006,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "7NkPnGCK9uNZ8PV5JDs5Hh4NRridreC2cqicznHwpcv6",
+          "amount": 1311.2
+        },
+        {
+          "signature": "24wWQGoera9vNEjAsvLy8k67Guf24XP5GZsWbc6iSpXDSA4TXw7HPhHpyhNizCG6GnAxSfKv14MwKV3tujnPR1BB",
+          "timestamp": 1774889585,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "7NkPnGCK9uNZ8PV5JDs5Hh4NRridreC2cqicznHwpcv6",
+          "amount": 1321.5
+        },
+        {
+          "signature": "5a8KUZopgUvBjKR64wGbTaUb7XCsvk4D5coZTd9wbqmKBVnPVzEHRv9FiPHcBZmDX2DoQ7JKnxpadxLwo5DhvXRN",
+          "timestamp": 1774889314,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 2490.973773
+        },
+        {
+          "signature": "4GLVRGHTzdhKTNMh7GFB2chkJ6hJRMAnwvAWP8Sq1LdFuELq4JEkmvQMXpcwnebgJnmqtd4sRrNkQy1Ne9ZmKh2X",
+          "timestamp": 1774889314,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "G1TVaxpCJLnYXYBbi5rj2izPKzZJdiUvpFcBPU587oC",
+          "amount": 1980.977549
+        },
+        {
+          "signature": "5cAuu2fvoPSxBqrpUwM2NnbAKRUthCUruLXCpidJJf3X3UYGyHXzdRDyGquFQ3iYo1puYDS6XWxGXfxoT3oNu21x",
+          "timestamp": 1774888838,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "in",
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 2987.088699
+        },
+        {
+          "signature": "43Wegh5fpqNX1PzY4LULAS1tEPwsEyBDQFi6jyoP8CMq99GUNAc4xXfXTwdYPGsX8LMQYTYuPouF1WmqRFsScqaA",
+          "timestamp": 1774888838,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 2987.088699
+        },
+        {
+          "signature": "377p14TVA9Y76Dz3rjqGV8kZMYnwRx5vpmoBs8zy1JrrgzmfetVGHfhYLjkrtjBX6uKoRNtg89eaa2gPuDk1JCz5",
+          "timestamp": 1774888681,
+          "source": "UNKNOWN",
+          "type": "UNKNOWN",
+          "direction": "out",
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 2363.854518
+        }
+      ],
+      "release_status": "active_release_or_distribution",
+      "role_inference": "likely_ecosystem_release_vault"
+    },
+    {
+      "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+      "rank": 6,
+      "amount": 40000000.0,
+      "share": 0.04000000004,
+      "resolved_bucket": "whale",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1773101494,
+        "total_before_filter": 1,
+        "total_after_filter": 1
+      },
+      "prl_transfer_count": 1,
+      "inbound_transfer_count": 1,
+      "outbound_transfer_count": 0,
+      "inbound_total": 40000000.0,
+      "outbound_total": 0,
+      "net_flow": 40000000.0,
+      "unique_incoming_counterparties": 1,
+      "unique_outgoing_counterparties": 0,
+      "top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 40000000.0,
+          "count": 1
+        }
+      ],
+      "top_outgoing_counterparties": [],
+      "first_prl_transfer_ts": 1773101494,
+      "last_prl_transfer_ts": 1773101494,
+      "sample_events": [
+        {
+          "signature": "5KdjVvbh7MFaKMfcgJQEvX8FVGXShoLBGvFksyGdux7sSmWfkjYbD51Xdz3ph6CYp1pxvtDFT1ZtYYxvfe5JFJWJ",
+          "timestamp": 1773101494,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 40000000.0
+        }
+      ],
+      "release_status": "static_unreleased_like",
+      "role_inference": "static_shard_or_split_vault"
+    },
+    {
+      "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "rank": 7,
+      "amount": 22397372.976,
+      "share": 0.022397372998397374,
+      "resolved_bucket": "official_public",
+      "existing_label": "Squads Vault \"Lumen Foundation\"",
+      "history_meta": {
+        "pages_fetched": 11,
+        "oldest_seen_ts": 1766577873,
+        "total_before_filter": 964,
+        "total_after_filter": 964
+      },
+      "prl_transfer_count": 10,
+      "inbound_transfer_count": 2,
+      "outbound_transfer_count": 8,
+      "inbound_total": 25000000.0,
+      "outbound_total": 1000000000.0,
+      "net_flow": -975000000.0,
+      "unique_incoming_counterparties": 1,
+      "unique_outgoing_counterparties": 4,
+      "top10_counterparties": [
+        "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+        "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+        "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 25000000.0,
+          "count": 2
+        }
+      ],
+      "top_outgoing_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 375000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+          "amount": 276619098.0,
+          "count": 2
+        },
+        {
+          "counterparty": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 170000000.0,
+          "count": 2
+        }
+      ],
+      "first_prl_transfer_ts": 1772669015,
+      "last_prl_transfer_ts": 1774414702,
+      "sample_events": [
+        {
+          "signature": "3dcKbhffrDoKHpiQA4TCEDKq3vf3fLZzfZAfZYRCFMSkKhgw7Sx2va9oHebsbAadU3nRRCZkHmiTndqmYTXZieWU",
+          "timestamp": 1774414702,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 24999990.0
+        },
+        {
+          "signature": "5H1k8ojS19BtNqNyGq4mYoypkrt7b5ZkuraUxguVG8YvAdwUFnHKbqE6SNPcV7Zzws3XB5z6vL3tbjmVjhjprKxr",
+          "timestamp": 1774414060,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 10.0
+        },
+        {
+          "signature": "2tHXHDUv5aWjFe2jrmHFkfyZ9WC93CGLrpifp6ZeSEX8nUrTqvC7LTRcadQZKdeMbX6EpAp1isEGWEL2e7Nq814b",
+          "timestamp": 1772734989,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 169999999.0
+        },
+        {
+          "signature": "4ZmT5BnBtFRruPCepDSpFUtnqfWpyYs55hAAnE2ZqCt4brVtGXxn8xQsqRD7sxpGh655Kj1Cfetm8b4zpcuuRByt",
+          "timestamp": 1772734972,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 374999999.0
+        },
+        {
+          "signature": "3h1oLFPqc4YMYnv2aBw1N7x9VgEVjiK83A6yFvwx9pnEYTtjLBEWRkSqnQQXUaPB1kceNnTNzc5NyCdjHXYYwqqf",
+          "timestamp": 1772734948,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+          "amount": 178380901.0
+        },
+        {
+          "signature": "5m3QZJAishQhpJRtrkW73XjLKBeasPiHGTAU8HeAE5bL5XTjmq7iSoziitnwST9jpeRmbsbYGJMmW45PAGhxBcuG",
+          "timestamp": 1772734906,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+          "amount": 276619097.0
+        },
+        {
+          "signature": "4N9kTPcVS9b9CuFWFVYvjKHBiZAnRBaF1AsD2bSVoGbcinevPFuFeviDYu6qXuZ4eQmiyeyCmQAz6EMvcNdGYub1",
+          "timestamp": 1772669166,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+          "amount": 1.0
+        },
+        {
+          "signature": "4ZbGL9tKNFHLAhQjHAL7zzQQbay9vrhj4o4DNgD1tJWcM9w7QQjGK2uzz6oYfPEkBBLqe5qKHXEneVsJZ7QbMxrG",
+          "timestamp": 1772669123,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 1.0
+        },
+        {
+          "signature": "SfhQsxXkFJc5x4Wp4UPMaEQHWnk6BCzT84tBLCCyRMWcRSbiDSRL1wLaaUKA8foFQfWjLtjQWxcqQFNEu1ki54y",
+          "timestamp": 1772669083,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 1.0
+        },
+        {
+          "signature": "2SQe8ey8FHRr32fJHKPiJuCy65SFAYEuz7J5kw3NwTBnBCLCzp5j5Zxa3upTJZK4cGLurpeLzxAUKaD88fgxzj7A",
+          "timestamp": 1772669015,
+          "source": "SQUADS_V4",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+          "amount": 1.0
+        }
+      ],
+      "release_status": "moderate_distribution",
+      "role_inference": "confirmed_official_operational_wallet"
+    },
+    {
+      "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+      "rank": 8,
+      "amount": 20000000.0,
+      "share": 0.02000000002,
+      "resolved_bucket": "whale",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1773871214,
+        "total_before_filter": 1,
+        "total_after_filter": 1
+      },
+      "prl_transfer_count": 1,
+      "inbound_transfer_count": 1,
+      "outbound_transfer_count": 0,
+      "inbound_total": 20000000.0,
+      "outbound_total": 0,
+      "net_flow": 20000000.0,
+      "unique_incoming_counterparties": 1,
+      "unique_outgoing_counterparties": 0,
+      "top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 20000000.0,
+          "count": 1
+        }
+      ],
+      "top_outgoing_counterparties": [],
+      "first_prl_transfer_ts": 1773871214,
+      "last_prl_transfer_ts": 1773871214,
+      "sample_events": [
+        {
+          "signature": "4TNCDP1QBAUDFqyEFSnLwJgPoVLA4FafrWy93CSA6tFivgtuvFk5A9D6jwu37m9gbsrcEeonnMjqjFXboYupa8tg",
+          "timestamp": 1773871214,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 20000000.0
+        }
+      ],
+      "release_status": "static_unreleased_like",
+      "role_inference": "static_shard_or_split_vault"
+    },
+    {
+      "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
+      "rank": 9,
+      "amount": 20000000.0,
+      "share": 0.02000000002,
+      "resolved_bucket": "official_inferred",
+      "existing_label": "Squads Vault \"SGL Marketing Lumen ServiceCo\"",
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1773869591,
+        "total_before_filter": 4,
+        "total_after_filter": 4
+      },
+      "prl_transfer_count": 1,
+      "inbound_transfer_count": 1,
+      "outbound_transfer_count": 0,
+      "inbound_total": 1.0,
+      "outbound_total": 0,
+      "net_flow": 1.0,
+      "unique_incoming_counterparties": 1,
+      "unique_outgoing_counterparties": 0,
+      "top10_counterparties": [],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "top_outgoing_counterparties": [],
+      "first_prl_transfer_ts": 1774227311,
+      "last_prl_transfer_ts": 1774227311,
+      "sample_events": [
+        {
+          "signature": "2exBeE236zF29Q2YV7TAX3sndDoYJgRp9LyE3DpKPxCMafdUgaEDr6kajkyLS6bu6tQbnfEHQQTyBWGvx535hrDi",
+          "timestamp": 1774227311,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 1.0
+        }
+      ],
+      "release_status": "static_unreleased_like",
+      "role_inference": "likely_official_ops_vault"
+    },
+    {
+      "address": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "rank": 10,
+      "amount": 9650000.0,
+      "share": 0.00965000000965,
+      "resolved_bucket": "whale",
+      "existing_label": null,
+      "history_meta": {
+        "pages_fetched": 2,
+        "oldest_seen_ts": 1772837214,
+        "total_before_filter": 23,
+        "total_after_filter": 23
+      },
+      "prl_transfer_count": 9,
+      "inbound_transfer_count": 4,
+      "outbound_transfer_count": 5,
+      "inbound_total": 170000000.0,
+      "outbound_total": 160350000.0,
+      "net_flow": 9650000.0,
+      "unique_incoming_counterparties": 2,
+      "unique_outgoing_counterparties": 5,
+      "top10_counterparties": [
+        "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+        "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT"
+      ],
+      "top_incoming_counterparties": [
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 102300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "D79Pn7DwYsBAp5uBdfR4nzZi2C7sGaHqXLK9KomNBDQo",
+          "amount": 67700000.0,
+          "count": 2
+        }
+      ],
+      "top_outgoing_counterparties": [
+        {
+          "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+          "amount": 92650000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+          "amount": 40000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+          "amount": 20000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN",
+          "amount": 6500000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC",
+          "amount": 1200000.0,
+          "count": 1
+        }
+      ],
+      "first_prl_transfer_ts": 1772837214,
+      "last_prl_transfer_ts": 1773871214,
+      "sample_events": [
+        {
+          "signature": "4TNCDP1QBAUDFqyEFSnLwJgPoVLA4FafrWy93CSA6tFivgtuvFk5A9D6jwu37m9gbsrcEeonnMjqjFXboYupa8tg",
+          "timestamp": 1773871214,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+          "amount": 20000000.0
+        },
+        {
+          "signature": "5LddmGoHrkEYWcgJ3Tcj4AqHi484hA69PHNczPJEGxsSx54LSd4XBzD5YVRvVS56yr6x9h6Yd1vyk77zVYJWksTv",
+          "timestamp": 1773101559,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC",
+          "amount": 1200000.0
+        },
+        {
+          "signature": "4padk1LcF3UefcsXZhhMq7tLkLwnYahnGuBRrJrpoTjwZKVQAnUDZ2oyeKoW5J6S7ax7tovKqM6T4s7UMgSd88Us",
+          "timestamp": 1773101528,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN",
+          "amount": 6500000.0
+        },
+        {
+          "signature": "5KdjVvbh7MFaKMfcgJQEvX8FVGXShoLBGvFksyGdux7sSmWfkjYbD51Xdz3ph6CYp1pxvtDFT1ZtYYxvfe5JFJWJ",
+          "timestamp": 1773101494,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+          "amount": 40000000.0
+        },
+        {
+          "signature": "4bNV9PqyY93piNegBQFmq5uurvrZg6NpSnoF1JshssEVax4vfLBoTCAmh4LsWgHSngYMCWuMVKR57QhgAWvdQSbL",
+          "timestamp": 1773101457,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "out",
+          "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+          "amount": 92650000.0
+        },
+        {
+          "signature": "4J7kaMFLjfKyabuw6TMpbUZscj7caxNkgbFVuufN46a3sGSXsLz3wU2zfpM9Wrh9mCrFoEE8M46pQSvhAGFtq6xh",
+          "timestamp": 1772974987,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 102299999.0
+        },
+        {
+          "signature": "2j78V1xn5BrHGEDYiKnS58FbCneJzs5Rx6JQkgvX2cRxnugtex73nah4WtFDeMtSJnJsvLfJz1yQV4Vv2N5rz5UZ",
+          "timestamp": 1772974985,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "D79Pn7DwYsBAp5uBdfR4nzZi2C7sGaHqXLK9KomNBDQo",
+          "amount": 67699999.0
+        },
+        {
+          "signature": "5HEannGicGiQVXJM1CUoJ8HW9ii4j66pZaBXbApJebiY12GfGYvabyc6c5SbAQTB7U92ibrBnYRPCxnGtpMQDUPm",
+          "timestamp": 1772837276,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 1.0
+        },
+        {
+          "signature": "Mfm79zyDxCo4t3Eh6zA77WmddsB3iNwLX2zSoafKNUiRkeqqR8NzZdMtRZDNvcLnBnso7ANcyqtNpBTJFwpbV5k",
+          "timestamp": 1772837214,
+          "source": "SOLANA_PROGRAM_LIBRARY",
+          "type": "TRANSFER",
+          "direction": "in",
+          "counterparty": "D79Pn7DwYsBAp5uBdfR4nzZi2C7sGaHqXLK9KomNBDQo",
+          "amount": 1.0
+        }
+      ],
+      "release_status": "moderate_distribution",
+      "role_inference": "unlabeled_whale_or_secondary_vault"
+    }
+  ]
+}

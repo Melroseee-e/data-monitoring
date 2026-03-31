@@ -8,9 +8,92 @@
   },
   {
     "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
-    "role": "metadata_update_authority",
+    "role": "官方一级分发总控",
     "confidence": "high",
-    "evidence": "Audit 页面公开写明 metadata update authority 为 6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG。",
-    "source_url": "https://perle.gitbook.io/perle-docs/perle-prl-token-passes-security-audit-with-halborn"
+    "bucket": "official_public",
+    "tokenomics_bucket": "Master Distributor",
+    "evidence": "Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。",
+    "share": 0.022397372998397374
+  },
+  {
+    "address": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+    "role": "Community 主仓",
+    "confidence": "high",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Community",
+    "evidence": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。",
+    "share": 0.3179802094479802
+  },
+  {
+    "address": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+    "role": "Investors 主锁仓",
+    "confidence": "high",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Investors",
+    "evidence": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。",
+    "share": 0.2766190982766191
+  },
+  {
+    "address": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+    "role": "Ecosystem 主仓",
+    "confidence": "high",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Ecosystem",
+    "evidence": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。",
+    "share": 0.09408006609408007
+  },
+  {
+    "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+    "role": "Team 静态分仓",
+    "confidence": "high",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Team",
+    "evidence": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+    "share": 0.09265000009265
+  },
+  {
+    "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+    "role": "Ecosystem 释放 Vault",
+    "confidence": "medium",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Ecosystem",
+    "evidence": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。",
+    "share": 0.08338662010857761
+  },
+  {
+    "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+    "role": "Team 静态分仓",
+    "confidence": "high",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Team",
+    "evidence": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+    "share": 0.04000000004
+  },
+  {
+    "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+    "role": "Team 静态分仓",
+    "confidence": "high",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Team",
+    "evidence": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+    "share": 0.02000000002
+  },
+  {
+    "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
+    "role": "官方运营 / ServiceCo Vault",
+    "confidence": "medium",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Operations",
+    "evidence": "Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。",
+    "share": 0.02000000002
+  },
+  {
+    "address": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+    "role": "Team 二级分发中枢",
+    "confidence": "high",
+    "bucket": "official_inferred",
+    "tokenomics_bucket": "Team",
+    "evidence": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。",
+    "share": 0.00965000000965
   }
 ]

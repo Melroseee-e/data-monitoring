@@ -30,6 +30,7 @@ DERIVED_ANALYSIS_PATH = DERIVED_DIR / "prl_holder_analysis.json"
 DERIVED_LABELS_PATH = DERIVED_DIR / "label_inventory.json"
 DERIVED_OFFICIAL_PATH = DERIVED_DIR / "official_address_registry.json"
 DERIVED_RELATIONS_PATH = DERIVED_DIR / "address_relationships.json"
+DERIVED_TX_SUMMARY_PATH = DERIVED_DIR / "prl_top10_transaction_summary.json"
 REPORT_PATH = REPORT_DIR / "prl_holder_structure_report.md"
 
 PRL_MINT = "PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs"
@@ -63,6 +64,65 @@ DOC_FACTS = {
         {"bucket": "Ecosystem", "allocation_pct": 17.84, "tge_unlock": "10% (of total supply)", "cliff": "N/A", "vesting": "48 months"},
         {"bucket": "Community", "allocation_pct": 37.50, "tge_unlock": "7.5% (of total supply)", "cliff": "N/A", "vesting": "36 months"},
     ],
+}
+
+TOKENOMICS_BREAKDOWN = [
+    {
+        "bucket": "Community",
+        "allocation_pct": 0.375,
+        "allocation_amount": 375_000_000.0,
+        "tge_unlocked_amount": 75_000_000.0,
+        "locked_after_tge": 300_000_000.0,
+        "cliff": "N/A",
+        "vesting": "36 months",
+    },
+    {
+        "bucket": "Investors",
+        "allocation_pct": 0.2766,
+        "allocation_amount": 276_600_000.0,
+        "tge_unlocked_amount": 0.0,
+        "locked_after_tge": 276_600_000.0,
+        "cliff": "12 months",
+        "vesting": "36 months",
+    },
+    {
+        "bucket": "Ecosystem",
+        "allocation_pct": 0.1784,
+        "allocation_amount": 178_400_000.0,
+        "tge_unlocked_amount": 100_000_000.0,
+        "locked_after_tge": 78_400_000.0,
+        "cliff": "N/A",
+        "vesting": "48 months",
+    },
+    {
+        "bucket": "Team",
+        "allocation_pct": 0.17,
+        "allocation_amount": 170_000_000.0,
+        "tge_unlocked_amount": 0.0,
+        "locked_after_tge": 170_000_000.0,
+        "cliff": "12 months",
+        "vesting": "36 months",
+    },
+]
+
+ROLE_DISPLAY = {
+    "confirmed_official_master_distributor": "官方一级分发总控",
+    "likely_community_master_wallet": "Community 主仓",
+    "likely_investor_vesting_master": "Investors 主锁仓",
+    "likely_ecosystem_master_wallet": "Ecosystem 主仓",
+    "likely_ecosystem_release_vault": "Ecosystem 释放 Vault",
+    "likely_team_distribution_hub": "Team 二级分发中枢",
+    "likely_team_static_shard": "Team 静态分仓",
+    "confirmed_public_authority_wallet": "公开 metadata authority 钱包",
+    "likely_official_ops_vault": "官方运营 / ServiceCo Vault",
+    "unlabeled_whale_or_secondary_vault": "待观察大户 / 二级 Vault",
+}
+
+RELEASE_STATUS_DISPLAY = {
+    "static_unreleased_like": "未见释放",
+    "mostly_static_light_release": "轻微释放",
+    "moderate_distribution": "中度分发",
+    "active_release_or_distribution": "活跃释放",
 }
 
 PUBLIC_OFFICIAL_ADDRESSES = {
@@ -135,6 +195,36 @@ def write_json(path: Path, payload: Any) -> None:
 def write_text(path: Path, payload: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(payload, encoding="utf-8")
+
+
+def load_optional_json(path: Path) -> Any | None:
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def approx(value: float, target: float, tolerance: float) -> bool:
+    return abs(safe_float(value) - safe_float(target)) <= tolerance
+
+
+def role_display(code: str | None) -> str:
+    if not code:
+        return "待定"
+    return ROLE_DISPLAY.get(code, code)
+
+
+def release_display(code: str | None) -> str:
+    if not code:
+        return "未定"
+    return RELEASE_STATUS_DISPLAY.get(code, code)
+
+
+def counterparty_line(entry: dict[str, Any] | None) -> str | None:
+    if not entry:
+        return None
+    counterparty = entry.get("counterparty") or "unknown"
+    amount = safe_float(entry.get("amount"))
+    return f"{short_addr(counterparty)} / {fmt_num(amount, 2)} PRL"
 
 
 def bubblemaps_validation_token(path: str) -> str:
@@ -400,8 +490,237 @@ def build_fresh_wallet_cluster(holders: list[dict[str, Any]]) -> list[dict[str, 
     return out
 
 
+def load_top10_tx_by_address() -> dict[str, dict[str, Any]]:
+    payload = load_optional_json(DERIVED_TX_SUMMARY_PATH) or {}
+    return {row["address"]: row for row in payload.get("addresses", []) if row.get("address")}
+
+
+def merge_top10_tx_fields(row: dict[str, Any], tx: dict[str, Any]) -> None:
+    row["tx_prl_transfer_count"] = tx.get("prl_transfer_count", 0)
+    row["tx_inbound_total"] = safe_float(tx.get("inbound_total"))
+    row["tx_outbound_total"] = safe_float(tx.get("outbound_total"))
+    row["tx_net_flow"] = safe_float(tx.get("net_flow"))
+    row["tx_release_status"] = tx.get("release_status")
+    row["tx_release_status_label"] = release_display(tx.get("release_status"))
+    row["tx_role_inference"] = tx.get("role_inference")
+    row["tx_first_prl_transfer_ts"] = tx.get("first_prl_transfer_ts")
+    row["tx_last_prl_transfer_ts"] = tx.get("last_prl_transfer_ts")
+    row["tx_unique_incoming_counterparties"] = int(tx.get("unique_incoming_counterparties") or 0)
+    row["tx_unique_outgoing_counterparties"] = int(tx.get("unique_outgoing_counterparties") or 0)
+    row["tx_top10_counterparties"] = tx.get("top10_counterparties") or []
+    row["tx_top_incoming_counterparties"] = tx.get("top_incoming_counterparties") or []
+    row["tx_top_outgoing_counterparties"] = tx.get("top_outgoing_counterparties") or []
+    row["tx_primary_inbound"] = row["tx_top_incoming_counterparties"][0] if row["tx_top_incoming_counterparties"] else None
+    row["tx_primary_outbound"] = row["tx_top_outgoing_counterparties"][0] if row["tx_top_outgoing_counterparties"] else None
+
+
+def infer_top10_from_tx(row: dict[str, Any]) -> dict[str, Any] | None:
+    if row.get("rank", 0) > 10 or not row.get("tx_prl_transfer_count"):
+        return None
+
+    address = row["address"]
+    primary_in = row.get("tx_primary_inbound") or {}
+    primary_out = row.get("tx_primary_outbound") or {}
+    in_cp = primary_in.get("counterparty")
+    in_amt = safe_float(primary_in.get("amount"))
+    out_amt = safe_float(primary_out.get("amount"))
+    tx_in = safe_float(row.get("tx_inbound_total"))
+    tx_out = safe_float(row.get("tx_outbound_total"))
+    release_status = row.get("tx_release_status")
+    label_text = normalize_text(row.get("resolved_entity_name"), row.get("arkham_label"), row.get("bubblemaps_label"))
+
+    if address == DOC_FACTS["metadata_update_authority"] and tx_out >= 900_000_000:
+        return {
+            "bucket": "official_public",
+            "confidence": "high",
+            "role_code": "confirmed_official_master_distributor",
+            "tokenomics_bucket": "Master Distributor",
+            "research_label": "官方一级分发总控",
+            "reason": "Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。",
+        }
+    if in_cp == DOC_FACTS["metadata_update_authority"] and approx(in_amt, 375_000_000.0, 100_000.0):
+        return {
+            "bucket": "official_inferred",
+            "confidence": "high",
+            "role_code": "likely_community_master_wallet",
+            "tokenomics_bucket": "Community",
+            "research_label": "Community 主仓候选",
+            "reason": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。",
+        }
+    if in_cp == DOC_FACTS["metadata_update_authority"] and approx(in_amt, 276_619_098.0, 50_000.0):
+        return {
+            "bucket": "official_inferred",
+            "confidence": "high",
+            "role_code": "likely_investor_vesting_master",
+            "tokenomics_bucket": "Investors",
+            "research_label": "Investors 主锁仓候选",
+            "reason": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。",
+        }
+    if in_cp == DOC_FACTS["metadata_update_authority"] and approx(in_amt, 178_380_902.0, 50_000.0):
+        return {
+            "bucket": "official_inferred",
+            "confidence": "high",
+            "role_code": "likely_ecosystem_master_wallet",
+            "tokenomics_bucket": "Ecosystem",
+            "research_label": "Ecosystem 主仓候选",
+            "reason": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。",
+        }
+    if tx_in >= 169_900_000.0 and tx_in <= 170_100_000.0 and tx_out >= 150_000_000.0:
+        return {
+            "bucket": "official_inferred",
+            "confidence": "high",
+            "role_code": "likely_team_distribution_hub",
+            "tokenomics_bucket": "Team",
+            "research_label": "Team 二级分发中枢",
+            "reason": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。",
+        }
+    if in_cp and tx_out == 0 and tx_in in {92_650_000.0, 40_000_000.0, 20_000_000.0}:
+        return {
+            "bucket": "official_inferred",
+            "confidence": "high",
+            "role_code": "likely_team_static_shard",
+            "tokenomics_bucket": "Team",
+            "research_label": "Team 静态分仓",
+            "reason": f"仅从 {short_addr(in_cp)} 单跳收到 {fmt_num(tx_in, 2)} PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+        }
+    if "squads vault" in label_text:
+        return {
+            "bucket": "official_inferred",
+            "confidence": "medium",
+            "role_code": "likely_official_ops_vault",
+            "tokenomics_bucket": "Operations",
+            "research_label": "官方运营 / ServiceCo Vault",
+            "reason": "Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。",
+        }
+    if row.get("account_owner_program") and row["account_owner_program"] != SYSTEM_PROGRAM and release_status == "active_release_or_distribution":
+        return {
+            "bucket": "official_inferred",
+            "confidence": "medium",
+            "role_code": "likely_ecosystem_release_vault",
+            "tokenomics_bucket": "Ecosystem",
+            "research_label": "Ecosystem 释放 Vault",
+            "reason": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。",
+        }
+    return None
+
+
+def apply_top10_tx_inference(row: dict[str, Any], tx_by_address: dict[str, dict[str, Any]]) -> None:
+    tx = tx_by_address.get(row["address"])
+    if not tx:
+        return
+    merge_top10_tx_fields(row, tx)
+    inference = infer_top10_from_tx(row)
+    if not inference:
+        return
+    row["resolved_bucket"] = inference["bucket"]
+    row["confidence"] = inference["confidence"]
+    row["classification_reason"] = inference["reason"]
+    row["top_holder_role"] = role_display(inference["role_code"])
+    row["role_inference_code"] = inference["role_code"]
+    row["tokenomics_bucket"] = inference["tokenomics_bucket"]
+    row["research_label"] = inference["research_label"]
+
+
+def compose_evidence_summary_with_tx(row: dict[str, Any]) -> str:
+    parts: list[str] = []
+    if row.get("research_label"):
+        parts.append(f"研究判断：{row['research_label']}。")
+    if row.get("classification_reason"):
+        parts.append(row["classification_reason"])
+    if row.get("resolved_entity_name"):
+        parts.append(f"现有标签：{row['resolved_entity_name']}。")
+    if row.get("account_shape_note"):
+        parts.append(row["account_shape_note"])
+    if row.get("tx_primary_inbound"):
+        cp = row["tx_primary_inbound"]
+        parts.append(f"主入账来源 {short_addr(cp.get('counterparty') or 'unknown')}，累计 {fmt_num(cp.get('amount'), 2)} PRL。")
+    if row.get("tx_primary_outbound"):
+        cp = row["tx_primary_outbound"]
+        parts.append(f"主出账去向 {short_addr(cp.get('counterparty') or 'unknown')}，累计 {fmt_num(cp.get('amount'), 2)} PRL。")
+    if row.get("tx_release_status_label"):
+        parts.append(f"释放状态判断：{row['tx_release_status_label']}。")
+    if row.get("degree") is not None:
+        parts.append(
+            f"BubbleMaps relation 度数 {row['degree']}，in/out = {row['inward_relations']}/{row['outward_relations']}。"
+        )
+    return " ".join(parts)
+
+
+def build_tokenomics_alignment(holders: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_address = {row["address"]: row for row in holders}
+    role_rows = {row.get("role_inference_code"): row for row in holders if row.get("role_inference_code")}
+
+    community = role_rows.get("likely_community_master_wallet")
+    investors = role_rows.get("likely_investor_vesting_master")
+    ecosystem_master = role_rows.get("likely_ecosystem_master_wallet")
+    ecosystem_release = role_rows.get("likely_ecosystem_release_vault")
+    team_hub = role_rows.get("likely_team_distribution_hub")
+    team_shards = [row for row in holders if row.get("role_inference_code") == "likely_team_static_shard"]
+
+    alignment = []
+    for item in TOKENOMICS_BREAKDOWN:
+        bucket = item["bucket"]
+        matched_rows: list[dict[str, Any]] = []
+        summary = ""
+        if bucket == "Community" and community:
+            matched_rows = [community]
+            summary = "公开官方总控地址先打 375M 到该地址，当前已分发约 57.02M，仍保留约 317.98M。"
+        elif bucket == "Investors" and investors:
+            matched_rows = [investors]
+            summary = "从官方总控地址直接收到 276.619098M，当前仍基本静态，最像 investor vesting master。"
+        elif bucket == "Ecosystem":
+            matched_rows = [row for row in [ecosystem_master, ecosystem_release] if row]
+            summary = "主仓是 178.380902M 的精确配额钱包，另有程序控制释放 vault 持续向外分发。"
+        elif bucket == "Team":
+            matched_rows = [row for row in [team_hub, *team_shards] if row]
+            summary = "170M 先进入 Team 分发中枢，再拆到多个静态分仓。"
+        alignment.append({
+            **item,
+            "matched_addresses": [
+                {
+                    "address": row["address"],
+                    "rank": row["rank"],
+                    "amount": row["amount"],
+                    "share": row["share"],
+                    "role": row.get("top_holder_role"),
+                    "release_status": row.get("tx_release_status_label"),
+                }
+                for row in matched_rows
+            ],
+            "summary": summary,
+        })
+    return alignment
+
+
+def build_official_distribution_flows(holders: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_address = {row["address"]: row for row in holders}
+    flows: list[dict[str, Any]] = []
+    for row in holders:
+        if row.get("rank", 0) > 10:
+            continue
+        primary_in = row.get("tx_primary_inbound")
+        if primary_in:
+            amount = safe_float(primary_in.get("amount"))
+            if amount < 1_000_000:
+                continue
+            if row.get("role_inference_code") == "confirmed_official_master_distributor":
+                continue
+            upstream = primary_in.get("counterparty")
+            flows.append({
+                "upstream": upstream,
+                "downstream": row["address"],
+                "amount": amount,
+                "downstream_role": row.get("top_holder_role"),
+                "tokenomics_bucket": row.get("tokenomics_bucket"),
+                "reason": row.get("classification_reason"),
+            })
+    flows.sort(key=lambda item: item["amount"], reverse=True)
+    return flows
+
+
 def fetch_and_build() -> dict[str, Any]:
     load_dotenv(BASE_DIR / ".env", override=False)
+    tx_by_address = load_top10_tx_by_address()
 
     log("Fetching BubbleMaps Top 500 holders")
     bubblemaps_payload = bubblemaps_fetch_top_holders()
@@ -466,6 +785,9 @@ def fetch_and_build() -> dict[str, Any]:
         row["classification_reason"] = reason
         row["top_holder_role"] = top10_role(bucket, row) if row["rank"] <= 10 else None
         row["evidence_summary"] = compose_evidence_summary(row, bucket)
+        apply_top10_tx_inference(row, tx_by_address)
+        if row["rank"] <= 10 and row.get("tx_prl_transfer_count"):
+            row["evidence_summary"] = compose_evidence_summary_with_tx(row)
 
     holders.sort(key=lambda row: row["rank"])
     top10 = [row for row in holders if row["rank"] <= 10]
@@ -491,6 +813,21 @@ def fetch_and_build() -> dict[str, Any]:
 
     fresh_wallet_cluster = build_fresh_wallet_cluster(holders)
     official_watchlist = [row for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"}]
+    tokenomics_alignment = build_tokenomics_alignment(holders)
+    official_distribution_flows = build_official_distribution_flows(holders)
+
+    official_registry_map = {item["address"]: dict(item) for item in PUBLIC_OFFICIAL_ADDRESSES.values()}
+    for row in official_watchlist:
+        official_registry_map[row["address"]] = {
+            "address": row["address"],
+            "role": row.get("top_holder_role"),
+            "confidence": row.get("confidence"),
+            "bucket": row.get("resolved_bucket"),
+            "tokenomics_bucket": row.get("tokenomics_bucket"),
+            "evidence": row.get("classification_reason"),
+            "share": row.get("share"),
+        }
+    official_registry = list(official_registry_map.values())
 
     analysis = {
         "metadata": {
@@ -509,9 +846,11 @@ def fetch_and_build() -> dict[str, Any]:
                 "token_utility_url": TOKEN_UTILITY_URL,
                 "audit_url": AUDIT_URL,
                 "funding_url": FUNDING_URL,
+                "tx_summary": DERIVED_TX_SUMMARY_PATH.relative_to(BASE_DIR).as_posix() if DERIVED_TX_SUMMARY_PATH.exists() else None,
             },
         },
         "docs_facts": DOC_FACTS,
+        "tokenomics_breakdown": TOKENOMICS_BREAKDOWN,
         "doc_validation": doc_validation,
         "summary": {
             "top10_share": top10_share,
@@ -526,6 +865,8 @@ def fetch_and_build() -> dict[str, Any]:
             "official_count": len(official_rows),
             "exchange_count": len(exchange_rows),
             "dex_count": len(dex_rows),
+            "tge_unlocked_amount": sum(item["tge_unlocked_amount"] for item in TOKENOMICS_BREAKDOWN),
+            "locked_after_tge_amount": sum(item["locked_after_tge"] for item in TOKENOMICS_BREAKDOWN),
         },
         "top10_layer_summary": [
             {
@@ -549,14 +890,16 @@ def fetch_and_build() -> dict[str, Any]:
         "holders": holders,
         "official_watchlist": official_watchlist,
         "fresh_wallet_cluster": fresh_wallet_cluster,
+        "tokenomics_alignment": tokenomics_alignment,
+        "official_distribution_flows": official_distribution_flows,
         "label_inventory": build_label_inventory(holders),
-        "official_registry": list(PUBLIC_OFFICIAL_ADDRESSES.values()),
+        "official_registry": official_registry,
         "address_relationships": {
             "official_core": [
                 {
                     "address": DOC_FACTS["metadata_update_authority"],
                     "relation": "public_official",
-                    "summary": "公开 metadata update authority，同时是当前第 7 大持仓地址。",
+                    "summary": "公开 metadata update authority，同时链上直接向四个主配额地址分发约 10 亿 PRL。",
                 },
                 {
                     "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
@@ -569,6 +912,7 @@ def fetch_and_build() -> dict[str, Any]:
                     "summary": "Top 10 中唯一明显程序控制账户，链上 owner 不是 system program，且活动窗口紧贴 TGE。"
                 },
             ],
+            "official_distribution_flows": official_distribution_flows,
             "fresh_static_wallets": fresh_wallet_cluster,
         },
     }
@@ -585,47 +929,68 @@ def table(headers: list[str], rows: list[list[str]]) -> str:
 def build_report(analysis: dict[str, Any]) -> str:
     top10 = analysis["top10_holders"]
     summary = analysis["summary"]
-    top10_rows = []
-    for row in top10:
-        top10_rows.append([
+    top10_rows = [
+        [
             str(row["rank"]),
             f"`{short_addr(row['address'])}`",
             fmt_num(row["amount"], 2),
             fmt_pct(row["share"], 2),
             bucket_display(row["resolved_bucket"]),
-            row["top_holder_role"] or "—",
-            row["resolved_entity_name"] or "—",
+            row.get("tokenomics_bucket") or "—",
+            row.get("top_holder_role") or "—",
+            row.get("tx_release_status_label") or "—",
+        ]
+        for row in top10
+    ]
+
+    tokenomics_rows = []
+    for row in analysis["tokenomics_alignment"]:
+        mapped = " / ".join(
+            f"{item['role']} {short_addr(item['address'])}"
+            for item in row["matched_addresses"]
+        ) or "未识别"
+        tokenomics_rows.append([
+            row["bucket"],
+            fmt_pct(row["allocation_pct"], 2),
+            fmt_num(row["allocation_amount"], 0),
+            fmt_num(row["tge_unlocked_amount"], 0),
+            fmt_num(row["locked_after_tge"], 0),
+            row["vesting"],
+            mapped,
         ])
 
-    label_rows = []
-    for row in analysis["label_inventory"][:20]:
-        label_rows.append([
+    flow_rows = [
+        [
+            f"`{short_addr(row['upstream'])}`" if row["upstream"] else "—",
+            f"`{short_addr(row['downstream'])}`",
+            fmt_num(row["amount"], 2),
+            row.get("tokenomics_bucket") or "—",
+            row.get("downstream_role") or "—",
+        ]
+        for row in analysis["official_distribution_flows"][:12]
+    ]
+
+    official_rows = [
+        [
+            str(row["rank"]),
+            f"`{row['address']}`",
+            bucket_display(row["resolved_bucket"]),
+            row.get("tokenomics_bucket") or "—",
+            fmt_pct(row["share"], 3),
+            row["classification_reason"],
+        ]
+        for row in analysis["official_watchlist"]
+    ]
+
+    label_rows = [
+        [
             row["source"],
             row["label"],
             str(row["address_count"]),
             fmt_pct(row["share_of_supply"], 3),
-        ])
-
-    official_rows = []
-    for row in analysis["official_watchlist"]:
-        if row["resolved_bucket"] != "official_inferred":
-            continue
-        official_rows.append([
-            str(row["rank"]),
-            f"`{row['address']}`",
-            bucket_display(row["resolved_bucket"]),
-            fmt_pct(row["share"], 3),
-            row["classification_reason"],
-        ])
-
-    fresh_rows = []
-    for row in analysis["fresh_wallet_cluster"]:
-        fresh_rows.append([
-            str(row["rank"]),
-            f"`{short_addr(row['address'])}`",
-            fmt_pct(row["share"], 3),
-            row["first_activity_date"],
-        ])
+        ]
+        for row in analysis["label_inventory"][:20]
+    ]
 
     lines = [
         "# PRL Solana Top 10 筹码结构报告",
@@ -637,73 +1002,64 @@ def build_report(analysis: dict[str, Any]) -> str:
         "",
         "## 一眼结论",
         "",
-        f"- Top 10 当前合计持有 **{fmt_pct(summary['top10_share'], 2)}**，Top 5 就占 **{fmt_pct(summary['top5_share'], 2)}**。",
-        f"- Top 10 里**没有交易所，也没有 DEX 池子**；第一个交易所地址要到第 `{summary['first_exchange_rank']}` 名。",
-        f"- 当前能直接公开确认的官方地址只有 `metadata update authority`：`{DOC_FACTS['metadata_update_authority']}`，它本身就是第 7 大持仓。",
-        f"- Top 10 里有两类需要分开看：一类是 `{bucket_display('official_public')}` / `{bucket_display('official_inferred')}`，另一类是没有公开标签的大仓钱包。",
+        f"- Top 10 当前合计持有 **{fmt_pct(summary['top10_share'], 2)}**，而且这一层现在更像**官方配额与分发地图本身**，不是交易所 / DEX / 民间鲸鱼混合层。",
+        f"- `6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG` 不只是公开 metadata authority；链上还直接从它向四个主配额方向打出约 **1B PRL**，因此它现在应视为**官方一级分发总控**。",
+        "- 最强匹配关系是：`Community -> #1`、`Investors -> #2`、`Ecosystem -> #3`、`Team -> #10 + #4/#6/#8`。",
+        f"- Top 10 里当前**没有交易所，也没有 DEX 池子**；第一个交易所地址要到第 `{summary['first_exchange_rank']}` 名。",
         "",
-        "## Top 10 分层",
+        "## Tokenomics 快照",
         "",
-        table(["Rank", "地址", "持仓", "占总量", "归类", "角色", "标签"], top10_rows),
+        f"- TGE 理论已解锁: **{fmt_num(summary['tge_unlocked_amount'], 0)} PRL**",
+        f"- TGE 后理论仍锁定 / 待释放: **{fmt_num(summary['locked_after_tge_amount'], 0)} PRL**",
         "",
-        "## Top 10 结构判断",
+        table(["Bucket", "Allocation", "Amount", "TGE Unlock", "Locked After TGE", "Vesting", "当前链上候选"], tokenomics_rows),
         "",
-    ]
-
-    for item in analysis["top10_layer_summary"]:
-        lines.append(
-            f"- {item['bucket_label']}: {item['address_count']} 个地址，合计 {fmt_pct(item['share_of_supply'], 3)}"
-        )
-
-    lines.extend([
+        "## 官方分发路径",
         "",
-        "## 哪些是官方",
+        table(["上游", "下游", "金额", "Tokenomics Bucket", "推断角色"], flow_rows),
+        "",
+        "## Top 10 角色判断",
+        "",
+        table(["Rank", "地址", "持仓", "占总量", "归类", "配额桶", "角色", "释放状态"], top10_rows),
+        "",
+        "## 官方地址与推断地址",
         "",
         "### 已公开官方",
         "",
-        f"- `{DOC_FACTS['metadata_update_authority']}`: [Audit]({AUDIT_URL}) 直接公开为 metadata update authority，同时它现在是第 7 大持仓地址，持有 {fmt_pct(next(row['share'] for row in top10 if row['address'] == DOC_FACTS['metadata_update_authority']), 3)}。",
+        f"- `{DOC_FACTS['metadata_update_authority']}`: [Audit]({AUDIT_URL}) 直接公开为 metadata update authority；链上又实际承担 1B PRL 的一级分发总控。",
         f"- `{PRL_MINT}`: [Token Overview]({TOKEN_OVERVIEW_URL}) 直接公开为 PRL 的 Solana mint。",
         "",
-        "### 高概率官方",
+        "### 高概率官方 / 高概率配额钱包",
         "",
-    ])
-    if official_rows:
-        lines.append(table(["Rank", "地址", "层级", "占总量", "证据"], official_rows))
-    else:
-        lines.append("- 当前没有额外高置信官方地址。")
+        table(["Rank", "地址", "层级", "配额桶", "占总量", "理由"], official_rows),
+        "",
+        "## Top 10 逐地址推断",
+        "",
+    ]
+
+    for row in top10:
+        primary_in = counterparty_line(row.get("tx_primary_inbound"))
+        primary_out = counterparty_line(row.get("tx_primary_outbound"))
+        lines.extend([
+            f"### #{row['rank']} `{row['address']}`",
+            "",
+            f"- 当前角色判断: **{row.get('top_holder_role') or '待定'}**",
+            f"- 当前持仓: **{fmt_num(row['amount'], 2)} PRL** ({fmt_pct(row['share'], 3)})",
+            f"- Tokenomics 对位: **{row.get('tokenomics_bucket') or '未定'}**",
+            f"- 释放状态: **{row.get('tx_release_status_label') or '未定'}**",
+            f"- 推断理由: {row.get('classification_reason') or '—'}",
+            f"- 主入账: {primary_in or '—'}",
+            f"- 主出账: {primary_out or '—'}",
+            f"- 证据摘要: {row.get('evidence_summary') or '—'}",
+            "",
+        ])
 
     lines.extend([
+        "## 交易所 / DEX / 大户观察",
         "",
-        "## 哪些是大户",
-        "",
-        "- 第 1、2 名两只无标签钱包就合计持有超过 59%，是当前筹码结构的绝对主导层。",
-        "- 第 4、6、8、11 名都接近“单跳静态大仓”，BubbleMaps 度数基本为 1，更像分配后停放的钱包，不像交易所或 AMM 基础设施。",
-        "- 这意味着 PRL 当前最需要盯的不是交易所流出，而是这些大仓钱包是否开始互转、拆分或向交易所沉淀。",
-        "",
-        "## 哪些是交易所 / DEX 池子",
-        "",
-        f"- 交易所最早从第 `{summary['first_exchange_rank']}` 名开始出现，当前 BubbleMaps / Arkham 明确识别到的交易所下限持仓约为 **{fmt_pct(summary['exchange_share'], 3)}**。",
-        f"- 当前 DEX / 流动性池不在 Top 10，且在 BubbleMaps Top 500 中占比也很低，下限约为 **{fmt_pct(summary['dex_share'], 3)}**。",
-        "- 这说明当前 top of cap 基本不是由交易所库存或池子占据，而是由项目侧/大户侧钱包占据。",
-        "",
-        "## Tokenomics 对照",
-        "",
-        "- Docs 把 PRL 定义为 Solana 原生发行，不是多链并表口径。",
-        "- Team: 17.00%，0% TGE，12 个月 cliff，36 个月线性释放。",
-        "- Investors: 27.66%，0% TGE，12 个月 cliff，36 个月线性释放。",
-        "- Ecosystem: 17.84%，TGE 解锁 10% of total supply，其余 48 个月释放。",
-        "- Community: 37.50%，TGE 解锁 7.5% of total supply，其余 36 个月释放。",
-        "- 结合当前 Top 10，可见市场最集中的并不是交易所，而是更像“项目侧托管 + 大额静态分仓”的结构，这与 TGE 初期的大额分仓持有是相容的。",
-        "",
-        "## Fresh Wallet 簇",
-        "",
-    ])
-    if fresh_rows:
-        lines.append(table(["Rank", "地址", "占总量", "首次活动"], fresh_rows))
-    else:
-        lines.append("- 未观察到显著的新建静态大仓。")
-
-    lines.extend([
+        f"- 第一个交易所地址只到第 `{summary['first_exchange_rank']}` 名，当前 BubbleMaps / Arkham 识别到的交易所下限仓位约 **{fmt_pct(summary['exchange_share'], 3)}**。",
+        f"- DEX / LP 不在 Top 10，BubbleMaps Top 500 中的 DEX 下限仓位约 **{fmt_pct(summary['dex_share'], 3)}**。",
+        "- 结合 Helius 流水，本轮最重要的更新是：Top 10 已经不该再被默认视作“未标注鲸鱼层”，而应主要视作官方 allocation / treasury / release / shard 层。",
         "",
         "## Label Inventory（前 20）",
         "",
@@ -713,8 +1069,8 @@ def build_report(analysis: dict[str, Any]) -> str:
         "",
         "- 当前持仓快照来自 BubbleMaps Top 500。",
         "- 地址实体标签以 Arkham 为主补充，BubbleMaps 负责 CEX / DEX / contract 标记。",
-        "- Solscan API key 当前无权限读取付费接口，因此本报告不把 Solscan 当作结构化标签源。",
-        "- 由于 Helius key 当前限额，本报告不做全历史大额流水重建，重点是 Top 10 分层与官方识别。",
+        "- Top 10 的 PRL 交易流水额外来自 Helius Enhanced API，并已单独落盘到 `data/prl/raw/top10_helius_history/`。",
+        "- 这版报告最大的变化是把“金额是否对上 docs 配额”和“主入账 / 主出账路径”并入推断逻辑，而不是只看 BubbleMaps 标签。",
     ])
     return "\n".join(lines) + "\n"
 

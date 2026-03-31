@@ -3,7 +3,7 @@
     {
       "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
       "relation": "public_official",
-      "summary": "公开 metadata update authority，同时是当前第 7 大持仓地址。"
+      "summary": "公开 metadata update authority，同时链上直接向四个主配额地址分发约 10 亿 PRL。"
     },
     {
       "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
@@ -14,6 +14,72 @@
       "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
       "relation": "official_inferred",
       "summary": "Top 10 中唯一明显程序控制账户，链上 owner 不是 system program，且活动窗口紧贴 TGE。"
+    }
+  ],
+  "official_distribution_flows": [
+    {
+      "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "downstream": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+      "amount": 375000000.0,
+      "downstream_role": "Community 主仓",
+      "tokenomics_bucket": "Community",
+      "reason": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。"
+    },
+    {
+      "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "downstream": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+      "amount": 276619098.0,
+      "downstream_role": "Investors 主锁仓",
+      "tokenomics_bucket": "Investors",
+      "reason": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。"
+    },
+    {
+      "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "downstream": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+      "amount": 178380902.0,
+      "downstream_role": "Ecosystem 主仓",
+      "tokenomics_bucket": "Ecosystem",
+      "reason": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。"
+    },
+    {
+      "upstream": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+      "downstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "amount": 102300000.0,
+      "downstream_role": "Team 二级分发中枢",
+      "tokenomics_bucket": "Team",
+      "reason": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。"
+    },
+    {
+      "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "downstream": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+      "amount": 92650000.0,
+      "downstream_role": "Team 静态分仓",
+      "tokenomics_bucket": "Team",
+      "reason": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
+    },
+    {
+      "upstream": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+      "downstream": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+      "amount": 90000000.0,
+      "downstream_role": "Ecosystem 释放 Vault",
+      "tokenomics_bucket": "Ecosystem",
+      "reason": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。"
+    },
+    {
+      "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "downstream": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+      "amount": 40000000.0,
+      "downstream_role": "Team 静态分仓",
+      "tokenomics_bucket": "Team",
+      "reason": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
+    },
+    {
+      "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "downstream": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+      "amount": 20000000.0,
+      "downstream_role": "Team 静态分仓",
+      "tokenomics_bucket": "Team",
+      "reason": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
     }
   ],
   "fresh_static_wallets": [

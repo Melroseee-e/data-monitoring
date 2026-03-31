@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2026-03-31T04:10:33Z",
+    "generated_at": "2026-03-31T06:23:21Z",
     "token": "PRL",
     "name": "Perle",
     "chain": "solana",
@@ -14,7 +14,8 @@
       "token_vesting_url": "https://perle.gitbook.io/perle-docs/tokenomics/token-vesting",
       "token_utility_url": "https://perle.gitbook.io/perle-docs/tokenomics/prl-token-utility-and-purpose",
       "audit_url": "https://perle.gitbook.io/perle-docs/perle-prl-token-passes-security-audit-with-halborn",
-      "funding_url": "https://www.perle.ai/resources/perle-secures-9-million-seed-round-led-by-framework-ventures-to-launch-an-ai-data-training-platform-powered-by-web3"
+      "funding_url": "https://www.perle.ai/resources/perle-secures-9-million-seed-round-led-by-framework-ventures-to-launch-an-ai-data-training-platform-powered-by-web3",
+      "tx_summary": "data/prl/derived/prl_top10_transaction_summary.json"
     }
   },
   "docs_facts": {
@@ -56,10 +57,48 @@
       }
     ]
   },
+  "tokenomics_breakdown": [
+    {
+      "bucket": "Community",
+      "allocation_pct": 0.375,
+      "allocation_amount": 375000000.0,
+      "tge_unlocked_amount": 75000000.0,
+      "locked_after_tge": 300000000.0,
+      "cliff": "N/A",
+      "vesting": "36 months"
+    },
+    {
+      "bucket": "Investors",
+      "allocation_pct": 0.2766,
+      "allocation_amount": 276600000.0,
+      "tge_unlocked_amount": 0.0,
+      "locked_after_tge": 276600000.0,
+      "cliff": "12 months",
+      "vesting": "36 months"
+    },
+    {
+      "bucket": "Ecosystem",
+      "allocation_pct": 0.1784,
+      "allocation_amount": 178400000.0,
+      "tge_unlocked_amount": 100000000.0,
+      "locked_after_tge": 78400000.0,
+      "cliff": "N/A",
+      "vesting": "48 months"
+    },
+    {
+      "bucket": "Team",
+      "allocation_pct": 0.17,
+      "allocation_amount": 170000000.0,
+      "tge_unlocked_amount": 0.0,
+      "locked_after_tge": 170000000.0,
+      "cliff": "12 months",
+      "vesting": "36 months"
+    }
+  ],
   "doc_validation": {
     "token_overview": {
       "url": "https://perle.gitbook.io/perle-docs/tokenomics/token-overview",
-      "checked_at": "2026-03-31T04:10:26Z",
+      "checked_at": "2026-03-31T06:23:14Z",
       "checks": {
         "Solana": true,
         "1B": true,
@@ -69,14 +108,14 @@
     },
     "audit": {
       "url": "https://perle.gitbook.io/perle-docs/perle-prl-token-passes-security-audit-with-halborn",
-      "checked_at": "2026-03-31T04:10:27Z",
+      "checked_at": "2026-03-31T06:23:15Z",
       "checks": {
         "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG": true
       }
     },
     "token_vesting": {
       "url": "https://perle.gitbook.io/perle-docs/tokenomics/token-vesting",
-      "checked_at": "2026-03-31T04:10:27Z",
+      "checked_at": "2026-03-31T06:23:15Z",
       "checks": {
         "Team": true,
         "17.00%": true,
@@ -93,28 +132,24 @@
     "top10_share": 0.9767633671079544,
     "top5_share": 0.8647159940199071,
     "top500_covered_share": 0.9995168768418947,
-    "official_share": 0.12578855514058354,
+    "official_share": 0.976767929121563,
     "exchange_share": 0.01244962069408682,
     "dex_share": 6.1027973043437976e-05,
-    "whale_share": 0.8509793739809794,
+    "whale_share": 0.0,
     "first_exchange_rank": 12,
     "first_dex_rank": 24,
-    "official_count": 4,
+    "official_count": 11,
     "exchange_count": 31,
-    "dex_count": 2
+    "dex_count": 2,
+    "tge_unlocked_amount": 175000000.0,
+    "locked_after_tge_amount": 825000000.0
   },
   "top10_layer_summary": [
     {
-      "bucket": "whale",
-      "bucket_label": "大户",
-      "address_count": 7,
-      "share_of_supply": 0.8509793739809794
-    },
-    {
       "bucket": "official_inferred",
       "bucket_label": "高概率官方",
-      "address_count": 2,
-      "share_of_supply": 0.1033866201285776
+      "address_count": 9,
+      "share_of_supply": 0.954365994109557
     },
     {
       "bucket": "official_public",
@@ -125,16 +160,10 @@
   ],
   "all_holder_bucket_summary": [
     {
-      "bucket": "whale",
-      "bucket_label": "大户",
-      "address_count": 7,
-      "share_of_supply": 0.8509793739809794
-    },
-    {
       "bucket": "official_inferred",
       "bucket_label": "高概率官方",
-      "address_count": 2,
-      "share_of_supply": 0.1033866201285776
+      "address_count": 9,
+      "share_of_supply": 0.954365994109557
     },
     {
       "bucket": "official_public",
@@ -159,6 +188,12 @@
       "bucket_label": "DEX 池子",
       "address_count": 2,
       "share_of_supply": 6.1027973043437976e-05
+    },
+    {
+      "bucket": "whale",
+      "bucket_label": "大户",
+      "address_count": 0,
+      "share_of_supply": 0.0
     }
   ],
   "top10_holders": [
@@ -186,11 +221,72 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-18T15:48:28 BubbleMaps relation 度数 37，in/out = 26/11。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。",
+      "top_holder_role": "Community 主仓",
+      "evidence_summary": "研究判断：Community 主仓候选。 从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 375,000,000.00 PRL。 主出账去向 w1GJxV...Z6aG，累计 30,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 37，in/out = 26/11。",
+      "tx_prl_transfer_count": 12,
+      "tx_inbound_total": 375000000.0,
+      "tx_outbound_total": 57019790.87,
+      "tx_net_flow": 317980209.13,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "likely_community_treasury_or_locked_master",
+      "tx_first_prl_transfer_ts": 1772669083,
+      "tx_last_prl_transfer_ts": 1774657884,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 5,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 375000000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 30000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 25000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "XJMfBczNcaTV2fsmd5b4CvMkm4rrVvEjPJ4cH6Lf7zT",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "WC69LwqcA9eU2rcgTA98UjQ12GxbPEVjfRYr7p9weUF",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6UfKUMFXQQ1gELHhyEFqP1wUqvp5kGzqvz4PZAY3enYu",
+          "amount": 19790.87,
+          "count": 2
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 375000000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 30000000.0,
+        "count": 2
+      },
+      "role_inference_code": "likely_community_master_wallet",
+      "tokenomics_bucket": "Community",
+      "research_label": "Community 主仓候选"
     },
     {
       "address": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
@@ -216,11 +312,42 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-09T19:35:51 BubbleMaps relation 度数 24，in/out = 18/6。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。",
+      "top_holder_role": "Investors 主锁仓",
+      "evidence_summary": "研究判断：Investors 主锁仓候选。 从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 276,619,098.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 24，in/out = 18/6。",
+      "tx_prl_transfer_count": 2,
+      "tx_inbound_total": 276619098.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 276619098.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "likely_investor_vesting_master",
+      "tx_first_prl_transfer_ts": 1772669166,
+      "tx_last_prl_transfer_ts": 1772734906,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 276619098.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 276619098.0,
+        "count": 2
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_investor_vesting_master",
+      "tokenomics_bucket": "Investors",
+      "research_label": "Investors 主锁仓候选"
     },
     {
       "address": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
@@ -246,11 +373,92 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-09T19:36:14 BubbleMaps relation 度数 75，in/out = 59/16。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。",
+      "top_holder_role": "Ecosystem 主仓",
+      "evidence_summary": "研究判断：Ecosystem 主仓候选。 从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 178,380,902.00 PRL。 主出账去向 w1GJxV...Z6aG，累计 80,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 75，in/out = 59/16。",
+      "tx_prl_transfer_count": 17,
+      "tx_inbound_total": 181380902.0,
+      "tx_outbound_total": 87300836.0,
+      "tx_net_flow": 94080066.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "unlabeled_whale_or_secondary_vault",
+      "tx_first_prl_transfer_ts": 1772669015,
+      "tx_last_prl_transfer_ts": 1774478724,
+      "tx_unique_incoming_counterparties": 2,
+      "tx_unique_outgoing_counterparties": 8,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 3000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 80000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 4500000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "84kP3YqMmJZpd34SoHu3vS93aXBCJMqA5vRhA5PKkb6M",
+          "amount": 1500000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GXU89jmgYV3dHDqcDuJoAXc9FELYnb7jULfR1Sk4Q7Aa",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "AxVbkcuiA5DAwh2MXippzVg7byKnDQXEvHCEir6MzwsC",
+          "amount": 300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "FcXAKVNKnkb9S22LbHsXF87VGnEVrf23sFNnQm6thp4o",
+          "amount": 700.0,
+          "count": 1
+        },
+        {
+          "counterparty": "37iuXv1jgdDCnSMRcDMyzD2GFTZc6xzGMAoxP98V9cY8",
+          "amount": 135.0,
+          "count": 1
+        },
+        {
+          "counterparty": "9v1UM66nwJXGbE9pnAocy1J8ri364oTgCBdHGBm2T4Wo",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 178380902.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 80000000.0,
+        "count": 2
+      },
+      "role_inference_code": "likely_ecosystem_master_wallet",
+      "tokenomics_bucket": "Ecosystem",
+      "research_label": "Ecosystem 主仓候选"
     },
     {
       "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
@@ -276,11 +484,42 @@
       "account_owner_program": null,
       "account_space": null,
       "account_executable": null,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "TGE 后新创建的单跳大仓，更像分仓后的静态大户。",
-      "top_holder_role": "单跳静态大仓",
-      "evidence_summary": "public_rpc_not_available BubbleMaps 首次活动时间：2026-03-10T00:10:57 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 92,650,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 92650000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 92650000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773101457,
+      "tx_last_prl_transfer_ts": 1773101457,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 92650000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 92650000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
@@ -308,9 +547,138 @@
       "account_executable": false,
       "resolved_bucket": "official_inferred",
       "confidence": "medium",
-      "classification_reason": "Top 10 中的程序控制账户，更像官方 vault / 托管层而非自然大户。",
-      "top_holder_role": "疑似官方基础设施/托管 vault",
-      "evidence_summary": "账户 owner 为 76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU，不是普通 system wallet，偏向程序控制或 vault 型账户。 BubbleMaps 首次活动时间：2026-03-20T21:08:25 BubbleMaps relation 度数 857，in/out = 149/708。"
+      "classification_reason": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。",
+      "top_holder_role": "Ecosystem 释放 Vault",
+      "evidence_summary": "研究判断：Ecosystem 释放 Vault。 程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。 账户 owner 为 76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU，不是普通 system wallet，偏向程序控制或 vault 型账户。 主入账来源 AewXva...Hcdu，累计 90,000,000.00 PRL。 主出账去向 Ee7qK1...unM5，累计 2,237,232.85 PRL。 释放状态判断：活跃释放。 BubbleMaps relation 度数 857，in/out = 149/708。",
+      "tx_prl_transfer_count": 842,
+      "tx_inbound_total": 91666084.409439,
+      "tx_outbound_total": 8279464.384248,
+      "tx_net_flow": 83386620.025191,
+      "tx_release_status": "active_release_or_distribution",
+      "tx_release_status_label": "活跃释放",
+      "tx_role_inference": "likely_ecosystem_release_vault",
+      "tx_first_prl_transfer_ts": 1774040905,
+      "tx_last_prl_transfer_ts": 1774925373,
+      "tx_unique_incoming_counterparties": 26,
+      "tx_unique_outgoing_counterparties": 98,
+      "tx_top10_counterparties": [],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+          "amount": 90000000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 604585.660118,
+          "count": 15
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 385876.456993,
+          "count": 16
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 224105.425242,
+          "count": 11
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 89175.8869,
+          "count": 2
+        },
+        {
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 73245.07102300001,
+          "count": 33
+        },
+        {
+          "counterparty": "ASMDWH1eXUYgdwrGeYwnfv5UdYQEKMhDkjEbvzjVp66C",
+          "amount": 63449.19,
+          "count": 3
+        },
+        {
+          "counterparty": "G4ijzY1JSgRTvsy32FHNdYSKCTfEpNx52doKC7iBsm9u",
+          "amount": 51291.649777,
+          "count": 5
+        },
+        {
+          "counterparty": "8yooz52cK1pA9kqRj5LfXkJqLF4XpeVaMadtbRXKzXds",
+          "amount": 39210.56,
+          "count": 2
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 24465.402560000002,
+          "count": 3
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 2237232.8453570013,
+          "count": 54
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 801501.9782730001,
+          "count": 35
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 735931.6767010003,
+          "count": 33
+        },
+        {
+          "counterparty": "B9jk8ySZycWcmKSPNRB5emjcWRTRvKAhS8zDZpexsCBG",
+          "amount": 427765.68329699995,
+          "count": 14
+        },
+        {
+          "counterparty": "8EKzaL3JMY7jXwdQSQTStevnUJZXTto5HAcWK7G9n7Lc",
+          "amount": 368430.34149799997,
+          "count": 9
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 335726.98993,
+          "count": 12
+        },
+        {
+          "counterparty": "9xBSRFCahDvuPX2rM3HvpF8UURwmuQBXQcfDD2a9uusT",
+          "amount": 330029.862441,
+          "count": 29
+        },
+        {
+          "counterparty": "5qpfP5GQR4HnrB2gSqCcagEjkH71bQaSRWdHrLLBDiWE",
+          "amount": 251254.667527,
+          "count": 10
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 236421.10072099997,
+          "count": 24
+        },
+        {
+          "counterparty": "2B6Z9mNdbqavTHYhXntG9wChp6AWtoTLyn6UnWZLxcNe",
+          "amount": 229664.60434400002,
+          "count": 13
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+        "amount": 90000000.0,
+        "count": 3
+      },
+      "tx_primary_outbound": {
+        "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+        "amount": 2237232.8453570013,
+        "count": 54
+      },
+      "role_inference_code": "likely_ecosystem_release_vault",
+      "tokenomics_bucket": "Ecosystem",
+      "research_label": "Ecosystem 释放 Vault"
     },
     {
       "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
@@ -336,11 +704,42 @@
       "account_owner_program": null,
       "account_space": null,
       "account_executable": null,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "TGE 后新创建的单跳大仓，更像分仓后的静态大户。",
-      "top_holder_role": "单跳静态大仓",
-      "evidence_summary": "public_rpc_not_available BubbleMaps 首次活动时间：2026-03-10T00:11:34 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 40,000,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 40000000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 40000000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773101494,
+      "tx_last_prl_transfer_ts": 1773101494,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 40000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 40000000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
@@ -360,7 +759,7 @@
       "arkham_entity_type": null,
       "arkham_entity_id": null,
       "arkham_label": "Squads Vault \"Lumen Foundation\"",
-      "arkham_pct_of_cap": 0.02239705369,
+      "arkham_pct_of_cap": 0.022384285878,
       "resolved_entity_name": "Squads Vault \"Lumen Foundation\"",
       "account_shape_note": "链上形态是普通 system wallet。",
       "account_owner_program": "11111111111111111111111111111111",
@@ -368,9 +767,67 @@
       "account_executable": false,
       "resolved_bucket": "official_public",
       "confidence": "high",
-      "classification_reason": "官方 docs 或 audit 直接公开。",
-      "top_holder_role": "公开 metadata authority 钱包",
-      "evidence_summary": "官方 audit 直接公开为 metadata update authority。 Arkham 标签：Squads Vault \"Lumen Foundation\" 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2025-12-24T12:04:33 BubbleMaps relation 度数 8987，in/out = 6/8981。"
+      "classification_reason": "Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。",
+      "top_holder_role": "官方一级分发总控",
+      "evidence_summary": "研究判断：官方一级分发总控。 Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。 现有标签：Squads Vault \"Lumen Foundation\"。 链上形态是普通 system wallet。 主入账来源 Gvpm8t...vE4B，累计 25,000,000.00 PRL。 主出账去向 Gvpm8t...vE4B，累计 375,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 8987，in/out = 6/8981。",
+      "tx_prl_transfer_count": 10,
+      "tx_inbound_total": 25000000.0,
+      "tx_outbound_total": 1000000000.0,
+      "tx_net_flow": -975000000.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "confirmed_official_operational_wallet",
+      "tx_first_prl_transfer_ts": 1772669015,
+      "tx_last_prl_transfer_ts": 1774414702,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 4,
+      "tx_top10_counterparties": [
+        "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+        "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+        "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 25000000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 375000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+          "amount": 276619098.0,
+          "count": 2
+        },
+        {
+          "counterparty": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 170000000.0,
+          "count": 2
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+        "amount": 25000000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+        "amount": 375000000.0,
+        "count": 2
+      },
+      "role_inference_code": "confirmed_official_master_distributor",
+      "tokenomics_bucket": "Master Distributor",
+      "research_label": "官方一级分发总控"
     },
     {
       "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
@@ -396,11 +853,42 @@
       "account_owner_program": null,
       "account_space": null,
       "account_executable": null,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "TGE 后新创建的单跳大仓，更像分仓后的静态大户。",
-      "top_holder_role": "单跳静态大仓",
-      "evidence_summary": "public_rpc_not_available BubbleMaps 首次活动时间：2026-03-18T22:00:14 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 20,000,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 20000000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 20000000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773871214,
+      "tx_last_prl_transfer_ts": 1773871214,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 20000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 20000000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
@@ -428,9 +916,38 @@
       "account_executable": false,
       "resolved_bucket": "official_inferred",
       "confidence": "medium",
-      "classification_reason": "Arkham 直接打到 Squads Vault，且处于 Top 10。",
-      "top_holder_role": "疑似 Squads 官方运营/服务 vault",
-      "evidence_summary": "Arkham 标签：Squads Vault \"SGL Marketing Lumen ServiceCo\" 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-03-18T21:33:11 BubbleMaps relation 度数 5，in/out = 4/1。"
+      "classification_reason": "Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。",
+      "top_holder_role": "官方运营 / ServiceCo Vault",
+      "evidence_summary": "研究判断：官方运营 / ServiceCo Vault。 Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。 现有标签：Squads Vault \"SGL Marketing Lumen ServiceCo\"。 链上形态是普通 system wallet。 主入账来源 w1GJxV...Z6aG，累计 1.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 5，in/out = 4/1。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 1.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 1.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "likely_official_ops_vault",
+      "tx_first_prl_transfer_ts": 1774227311,
+      "tx_last_prl_transfer_ts": 1774227311,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 1.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_official_ops_vault",
+      "tokenomics_bucket": "Operations",
+      "research_label": "官方运营 / ServiceCo Vault"
     },
     {
       "address": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
@@ -456,11 +973,79 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-03-06T22:46:54 BubbleMaps relation 度数 23，in/out = 18/5。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。",
+      "top_holder_role": "Team 二级分发中枢",
+      "evidence_summary": "研究判断：Team 二级分发中枢。 累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。 链上形态是普通 system wallet。 主入账来源 GLHvbT...TB8v，累计 102,300,000.00 PRL。 主出账去向 8G68Pu...cbCe，累计 92,650,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 23，in/out = 18/5。",
+      "tx_prl_transfer_count": 9,
+      "tx_inbound_total": 170000000.0,
+      "tx_outbound_total": 160350000.0,
+      "tx_net_flow": 9650000.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "unlabeled_whale_or_secondary_vault",
+      "tx_first_prl_transfer_ts": 1772837214,
+      "tx_last_prl_transfer_ts": 1773871214,
+      "tx_unique_incoming_counterparties": 2,
+      "tx_unique_outgoing_counterparties": 5,
+      "tx_top10_counterparties": [
+        "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+        "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 102300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "D79Pn7DwYsBAp5uBdfR4nzZi2C7sGaHqXLK9KomNBDQo",
+          "amount": 67700000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+          "amount": 92650000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+          "amount": 40000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+          "amount": 20000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN",
+          "amount": 6500000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC",
+          "amount": 1200000.0,
+          "count": 1
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+        "amount": 102300000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "amount": 92650000.0,
+        "count": 1
+      },
+      "role_inference_code": "likely_team_distribution_hub",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 二级分发中枢"
     }
   ],
   "holders": [
@@ -488,11 +1073,72 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-18T15:48:28 BubbleMaps relation 度数 37，in/out = 26/11。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。",
+      "top_holder_role": "Community 主仓",
+      "evidence_summary": "研究判断：Community 主仓候选。 从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 375,000,000.00 PRL。 主出账去向 w1GJxV...Z6aG，累计 30,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 37，in/out = 26/11。",
+      "tx_prl_transfer_count": 12,
+      "tx_inbound_total": 375000000.0,
+      "tx_outbound_total": 57019790.87,
+      "tx_net_flow": 317980209.13,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "likely_community_treasury_or_locked_master",
+      "tx_first_prl_transfer_ts": 1772669083,
+      "tx_last_prl_transfer_ts": 1774657884,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 5,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 375000000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 30000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 25000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "XJMfBczNcaTV2fsmd5b4CvMkm4rrVvEjPJ4cH6Lf7zT",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "WC69LwqcA9eU2rcgTA98UjQ12GxbPEVjfRYr7p9weUF",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6UfKUMFXQQ1gELHhyEFqP1wUqvp5kGzqvz4PZAY3enYu",
+          "amount": 19790.87,
+          "count": 2
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 375000000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 30000000.0,
+        "count": 2
+      },
+      "role_inference_code": "likely_community_master_wallet",
+      "tokenomics_bucket": "Community",
+      "research_label": "Community 主仓候选"
     },
     {
       "address": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
@@ -518,11 +1164,42 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-09T19:35:51 BubbleMaps relation 度数 24，in/out = 18/6。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。",
+      "top_holder_role": "Investors 主锁仓",
+      "evidence_summary": "研究判断：Investors 主锁仓候选。 从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 276,619,098.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 24，in/out = 18/6。",
+      "tx_prl_transfer_count": 2,
+      "tx_inbound_total": 276619098.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 276619098.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "likely_investor_vesting_master",
+      "tx_first_prl_transfer_ts": 1772669166,
+      "tx_last_prl_transfer_ts": 1772734906,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 276619098.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 276619098.0,
+        "count": 2
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_investor_vesting_master",
+      "tokenomics_bucket": "Investors",
+      "research_label": "Investors 主锁仓候选"
     },
     {
       "address": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
@@ -548,11 +1225,92 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-09T19:36:14 BubbleMaps relation 度数 75，in/out = 59/16。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。",
+      "top_holder_role": "Ecosystem 主仓",
+      "evidence_summary": "研究判断：Ecosystem 主仓候选。 从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 178,380,902.00 PRL。 主出账去向 w1GJxV...Z6aG，累计 80,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 75，in/out = 59/16。",
+      "tx_prl_transfer_count": 17,
+      "tx_inbound_total": 181380902.0,
+      "tx_outbound_total": 87300836.0,
+      "tx_net_flow": 94080066.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "unlabeled_whale_or_secondary_vault",
+      "tx_first_prl_transfer_ts": 1772669015,
+      "tx_last_prl_transfer_ts": 1774478724,
+      "tx_unique_incoming_counterparties": 2,
+      "tx_unique_outgoing_counterparties": 8,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 3000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 80000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 4500000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "84kP3YqMmJZpd34SoHu3vS93aXBCJMqA5vRhA5PKkb6M",
+          "amount": 1500000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GXU89jmgYV3dHDqcDuJoAXc9FELYnb7jULfR1Sk4Q7Aa",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "AxVbkcuiA5DAwh2MXippzVg7byKnDQXEvHCEir6MzwsC",
+          "amount": 300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "FcXAKVNKnkb9S22LbHsXF87VGnEVrf23sFNnQm6thp4o",
+          "amount": 700.0,
+          "count": 1
+        },
+        {
+          "counterparty": "37iuXv1jgdDCnSMRcDMyzD2GFTZc6xzGMAoxP98V9cY8",
+          "amount": 135.0,
+          "count": 1
+        },
+        {
+          "counterparty": "9v1UM66nwJXGbE9pnAocy1J8ri364oTgCBdHGBm2T4Wo",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 178380902.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 80000000.0,
+        "count": 2
+      },
+      "role_inference_code": "likely_ecosystem_master_wallet",
+      "tokenomics_bucket": "Ecosystem",
+      "research_label": "Ecosystem 主仓候选"
     },
     {
       "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
@@ -578,11 +1336,42 @@
       "account_owner_program": null,
       "account_space": null,
       "account_executable": null,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "TGE 后新创建的单跳大仓，更像分仓后的静态大户。",
-      "top_holder_role": "单跳静态大仓",
-      "evidence_summary": "public_rpc_not_available BubbleMaps 首次活动时间：2026-03-10T00:10:57 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 92,650,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 92650000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 92650000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773101457,
+      "tx_last_prl_transfer_ts": 1773101457,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 92650000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 92650000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
@@ -610,9 +1399,138 @@
       "account_executable": false,
       "resolved_bucket": "official_inferred",
       "confidence": "medium",
-      "classification_reason": "Top 10 中的程序控制账户，更像官方 vault / 托管层而非自然大户。",
-      "top_holder_role": "疑似官方基础设施/托管 vault",
-      "evidence_summary": "账户 owner 为 76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU，不是普通 system wallet，偏向程序控制或 vault 型账户。 BubbleMaps 首次活动时间：2026-03-20T21:08:25 BubbleMaps relation 度数 857，in/out = 149/708。"
+      "classification_reason": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。",
+      "top_holder_role": "Ecosystem 释放 Vault",
+      "evidence_summary": "研究判断：Ecosystem 释放 Vault。 程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。 账户 owner 为 76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU，不是普通 system wallet，偏向程序控制或 vault 型账户。 主入账来源 AewXva...Hcdu，累计 90,000,000.00 PRL。 主出账去向 Ee7qK1...unM5，累计 2,237,232.85 PRL。 释放状态判断：活跃释放。 BubbleMaps relation 度数 857，in/out = 149/708。",
+      "tx_prl_transfer_count": 842,
+      "tx_inbound_total": 91666084.409439,
+      "tx_outbound_total": 8279464.384248,
+      "tx_net_flow": 83386620.025191,
+      "tx_release_status": "active_release_or_distribution",
+      "tx_release_status_label": "活跃释放",
+      "tx_role_inference": "likely_ecosystem_release_vault",
+      "tx_first_prl_transfer_ts": 1774040905,
+      "tx_last_prl_transfer_ts": 1774925373,
+      "tx_unique_incoming_counterparties": 26,
+      "tx_unique_outgoing_counterparties": 98,
+      "tx_top10_counterparties": [],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+          "amount": 90000000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 604585.660118,
+          "count": 15
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 385876.456993,
+          "count": 16
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 224105.425242,
+          "count": 11
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 89175.8869,
+          "count": 2
+        },
+        {
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 73245.07102300001,
+          "count": 33
+        },
+        {
+          "counterparty": "ASMDWH1eXUYgdwrGeYwnfv5UdYQEKMhDkjEbvzjVp66C",
+          "amount": 63449.19,
+          "count": 3
+        },
+        {
+          "counterparty": "G4ijzY1JSgRTvsy32FHNdYSKCTfEpNx52doKC7iBsm9u",
+          "amount": 51291.649777,
+          "count": 5
+        },
+        {
+          "counterparty": "8yooz52cK1pA9kqRj5LfXkJqLF4XpeVaMadtbRXKzXds",
+          "amount": 39210.56,
+          "count": 2
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 24465.402560000002,
+          "count": 3
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 2237232.8453570013,
+          "count": 54
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 801501.9782730001,
+          "count": 35
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 735931.6767010003,
+          "count": 33
+        },
+        {
+          "counterparty": "B9jk8ySZycWcmKSPNRB5emjcWRTRvKAhS8zDZpexsCBG",
+          "amount": 427765.68329699995,
+          "count": 14
+        },
+        {
+          "counterparty": "8EKzaL3JMY7jXwdQSQTStevnUJZXTto5HAcWK7G9n7Lc",
+          "amount": 368430.34149799997,
+          "count": 9
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 335726.98993,
+          "count": 12
+        },
+        {
+          "counterparty": "9xBSRFCahDvuPX2rM3HvpF8UURwmuQBXQcfDD2a9uusT",
+          "amount": 330029.862441,
+          "count": 29
+        },
+        {
+          "counterparty": "5qpfP5GQR4HnrB2gSqCcagEjkH71bQaSRWdHrLLBDiWE",
+          "amount": 251254.667527,
+          "count": 10
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 236421.10072099997,
+          "count": 24
+        },
+        {
+          "counterparty": "2B6Z9mNdbqavTHYhXntG9wChp6AWtoTLyn6UnWZLxcNe",
+          "amount": 229664.60434400002,
+          "count": 13
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+        "amount": 90000000.0,
+        "count": 3
+      },
+      "tx_primary_outbound": {
+        "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+        "amount": 2237232.8453570013,
+        "count": 54
+      },
+      "role_inference_code": "likely_ecosystem_release_vault",
+      "tokenomics_bucket": "Ecosystem",
+      "research_label": "Ecosystem 释放 Vault"
     },
     {
       "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
@@ -638,11 +1556,42 @@
       "account_owner_program": null,
       "account_space": null,
       "account_executable": null,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "TGE 后新创建的单跳大仓，更像分仓后的静态大户。",
-      "top_holder_role": "单跳静态大仓",
-      "evidence_summary": "public_rpc_not_available BubbleMaps 首次活动时间：2026-03-10T00:11:34 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 40,000,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 40000000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 40000000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773101494,
+      "tx_last_prl_transfer_ts": 1773101494,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 40000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 40000000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
@@ -662,7 +1611,7 @@
       "arkham_entity_type": null,
       "arkham_entity_id": null,
       "arkham_label": "Squads Vault \"Lumen Foundation\"",
-      "arkham_pct_of_cap": 0.02239705369,
+      "arkham_pct_of_cap": 0.022384285878,
       "resolved_entity_name": "Squads Vault \"Lumen Foundation\"",
       "account_shape_note": "链上形态是普通 system wallet。",
       "account_owner_program": "11111111111111111111111111111111",
@@ -670,9 +1619,67 @@
       "account_executable": false,
       "resolved_bucket": "official_public",
       "confidence": "high",
-      "classification_reason": "官方 docs 或 audit 直接公开。",
-      "top_holder_role": "公开 metadata authority 钱包",
-      "evidence_summary": "官方 audit 直接公开为 metadata update authority。 Arkham 标签：Squads Vault \"Lumen Foundation\" 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2025-12-24T12:04:33 BubbleMaps relation 度数 8987，in/out = 6/8981。"
+      "classification_reason": "Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。",
+      "top_holder_role": "官方一级分发总控",
+      "evidence_summary": "研究判断：官方一级分发总控。 Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。 现有标签：Squads Vault \"Lumen Foundation\"。 链上形态是普通 system wallet。 主入账来源 Gvpm8t...vE4B，累计 25,000,000.00 PRL。 主出账去向 Gvpm8t...vE4B，累计 375,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 8987，in/out = 6/8981。",
+      "tx_prl_transfer_count": 10,
+      "tx_inbound_total": 25000000.0,
+      "tx_outbound_total": 1000000000.0,
+      "tx_net_flow": -975000000.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "confirmed_official_operational_wallet",
+      "tx_first_prl_transfer_ts": 1772669015,
+      "tx_last_prl_transfer_ts": 1774414702,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 4,
+      "tx_top10_counterparties": [
+        "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+        "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+        "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 25000000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 375000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+          "amount": 276619098.0,
+          "count": 2
+        },
+        {
+          "counterparty": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 170000000.0,
+          "count": 2
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+        "amount": 25000000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+        "amount": 375000000.0,
+        "count": 2
+      },
+      "role_inference_code": "confirmed_official_master_distributor",
+      "tokenomics_bucket": "Master Distributor",
+      "research_label": "官方一级分发总控"
     },
     {
       "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
@@ -698,11 +1705,42 @@
       "account_owner_program": null,
       "account_space": null,
       "account_executable": null,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "TGE 后新创建的单跳大仓，更像分仓后的静态大户。",
-      "top_holder_role": "单跳静态大仓",
-      "evidence_summary": "public_rpc_not_available BubbleMaps 首次活动时间：2026-03-18T22:00:14 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 20,000,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 20000000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 20000000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773871214,
+      "tx_last_prl_transfer_ts": 1773871214,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 20000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 20000000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
@@ -730,9 +1768,38 @@
       "account_executable": false,
       "resolved_bucket": "official_inferred",
       "confidence": "medium",
-      "classification_reason": "Arkham 直接打到 Squads Vault，且处于 Top 10。",
-      "top_holder_role": "疑似 Squads 官方运营/服务 vault",
-      "evidence_summary": "Arkham 标签：Squads Vault \"SGL Marketing Lumen ServiceCo\" 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-03-18T21:33:11 BubbleMaps relation 度数 5，in/out = 4/1。"
+      "classification_reason": "Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。",
+      "top_holder_role": "官方运营 / ServiceCo Vault",
+      "evidence_summary": "研究判断：官方运营 / ServiceCo Vault。 Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。 现有标签：Squads Vault \"SGL Marketing Lumen ServiceCo\"。 链上形态是普通 system wallet。 主入账来源 w1GJxV...Z6aG，累计 1.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 5，in/out = 4/1。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 1.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 1.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "likely_official_ops_vault",
+      "tx_first_prl_transfer_ts": 1774227311,
+      "tx_last_prl_transfer_ts": 1774227311,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 1.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_official_ops_vault",
+      "tokenomics_bucket": "Operations",
+      "research_label": "官方运营 / ServiceCo Vault"
     },
     {
       "address": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
@@ -758,11 +1825,79 @@
       "account_owner_program": "11111111111111111111111111111111",
       "account_space": 0,
       "account_executable": false,
-      "resolved_bucket": "whale",
-      "confidence": "medium",
-      "classification_reason": "Top 10 未见公开官方或交易所证据，按大户处理。",
-      "top_holder_role": "未标注大户",
-      "evidence_summary": "链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-03-06T22:46:54 BubbleMaps relation 度数 23，in/out = 18/5。"
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。",
+      "top_holder_role": "Team 二级分发中枢",
+      "evidence_summary": "研究判断：Team 二级分发中枢。 累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。 链上形态是普通 system wallet。 主入账来源 GLHvbT...TB8v，累计 102,300,000.00 PRL。 主出账去向 8G68Pu...cbCe，累计 92,650,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 23，in/out = 18/5。",
+      "tx_prl_transfer_count": 9,
+      "tx_inbound_total": 170000000.0,
+      "tx_outbound_total": 160350000.0,
+      "tx_net_flow": 9650000.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "unlabeled_whale_or_secondary_vault",
+      "tx_first_prl_transfer_ts": 1772837214,
+      "tx_last_prl_transfer_ts": 1773871214,
+      "tx_unique_incoming_counterparties": 2,
+      "tx_unique_outgoing_counterparties": 5,
+      "tx_top10_counterparties": [
+        "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+        "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 102300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "D79Pn7DwYsBAp5uBdfR4nzZi2C7sGaHqXLK9KomNBDQo",
+          "amount": 67700000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+          "amount": 92650000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+          "amount": 40000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+          "amount": 20000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN",
+          "amount": 6500000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC",
+          "amount": 1200000.0,
+          "count": 1
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+        "amount": 102300000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "amount": 92650000.0,
+        "count": 1
+      },
+      "role_inference_code": "likely_team_distribution_hub",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 二级分发中枢"
     },
     {
       "address": "5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN",
@@ -812,7 +1947,7 @@
       "arkham_entity_type": "cex",
       "arkham_entity_id": "bitget",
       "arkham_label": "Hot Wallet",
-      "arkham_pct_of_cap": 0.00595107403842612,
+      "arkham_pct_of_cap": 0.00596368883972057,
       "resolved_entity_name": "Bitget Exchange (A77H...4RiR)",
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -872,7 +2007,7 @@
       "arkham_entity_type": "cex",
       "arkham_entity_id": "gate-io",
       "arkham_label": "Hot Wallet",
-      "arkham_pct_of_cap": 0.00161561329692943,
+      "arkham_pct_of_cap": 0.0016101712569294299,
       "resolved_entity_name": "Gate.io (u6PJ...Xq2w)",
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -1022,7 +2157,7 @@
       "arkham_entity_type": "cex",
       "arkham_entity_id": "kucoin",
       "arkham_label": "Hot Wallet",
-      "arkham_pct_of_cap": 0.00033333887259646,
+      "arkham_pct_of_cap": 0.00033270622319103997,
       "resolved_entity_name": "Kucoin (BmFd...ymy6)",
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -1172,7 +2307,7 @@
       "arkham_entity_type": "dex",
       "arkham_entity_id": "raydium",
       "arkham_label": "Market",
-      "arkham_pct_of_cap": 5.393376418877e-05,
+      "arkham_pct_of_cap": 5.463690084618e-05,
       "resolved_entity_name": "Raydium Pool",
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -1382,7 +2517,7 @@
       "arkham_entity_type": "cex",
       "arkham_entity_id": "coinex",
       "arkham_label": "Hot Wallet",
-      "arkham_pct_of_cap": 1.972015985544e-05,
+      "arkham_pct_of_cap": 2.0357119292449998e-05,
       "resolved_entity_name": "CoinEx Hot Wallet (D5jx...nw8p)",
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -1652,7 +2787,7 @@
       "arkham_entity_type": null,
       "arkham_entity_id": null,
       "arkham_label": "Gate Deposit",
-      "arkham_pct_of_cap": 1.034910679849e-05,
+      "arkham_pct_of_cap": 1.141636028893e-05,
       "resolved_entity_name": "Gate Deposit",
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -1772,7 +2907,7 @@
       "arkham_entity_type": null,
       "arkham_entity_id": null,
       "arkham_label": null,
-      "arkham_pct_of_cap": 6.76115e-06,
+      "arkham_pct_of_cap": 5.76177e-06,
       "resolved_entity_name": null,
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -1862,7 +2997,7 @@
       "arkham_entity_type": "dex",
       "arkham_entity_id": "orca",
       "arkham_label": null,
-      "arkham_pct_of_cap": 6.674801632609999e-06,
+      "arkham_pct_of_cap": 6.88039405885e-06,
       "resolved_entity_name": "Orca Pool",
       "account_shape_note": "public_rpc_not_available",
       "account_owner_program": null,
@@ -15467,6 +16602,330 @@
   ],
   "official_watchlist": [
     {
+      "address": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+      "rank": 1,
+      "amount": 317980209.13,
+      "share": 0.3179802094479802,
+      "bubblemaps_label": null,
+      "bubblemaps_is_cex": false,
+      "bubblemaps_is_dex": false,
+      "bubblemaps_is_contract": false,
+      "bubblemaps_entity_id": null,
+      "degree": 37,
+      "inward_relations": 26,
+      "outward_relations": 11,
+      "first_activity_date": "2026-02-18T15:48:28",
+      "arkham_entity_name": null,
+      "arkham_entity_type": null,
+      "arkham_entity_id": null,
+      "arkham_label": null,
+      "arkham_pct_of_cap": 0.31798020912999997,
+      "resolved_entity_name": null,
+      "account_shape_note": "链上形态是普通 system wallet。",
+      "account_owner_program": "11111111111111111111111111111111",
+      "account_space": 0,
+      "account_executable": false,
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。",
+      "top_holder_role": "Community 主仓",
+      "evidence_summary": "研究判断：Community 主仓候选。 从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 375,000,000.00 PRL。 主出账去向 w1GJxV...Z6aG，累计 30,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 37，in/out = 26/11。",
+      "tx_prl_transfer_count": 12,
+      "tx_inbound_total": 375000000.0,
+      "tx_outbound_total": 57019790.87,
+      "tx_net_flow": 317980209.13,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "likely_community_treasury_or_locked_master",
+      "tx_first_prl_transfer_ts": 1772669083,
+      "tx_last_prl_transfer_ts": 1774657884,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 5,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 375000000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 30000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 25000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "XJMfBczNcaTV2fsmd5b4CvMkm4rrVvEjPJ4cH6Lf7zT",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "WC69LwqcA9eU2rcgTA98UjQ12GxbPEVjfRYr7p9weUF",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "6UfKUMFXQQ1gELHhyEFqP1wUqvp5kGzqvz4PZAY3enYu",
+          "amount": 19790.87,
+          "count": 2
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 375000000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 30000000.0,
+        "count": 2
+      },
+      "role_inference_code": "likely_community_master_wallet",
+      "tokenomics_bucket": "Community",
+      "research_label": "Community 主仓候选"
+    },
+    {
+      "address": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+      "rank": 2,
+      "amount": 276619098.0,
+      "share": 0.2766190982766191,
+      "bubblemaps_label": null,
+      "bubblemaps_is_cex": false,
+      "bubblemaps_is_dex": false,
+      "bubblemaps_is_contract": false,
+      "bubblemaps_entity_id": null,
+      "degree": 24,
+      "inward_relations": 18,
+      "outward_relations": 6,
+      "first_activity_date": "2026-02-09T19:35:51",
+      "arkham_entity_name": null,
+      "arkham_entity_type": null,
+      "arkham_entity_id": null,
+      "arkham_label": null,
+      "arkham_pct_of_cap": 0.276619098,
+      "resolved_entity_name": null,
+      "account_shape_note": "链上形态是普通 system wallet。",
+      "account_owner_program": "11111111111111111111111111111111",
+      "account_space": 0,
+      "account_executable": false,
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。",
+      "top_holder_role": "Investors 主锁仓",
+      "evidence_summary": "研究判断：Investors 主锁仓候选。 从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 276,619,098.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 24，in/out = 18/6。",
+      "tx_prl_transfer_count": 2,
+      "tx_inbound_total": 276619098.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 276619098.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "likely_investor_vesting_master",
+      "tx_first_prl_transfer_ts": 1772669166,
+      "tx_last_prl_transfer_ts": 1772734906,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 276619098.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 276619098.0,
+        "count": 2
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_investor_vesting_master",
+      "tokenomics_bucket": "Investors",
+      "research_label": "Investors 主锁仓候选"
+    },
+    {
+      "address": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+      "rank": 3,
+      "amount": 94080066.0,
+      "share": 0.09408006609408007,
+      "bubblemaps_label": null,
+      "bubblemaps_is_cex": false,
+      "bubblemaps_is_dex": false,
+      "bubblemaps_is_contract": false,
+      "bubblemaps_entity_id": null,
+      "degree": 75,
+      "inward_relations": 59,
+      "outward_relations": 16,
+      "first_activity_date": "2026-02-09T19:36:14",
+      "arkham_entity_name": null,
+      "arkham_entity_type": null,
+      "arkham_entity_id": null,
+      "arkham_label": null,
+      "arkham_pct_of_cap": 0.094080066,
+      "resolved_entity_name": null,
+      "account_shape_note": "链上形态是普通 system wallet。",
+      "account_owner_program": "11111111111111111111111111111111",
+      "account_space": 0,
+      "account_executable": false,
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。",
+      "top_holder_role": "Ecosystem 主仓",
+      "evidence_summary": "研究判断：Ecosystem 主仓候选。 从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。 链上形态是普通 system wallet。 主入账来源 6pJjJF...dLRG，累计 178,380,902.00 PRL。 主出账去向 w1GJxV...Z6aG，累计 80,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 75，in/out = 59/16。",
+      "tx_prl_transfer_count": 17,
+      "tx_inbound_total": 181380902.0,
+      "tx_outbound_total": 87300836.0,
+      "tx_net_flow": 94080066.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "unlabeled_whale_or_secondary_vault",
+      "tx_first_prl_transfer_ts": 1772669015,
+      "tx_last_prl_transfer_ts": 1774478724,
+      "tx_unique_incoming_counterparties": 2,
+      "tx_unique_outgoing_counterparties": 8,
+      "tx_top10_counterparties": [
+        "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 3000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 80000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z",
+          "amount": 4500000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "84kP3YqMmJZpd34SoHu3vS93aXBCJMqA5vRhA5PKkb6M",
+          "amount": 1500000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GXU89jmgYV3dHDqcDuJoAXc9FELYnb7jULfR1Sk4Q7Aa",
+          "amount": 1000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "AxVbkcuiA5DAwh2MXippzVg7byKnDQXEvHCEir6MzwsC",
+          "amount": 300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "FcXAKVNKnkb9S22LbHsXF87VGnEVrf23sFNnQm6thp4o",
+          "amount": 700.0,
+          "count": 1
+        },
+        {
+          "counterparty": "37iuXv1jgdDCnSMRcDMyzD2GFTZc6xzGMAoxP98V9cY8",
+          "amount": 135.0,
+          "count": 1
+        },
+        {
+          "counterparty": "9v1UM66nwJXGbE9pnAocy1J8ri364oTgCBdHGBm2T4Wo",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "amount": 178380902.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 80000000.0,
+        "count": 2
+      },
+      "role_inference_code": "likely_ecosystem_master_wallet",
+      "tokenomics_bucket": "Ecosystem",
+      "research_label": "Ecosystem 主仓候选"
+    },
+    {
+      "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+      "rank": 4,
+      "amount": 92650000.0,
+      "share": 0.09265000009265,
+      "bubblemaps_label": null,
+      "bubblemaps_is_cex": false,
+      "bubblemaps_is_dex": false,
+      "bubblemaps_is_contract": false,
+      "bubblemaps_entity_id": null,
+      "degree": 1,
+      "inward_relations": 1,
+      "outward_relations": 0,
+      "first_activity_date": "2026-03-10T00:10:57",
+      "arkham_entity_name": null,
+      "arkham_entity_type": null,
+      "arkham_entity_id": null,
+      "arkham_label": null,
+      "arkham_pct_of_cap": 0.09265,
+      "resolved_entity_name": null,
+      "account_shape_note": "public_rpc_not_available",
+      "account_owner_program": null,
+      "account_space": null,
+      "account_executable": null,
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 92,650,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 92650000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 92650000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773101457,
+      "tx_last_prl_transfer_ts": 1773101457,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 92650000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 92650000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
+    },
+    {
       "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
       "rank": 5,
       "amount": 83386620.025191,
@@ -15492,9 +16951,199 @@
       "account_executable": false,
       "resolved_bucket": "official_inferred",
       "confidence": "medium",
-      "classification_reason": "Top 10 中的程序控制账户，更像官方 vault / 托管层而非自然大户。",
-      "top_holder_role": "疑似官方基础设施/托管 vault",
-      "evidence_summary": "账户 owner 为 76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU，不是普通 system wallet，偏向程序控制或 vault 型账户。 BubbleMaps 首次活动时间：2026-03-20T21:08:25 BubbleMaps relation 度数 857，in/out = 149/708。"
+      "classification_reason": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。",
+      "top_holder_role": "Ecosystem 释放 Vault",
+      "evidence_summary": "研究判断：Ecosystem 释放 Vault。 程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。 账户 owner 为 76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU，不是普通 system wallet，偏向程序控制或 vault 型账户。 主入账来源 AewXva...Hcdu，累计 90,000,000.00 PRL。 主出账去向 Ee7qK1...unM5，累计 2,237,232.85 PRL。 释放状态判断：活跃释放。 BubbleMaps relation 度数 857，in/out = 149/708。",
+      "tx_prl_transfer_count": 842,
+      "tx_inbound_total": 91666084.409439,
+      "tx_outbound_total": 8279464.384248,
+      "tx_net_flow": 83386620.025191,
+      "tx_release_status": "active_release_or_distribution",
+      "tx_release_status_label": "活跃释放",
+      "tx_role_inference": "likely_ecosystem_release_vault",
+      "tx_first_prl_transfer_ts": 1774040905,
+      "tx_last_prl_transfer_ts": 1774925373,
+      "tx_unique_incoming_counterparties": 26,
+      "tx_unique_outgoing_counterparties": 98,
+      "tx_top10_counterparties": [],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+          "amount": 90000000.0,
+          "count": 3
+        },
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 604585.660118,
+          "count": 15
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 385876.456993,
+          "count": 16
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 224105.425242,
+          "count": 11
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 89175.8869,
+          "count": 2
+        },
+        {
+          "counterparty": "CvGgoUiELpSceMBLE1gK4LZFwSW3J4CcMcErNFSyrsvW",
+          "amount": 73245.07102300001,
+          "count": 33
+        },
+        {
+          "counterparty": "ASMDWH1eXUYgdwrGeYwnfv5UdYQEKMhDkjEbvzjVp66C",
+          "amount": 63449.19,
+          "count": 3
+        },
+        {
+          "counterparty": "G4ijzY1JSgRTvsy32FHNdYSKCTfEpNx52doKC7iBsm9u",
+          "amount": 51291.649777,
+          "count": 5
+        },
+        {
+          "counterparty": "8yooz52cK1pA9kqRj5LfXkJqLF4XpeVaMadtbRXKzXds",
+          "amount": 39210.56,
+          "count": 2
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 24465.402560000002,
+          "count": 3
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+          "amount": 2237232.8453570013,
+          "count": 54
+        },
+        {
+          "counterparty": "5H2HkTjfJD5HBXSKRmQEsnKXMPNUJrTZoCMhj3hkMhMD",
+          "amount": 801501.9782730001,
+          "count": 35
+        },
+        {
+          "counterparty": "EqNcxB6suoC9DB4hrG5xmKg1L3hoK7U22hAsqPrHxxb2",
+          "amount": 735931.6767010003,
+          "count": 33
+        },
+        {
+          "counterparty": "B9jk8ySZycWcmKSPNRB5emjcWRTRvKAhS8zDZpexsCBG",
+          "amount": 427765.68329699995,
+          "count": 14
+        },
+        {
+          "counterparty": "8EKzaL3JMY7jXwdQSQTStevnUJZXTto5HAcWK7G9n7Lc",
+          "amount": 368430.34149799997,
+          "count": 9
+        },
+        {
+          "counterparty": "C1UpHj8rjLdfpjh2rgLWdByxnf8EFdh3FuF4boYZnmDS",
+          "amount": 335726.98993,
+          "count": 12
+        },
+        {
+          "counterparty": "9xBSRFCahDvuPX2rM3HvpF8UURwmuQBXQcfDD2a9uusT",
+          "amount": 330029.862441,
+          "count": 29
+        },
+        {
+          "counterparty": "5qpfP5GQR4HnrB2gSqCcagEjkH71bQaSRWdHrLLBDiWE",
+          "amount": 251254.667527,
+          "count": 10
+        },
+        {
+          "counterparty": "BA43GEd3TVRgNK5QE9rEwykUZkKkRxwBhXEKDsfmSCMC",
+          "amount": 236421.10072099997,
+          "count": 24
+        },
+        {
+          "counterparty": "2B6Z9mNdbqavTHYhXntG9wChp6AWtoTLyn6UnWZLxcNe",
+          "amount": 229664.60434400002,
+          "count": 13
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+        "amount": 90000000.0,
+        "count": 3
+      },
+      "tx_primary_outbound": {
+        "counterparty": "Ee7qK1PmgEnQf5ErJ5D1qGXX25n87xqXRefAjrZPunM5",
+        "amount": 2237232.8453570013,
+        "count": 54
+      },
+      "role_inference_code": "likely_ecosystem_release_vault",
+      "tokenomics_bucket": "Ecosystem",
+      "research_label": "Ecosystem 释放 Vault"
+    },
+    {
+      "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+      "rank": 6,
+      "amount": 40000000.0,
+      "share": 0.04000000004,
+      "bubblemaps_label": null,
+      "bubblemaps_is_cex": false,
+      "bubblemaps_is_dex": false,
+      "bubblemaps_is_contract": false,
+      "bubblemaps_entity_id": null,
+      "degree": 1,
+      "inward_relations": 1,
+      "outward_relations": 0,
+      "first_activity_date": "2026-03-10T00:11:34",
+      "arkham_entity_name": null,
+      "arkham_entity_type": null,
+      "arkham_entity_id": null,
+      "arkham_label": null,
+      "arkham_pct_of_cap": 0.04,
+      "resolved_entity_name": null,
+      "account_shape_note": "public_rpc_not_available",
+      "account_owner_program": null,
+      "account_space": null,
+      "account_executable": null,
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 40,000,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 40000000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 40000000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773101494,
+      "tx_last_prl_transfer_ts": 1773101494,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 40000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 40000000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
@@ -15514,7 +17163,7 @@
       "arkham_entity_type": null,
       "arkham_entity_id": null,
       "arkham_label": "Squads Vault \"Lumen Foundation\"",
-      "arkham_pct_of_cap": 0.02239705369,
+      "arkham_pct_of_cap": 0.022384285878,
       "resolved_entity_name": "Squads Vault \"Lumen Foundation\"",
       "account_shape_note": "链上形态是普通 system wallet。",
       "account_owner_program": "11111111111111111111111111111111",
@@ -15522,9 +17171,128 @@
       "account_executable": false,
       "resolved_bucket": "official_public",
       "confidence": "high",
-      "classification_reason": "官方 docs 或 audit 直接公开。",
-      "top_holder_role": "公开 metadata authority 钱包",
-      "evidence_summary": "官方 audit 直接公开为 metadata update authority。 Arkham 标签：Squads Vault \"Lumen Foundation\" 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2025-12-24T12:04:33 BubbleMaps relation 度数 8987，in/out = 6/8981。"
+      "classification_reason": "Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。",
+      "top_holder_role": "官方一级分发总控",
+      "evidence_summary": "研究判断：官方一级分发总控。 Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。 现有标签：Squads Vault \"Lumen Foundation\"。 链上形态是普通 system wallet。 主入账来源 Gvpm8t...vE4B，累计 25,000,000.00 PRL。 主出账去向 Gvpm8t...vE4B，累计 375,000,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 8987，in/out = 6/8981。",
+      "tx_prl_transfer_count": 10,
+      "tx_inbound_total": 25000000.0,
+      "tx_outbound_total": 1000000000.0,
+      "tx_net_flow": -975000000.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "confirmed_official_operational_wallet",
+      "tx_first_prl_transfer_ts": 1772669015,
+      "tx_last_prl_transfer_ts": 1774414702,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 4,
+      "tx_top10_counterparties": [
+        "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+        "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+        "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 25000000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "amount": 375000000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+          "amount": 276619098.0,
+          "count": 2
+        },
+        {
+          "counterparty": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+          "amount": 178380902.0,
+          "count": 2
+        },
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 170000000.0,
+          "count": 2
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+        "amount": 25000000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+        "amount": 375000000.0,
+        "count": 2
+      },
+      "role_inference_code": "confirmed_official_master_distributor",
+      "tokenomics_bucket": "Master Distributor",
+      "research_label": "官方一级分发总控"
+    },
+    {
+      "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+      "rank": 8,
+      "amount": 20000000.0,
+      "share": 0.02000000002,
+      "bubblemaps_label": null,
+      "bubblemaps_is_cex": false,
+      "bubblemaps_is_dex": false,
+      "bubblemaps_is_contract": false,
+      "bubblemaps_entity_id": null,
+      "degree": 1,
+      "inward_relations": 1,
+      "outward_relations": 0,
+      "first_activity_date": "2026-03-18T22:00:14",
+      "arkham_entity_name": null,
+      "arkham_entity_type": null,
+      "arkham_entity_id": null,
+      "arkham_label": null,
+      "arkham_pct_of_cap": 0.02,
+      "resolved_entity_name": null,
+      "account_shape_note": "public_rpc_not_available",
+      "account_owner_program": null,
+      "account_space": null,
+      "account_executable": null,
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "top_holder_role": "Team 静态分仓",
+      "evidence_summary": "研究判断：Team 静态分仓。 仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。 public_rpc_not_available 主入账来源 HhU4r2...7X5M，累计 20,000,000.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 1，in/out = 1/0。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 20000000.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 20000000.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "static_shard_or_split_vault",
+      "tx_first_prl_transfer_ts": 1773871214,
+      "tx_last_prl_transfer_ts": 1773871214,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [
+        "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "amount": 20000000.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 20000000.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_team_static_shard",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 静态分仓"
     },
     {
       "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
@@ -15552,9 +17320,136 @@
       "account_executable": false,
       "resolved_bucket": "official_inferred",
       "confidence": "medium",
-      "classification_reason": "Arkham 直接打到 Squads Vault，且处于 Top 10。",
-      "top_holder_role": "疑似 Squads 官方运营/服务 vault",
-      "evidence_summary": "Arkham 标签：Squads Vault \"SGL Marketing Lumen ServiceCo\" 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-03-18T21:33:11 BubbleMaps relation 度数 5，in/out = 4/1。"
+      "classification_reason": "Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。",
+      "top_holder_role": "官方运营 / ServiceCo Vault",
+      "evidence_summary": "研究判断：官方运营 / ServiceCo Vault。 Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。 现有标签：Squads Vault \"SGL Marketing Lumen ServiceCo\"。 链上形态是普通 system wallet。 主入账来源 w1GJxV...Z6aG，累计 1.00 PRL。 释放状态判断：未见释放。 BubbleMaps relation 度数 5，in/out = 4/1。",
+      "tx_prl_transfer_count": 1,
+      "tx_inbound_total": 1.0,
+      "tx_outbound_total": 0.0,
+      "tx_net_flow": 1.0,
+      "tx_release_status": "static_unreleased_like",
+      "tx_release_status_label": "未见释放",
+      "tx_role_inference": "likely_official_ops_vault",
+      "tx_first_prl_transfer_ts": 1774227311,
+      "tx_last_prl_transfer_ts": 1774227311,
+      "tx_unique_incoming_counterparties": 1,
+      "tx_unique_outgoing_counterparties": 0,
+      "tx_top10_counterparties": [],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+          "amount": 1.0,
+          "count": 1
+        }
+      ],
+      "tx_top_outgoing_counterparties": [],
+      "tx_primary_inbound": {
+        "counterparty": "w1GJxVxGfrA37JHVU9QjF7K4NcjniwfgmD8KzpaZ6aG",
+        "amount": 1.0,
+        "count": 1
+      },
+      "tx_primary_outbound": null,
+      "role_inference_code": "likely_official_ops_vault",
+      "tokenomics_bucket": "Operations",
+      "research_label": "官方运营 / ServiceCo Vault"
+    },
+    {
+      "address": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "rank": 10,
+      "amount": 9650000.0,
+      "share": 0.00965000000965,
+      "bubblemaps_label": null,
+      "bubblemaps_is_cex": false,
+      "bubblemaps_is_dex": false,
+      "bubblemaps_is_contract": false,
+      "bubblemaps_entity_id": null,
+      "degree": 23,
+      "inward_relations": 18,
+      "outward_relations": 5,
+      "first_activity_date": "2026-03-06T22:46:54",
+      "arkham_entity_name": null,
+      "arkham_entity_type": null,
+      "arkham_entity_id": null,
+      "arkham_label": null,
+      "arkham_pct_of_cap": 0.00965,
+      "resolved_entity_name": null,
+      "account_shape_note": "链上形态是普通 system wallet。",
+      "account_owner_program": "11111111111111111111111111111111",
+      "account_space": 0,
+      "account_executable": false,
+      "resolved_bucket": "official_inferred",
+      "confidence": "high",
+      "classification_reason": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。",
+      "top_holder_role": "Team 二级分发中枢",
+      "evidence_summary": "研究判断：Team 二级分发中枢。 累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。 链上形态是普通 system wallet。 主入账来源 GLHvbT...TB8v，累计 102,300,000.00 PRL。 主出账去向 8G68Pu...cbCe，累计 92,650,000.00 PRL。 释放状态判断：中度分发。 BubbleMaps relation 度数 23，in/out = 18/5。",
+      "tx_prl_transfer_count": 9,
+      "tx_inbound_total": 170000000.0,
+      "tx_outbound_total": 160350000.0,
+      "tx_net_flow": 9650000.0,
+      "tx_release_status": "moderate_distribution",
+      "tx_release_status_label": "中度分发",
+      "tx_role_inference": "unlabeled_whale_or_secondary_vault",
+      "tx_first_prl_transfer_ts": 1772837214,
+      "tx_last_prl_transfer_ts": 1773871214,
+      "tx_unique_incoming_counterparties": 2,
+      "tx_unique_outgoing_counterparties": 5,
+      "tx_top10_counterparties": [
+        "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+        "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT"
+      ],
+      "tx_top_incoming_counterparties": [
+        {
+          "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+          "amount": 102300000.0,
+          "count": 2
+        },
+        {
+          "counterparty": "D79Pn7DwYsBAp5uBdfR4nzZi2C7sGaHqXLK9KomNBDQo",
+          "amount": 67700000.0,
+          "count": 2
+        }
+      ],
+      "tx_top_outgoing_counterparties": [
+        {
+          "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+          "amount": 92650000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+          "amount": 40000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+          "amount": 20000000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN",
+          "amount": 6500000.0,
+          "count": 1
+        },
+        {
+          "counterparty": "HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC",
+          "amount": 1200000.0,
+          "count": 1
+        }
+      ],
+      "tx_primary_inbound": {
+        "counterparty": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+        "amount": 102300000.0,
+        "count": 2
+      },
+      "tx_primary_outbound": {
+        "counterparty": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "amount": 92650000.0,
+        "count": 1
+      },
+      "role_inference_code": "likely_team_distribution_hub",
+      "tokenomics_bucket": "Team",
+      "research_label": "Team 二级分发中枢"
     }
   ],
   "fresh_wallet_cluster": [
@@ -15592,6 +17487,186 @@
       "share": 0.0012000000012,
       "first_activity_date": "2026-03-10T00:12:39",
       "role": "fresh_static_bucket"
+    }
+  ],
+  "tokenomics_alignment": [
+    {
+      "bucket": "Community",
+      "allocation_pct": 0.375,
+      "allocation_amount": 375000000.0,
+      "tge_unlocked_amount": 75000000.0,
+      "locked_after_tge": 300000000.0,
+      "cliff": "N/A",
+      "vesting": "36 months",
+      "matched_addresses": [
+        {
+          "address": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+          "rank": 1,
+          "amount": 317980209.13,
+          "share": 0.3179802094479802,
+          "role": "Community 主仓",
+          "release_status": "中度分发"
+        }
+      ],
+      "summary": "公开官方总控地址先打 375M 到该地址，当前已分发约 57.02M，仍保留约 317.98M。"
+    },
+    {
+      "bucket": "Investors",
+      "allocation_pct": 0.2766,
+      "allocation_amount": 276600000.0,
+      "tge_unlocked_amount": 0.0,
+      "locked_after_tge": 276600000.0,
+      "cliff": "12 months",
+      "vesting": "36 months",
+      "matched_addresses": [
+        {
+          "address": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+          "rank": 2,
+          "amount": 276619098.0,
+          "share": 0.2766190982766191,
+          "role": "Investors 主锁仓",
+          "release_status": "未见释放"
+        }
+      ],
+      "summary": "从官方总控地址直接收到 276.619098M，当前仍基本静态，最像 investor vesting master。"
+    },
+    {
+      "bucket": "Ecosystem",
+      "allocation_pct": 0.1784,
+      "allocation_amount": 178400000.0,
+      "tge_unlocked_amount": 100000000.0,
+      "locked_after_tge": 78400000.0,
+      "cliff": "N/A",
+      "vesting": "48 months",
+      "matched_addresses": [
+        {
+          "address": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+          "rank": 3,
+          "amount": 94080066.0,
+          "share": 0.09408006609408007,
+          "role": "Ecosystem 主仓",
+          "release_status": "中度分发"
+        },
+        {
+          "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+          "rank": 5,
+          "amount": 83386620.025191,
+          "share": 0.08338662010857761,
+          "role": "Ecosystem 释放 Vault",
+          "release_status": "活跃释放"
+        }
+      ],
+      "summary": "主仓是 178.380902M 的精确配额钱包，另有程序控制释放 vault 持续向外分发。"
+    },
+    {
+      "bucket": "Team",
+      "allocation_pct": 0.17,
+      "allocation_amount": 170000000.0,
+      "tge_unlocked_amount": 0.0,
+      "locked_after_tge": 170000000.0,
+      "cliff": "12 months",
+      "vesting": "36 months",
+      "matched_addresses": [
+        {
+          "address": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+          "rank": 10,
+          "amount": 9650000.0,
+          "share": 0.00965000000965,
+          "role": "Team 二级分发中枢",
+          "release_status": "中度分发"
+        },
+        {
+          "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+          "rank": 4,
+          "amount": 92650000.0,
+          "share": 0.09265000009265,
+          "role": "Team 静态分仓",
+          "release_status": "未见释放"
+        },
+        {
+          "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+          "rank": 6,
+          "amount": 40000000.0,
+          "share": 0.04000000004,
+          "role": "Team 静态分仓",
+          "release_status": "未见释放"
+        },
+        {
+          "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+          "rank": 8,
+          "amount": 20000000.0,
+          "share": 0.02000000002,
+          "role": "Team 静态分仓",
+          "release_status": "未见释放"
+        }
+      ],
+      "summary": "170M 先进入 Team 分发中枢，再拆到多个静态分仓。"
+    }
+  ],
+  "official_distribution_flows": [
+    {
+      "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "downstream": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+      "amount": 375000000.0,
+      "downstream_role": "Community 主仓",
+      "tokenomics_bucket": "Community",
+      "reason": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。"
+    },
+    {
+      "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "downstream": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+      "amount": 276619098.0,
+      "downstream_role": "Investors 主锁仓",
+      "tokenomics_bucket": "Investors",
+      "reason": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。"
+    },
+    {
+      "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "downstream": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+      "amount": 178380902.0,
+      "downstream_role": "Ecosystem 主仓",
+      "tokenomics_bucket": "Ecosystem",
+      "reason": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。"
+    },
+    {
+      "upstream": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+      "downstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "amount": 102300000.0,
+      "downstream_role": "Team 二级分发中枢",
+      "tokenomics_bucket": "Team",
+      "reason": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。"
+    },
+    {
+      "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "downstream": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+      "amount": 92650000.0,
+      "downstream_role": "Team 静态分仓",
+      "tokenomics_bucket": "Team",
+      "reason": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
+    },
+    {
+      "upstream": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+      "downstream": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+      "amount": 90000000.0,
+      "downstream_role": "Ecosystem 释放 Vault",
+      "tokenomics_bucket": "Ecosystem",
+      "reason": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。"
+    },
+    {
+      "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "downstream": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+      "amount": 40000000.0,
+      "downstream_role": "Team 静态分仓",
+      "tokenomics_bucket": "Team",
+      "reason": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
+    },
+    {
+      "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "downstream": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+      "amount": 20000000.0,
+      "downstream_role": "Team 静态分仓",
+      "tokenomics_bucket": "Team",
+      "reason": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
     }
   ],
   "label_inventory": [
@@ -16120,10 +18195,93 @@
     },
     {
       "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
-      "role": "metadata_update_authority",
+      "role": "官方一级分发总控",
       "confidence": "high",
-      "evidence": "Audit 页面公开写明 metadata update authority 为 6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG。",
-      "source_url": "https://perle.gitbook.io/perle-docs/perle-prl-token-passes-security-audit-with-halborn"
+      "bucket": "official_public",
+      "tokenomics_bucket": "Master Distributor",
+      "evidence": "Audit 公开的 metadata authority 地址，链上又直接向 Community / Investors / Ecosystem / Team 主分配地址累计打出约 10 亿 PRL。",
+      "share": 0.022397372998397374
+    },
+    {
+      "address": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+      "role": "Community 主仓",
+      "confidence": "high",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Community",
+      "evidence": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。",
+      "share": 0.3179802094479802
+    },
+    {
+      "address": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+      "role": "Investors 主锁仓",
+      "confidence": "high",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Investors",
+      "evidence": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。",
+      "share": 0.2766190982766191
+    },
+    {
+      "address": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+      "role": "Ecosystem 主仓",
+      "confidence": "high",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Ecosystem",
+      "evidence": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。",
+      "share": 0.09408006609408007
+    },
+    {
+      "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+      "role": "Team 静态分仓",
+      "confidence": "high",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Team",
+      "evidence": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "share": 0.09265000009265
+    },
+    {
+      "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+      "role": "Ecosystem 释放 Vault",
+      "confidence": "medium",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Ecosystem",
+      "evidence": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。",
+      "share": 0.08338662010857761
+    },
+    {
+      "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+      "role": "Team 静态分仓",
+      "confidence": "high",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Team",
+      "evidence": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "share": 0.04000000004
+    },
+    {
+      "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+      "role": "Team 静态分仓",
+      "confidence": "high",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Team",
+      "evidence": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。",
+      "share": 0.02000000002
+    },
+    {
+      "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
+      "role": "官方运营 / ServiceCo Vault",
+      "confidence": "medium",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Operations",
+      "evidence": "Arkham 直接标注为 Squads Vault / ServiceCo，属于官方运营侧地址而不是市场大户。",
+      "share": 0.02000000002
+    },
+    {
+      "address": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+      "role": "Team 二级分发中枢",
+      "confidence": "high",
+      "bucket": "official_inferred",
+      "tokenomics_bucket": "Team",
+      "evidence": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。",
+      "share": 0.00965000000965
     }
   ],
   "address_relationships": {
@@ -16131,7 +18289,7 @@
       {
         "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
         "relation": "public_official",
-        "summary": "公开 metadata update authority，同时是当前第 7 大持仓地址。"
+        "summary": "公开 metadata update authority，同时链上直接向四个主配额地址分发约 10 亿 PRL。"
       },
       {
         "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
@@ -16142,6 +18300,72 @@
         "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
         "relation": "official_inferred",
         "summary": "Top 10 中唯一明显程序控制账户，链上 owner 不是 system program，且活动窗口紧贴 TGE。"
+      }
+    ],
+    "official_distribution_flows": [
+      {
+        "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "downstream": "Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B",
+        "amount": 375000000.0,
+        "downstream_role": "Community 主仓",
+        "tokenomics_bucket": "Community",
+        "reason": "从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐；当前已净分发约 57.02M，剩余约 317.98M。"
+      },
+      {
+        "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "downstream": "ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS",
+        "amount": 276619098.0,
+        "downstream_role": "Investors 主锁仓",
+        "tokenomics_bucket": "Investors",
+        "reason": "从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应，当前未见继续释放。"
+      },
+      {
+        "upstream": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+        "downstream": "Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH",
+        "amount": 178380902.0,
+        "downstream_role": "Ecosystem 主仓",
+        "tokenomics_bucket": "Ecosystem",
+        "reason": "从公开官方总控地址直接收到 178.380902M PRL，和 docs 的 Ecosystem 17.84% 几乎完全对齐，目前已向外分发约 87.30M。"
+      },
+      {
+        "upstream": "GLHvbT2S4h3thEgum8wkCgnAMHagE88Mwgrhfuc4TB8v",
+        "downstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "amount": 102300000.0,
+        "downstream_role": "Team 二级分发中枢",
+        "tokenomics_bucket": "Team",
+        "reason": "累计收到 170M PRL，随后拆分到多个静态分仓地址，和 Team 17% 配额完全对齐。"
+      },
+      {
+        "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "downstream": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+        "amount": 92650000.0,
+        "downstream_role": "Team 静态分仓",
+        "tokenomics_bucket": "Team",
+        "reason": "仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
+      },
+      {
+        "upstream": "AewXvajopq2n7pSBL3dr6Rt6u1VdEG3VG532W1sqHcdu",
+        "downstream": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+        "amount": 90000000.0,
+        "downstream_role": "Ecosystem 释放 Vault",
+        "tokenomics_bucket": "Ecosystem",
+        "reason": "程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault，而不是自然大户钱包。"
+      },
+      {
+        "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "downstream": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+        "amount": 40000000.0,
+        "downstream_role": "Team 静态分仓",
+        "tokenomics_bucket": "Team",
+        "reason": "仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
+      },
+      {
+        "upstream": "HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M",
+        "downstream": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+        "amount": 20000000.0,
+        "downstream_role": "Team 静态分仓",
+        "tokenomics_bucket": "Team",
+        "reason": "仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL，之后未继续释放，形态符合 Team 分仓停放地址。"
       }
     ],
     "fresh_static_wallets": [
