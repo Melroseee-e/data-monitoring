@@ -107,160 +107,66 @@ def build_page(data: dict[str, Any]) -> str:
     docs = data["docs_facts"]
     top10 = data["top10_holders"]
     holders = data["holders"]
-    label_inventory = data["label_inventory"]
-    top10_layers = data["top10_layer_summary"]
     tokenomics_alignment = data["tokenomics_alignment"]
-    official_flows = data["official_distribution_flows"]
 
     symbol = metadata["token"]
     name = metadata["name"]
     generated_at = metadata["generated_at"]
     total_supply = metadata["total_supply"]
 
-    top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
     official_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"})
-    official_top10 = [row for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"}]
-    exchange_rows = [row for row in holders if row["resolved_bucket"] == "exchange"][:8]
-    fresh_rows = data["fresh_wallet_cluster"][:8]
+    top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
 
     stat_cards = "".join([
         stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "顶层筹码高度集中。"),
-        stat_card("Official Layer", fmt_pct(official_top10_share), "Top 10 主要是官方配额 / 分发层。", "blue"),
+        stat_card("First Exchange", f"#{summary['first_exchange_rank']}", f"交易所下限仓位 {fmt_pct(summary['exchange_share'])}。", "blue"),
         stat_card("TGE Unlocked", fmt_num(summary["tge_unlocked_amount"], 0), "docs 理论已解锁量。", "cool"),
         stat_card("Still Locked", fmt_num(summary["locked_after_tge_amount"], 0), "docs 理论待释放量。", "rose"),
     ])
 
-    layer_cards = "".join(
-        info_card(
-            item["bucket_label"],
-            (
-                f"<strong>{esc(fmt_pct(item['share_of_supply']))}</strong> of supply, "
-                f"{esc(str(item['address_count']))} addresses in Top 10."
-            ),
-            "sand" if item["bucket"] == "official_inferred" else "ink",
-        )
-        for item in top10_layers
-    )
-
-    allocation_cards = []
+    tokenomics_rows = []
     for item in tokenomics_alignment:
-        matched = "<br>".join(
-            f"{esc(addr['role'] or '地址')} · <code>{esc(short_addr(addr['address']))}</code> · {esc(fmt_pct(addr['share'], 3))}"
+        docs_col = (
+            f"<strong>{esc(fmt_pct(item['allocation_pct']))}</strong><br>"
+            f"{esc(fmt_num(item['allocation_amount'], 0))} PRL"
+        )
+        unlock_col = (
+            f"TGE {esc(fmt_num(item['tge_unlocked_amount'], 0))}<br>"
+            f"Locked {esc(fmt_num(item['locked_after_tge'], 0))}<br>"
+            f"{esc(item.get('cliff') or 'N/A')} cliff / {esc(item.get('vesting') or '-')}"
+        )
+        matched_col = "<br>".join(
+            f"{esc(addr['role'] or '地址')} <a href=\"{esc(solscan_url(addr['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(addr['address']))}</code></a>"
             for addr in item["matched_addresses"]
-        ) or "链上暂未识别"
-        body = (
-            f"<strong>{esc(fmt_num(item['allocation_amount'], 0))} PRL</strong> / {esc(fmt_pct(item['allocation_pct']))}"
-            f"<br>TGE unlock: {esc(fmt_num(item['tge_unlocked_amount'], 0))}"
-            f"<br>Locked after TGE: {esc(fmt_num(item['locked_after_tge'], 0))}"
-            f"<br>{esc(item['summary'])}"
-            f"<br>{matched}"
-        )
-        allocation_cards.append(info_card(item["bucket"], body, "sand" if item["bucket"] in {"Community", "Ecosystem"} else "ink"))
+        ) or "未识别"
+        tokenomics_rows.append([
+            esc(item["bucket"]),
+            docs_col,
+            unlock_col,
+            matched_col,
+            esc(item["summary"] or "-"),
+        ])
 
-    top10_matrix_rows = [
-        [
-            esc(str(row["rank"])),
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(fmt_pct(row["share"], 3)),
-            esc(row.get("tokenomics_bucket") or "-"),
-            esc(row.get("top_holder_role") or "-"),
-            esc(counterparty_text(row.get("tx_primary_inbound"))),
-            esc(counterparty_text(row.get("tx_primary_outbound"))),
-            esc(row.get("tx_release_status_label") or "-"),
-        ]
-        for row in top10
-    ]
-
-    flow_rows = [
-        [
-            f"<code>{esc(short_addr(item['upstream']))}</code>" if item.get("upstream") else "-",
-            f"<code>{esc(short_addr(item['downstream']))}</code>",
-            esc(fmt_num(item["amount"], 2)),
-            esc(item.get("tokenomics_bucket") or "-"),
-            esc(item.get("downstream_role") or "-"),
-        ]
-        for item in official_flows[:12]
-    ]
-
-    dossier_cards = []
+    top10_rows = []
     for row in top10:
-        facts = [
-            ("Amount", f"{fmt_num(row['amount'], 2)} PRL"),
-            ("Docs Bucket", row.get("tokenomics_bucket") or "-"),
-            ("Release", row.get("tx_release_status_label") or "-"),
-            ("Primary In", counterparty_text(row.get("tx_primary_inbound"))),
-            ("Primary Out", counterparty_text(row.get("tx_primary_outbound"))),
-            ("PRL Txs", str(row.get("tx_prl_transfer_count", 0))),
-        ]
-        facts_html = "".join(
-            f"<div><dt>{esc(k)}</dt><dd>{esc(v)}</dd></div>"
-            for k, v in facts
+        flow_col = (
+            f"IN {esc(counterparty_text(row.get('tx_primary_inbound')))}<br>"
+            f"OUT {esc(counterparty_text(row.get('tx_primary_outbound')))}"
         )
-        tags = [
-            bucket_label(row["resolved_bucket"]),
-            row.get("top_holder_role") or "Top holder",
-            row.get("tx_release_status_label") or "Release n/a",
-            f"Confidence: {row.get('confidence', 'n/a')}",
-        ]
-        tag_html = "".join(f"<span class=\"pill\">{esc(tag)}</span>" for tag in tags if tag)
-        dossier_cards.append(f"""
-        <article class="dossier">
-          <div class="dossier-top">
-            <div class="rank-chip">#{row['rank']}</div>
-            <a class="address-link" href="{esc(solscan_url(row['address']))}" target="_blank" rel="noreferrer">{esc(short_addr(row['address']))}</a>
-          </div>
-          <div class="dossier-label">{esc(holder_title(row))}</div>
-          <div class="pill-row">{tag_html}</div>
-          <div class="dossier-metric">{esc(fmt_pct(row['share']))}</div>
-          <div class="dossier-sub">Share of total supply</div>
-          <dl class="facts">{facts_html}</dl>
-          <p class="note">{esc(row.get('classification_reason') or row.get('evidence_summary') or '')}</p>
-        </article>
-        """)
-
-    official_rows = [
-        [
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(bucket_label(row["resolved_bucket"])),
+        current_col = (
+            f"{esc(fmt_num(row['amount'], 2))} PRL<br>"
+            f"{esc(fmt_pct(row['share'], 3))}"
+        )
+        top10_rows.append([
+            esc(str(row["rank"])),
+            f"<a href=\"{esc(solscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
+            current_col,
             esc(row.get("tokenomics_bucket") or "-"),
             esc(row.get("top_holder_role") or "-"),
-            esc(fmt_pct(row["share"], 3)),
+            flow_col,
+            esc(row.get("tx_release_status_label") or "-"),
             esc(row.get("classification_reason") or "-"),
-        ]
-        for row in official_top10
-    ]
-
-    label_rows = [
-        [
-            esc(item["label"]),
-            esc(item["source"]),
-            esc(item["address_count"]),
-            esc(fmt_pct(item["share_of_supply"], 3)),
-            esc(", ".join(short_addr(addr) for addr in item["sample_addresses"][:3])),
-        ]
-        for item in label_inventory[:20]
-    ]
-
-    exchange_table_rows = [
-        [
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(row.get("resolved_entity_name") or row.get("bubblemaps_label") or "-"),
-            esc(fmt_pct(row["share"], 3)),
-            esc(str(row["rank"])),
-            esc(row.get("arkham_entity_name") or row.get("arkham_label") or "-"),
-        ]
-        for row in exchange_rows
-    ]
-
-    fresh_table_rows = [
-        [
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(str(row["rank"])),
-            esc(fmt_pct(row["share"], 3)),
-            esc(row.get("first_activity_date") or "-"),
-        ]
-        for row in fresh_rows
-    ]
+        ])
 
     source_path = "https://github.com/Melroseee-e/data-monitoring"
     report_md = "../data/prl/reports/prl_holder_structure_report.md"
@@ -643,7 +549,7 @@ td {{
           <h1>{esc(name)}<br>{esc(symbol)} Top 10</h1>
           <p>
             Top 10 当前控制 <strong>{esc(fmt_pct(summary['top10_share']))}</strong> 的总供应。
-            链上流水显示，这一层主要是官方配额与分发层，不是交易所或 DEX 层。
+            <code>6pJj...dLRG</code> 是公开官方 + 一级分发总控；Top 10 基本对应 Community / Investors / Ecosystem / Team / Ops。
           </p>
         </div>
         <div class="meta-box">
@@ -653,7 +559,7 @@ td {{
           </div>
           <div class="meta-line">
             <span class="meta-pill">Total Supply <strong>{esc(fmt_num(total_supply, 0))}</strong></span>
-            <span class="meta-pill">Snapshot <strong>Top 500</strong></span>
+            <span class="meta-pill">First Exchange <strong>#{esc(summary['first_exchange_rank'])}</strong></span>
           </div>
           <div class="meta-line">
             <span class="meta-pill">Top 11-50 <strong>{esc(fmt_pct(top11_50_share))}</strong></span>
@@ -670,77 +576,50 @@ td {{
     <section class="section">
       <div class="section-head">
         <div>
-          <div class="eyebrow">Control Layers</div>
-          <h2>Top 10 分层</h2>
+          <div class="eyebrow">Tokenomics</div>
+          <h2>完整代币经济与链上对位</h2>
         </div>
-        <p>Top 10 主要属于官方配额层与官方分发层。</p>
+        <p>docs 配额、解锁、链上候选。</p>
       </div>
-      <div class="layer-grid">{layer_cards}</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Bucket</th><th>Docs</th><th>Unlock / Vesting</th><th>Current Matching Addresses</th><th>Why It Fits</th></tr></thead>
+          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in tokenomics_rows)}</tbody>
+        </table>
+      </div>
     </section>
 
     <section class="section">
       <div class="section-head">
         <div>
-          <div class="eyebrow">Tokenomics Map</div>
-          <h2>代币经济对照</h2>
+          <div class="eyebrow">Top 10</div>
+          <h2>Top 10 综合总表</h2>
         </div>
-        <p>docs 配额与当前链上候选地址的直接对位。</p>
+        <p>角色、主资金路径、释放状态、推断理由。</p>
       </div>
-      <div class="layer-grid">{''.join(allocation_cards)}</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Key Flow</th><th>Release</th><th>Why It Fits</th></tr></thead>
+          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in top10_rows)}</tbody>
+        </table>
+      </div>
     </section>
 
-    {table_section(
-        "官方分发路径",
-        "主路径已经可以对位 Community / Investors / Ecosystem / Team。",
-        ["Upstream", "Downstream", "Amount", "Bucket", "Role"],
-        flow_rows,
-    )}
-
-    {table_section(
-        "Top 10 Control Matrix",
-        "每个地址的配额桶、主上游、主下游和释放状态。",
-        ["Rank", "Address", "Share", "Bucket", "Role", "Primary In", "Primary Out", "Release"],
-        top10_matrix_rows,
-    )}
-
-    <section class="section">
+    <section class="panel section">
       <div class="section-head">
         <div>
-          <div class="eyebrow">Top 10 Dossiers</div>
-          <h2>逐个地址研究</h2>
+          <div class="eyebrow">Market Structure</div>
+          <h2>市场结构结论</h2>
         </div>
-        <p>每个地址只保留结论和推断理由。</p>
+        <p>关键结论。</p>
       </div>
-      <div class="dossier-grid">{''.join(dossier_cards)}</div>
+      <div class="layer-grid">
+        {info_card("Official Control", f"Top 10 中已公开官方 + 高概率官方合计 {fmt_pct(official_top10_share)}。", "sand")}
+        {info_card("Exchange", f"第一个交易所地址排第 {summary['first_exchange_rank']}，下限仓位 {fmt_pct(summary['exchange_share'])}。", "ink")}
+        {info_card("DEX", f"DEX / LP 下限仓位 {fmt_pct(summary['dex_share'])}，不在 Top 10。", "ink")}
+        {info_card("Takeaway", "当前最重要的是官方分发与配额释放，不是交易所库存或 LP。", "ink")}
+      </div>
     </section>
-
-    {table_section(
-        "官方地址与高概率官方",
-        "已公开官方与高概率官方分开呈现。",
-        ["Address", "Bucket", "Docs Bucket", "Role", "Share", "Reason"],
-        official_rows,
-    )}
-
-    {table_section(
-        "BubbleMaps / Arkham 标签清单",
-        "标签仅作辅助，不单独决定归类。",
-        ["Label", "Source", "Addr Count", "Supply Share", "Samples"],
-        label_rows,
-    )}
-
-    {table_section(
-        "交易所层样本",
-        f"交易所不在 Top 10；第一个交易所排第 {summary['first_exchange_rank']}，下限仓位 {fmt_pct(summary['exchange_share'])}。",
-        ["Address", "Label", "Share", "Rank", "Entity"],
-        exchange_table_rows,
-    )}
-
-    {table_section(
-        "Fresh Static Wallets",
-        "这些地址更像静态分仓。",
-        ["Address", "Rank", "Share", "First Activity"],
-        fresh_table_rows,
-    )}
 
     <footer class="footer">
       Source:
