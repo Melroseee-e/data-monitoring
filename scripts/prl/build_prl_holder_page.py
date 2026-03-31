@@ -124,10 +124,10 @@ def build_page(data: dict[str, Any]) -> str:
     fresh_rows = data["fresh_wallet_cluster"][:8]
 
     stat_cards = "".join([
-        stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "Top 10 仍然决定当前绝大多数供应。"),
-        stat_card("Official Layer", fmt_pct(official_top10_share), "链上证据支持 Top 10 主要属于官方配额 / 分发层。", "blue"),
-        stat_card("TGE Unlocked", fmt_num(summary["tge_unlocked_amount"], 0), "按 docs 口径，TGE 理论已解锁 175M PRL。", "cool"),
-        stat_card("Still Locked", fmt_num(summary["locked_after_tge_amount"], 0), "按 docs 口径，TGE 后理论仍锁定 / 待释放 825M。", "rose"),
+        stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "顶层筹码高度集中。"),
+        stat_card("Official Layer", fmt_pct(official_top10_share), "Top 10 主要是官方配额 / 分发层。", "blue"),
+        stat_card("TGE Unlocked", fmt_num(summary["tge_unlocked_amount"], 0), "docs 理论已解锁量。", "cool"),
+        stat_card("Still Locked", fmt_num(summary["locked_after_tge_amount"], 0), "docs 理论待释放量。", "rose"),
     ])
 
     layer_cards = "".join(
@@ -212,10 +212,9 @@ def build_page(data: dict[str, Any]) -> str:
           <div class="dossier-label">{esc(holder_title(row))}</div>
           <div class="pill-row">{tag_html}</div>
           <div class="dossier-metric">{esc(fmt_pct(row['share']))}</div>
-          <div class="dossier-sub">Current share of total supply</div>
+          <div class="dossier-sub">Share of total supply</div>
           <dl class="facts">{facts_html}</dl>
-          <p class="note">{esc(row.get('classification_reason') or '')}</p>
-          <p class="note">{esc(row.get('evidence_summary') or '')}</p>
+          <p class="note">{esc(row.get('classification_reason') or row.get('evidence_summary') or '')}</p>
         </article>
         """)
 
@@ -643,10 +642,8 @@ td {{
           <div class="eyebrow">PRL Holder Structure / BubbleMaps + Onchain</div>
           <h1>{esc(name)}<br>{esc(symbol)} Top 10</h1>
           <p>
-            这份页面沿用上一版 intelligence UI，只重写内容口径。
-            现在研究对象只保留 Solana 主部署，Top 10 当前合计控制
-            <strong>{esc(fmt_pct(summary['top10_share']))}</strong> 的总供应。
-            重点不是长尾，而是把 Top 10 里的官方总控、配额主仓、分仓、交易所和 DEX 层彻底分清楚。
+            Top 10 当前控制 <strong>{esc(fmt_pct(summary['top10_share']))}</strong> 的总供应。
+            链上流水显示，这一层主要是官方配额与分发层，不是交易所或 DEX 层。
           </p>
         </div>
         <div class="meta-box">
@@ -676,7 +673,7 @@ td {{
           <div class="eyebrow">Control Layers</div>
           <h2>Top 10 分层</h2>
         </div>
-        <p>这次最重要的更新是：Top 10 已经不再按“未标注鲸鱼层”理解，而是按“官方配额层 + 官方分发层”理解。</p>
+        <p>Top 10 主要属于官方配额层与官方分发层。</p>
       </div>
       <div class="layer-grid">{layer_cards}</div>
     </section>
@@ -687,21 +684,21 @@ td {{
           <div class="eyebrow">Tokenomics Map</div>
           <h2>代币经济对照</h2>
         </div>
-        <p>docs 给的是配额和释放规则；这里把它们和当前链上候选地址直接对起来。</p>
+        <p>docs 配额与当前链上候选地址的直接对位。</p>
       </div>
       <div class="layer-grid">{''.join(allocation_cards)}</div>
     </section>
 
     {table_section(
         "官方分发路径",
-        "把 Helius Top 10 流水里的主入账链路直接摊开看，先看官方总控，再看配额主仓和分仓。",
+        "主路径已经可以对位 Community / Investors / Ecosystem / Team。",
         ["Upstream", "Downstream", "Amount", "Bucket", "Role"],
         flow_rows,
     )}
 
     {table_section(
         "Top 10 Control Matrix",
-        "先用一张表看清 Top 10 每个地址现在到底属于哪个配额桶、由谁打进来、是否已经开始释放。",
+        "每个地址的配额桶、主上游、主下游和释放状态。",
         ["Rank", "Address", "Share", "Bucket", "Role", "Primary In", "Primary Out", "Release"],
         top10_matrix_rows,
     )}
@@ -712,54 +709,38 @@ td {{
           <div class="eyebrow">Top 10 Dossiers</div>
           <h2>逐个地址研究</h2>
         </div>
-        <p>每个卡片都给出当前角色判断、主入账、主出账和释放状态，避免只看到地址而看不到理由。</p>
+        <p>每个地址只保留结论和推断理由。</p>
       </div>
       <div class="dossier-grid">{''.join(dossier_cards)}</div>
     </section>
 
     {table_section(
         "官方地址与高概率官方",
-        "已公开官方和链上高概率官方分开看，但两者的推断理由都直接写出来。",
+        "已公开官方与高概率官方分开呈现。",
         ["Address", "Bucket", "Docs Bucket", "Role", "Share", "Reason"],
         official_rows,
     )}
 
     {table_section(
         "BubbleMaps / Arkham 标签清单",
-        f"当前汇总前 20 个主要标签，方便继续追地址，不再把标签当成唯一判断依据。",
+        "标签仅作辅助，不单独决定归类。",
         ["Label", "Source", "Addr Count", "Supply Share", "Samples"],
         label_rows,
     )}
 
     {table_section(
         "交易所层样本",
-        f"交易所不在 Top 10；第一个交易所只排到第 {summary['first_exchange_rank']} 名，当前下限仓位约 {fmt_pct(summary['exchange_share'])}。",
+        f"交易所不在 Top 10；第一个交易所排第 {summary['first_exchange_rank']}，下限仓位 {fmt_pct(summary['exchange_share'])}。",
         ["Address", "Label", "Share", "Rank", "Entity"],
         exchange_table_rows,
     )}
 
     {table_section(
         "Fresh Static Wallets",
-        "这些地址更像 TGE 后的单跳静态分仓，不像交易所或 DEX 池子。",
+        "这些地址更像静态分仓。",
         ["Address", "Rank", "Share", "First Activity"],
         fresh_table_rows,
     )}
-
-    <section class="panel section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Reading Notes</div>
-          <h2>如何读这份结构</h2>
-        </div>
-        <p>这版还是沿用你之前那套 UI，但阅读顺序改成“先代币经济，再官方分发，再 Top 10 dossiers”。Top 10 之外所有地址加起来只占 {esc(fmt_pct(1 - summary['top10_share']))}。</p>
-      </div>
-      <div class="layer-grid">
-        {info_card("官方口径", f"Docs 明确把 PRL 定义在 Solana，公开 authority 地址是 {short_addr(docs['metadata_update_authority'])}。", "sand")}
-        {info_card("关键更新", f"现在最强的链上证据是：{short_addr(docs['metadata_update_authority'])} 直接打出 375M / 276.619M / 178.381M / 170M 四条主配额路径。", "ink")}
-        {info_card("交易所侧", f"交易所下限仓位目前只有 {fmt_pct(summary['exchange_share'])}，而且第一个交易所只到第 {summary['first_exchange_rank']} 名。", "ink")}
-        {info_card("流动性侧", f"DEX / LP 下限仓位约 {fmt_pct(summary['dex_share'])}，不在 Top 10 主控制层。", "ink")}
-      </div>
-    </section>
 
     <footer class="footer">
       Source:
