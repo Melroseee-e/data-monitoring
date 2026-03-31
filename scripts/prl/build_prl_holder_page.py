@@ -48,12 +48,19 @@ def holder_title(row: dict[str, Any]) -> str:
     return row.get("research_label") or row.get("resolved_entity_name") or "No BubbleMaps / Arkham label"
 
 
-def counterparty_text(entry: dict[str, Any] | None) -> str:
+def rank_ref(address: str, rank_map: dict[str, int]) -> str:
+    rank = rank_map.get(address)
+    if rank:
+        return f"地址{rank}"
+    return short_addr(address)
+
+
+def counterparty_text(entry: dict[str, Any] | None, rank_map: dict[str, int]) -> str:
     if not entry:
         return "-"
     counterparty = entry.get("counterparty") or "unknown"
     amount = float(entry.get("amount") or 0.0)
-    return f"{short_addr(counterparty)} / {fmt_num(amount, 2)} PRL"
+    return f"{rank_ref(counterparty, rank_map)} / {fmt_num(amount, 2)} PRL"
 
 
 def stat_card(label: str, value: str, note: str, tone: str = "warm") -> str:
@@ -113,6 +120,7 @@ def build_page(data: dict[str, Any]) -> str:
     name = metadata["name"]
     generated_at = metadata["generated_at"]
     total_supply = metadata["total_supply"]
+    top10_rank_map = {row["address"]: int(row["rank"]) for row in top10}
 
     official_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"})
     top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
@@ -150,8 +158,8 @@ def build_page(data: dict[str, Any]) -> str:
     top10_rows = []
     for row in top10:
         flow_col = (
-            f"IN {esc(counterparty_text(row.get('tx_primary_inbound')))}<br>"
-            f"OUT {esc(counterparty_text(row.get('tx_primary_outbound')))}"
+            f"IN {esc(counterparty_text(row.get('tx_primary_inbound'), top10_rank_map))}<br>"
+            f"OUT {esc(counterparty_text(row.get('tx_primary_outbound'), top10_rank_map))}"
         )
         current_col = (
             f"{esc(fmt_num(row['amount'], 2))} PRL<br>"
