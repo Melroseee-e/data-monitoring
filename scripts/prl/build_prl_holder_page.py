@@ -55,6 +55,13 @@ def rank_ref(address: str, rank_map: dict[str, int]) -> str:
     return short_addr(address)
 
 
+def top_rank_ref(address: str, rank_map: dict[str, int]) -> str | None:
+    rank = rank_map.get(address)
+    if rank:
+        return f"Top {rank}"
+    return None
+
+
 def counterparty_text(entry: dict[str, Any] | None, rank_map: dict[str, int]) -> str:
     if not entry:
         return "-"
@@ -143,10 +150,16 @@ def build_page(data: dict[str, Any]) -> str:
             f"Locked {esc(fmt_num(item['locked_after_tge'], 0))}<br>"
             f"{esc(item.get('cliff') or 'N/A')} cliff / {esc(item.get('vesting') or '-')}"
         )
-        matched_col = "<br>".join(
-            f"{esc(addr['role'] or '地址')} <a href=\"{esc(solscan_url(addr['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(addr['address']))}</code></a>"
-            for addr in item["matched_addresses"]
-        ) or "未识别"
+        matched_parts = []
+        for addr in item["matched_addresses"]:
+            rank_label = top_rank_ref(addr["address"], top10_rank_map)
+            prefix = f"{addr['role'] or '地址'}"
+            if rank_label:
+                prefix += f" · {rank_label}"
+            matched_parts.append(
+                f"{esc(prefix)} <a href=\"{esc(solscan_url(addr['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(addr['address']))}</code></a>"
+            )
+        matched_col = "<br>".join(matched_parts) or "未识别"
         tokenomics_rows.append([
             esc(item["bucket"]),
             docs_col,
