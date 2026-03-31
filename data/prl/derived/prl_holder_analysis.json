@@ -119,6 +119,156 @@
       "recent_30d_netflow_total": 75328826.76033905,
       "recent_7d_netflow_total": 75328826.76033905
     },
+    "top10_layer_summary": [
+      {
+        "layer": "unlabeled_distribution_cluster",
+        "count": 7,
+        "amount": 73150614.25512712,
+        "share_supply": 0.8675858340290646,
+        "ranks": [
+          1,
+          2,
+          4,
+          5,
+          6,
+          7,
+          10
+        ]
+      },
+      {
+        "layer": "exchange_inventory",
+        "count": 1,
+        "amount": 7331819.1748973,
+        "share_supply": 0.08695733478899288,
+        "ranks": [
+          3
+        ]
+      },
+      {
+        "layer": "dex_liquidity",
+        "count": 1,
+        "amount": 1189799.93016003,
+        "share_supply": 0.014111345136972138,
+        "ranks": [
+          8
+        ]
+      },
+      {
+        "layer": "named_holder",
+        "count": 1,
+        "amount": 725989.1899117,
+        "share_supply": 0.008610425807620347,
+        "ranks": [
+          9
+        ]
+      }
+    ],
+    "label_inventory": [
+      {
+        "label": "Binance Wallet Proxy (EIP-1967 Transparent)",
+        "layer": "bubble_cex",
+        "count": 1,
+        "amount": 7331819.1748973,
+        "share_supply": 0.08695733478899288,
+        "top_rank": 3
+      },
+      {
+        "label": "PancakeSwap Vault (0x23...e6c4)",
+        "layer": "bubble_dex",
+        "count": 1,
+        "amount": 1189799.93016003,
+        "share_supply": 0.014111345136972138,
+        "top_rank": 8
+      },
+      {
+        "label": "degenrunner.bnb",
+        "layer": "named_wallet_label",
+        "count": 1,
+        "amount": 725989.1899117,
+        "share_supply": 0.008610425807620347,
+        "top_rank": 9
+      },
+      {
+        "label": "Uniswap (BSC-USD-PRL)",
+        "layer": "bubble_dex",
+        "count": 2,
+        "amount": 91986.02366327,
+        "share_supply": 0.0010909788232341716,
+        "top_rank": 15
+      },
+      {
+        "label": "wyzq.eth",
+        "layer": "named_wallet_label",
+        "count": 1,
+        "amount": 80598.34206,
+        "share_supply": 0.0009559178761452963,
+        "top_rank": 14
+      },
+      {
+        "label": "Uniswap PoolManager (0x28...e9dF)",
+        "layer": "bubble_dex",
+        "count": 1,
+        "amount": 53805.25526399,
+        "share_supply": 0.0006381447064893738,
+        "top_rank": 16
+      },
+      {
+        "label": "Bybit Deposit",
+        "layer": "exchange_deposit_tag",
+        "count": 1,
+        "amount": 16006.39234344,
+        "share_supply": 0.00018984009078374208,
+        "top_rank": 24
+      },
+      {
+        "label": "\"Jay-V13\" on OpenSea",
+        "layer": "named_wallet_label",
+        "count": 1,
+        "amount": 10983.90853534,
+        "share_supply": 0.0001302720905978448,
+        "top_rank": 35
+      },
+      {
+        "label": "PancakeSwap (BSC-USD-PRL)",
+        "layer": "bubble_dex",
+        "count": 1,
+        "amount": 7200.11096015,
+        "share_supply": 8.539524016403892e-05,
+        "top_rank": 48
+      },
+      {
+        "label": "kepler",
+        "layer": "named_wallet_label",
+        "count": 1,
+        "amount": 5330.08627812,
+        "share_supply": 6.321624768483058e-05,
+        "top_rank": 58
+      },
+      {
+        "label": "MEXC Deposit",
+        "layer": "exchange_deposit_tag",
+        "count": 1,
+        "amount": 4305.07437578,
+        "share_supply": 5.105933259619156e-05,
+        "top_rank": 66
+      },
+      {
+        "label": "@ArjayManalo18 \"Jaymanalo\" on OpenSea",
+        "layer": "named_wallet_label",
+        "count": 1,
+        "amount": 3074.37529447,
+        "share_supply": 3.646291259658366e-05,
+        "top_rank": 78
+      },
+      {
+        "label": "Proxy",
+        "layer": "contract_label",
+        "count": 1,
+        "amount": 1826.90508732,
+        "share_supply": 2.1667582562553415e-05,
+        "top_rank": 92
+      }
+    ],
     "verification": {
       "generated_at": "2026-03-30T08:01:12Z",
       "top10_rows": [
@@ -286,7 +436,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 1
+      "bubblemaps_rank": 1,
+      "label_layer": "unlabeled",
+      "top_holder_role": "主分发母仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 2,
@@ -330,7 +483,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 2
+      "bubblemaps_rank": 2,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 3,
@@ -374,7 +530,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 3
+      "bubblemaps_rank": 3,
+      "label_layer": "bubble_cex",
+      "top_holder_role": "交易所库存地址",
+      "top10_control_layer": "exchange_inventory"
     },
     {
       "rank": 4,
@@ -418,7 +577,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 4
+      "bubblemaps_rank": 4,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 5,
@@ -462,7 +624,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 5
+      "bubblemaps_rank": 5,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 6,
@@ -506,7 +671,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 6
+      "bubblemaps_rank": 6,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 7,
@@ -550,7 +718,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 7
+      "bubblemaps_rank": 7,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 8,
@@ -594,7 +765,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 8
+      "bubblemaps_rank": 8,
+      "label_layer": "bubble_dex",
+      "top_holder_role": "DEX / LP 流动性地址",
+      "top10_control_layer": "dex_liquidity"
     },
     {
       "rank": 9,
@@ -638,7 +812,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "CEX-Withdrawing",
-      "bubblemaps_rank": 9
+      "bubblemaps_rank": 9,
+      "label_layer": "named_wallet_label",
+      "top_holder_role": "具名增持地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 10,
@@ -682,7 +859,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 10
+      "bubblemaps_rank": 10,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 11,
@@ -726,7 +906,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 11
+      "bubblemaps_rank": 11,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 12,
@@ -770,7 +953,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 12
+      "bubblemaps_rank": 12,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 13,
@@ -814,7 +1000,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 15
+      "bubblemaps_rank": 15,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 14,
@@ -858,7 +1047,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 13
+      "bubblemaps_rank": 13,
+      "label_layer": "named_wallet_label",
+      "top_holder_role": "具名持仓地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 15,
@@ -902,7 +1094,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 17
+      "bubblemaps_rank": 17,
+      "label_layer": "bubble_dex",
+      "top_holder_role": "DEX / LP 流动性地址",
+      "top10_control_layer": "dex_liquidity"
     },
     {
       "rank": 16,
@@ -946,7 +1141,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 18
+      "bubblemaps_rank": 18,
+      "label_layer": "bubble_dex",
+      "top_holder_role": "DEX / LP 流动性地址",
+      "top10_control_layer": "dex_liquidity"
     },
     {
       "rank": 17,
@@ -990,7 +1188,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 16
+      "bubblemaps_rank": 16,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 18,
@@ -1034,7 +1235,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 19
+      "bubblemaps_rank": 19,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 19,
@@ -1078,7 +1282,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 20
+      "bubblemaps_rank": 20,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 20,
@@ -1122,7 +1329,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 21
+      "bubblemaps_rank": 21,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 21,
@@ -1166,7 +1376,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 23
+      "bubblemaps_rank": 23,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 22,
@@ -1210,7 +1423,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 28
+      "bubblemaps_rank": 28,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 23,
@@ -1254,7 +1470,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 34
+      "bubblemaps_rank": 34,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 24,
@@ -1298,7 +1517,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 38
+      "bubblemaps_rank": 38,
+      "label_layer": "exchange_deposit_tag",
+      "top_holder_role": "具名持仓地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 25,
@@ -1342,7 +1564,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 40
+      "bubblemaps_rank": 40,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 26,
@@ -1386,7 +1611,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 42
+      "bubblemaps_rank": 42,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 27,
@@ -1430,7 +1658,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 32
+      "bubblemaps_rank": 32,
+      "label_layer": "bubble_dex",
+      "top_holder_role": "DEX / LP 流动性地址",
+      "top10_control_layer": "dex_liquidity"
     },
     {
       "rank": 28,
@@ -1474,7 +1705,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 43
+      "bubblemaps_rank": 43,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 29,
@@ -1518,7 +1752,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 36
+      "bubblemaps_rank": 36,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 30,
@@ -1562,7 +1799,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 46
+      "bubblemaps_rank": 46,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 31,
@@ -1606,7 +1846,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 49
+      "bubblemaps_rank": 49,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 32,
@@ -1650,7 +1893,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "CEX-Withdrawing",
-      "bubblemaps_rank": 47
+      "bubblemaps_rank": 47,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 33,
@@ -1694,7 +1940,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 22
+      "bubblemaps_rank": 22,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 34,
@@ -1738,7 +1987,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 61
+      "bubblemaps_rank": 61,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 35,
@@ -1782,7 +2034,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 51
+      "bubblemaps_rank": 51,
+      "label_layer": "named_wallet_label",
+      "top_holder_role": "具名持仓地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 36,
@@ -1826,7 +2081,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 52
+      "bubblemaps_rank": 52,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 37,
@@ -1870,7 +2128,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 53
+      "bubblemaps_rank": 53,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 38,
@@ -1914,7 +2175,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 54
+      "bubblemaps_rank": 54,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 39,
@@ -1958,7 +2222,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 56
+      "bubblemaps_rank": 56,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 40,
@@ -2002,7 +2269,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 58
+      "bubblemaps_rank": 58,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 41,
@@ -2046,7 +2316,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 31
+      "bubblemaps_rank": 31,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 42,
@@ -2090,7 +2363,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 35
+      "bubblemaps_rank": 35,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 43,
@@ -2134,7 +2410,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 62
+      "bubblemaps_rank": 62,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 44,
@@ -2178,7 +2457,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 67
+      "bubblemaps_rank": 67,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 45,
@@ -2222,7 +2504,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 63
+      "bubblemaps_rank": 63,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 46,
@@ -2266,7 +2551,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 66
+      "bubblemaps_rank": 66,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 47,
@@ -2310,7 +2598,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 70
+      "bubblemaps_rank": 70,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 48,
@@ -2354,7 +2645,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 83
+      "bubblemaps_rank": 83,
+      "label_layer": "bubble_dex",
+      "top_holder_role": "DEX / LP 流动性地址",
+      "top10_control_layer": "dex_liquidity"
     },
     {
       "rank": 49,
@@ -2398,7 +2692,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 72
+      "bubblemaps_rank": 72,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 50,
@@ -2442,7 +2739,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 75
+      "bubblemaps_rank": 75,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 51,
@@ -2486,7 +2786,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 76
+      "bubblemaps_rank": 76,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 52,
@@ -2530,7 +2833,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 77
+      "bubblemaps_rank": 77,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 53,
@@ -2574,7 +2880,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 78
+      "bubblemaps_rank": 78,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 54,
@@ -2618,7 +2927,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 85
+      "bubblemaps_rank": 85,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 55,
@@ -2662,7 +2974,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Accumulating",
-      "bubblemaps_rank": 33
+      "bubblemaps_rank": 33,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 56,
@@ -2706,7 +3021,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 135
+      "bubblemaps_rank": 135,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 57,
@@ -2750,7 +3068,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 74
+      "bubblemaps_rank": 74,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 58,
@@ -2794,7 +3115,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 84
+      "bubblemaps_rank": 84,
+      "label_layer": "named_wallet_label",
+      "top_holder_role": "具名持仓地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 59,
@@ -2838,7 +3162,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 65
+      "bubblemaps_rank": 65,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 60,
@@ -2882,7 +3209,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 57
+      "bubblemaps_rank": 57,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 61,
@@ -2926,7 +3256,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 79
+      "bubblemaps_rank": 79,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 62,
@@ -2970,7 +3303,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 88
+      "bubblemaps_rank": 88,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 63,
@@ -3014,7 +3350,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 90
+      "bubblemaps_rank": 90,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 64,
@@ -3058,7 +3397,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 91
+      "bubblemaps_rank": 91,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 65,
@@ -3102,7 +3444,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 93
+      "bubblemaps_rank": 93,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 66,
@@ -3146,7 +3491,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 94
+      "bubblemaps_rank": 94,
+      "label_layer": "exchange_deposit_tag",
+      "top_holder_role": "具名持仓地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 67,
@@ -3190,7 +3538,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 97
+      "bubblemaps_rank": 97,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 68,
@@ -3234,7 +3585,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 69
+      "bubblemaps_rank": 69,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 69,
@@ -3278,7 +3632,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 117
+      "bubblemaps_rank": 117,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 70,
@@ -3322,7 +3679,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 98
+      "bubblemaps_rank": 98,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 71,
@@ -3366,7 +3726,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 99
+      "bubblemaps_rank": 99,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 72,
@@ -3410,7 +3773,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 100
+      "bubblemaps_rank": 100,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 73,
@@ -3454,7 +3820,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 101
+      "bubblemaps_rank": 101,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 74,
@@ -3498,7 +3867,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 102
+      "bubblemaps_rank": 102,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 75,
@@ -3542,7 +3914,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 103
+      "bubblemaps_rank": 103,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 76,
@@ -3586,7 +3961,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 104
+      "bubblemaps_rank": 104,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 77,
@@ -3630,7 +4008,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 105
+      "bubblemaps_rank": 105,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 78,
@@ -3674,7 +4055,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 108
+      "bubblemaps_rank": 108,
+      "label_layer": "named_wallet_label",
+      "top_holder_role": "具名持仓地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 79,
@@ -3718,7 +4102,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 109
+      "bubblemaps_rank": 109,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 80,
@@ -3762,7 +4149,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 81
+      "bubblemaps_rank": 81,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 81,
@@ -3806,7 +4196,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 119
+      "bubblemaps_rank": 119,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 82,
@@ -3850,7 +4243,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 110
+      "bubblemaps_rank": 110,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 83,
@@ -3894,7 +4290,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 111
+      "bubblemaps_rank": 111,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 84,
@@ -3938,7 +4337,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 114
+      "bubblemaps_rank": 114,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 85,
@@ -3982,7 +4384,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 116
+      "bubblemaps_rank": 116,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 86,
@@ -4026,7 +4431,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 60
+      "bubblemaps_rank": 60,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 87,
@@ -4070,7 +4478,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 118
+      "bubblemaps_rank": 118,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 88,
@@ -4114,7 +4525,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 27
+      "bubblemaps_rank": 27,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 89,
@@ -4158,7 +4572,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 121
+      "bubblemaps_rank": 121,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 90,
@@ -4202,7 +4619,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 126
+      "bubblemaps_rank": 126,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 91,
@@ -4246,7 +4666,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 24
+      "bubblemaps_rank": 24,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 92,
@@ -4290,7 +4713,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 128
+      "bubblemaps_rank": 128,
+      "label_layer": "contract_label",
+      "top_holder_role": "具名持仓地址",
+      "top10_control_layer": "named_holder"
     },
     {
       "rank": 93,
@@ -4334,7 +4760,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 131
+      "bubblemaps_rank": 131,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 94,
@@ -4378,7 +4807,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 130
+      "bubblemaps_rank": 130,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 95,
@@ -4422,7 +4854,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 132
+      "bubblemaps_rank": 132,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 96,
@@ -4466,7 +4901,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 134
+      "bubblemaps_rank": 134,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 97,
@@ -4510,7 +4948,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 136
+      "bubblemaps_rank": 136,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 98,
@@ -4554,7 +4995,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 146
+      "bubblemaps_rank": 146,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 99,
@@ -4598,7 +5042,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 138
+      "bubblemaps_rank": 138,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 100,
@@ -4642,7 +5089,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 142
+      "bubblemaps_rank": 142,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 101,
@@ -4686,7 +5136,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 143
+      "bubblemaps_rank": 143,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 102,
@@ -4730,7 +5183,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 144
+      "bubblemaps_rank": 144,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 103,
@@ -4774,7 +5230,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 196
+      "bubblemaps_rank": 196,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 104,
@@ -4818,7 +5277,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 148
+      "bubblemaps_rank": 148,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 105,
@@ -4862,7 +5324,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 149
+      "bubblemaps_rank": 149,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 106,
@@ -4906,7 +5371,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 150
+      "bubblemaps_rank": 150,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 107,
@@ -4950,7 +5418,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 151
+      "bubblemaps_rank": 151,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 108,
@@ -4994,7 +5465,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 139
+      "bubblemaps_rank": 139,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 109,
@@ -5038,7 +5512,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 152
+      "bubblemaps_rank": 152,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 110,
@@ -5082,7 +5559,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 154
+      "bubblemaps_rank": 154,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 111,
@@ -5126,7 +5606,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 145
+      "bubblemaps_rank": 145,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 112,
@@ -5170,7 +5653,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 155
+      "bubblemaps_rank": 155,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 113,
@@ -5214,7 +5700,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 156
+      "bubblemaps_rank": 156,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 114,
@@ -5258,7 +5747,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 158
+      "bubblemaps_rank": 158,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 115,
@@ -5302,7 +5794,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 159
+      "bubblemaps_rank": 159,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 116,
@@ -5346,7 +5841,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 172
+      "bubblemaps_rank": 172,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 117,
@@ -5390,7 +5888,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 161
+      "bubblemaps_rank": 161,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 118,
@@ -5434,7 +5935,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 163
+      "bubblemaps_rank": 163,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 119,
@@ -5478,7 +5982,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 165
+      "bubblemaps_rank": 165,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 120,
@@ -5522,7 +6029,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 166
+      "bubblemaps_rank": 166,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 121,
@@ -5566,7 +6076,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 167
+      "bubblemaps_rank": 167,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 122,
@@ -5610,7 +6123,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 168
+      "bubblemaps_rank": 168,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 123,
@@ -5654,7 +6170,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 169
+      "bubblemaps_rank": 169,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 124,
@@ -5698,7 +6217,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 170
+      "bubblemaps_rank": 170,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 125,
@@ -5742,7 +6264,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 171
+      "bubblemaps_rank": 171,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 126,
@@ -5786,7 +6311,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 206
+      "bubblemaps_rank": 206,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 127,
@@ -5830,7 +6358,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 174
+      "bubblemaps_rank": 174,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 128,
@@ -5874,7 +6405,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 175
+      "bubblemaps_rank": 175,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 129,
@@ -5918,7 +6452,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 178
+      "bubblemaps_rank": 178,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 130,
@@ -5962,7 +6499,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 179
+      "bubblemaps_rank": 179,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 131,
@@ -6006,7 +6546,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 180
+      "bubblemaps_rank": 180,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 132,
@@ -6050,7 +6593,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 182
+      "bubblemaps_rank": 182,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 133,
@@ -6094,7 +6640,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 183
+      "bubblemaps_rank": 183,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 134,
@@ -6138,7 +6687,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 185
+      "bubblemaps_rank": 185,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 135,
@@ -6182,7 +6734,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 186
+      "bubblemaps_rank": 186,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 136,
@@ -6226,7 +6781,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 187
+      "bubblemaps_rank": 187,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 137,
@@ -6270,7 +6828,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 189
+      "bubblemaps_rank": 189,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 138,
@@ -6314,7 +6875,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 190
+      "bubblemaps_rank": 190,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 139,
@@ -6358,7 +6922,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 191
+      "bubblemaps_rank": 191,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 140,
@@ -6402,7 +6969,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 193
+      "bubblemaps_rank": 193,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 141,
@@ -6446,7 +7016,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 194
+      "bubblemaps_rank": 194,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 142,
@@ -6490,7 +7063,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 195
+      "bubblemaps_rank": 195,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 143,
@@ -6534,7 +7110,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 197
+      "bubblemaps_rank": 197,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 144,
@@ -6578,7 +7157,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 198
+      "bubblemaps_rank": 198,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 145,
@@ -6622,7 +7204,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 177
+      "bubblemaps_rank": 177,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 146,
@@ -6666,7 +7251,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 200
+      "bubblemaps_rank": 200,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 147,
@@ -6710,7 +7298,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 201
+      "bubblemaps_rank": 201,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 148,
@@ -6754,7 +7345,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 202
+      "bubblemaps_rank": 202,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 149,
@@ -6798,7 +7392,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 203
+      "bubblemaps_rank": 203,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 150,
@@ -6842,7 +7439,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 204
+      "bubblemaps_rank": 204,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 151,
@@ -6886,7 +7486,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 137
+      "bubblemaps_rank": 137,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 152,
@@ -6930,7 +7533,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 208
+      "bubblemaps_rank": 208,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 153,
@@ -6974,7 +7580,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 209
+      "bubblemaps_rank": 209,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 154,
@@ -7018,7 +7627,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 211
+      "bubblemaps_rank": 211,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 155,
@@ -7062,7 +7674,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 212
+      "bubblemaps_rank": 212,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 156,
@@ -7106,7 +7721,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 215
+      "bubblemaps_rank": 215,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 157,
@@ -7150,7 +7768,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 216
+      "bubblemaps_rank": 216,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 158,
@@ -7194,7 +7815,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 219
+      "bubblemaps_rank": 219,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 159,
@@ -7238,7 +7862,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 220
+      "bubblemaps_rank": 220,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 160,
@@ -7282,7 +7909,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 221
+      "bubblemaps_rank": 221,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 161,
@@ -7326,7 +7956,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 222
+      "bubblemaps_rank": 222,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 162,
@@ -7370,7 +8003,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 223
+      "bubblemaps_rank": 223,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 163,
@@ -7414,7 +8050,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 225
+      "bubblemaps_rank": 225,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 164,
@@ -7458,7 +8097,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 226
+      "bubblemaps_rank": 226,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 165,
@@ -7502,7 +8144,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 227
+      "bubblemaps_rank": 227,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 166,
@@ -7546,7 +8191,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 229
+      "bubblemaps_rank": 229,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 167,
@@ -7590,7 +8238,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 230
+      "bubblemaps_rank": 230,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 168,
@@ -7634,7 +8285,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 231
+      "bubblemaps_rank": 231,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 169,
@@ -7678,7 +8332,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 232
+      "bubblemaps_rank": 232,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 170,
@@ -7722,7 +8379,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 233
+      "bubblemaps_rank": 233,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 171,
@@ -7766,7 +8426,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 234
+      "bubblemaps_rank": 234,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 172,
@@ -7810,7 +8473,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 235
+      "bubblemaps_rank": 235,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 173,
@@ -7854,7 +8520,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 236
+      "bubblemaps_rank": 236,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 174,
@@ -7898,7 +8567,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 237
+      "bubblemaps_rank": 237,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 175,
@@ -7942,7 +8614,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 238
+      "bubblemaps_rank": 238,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 176,
@@ -7986,7 +8661,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 239
+      "bubblemaps_rank": 239,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 177,
@@ -8030,7 +8708,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 240
+      "bubblemaps_rank": 240,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 178,
@@ -8074,7 +8755,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 241
+      "bubblemaps_rank": 241,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 179,
@@ -8118,7 +8802,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 243
+      "bubblemaps_rank": 243,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 180,
@@ -8162,7 +8849,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 244
+      "bubblemaps_rank": 244,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 181,
@@ -8206,7 +8896,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 246
+      "bubblemaps_rank": 246,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 182,
@@ -8250,7 +8943,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 247
+      "bubblemaps_rank": 247,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 183,
@@ -8294,7 +8990,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 248
+      "bubblemaps_rank": 248,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 184,
@@ -8338,7 +9037,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 249
+      "bubblemaps_rank": 249,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 185,
@@ -8382,7 +9084,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 250
+      "bubblemaps_rank": 250,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 186,
@@ -8426,7 +9131,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 251
+      "bubblemaps_rank": 251,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 187,
@@ -8470,7 +9178,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 252
+      "bubblemaps_rank": 252,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 188,
@@ -8514,7 +9225,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 253
+      "bubblemaps_rank": 253,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 189,
@@ -8558,7 +9272,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 254
+      "bubblemaps_rank": 254,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 190,
@@ -8602,7 +9319,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 255
+      "bubblemaps_rank": 255,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 191,
@@ -8646,7 +9366,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 256
+      "bubblemaps_rank": 256,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 192,
@@ -8690,7 +9413,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 257
+      "bubblemaps_rank": 257,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 193,
@@ -8734,7 +9460,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 258
+      "bubblemaps_rank": 258,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 194,
@@ -8778,7 +9507,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 259
+      "bubblemaps_rank": 259,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 195,
@@ -8822,7 +9554,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 260
+      "bubblemaps_rank": 260,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 196,
@@ -8866,7 +9601,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 261
+      "bubblemaps_rank": 261,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 197,
@@ -8910,7 +9648,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 262
+      "bubblemaps_rank": 262,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 198,
@@ -8954,7 +9695,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 263
+      "bubblemaps_rank": 263,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 199,
@@ -8998,7 +9742,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 264
+      "bubblemaps_rank": 264,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 200,
@@ -9042,7 +9789,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 265
+      "bubblemaps_rank": 265,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 201,
@@ -9086,7 +9836,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 266
+      "bubblemaps_rank": 266,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 202,
@@ -9130,7 +9883,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 267
+      "bubblemaps_rank": 267,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 203,
@@ -9174,7 +9930,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 268
+      "bubblemaps_rank": 268,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 204,
@@ -9218,7 +9977,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 269
+      "bubblemaps_rank": 269,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 205,
@@ -9262,7 +10024,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 270
+      "bubblemaps_rank": 270,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 206,
@@ -9306,7 +10071,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 271
+      "bubblemaps_rank": 271,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 207,
@@ -9350,7 +10118,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 272
+      "bubblemaps_rank": 272,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 208,
@@ -9394,7 +10165,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 273
+      "bubblemaps_rank": 273,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 209,
@@ -9438,7 +10212,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 274
+      "bubblemaps_rank": 274,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 210,
@@ -9482,7 +10259,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 276
+      "bubblemaps_rank": 276,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 211,
@@ -9526,7 +10306,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 277
+      "bubblemaps_rank": 277,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 212,
@@ -9570,7 +10353,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 278
+      "bubblemaps_rank": 278,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 213,
@@ -9614,7 +10400,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 279
+      "bubblemaps_rank": 279,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 214,
@@ -9658,7 +10447,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 280
+      "bubblemaps_rank": 280,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 215,
@@ -9702,7 +10494,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 281
+      "bubblemaps_rank": 281,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 216,
@@ -9746,7 +10541,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 282
+      "bubblemaps_rank": 282,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 217,
@@ -9790,7 +10588,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 283
+      "bubblemaps_rank": 283,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 218,
@@ -9834,7 +10635,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 284
+      "bubblemaps_rank": 284,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 219,
@@ -9878,7 +10682,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 285
+      "bubblemaps_rank": 285,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 220,
@@ -9922,7 +10729,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 286
+      "bubblemaps_rank": 286,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 221,
@@ -9966,7 +10776,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 287
+      "bubblemaps_rank": 287,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 222,
@@ -10010,7 +10823,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 288
+      "bubblemaps_rank": 288,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 223,
@@ -10054,7 +10870,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 289
+      "bubblemaps_rank": 289,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 224,
@@ -10098,7 +10917,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 290
+      "bubblemaps_rank": 290,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 225,
@@ -10142,7 +10964,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 291
+      "bubblemaps_rank": 291,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 226,
@@ -10186,7 +11011,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 292
+      "bubblemaps_rank": 292,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 227,
@@ -10230,7 +11058,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 293
+      "bubblemaps_rank": 293,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 228,
@@ -10274,7 +11105,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 294
+      "bubblemaps_rank": 294,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 229,
@@ -10318,7 +11152,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 295
+      "bubblemaps_rank": 295,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 230,
@@ -10362,7 +11199,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 296
+      "bubblemaps_rank": 296,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 231,
@@ -10406,7 +11246,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 297
+      "bubblemaps_rank": 297,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 232,
@@ -10450,7 +11293,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 298
+      "bubblemaps_rank": 298,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 233,
@@ -10494,7 +11340,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 299
+      "bubblemaps_rank": 299,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 234,
@@ -10538,7 +11387,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 300
+      "bubblemaps_rank": 300,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 235,
@@ -10582,7 +11434,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 301
+      "bubblemaps_rank": 301,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 236,
@@ -10626,7 +11481,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 302
+      "bubblemaps_rank": 302,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 237,
@@ -10670,7 +11528,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 303
+      "bubblemaps_rank": 303,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 238,
@@ -10714,7 +11575,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 304
+      "bubblemaps_rank": 304,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 239,
@@ -10758,7 +11622,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 307
+      "bubblemaps_rank": 307,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 240,
@@ -10802,7 +11669,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 308
+      "bubblemaps_rank": 308,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 241,
@@ -10846,7 +11716,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 309
+      "bubblemaps_rank": 309,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 242,
@@ -10890,7 +11763,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 310
+      "bubblemaps_rank": 310,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 243,
@@ -10934,7 +11810,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 311
+      "bubblemaps_rank": 311,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 244,
@@ -10978,7 +11857,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 313
+      "bubblemaps_rank": 313,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 245,
@@ -11022,7 +11904,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 315
+      "bubblemaps_rank": 315,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 246,
@@ -11066,7 +11951,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 316
+      "bubblemaps_rank": 316,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 247,
@@ -11110,7 +11998,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 317
+      "bubblemaps_rank": 317,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 248,
@@ -11154,7 +12045,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 318
+      "bubblemaps_rank": 318,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 249,
@@ -11198,7 +12092,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 319
+      "bubblemaps_rank": 319,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 250,
@@ -11242,7 +12139,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 320
+      "bubblemaps_rank": 320,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 251,
@@ -11286,7 +12186,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 321
+      "bubblemaps_rank": 321,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 252,
@@ -11330,7 +12233,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 322
+      "bubblemaps_rank": 322,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 253,
@@ -11374,7 +12280,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 323
+      "bubblemaps_rank": 323,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 254,
@@ -11418,7 +12327,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 324
+      "bubblemaps_rank": 324,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 255,
@@ -11462,7 +12374,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 325
+      "bubblemaps_rank": 325,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 256,
@@ -11506,7 +12421,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 327
+      "bubblemaps_rank": 327,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 257,
@@ -11550,7 +12468,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 328
+      "bubblemaps_rank": 328,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 258,
@@ -11594,7 +12515,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 329
+      "bubblemaps_rank": 329,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 259,
@@ -11638,7 +12562,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 330
+      "bubblemaps_rank": 330,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 260,
@@ -11682,7 +12609,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 331
+      "bubblemaps_rank": 331,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 261,
@@ -11726,7 +12656,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 332
+      "bubblemaps_rank": 332,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 262,
@@ -11770,7 +12703,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 333
+      "bubblemaps_rank": 333,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 263,
@@ -11814,7 +12750,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 334
+      "bubblemaps_rank": 334,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 264,
@@ -11858,7 +12797,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 335
+      "bubblemaps_rank": 335,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 265,
@@ -11902,7 +12844,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 337
+      "bubblemaps_rank": 337,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 266,
@@ -11946,7 +12891,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 338
+      "bubblemaps_rank": 338,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 267,
@@ -11990,7 +12938,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 339
+      "bubblemaps_rank": 339,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 268,
@@ -12034,7 +12985,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 340
+      "bubblemaps_rank": 340,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 269,
@@ -12078,7 +13032,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 341
+      "bubblemaps_rank": 341,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 270,
@@ -12122,7 +13079,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 342
+      "bubblemaps_rank": 342,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 271,
@@ -12166,7 +13126,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 343
+      "bubblemaps_rank": 343,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 272,
@@ -12210,7 +13173,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 344
+      "bubblemaps_rank": 344,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 273,
@@ -12254,7 +13220,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 345
+      "bubblemaps_rank": 345,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 274,
@@ -12298,7 +13267,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 346
+      "bubblemaps_rank": 346,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 275,
@@ -12342,7 +13314,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 347
+      "bubblemaps_rank": 347,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 276,
@@ -12386,7 +13361,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 348
+      "bubblemaps_rank": 348,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 277,
@@ -12430,7 +13408,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 349
+      "bubblemaps_rank": 349,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 278,
@@ -12474,7 +13455,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 350
+      "bubblemaps_rank": 350,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 279,
@@ -12518,7 +13502,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 351
+      "bubblemaps_rank": 351,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 280,
@@ -12562,7 +13549,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 352
+      "bubblemaps_rank": 352,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 281,
@@ -12606,7 +13596,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 353
+      "bubblemaps_rank": 353,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 282,
@@ -12650,7 +13643,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 354
+      "bubblemaps_rank": 354,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 283,
@@ -12694,7 +13690,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 356
+      "bubblemaps_rank": 356,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 284,
@@ -12738,7 +13737,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 357
+      "bubblemaps_rank": 357,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 285,
@@ -12782,7 +13784,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 358
+      "bubblemaps_rank": 358,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 286,
@@ -12826,7 +13831,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 359
+      "bubblemaps_rank": 359,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 287,
@@ -12870,7 +13878,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 360
+      "bubblemaps_rank": 360,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 288,
@@ -12914,7 +13925,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 361
+      "bubblemaps_rank": 361,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 289,
@@ -12958,7 +13972,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 362
+      "bubblemaps_rank": 362,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 290,
@@ -13002,7 +14019,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 363
+      "bubblemaps_rank": 363,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 291,
@@ -13046,7 +14066,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 364
+      "bubblemaps_rank": 364,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 292,
@@ -13090,7 +14113,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 366
+      "bubblemaps_rank": 366,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 293,
@@ -13134,7 +14160,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 367
+      "bubblemaps_rank": 367,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 294,
@@ -13178,7 +14207,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 368
+      "bubblemaps_rank": 368,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 295,
@@ -13222,7 +14254,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 369
+      "bubblemaps_rank": 369,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 296,
@@ -13266,7 +14301,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 370
+      "bubblemaps_rank": 370,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 297,
@@ -13310,7 +14348,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 371
+      "bubblemaps_rank": 371,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 298,
@@ -13354,7 +14395,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 372
+      "bubblemaps_rank": 372,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 299,
@@ -13398,7 +14442,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 373
+      "bubblemaps_rank": 373,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 300,
@@ -13442,7 +14489,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 374
+      "bubblemaps_rank": 374,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 301,
@@ -13486,7 +14536,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 375
+      "bubblemaps_rank": 375,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 302,
@@ -13530,7 +14583,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 376
+      "bubblemaps_rank": 376,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 303,
@@ -13574,7 +14630,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 377
+      "bubblemaps_rank": 377,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 304,
@@ -13618,7 +14677,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 378
+      "bubblemaps_rank": 378,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 305,
@@ -13662,7 +14724,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 379
+      "bubblemaps_rank": 379,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 306,
@@ -13706,7 +14771,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 380
+      "bubblemaps_rank": 380,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 307,
@@ -13750,7 +14818,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 381
+      "bubblemaps_rank": 381,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 308,
@@ -13794,7 +14865,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 382
+      "bubblemaps_rank": 382,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 309,
@@ -13838,7 +14912,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 383
+      "bubblemaps_rank": 383,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 310,
@@ -13882,7 +14959,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 384
+      "bubblemaps_rank": 384,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 311,
@@ -13926,7 +15006,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 385
+      "bubblemaps_rank": 385,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 312,
@@ -13970,7 +15053,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 386
+      "bubblemaps_rank": 386,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 313,
@@ -14014,7 +15100,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 387
+      "bubblemaps_rank": 387,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 314,
@@ -14058,7 +15147,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 388
+      "bubblemaps_rank": 388,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 315,
@@ -14102,7 +15194,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 389
+      "bubblemaps_rank": 389,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 316,
@@ -14146,7 +15241,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 391
+      "bubblemaps_rank": 391,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 317,
@@ -14190,7 +15288,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 392
+      "bubblemaps_rank": 392,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 318,
@@ -14234,7 +15335,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 393
+      "bubblemaps_rank": 393,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 319,
@@ -14278,7 +15382,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 396
+      "bubblemaps_rank": 396,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 320,
@@ -14322,7 +15429,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 397
+      "bubblemaps_rank": 397,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 321,
@@ -14366,7 +15476,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 398
+      "bubblemaps_rank": 398,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 322,
@@ -14410,7 +15523,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 401
+      "bubblemaps_rank": 401,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 323,
@@ -14454,7 +15570,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 402
+      "bubblemaps_rank": 402,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 324,
@@ -14498,7 +15617,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 403
+      "bubblemaps_rank": 403,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 325,
@@ -14542,7 +15664,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 404
+      "bubblemaps_rank": 404,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 326,
@@ -14586,7 +15711,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 405
+      "bubblemaps_rank": 405,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 327,
@@ -14630,7 +15758,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 406
+      "bubblemaps_rank": 406,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 328,
@@ -14674,7 +15805,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 407
+      "bubblemaps_rank": 407,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 329,
@@ -14718,7 +15852,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 410
+      "bubblemaps_rank": 410,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 330,
@@ -14762,7 +15899,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 411
+      "bubblemaps_rank": 411,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 331,
@@ -14806,7 +15946,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 412
+      "bubblemaps_rank": 412,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 332,
@@ -14850,7 +15993,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 413
+      "bubblemaps_rank": 413,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 333,
@@ -14894,7 +16040,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 414
+      "bubblemaps_rank": 414,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 334,
@@ -14938,7 +16087,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 415
+      "bubblemaps_rank": 415,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 335,
@@ -14982,7 +16134,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 416
+      "bubblemaps_rank": 416,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 336,
@@ -15026,7 +16181,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 417
+      "bubblemaps_rank": 417,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 337,
@@ -15070,7 +16228,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 418
+      "bubblemaps_rank": 418,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 338,
@@ -15114,7 +16275,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 419
+      "bubblemaps_rank": 419,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 339,
@@ -15158,7 +16322,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 420
+      "bubblemaps_rank": 420,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 340,
@@ -15202,7 +16369,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 421
+      "bubblemaps_rank": 421,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 341,
@@ -15246,7 +16416,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 422
+      "bubblemaps_rank": 422,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 342,
@@ -15290,7 +16463,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 424
+      "bubblemaps_rank": 424,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 343,
@@ -15334,7 +16510,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 425
+      "bubblemaps_rank": 425,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 344,
@@ -15378,7 +16557,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 426
+      "bubblemaps_rank": 426,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 345,
@@ -15422,7 +16604,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 427
+      "bubblemaps_rank": 427,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 346,
@@ -15466,7 +16651,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 428
+      "bubblemaps_rank": 428,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 347,
@@ -15510,7 +16698,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 429
+      "bubblemaps_rank": 429,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 348,
@@ -15554,7 +16745,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 430
+      "bubblemaps_rank": 430,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 349,
@@ -15598,7 +16792,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 431
+      "bubblemaps_rank": 431,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 350,
@@ -15642,7 +16839,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 432
+      "bubblemaps_rank": 432,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 351,
@@ -15686,7 +16886,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 433
+      "bubblemaps_rank": 433,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 352,
@@ -15730,7 +16933,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 434
+      "bubblemaps_rank": 434,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 353,
@@ -15774,7 +16980,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 435
+      "bubblemaps_rank": 435,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 354,
@@ -15818,7 +17027,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 436
+      "bubblemaps_rank": 436,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 355,
@@ -15862,7 +17074,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 437
+      "bubblemaps_rank": 437,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 356,
@@ -15906,7 +17121,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 438
+      "bubblemaps_rank": 438,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 357,
@@ -15950,7 +17168,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 439
+      "bubblemaps_rank": 439,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 358,
@@ -15994,7 +17215,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 440
+      "bubblemaps_rank": 440,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 359,
@@ -16038,7 +17262,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 441
+      "bubblemaps_rank": 441,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 360,
@@ -16082,7 +17309,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 442
+      "bubblemaps_rank": 442,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 361,
@@ -16126,7 +17356,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 443
+      "bubblemaps_rank": 443,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 362,
@@ -16170,7 +17403,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 444
+      "bubblemaps_rank": 444,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 363,
@@ -16214,7 +17450,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 445
+      "bubblemaps_rank": 445,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 364,
@@ -16258,7 +17497,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 446
+      "bubblemaps_rank": 446,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 365,
@@ -16302,7 +17544,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 447
+      "bubblemaps_rank": 447,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 366,
@@ -16346,7 +17591,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 448
+      "bubblemaps_rank": 448,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 367,
@@ -16390,7 +17638,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 449
+      "bubblemaps_rank": 449,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 368,
@@ -16434,7 +17685,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 450
+      "bubblemaps_rank": 450,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 369,
@@ -16478,7 +17732,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 451
+      "bubblemaps_rank": 451,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 370,
@@ -16522,7 +17779,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 452
+      "bubblemaps_rank": 452,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 371,
@@ -16566,7 +17826,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 453
+      "bubblemaps_rank": 453,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 372,
@@ -16610,7 +17873,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 454
+      "bubblemaps_rank": 454,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 373,
@@ -16654,7 +17920,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 455
+      "bubblemaps_rank": 455,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 374,
@@ -16698,7 +17967,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 457
+      "bubblemaps_rank": 457,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 375,
@@ -16742,7 +18014,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 458
+      "bubblemaps_rank": 458,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 376,
@@ -16786,7 +18061,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 459
+      "bubblemaps_rank": 459,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 377,
@@ -16830,7 +18108,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 460
+      "bubblemaps_rank": 460,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 378,
@@ -16874,7 +18155,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 461
+      "bubblemaps_rank": 461,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 379,
@@ -16918,7 +18202,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 462
+      "bubblemaps_rank": 462,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 380,
@@ -16962,7 +18249,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 463
+      "bubblemaps_rank": 463,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 381,
@@ -17006,7 +18296,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 464
+      "bubblemaps_rank": 464,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 382,
@@ -17050,7 +18343,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 465
+      "bubblemaps_rank": 465,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 383,
@@ -17094,7 +18390,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 466
+      "bubblemaps_rank": 466,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 384,
@@ -17138,7 +18437,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 467
+      "bubblemaps_rank": 467,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 385,
@@ -17182,7 +18484,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 468
+      "bubblemaps_rank": 468,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 386,
@@ -17226,7 +18531,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 469
+      "bubblemaps_rank": 469,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 387,
@@ -17270,7 +18578,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 470
+      "bubblemaps_rank": 470,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 388,
@@ -17314,7 +18625,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 471
+      "bubblemaps_rank": 471,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 389,
@@ -17358,7 +18672,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 473
+      "bubblemaps_rank": 473,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 390,
@@ -17402,7 +18719,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 474
+      "bubblemaps_rank": 474,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 391,
@@ -17446,7 +18766,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 475
+      "bubblemaps_rank": 475,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 392,
@@ -17490,7 +18813,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 476
+      "bubblemaps_rank": 476,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 393,
@@ -17534,7 +18860,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 477
+      "bubblemaps_rank": 477,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 394,
@@ -17578,7 +18907,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 478
+      "bubblemaps_rank": 478,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 395,
@@ -17622,7 +18954,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 479
+      "bubblemaps_rank": 479,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 396,
@@ -17666,7 +19001,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 480
+      "bubblemaps_rank": 480,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 397,
@@ -17710,7 +19048,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 481
+      "bubblemaps_rank": 481,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 398,
@@ -17754,7 +19095,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 482
+      "bubblemaps_rank": 482,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 399,
@@ -17798,7 +19142,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 483
+      "bubblemaps_rank": 483,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 400,
@@ -17842,7 +19189,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 484
+      "bubblemaps_rank": 484,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 401,
@@ -17886,7 +19236,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 485
+      "bubblemaps_rank": 485,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 402,
@@ -17930,7 +19283,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 486
+      "bubblemaps_rank": 486,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 403,
@@ -17974,7 +19330,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 488
+      "bubblemaps_rank": 488,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 404,
@@ -18018,7 +19377,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 489
+      "bubblemaps_rank": 489,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 405,
@@ -18062,7 +19424,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 490
+      "bubblemaps_rank": 490,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 406,
@@ -18106,7 +19471,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 491
+      "bubblemaps_rank": 491,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 407,
@@ -18150,7 +19518,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 493
+      "bubblemaps_rank": 493,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 408,
@@ -18194,7 +19565,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 494
+      "bubblemaps_rank": 494,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 409,
@@ -18238,7 +19612,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 495
+      "bubblemaps_rank": 495,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 410,
@@ -18282,7 +19659,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 496
+      "bubblemaps_rank": 496,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 411,
@@ -18326,7 +19706,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 498
+      "bubblemaps_rank": 498,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 412,
@@ -18370,7 +19753,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 499
+      "bubblemaps_rank": 499,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 413,
@@ -18414,7 +19800,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 500
+      "bubblemaps_rank": 500,
+      "label_layer": "unlabeled",
+      "top_holder_role": "单次受配分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 414,
@@ -18458,7 +19847,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 96
+      "bubblemaps_rank": 96,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 415,
@@ -18502,7 +19894,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 181
+      "bubblemaps_rank": 181,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 416,
@@ -18546,7 +19941,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 188
+      "bubblemaps_rank": 188,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 417,
@@ -18590,7 +19988,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 127
+      "bubblemaps_rank": 127,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 418,
@@ -18634,7 +20035,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 86
+      "bubblemaps_rank": 86,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 419,
@@ -18678,7 +20082,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 176
+      "bubblemaps_rank": 176,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 420,
@@ -18722,7 +20129,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 37
+      "bubblemaps_rank": 37,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 421,
@@ -18766,7 +20176,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 80
+      "bubblemaps_rank": 80,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 422,
@@ -18810,7 +20223,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 129
+      "bubblemaps_rank": 129,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 423,
@@ -18854,7 +20270,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "CEX-Withdrawing",
-      "bubblemaps_rank": 48
+      "bubblemaps_rank": 48,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 424,
@@ -18898,7 +20317,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 73
+      "bubblemaps_rank": 73,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 425,
@@ -18942,7 +20364,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 162
+      "bubblemaps_rank": 162,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 426,
@@ -18986,7 +20411,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 123
+      "bubblemaps_rank": 123,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 427,
@@ -19030,7 +20458,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 26
+      "bubblemaps_rank": 26,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 428,
@@ -19074,7 +20505,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 160
+      "bubblemaps_rank": 160,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 429,
@@ -19118,7 +20552,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 41
+      "bubblemaps_rank": 41,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 430,
@@ -19162,7 +20599,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 50
+      "bubblemaps_rank": 50,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 431,
@@ -19206,7 +20646,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 173
+      "bubblemaps_rank": 173,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 432,
@@ -19250,7 +20693,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 14
+      "bubblemaps_rank": 14,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 433,
@@ -19294,7 +20740,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 25
+      "bubblemaps_rank": 25,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 434,
@@ -19338,7 +20787,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 29
+      "bubblemaps_rank": 29,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 435,
@@ -19382,7 +20834,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 30
+      "bubblemaps_rank": 30,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 436,
@@ -19426,7 +20881,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 39
+      "bubblemaps_rank": 39,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 437,
@@ -19470,7 +20928,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 44
+      "bubblemaps_rank": 44,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 438,
@@ -19514,7 +20975,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 45
+      "bubblemaps_rank": 45,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 439,
@@ -19558,7 +21022,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "CEX-Selling",
-      "bubblemaps_rank": 55
+      "bubblemaps_rank": 55,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 440,
@@ -19602,7 +21069,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 59
+      "bubblemaps_rank": 59,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 441,
@@ -19646,7 +21116,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 64
+      "bubblemaps_rank": 64,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 442,
@@ -19690,7 +21163,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 68
+      "bubblemaps_rank": 68,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 443,
@@ -19734,7 +21210,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 71
+      "bubblemaps_rank": 71,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 444,
@@ -19778,7 +21257,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 82
+      "bubblemaps_rank": 82,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 445,
@@ -19822,7 +21304,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 87
+      "bubblemaps_rank": 87,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 446,
@@ -19866,7 +21351,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "CEX-Selling",
-      "bubblemaps_rank": 89
+      "bubblemaps_rank": 89,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 447,
@@ -19910,7 +21398,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 92
+      "bubblemaps_rank": 92,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 448,
@@ -19954,7 +21445,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 95
+      "bubblemaps_rank": 95,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 449,
@@ -19998,7 +21492,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 106
+      "bubblemaps_rank": 106,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 450,
@@ -20042,7 +21539,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 107
+      "bubblemaps_rank": 107,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 451,
@@ -20086,7 +21586,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 112
+      "bubblemaps_rank": 112,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 452,
@@ -20130,7 +21633,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 113
+      "bubblemaps_rank": 113,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 453,
@@ -20174,7 +21680,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "CEX-Selling",
-      "bubblemaps_rank": 115
+      "bubblemaps_rank": 115,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 454,
@@ -20218,7 +21727,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 120
+      "bubblemaps_rank": 120,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 455,
@@ -20262,7 +21774,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 122
+      "bubblemaps_rank": 122,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 456,
@@ -20306,7 +21821,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 124
+      "bubblemaps_rank": 124,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 457,
@@ -20350,7 +21868,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 125
+      "bubblemaps_rank": 125,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 458,
@@ -20394,7 +21915,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 133
+      "bubblemaps_rank": 133,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 459,
@@ -20438,7 +21962,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 140
+      "bubblemaps_rank": 140,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 460,
@@ -20482,7 +22009,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 141
+      "bubblemaps_rank": 141,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 461,
@@ -20526,7 +22056,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 147
+      "bubblemaps_rank": 147,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 462,
@@ -20570,7 +22103,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 153
+      "bubblemaps_rank": 153,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 463,
@@ -20614,7 +22150,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 157
+      "bubblemaps_rank": 157,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 464,
@@ -20658,7 +22197,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 164
+      "bubblemaps_rank": 164,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 465,
@@ -20702,7 +22244,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 184
+      "bubblemaps_rank": 184,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 466,
@@ -20746,7 +22291,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 192
+      "bubblemaps_rank": 192,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 467,
@@ -20790,7 +22338,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 199
+      "bubblemaps_rank": 199,
+      "label_layer": "unlabeled",
+      "top_holder_role": "普通持仓地址",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 468,
@@ -20834,7 +22385,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 205
+      "bubblemaps_rank": 205,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 469,
@@ -20878,7 +22432,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Mixed",
-      "bubblemaps_rank": 207
+      "bubblemaps_rank": 207,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 470,
@@ -20922,7 +22479,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 210
+      "bubblemaps_rank": 210,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 471,
@@ -20966,7 +22526,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 213
+      "bubblemaps_rank": 213,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 472,
@@ -21010,7 +22573,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 214
+      "bubblemaps_rank": 214,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 473,
@@ -21054,7 +22620,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 217
+      "bubblemaps_rank": 217,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 474,
@@ -21098,7 +22667,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 218
+      "bubblemaps_rank": 218,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 475,
@@ -21142,7 +22714,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 224
+      "bubblemaps_rank": 224,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 476,
@@ -21186,7 +22761,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 228
+      "bubblemaps_rank": 228,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 477,
@@ -21230,7 +22808,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 242
+      "bubblemaps_rank": 242,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 478,
@@ -21274,7 +22855,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 245
+      "bubblemaps_rank": 245,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 479,
@@ -21318,7 +22902,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 275
+      "bubblemaps_rank": 275,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 480,
@@ -21362,7 +22949,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 305
+      "bubblemaps_rank": 305,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 481,
@@ -21406,7 +22996,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 306
+      "bubblemaps_rank": 306,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 482,
@@ -21450,7 +23043,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 312
+      "bubblemaps_rank": 312,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 483,
@@ -21494,7 +23090,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 314
+      "bubblemaps_rank": 314,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 484,
@@ -21538,7 +23137,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 326
+      "bubblemaps_rank": 326,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 485,
@@ -21582,7 +23184,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 336
+      "bubblemaps_rank": 336,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 486,
@@ -21626,7 +23231,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 355
+      "bubblemaps_rank": 355,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 487,
@@ -21670,7 +23278,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 365
+      "bubblemaps_rank": 365,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 488,
@@ -21714,7 +23325,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 390
+      "bubblemaps_rank": 390,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 489,
@@ -21758,7 +23372,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 394
+      "bubblemaps_rank": 394,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 490,
@@ -21802,7 +23419,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 395
+      "bubblemaps_rank": 395,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 491,
@@ -21846,7 +23466,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 399
+      "bubblemaps_rank": 399,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 492,
@@ -21890,7 +23513,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 400
+      "bubblemaps_rank": 400,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 493,
@@ -21934,7 +23560,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 408
+      "bubblemaps_rank": 408,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 494,
@@ -21978,7 +23607,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 409
+      "bubblemaps_rank": 409,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 495,
@@ -22022,7 +23654,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 423
+      "bubblemaps_rank": 423,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 496,
@@ -22066,7 +23701,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 456
+      "bubblemaps_rank": 456,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 497,
@@ -22110,7 +23748,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 472
+      "bubblemaps_rank": 472,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 498,
@@ -22154,7 +23795,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 487
+      "bubblemaps_rank": 487,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 499,
@@ -22198,7 +23842,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 492
+      "bubblemaps_rank": 492,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     },
     {
       "rank": 500,
@@ -22242,7 +23889,10 @@
       "holder_age_bucket": "short_term",
       "wallet_cohort": "new_wallet",
       "behavior_class": "Inactive",
-      "bubblemaps_rank": 497
+      "bubblemaps_rank": 497,
+      "label_layer": "unlabeled",
+      "top_holder_role": "二级分发分仓",
+      "top10_control_layer": "unlabeled_distribution_cluster"
     }
   ]
 }

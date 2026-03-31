@@ -602,6 +602,9 @@ def enrich_holder_metrics(
         row["holder_age_bucket"] = age_bucket
         row["wallet_cohort"] = cohort
         row["behavior_class"] = classify_behavior(row, metadata["total_supply"])
+        row["label_layer"] = label_layer(row)
+        row["top_holder_role"] = classify_top_holder_role(row, metadata["total_supply"])
+        row["top10_control_layer"] = top10_control_layer(row)
 
         final_rows[address] = row
 
@@ -632,6 +635,157 @@ def classify_behavior(row: dict[str, Any], total_supply: float) -> str:
     ):
         return "Distributing"
     return "Mixed"
+
+
+def label_layer(row: dict[str, Any]) -> str:
+    label = str(row.get("bm_label") or "").strip()
+    label_lower = label.lower()
+    if row.get("is_cex"):
+        return "bubble_cex"
+    if row.get("is_dex"):
+        return "bubble_dex"
+    if "deposit" in label_lower:
+        return "exchange_deposit_tag"
+    if row.get("is_contract") and label:
+        return "contract_label"
+    if label:
+        return "named_wallet_label"
+    return "unlabeled"
+
+
+def label_layer_name(layer: str) -> str:
+    return {
+        "bubble_cex": "BubbleMaps 显式 CEX",
+        "bubble_dex": "BubbleMaps 显式 DEX / LP",
+        "exchange_deposit_tag": "交易所相关标签",
+        "contract_label": "具名合约",
+        "named_wallet_label": "具名个人/团队地址",
+        "unlabeled": "无 BubbleMaps 标签",
+    }.get(layer, layer)
+
+
+def classify_top_holder_role(row: dict[str, Any], total_supply: float) -> str:
+    label = str(row.get("bm_label") or "").strip()
+    total_received = float(row.get("total_received") or 0.0)
+    total_sent = float(row.get("total_sent") or 0.0)
+    sent_ratio = total_sent / total_received if total_received > 0 else 0.0
+    counterparties = int(row.get("unique_counterparties_count") or 0)
+    current_share = float(row.get("current_share_supply") or 0.0)
+
+    if row.get("is_cex"):
+        return "交易所库存地址"
+    if row.get("is_dex"):
+        return "DEX / LP 流动性地址"
+    if label:
+        if float(row.get("recent_30d_cex_withdraw_amount") or 0.0) > 0:
+            return "具名增持地址"
+        return "具名持仓地址"
+    if current_share >= 0.1 and sent_ratio >= 0.3 and counterparties >= 3:
+        return "主分发母仓"
+    if total_sent == 0 and counterparties <= 1:
+        return "单次受配分仓"
+    if total_sent > 0 and counterparties <= 3:
+        return "二级分发分仓"
+    if current_share >= max(0.005, (500000 / total_supply) if total_supply else 0.0):
+        return "未标注鲸鱼仓"
+    return "普通持仓地址"
+
+
+def top10_control_layer(row: dict[str, Any]) -> str:
+    if row.get("is_cex"):
+        return "exchange_inventory"
+    if row.get("is_dex"):
+        return "dex_liquidity"
+    if row.get("bm_label"):
+        return "named_holder"
+    return "unlabeled_distribution_cluster"
+
+
+def top10_control_layer_name(layer: str) -> str:
+    return {
+        "unlabeled_distribution_cluster": "未标注大户分发簇",
+        "exchange_inventory": "交易所库存层",
+        "dex_liquidity": "DEX 流动性层",
+        "named_holder": "具名地址层",
+    }.get(layer, layer)
+
+
+def holder_judgement(row: dict[str, Any]) -> str:
+    share = fmt_pct(row["current_share_supply"])
+    if row["is_cex"]:
+        return (
+            f"BubbleMaps 直接标记为 {row['bm_label']}。对手方数量高、近 30 天双向流转明显，"
+            f"更像交易所库存而不是单一控盘仓；但它单地址仍占 {share}，对短期流通面有实质影响。"
+        )
+    if row["is_dex"]:
+        return (
+            f"BubbleMaps 直接标记为 {row['bm_label']}。它承接的是交易流动性而不是主观控盘仓，"
+            f"当前占供应 {share}，属于可交易流动性池库存。"
+        )
+    if row["bm_label"]:
+        if row["recent_30d_cex_withdraw_amount"] > 0:
+            return (
+                f"这是 BubbleMaps 具名地址，近 30 天有明确的交易所提出记录，当前保留 {share} 仓位，"
+                "行为上偏增持而不是派发。"
+            )
+        return f"这是 BubbleMaps 具名地址，当前持仓 {share}，更适合作为已知实体样本观察，而不是主控盘层。"
+
+    total_received = float(row.get("total_received") or 0.0)
+    total_sent = float(row.get("total_sent") or 0.0)
+    counterparties = int(row.get("unique_counterparties_count") or 0)
+    if total_received > 0 and total_sent / total_received >= 0.3 and counterparties >= 3:
+        return (
+            f"该地址没有 BubbleMaps 标签，但当前仍持有 {share}。它既是最大仓位又承担明显再分发，"
+            "形态上更像本轮大户簇的主分发母仓。"
+        )
+    if total_sent == 0 and counterparties <= 1:
+        return (
+            f"该地址没有 BubbleMaps 标签，且基本表现为单次收币后静置，当前持仓 {share}。"
+            "形态上更像受配分仓或独立保管仓。"
+        )
+    return (
+        f"该地址没有 BubbleMaps 标签，当前持仓 {share}，有少量再分发动作但没有形成公开实体标签，"
+        "应视为未标注的大户分支。"
+    )
+
+
+def build_label_inventory(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    inventory: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        label = str(row.get("bm_label") or "").strip()
+        if not label:
+            continue
+        bucket = inventory.setdefault(label, {
+            "label": label,
+            "layer": label_layer(row),
+            "count": 0,
+            "amount": 0.0,
+            "share_supply": 0.0,
+            "top_rank": row["rank"],
+        })
+        bucket["count"] += 1
+        bucket["amount"] += float(row["current_amount"])
+        bucket["share_supply"] += float(row["current_share_supply"])
+        bucket["top_rank"] = min(int(bucket["top_rank"]), int(row["rank"]))
+    return sorted(inventory.values(), key=lambda item: (-float(item["share_supply"]), int(item["top_rank"])))
+
+
+def build_top10_layer_summary(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    buckets: dict[str, dict[str, Any]] = {}
+    for row in rows[:10]:
+        layer = top10_control_layer(row)
+        bucket = buckets.setdefault(layer, {
+            "layer": layer,
+            "count": 0,
+            "amount": 0.0,
+            "share_supply": 0.0,
+            "ranks": [],
+        })
+        bucket["count"] += 1
+        bucket["amount"] += float(row["current_amount"])
+        bucket["share_supply"] += float(row["current_share_supply"])
+        bucket["ranks"].append(int(row["rank"]))
+    return sorted(buckets.values(), key=lambda item: (-float(item["share_supply"]), item["layer"]))
 
 
 def md_table(headers: list[str], rows: list[list[str]]) -> str:
@@ -720,6 +874,8 @@ def build_summary(
             "recent_30d_netflow_total": sum(row["recent_30d_netflow"] for row in non_infra),
             "recent_7d_netflow_total": sum(row["recent_7d_netflow"] for row in non_infra),
         },
+        "top10_layer_summary": build_top10_layer_summary(holders),
+        "label_inventory": build_label_inventory(holders),
         "verification": verification,
         "scan_meta": scan_meta,
         "token": metadata,
@@ -789,16 +945,29 @@ def build_report(
     exchange_lookup: dict[str, str],
 ) -> str:
     non_infra = [row for row in holders if not row["is_cex"] and not row["is_dex"] and not row["is_contract"]]
-    key_wallets = pick_key_wallets(non_infra)
-    top_accumulators = top_rows_for_report(non_infra, "recent_30d_netflow", limit=8, min_abs=1.0)
-    top_distributors = negative_rows_for_report(non_infra, "recent_30d_netflow", limit=8, min_abs=1.0)
-    top_depositors = top_rows_for_report(non_infra, "recent_30d_cex_deposit_amount", limit=8, min_abs=1.0)
-    top_withdrawers = top_rows_for_report(non_infra, "recent_30d_cex_withdraw_amount", limit=8, min_abs=1.0)
-    bubble_cex = [row for row in holders if row["is_cex"]]
-    top20 = holders[:20]
+    top10 = holders[:10]
+    top11_50_share = summary["snapshot"]["top50_share"] - summary["snapshot"]["top10_share"]
+    top10_layer_rows = summary["top10_layer_summary"]
+    label_inventory = summary["label_inventory"]
+    exchange_recent = summary["recent_activity_non_infra"]
+    top_withdrawers = top_rows_for_report(non_infra, "recent_30d_cex_withdraw_amount", limit=5, min_abs=1.0)
+    top_depositors = top_rows_for_report(non_infra, "recent_30d_cex_deposit_amount", limit=5, min_abs=1.0)
+
+    unlabeled_top10_share = sum(
+        row["current_share_supply"]
+        for row in top10
+        if row["top10_control_layer"] == "unlabeled_distribution_cluster"
+    )
+    cex_top10_share = sum(row["current_share_supply"] for row in top10 if row["is_cex"])
+    dex_top10_share = sum(row["current_share_supply"] for row in top10 if row["is_dex"])
+    named_top10_share = sum(
+        row["current_share_supply"]
+        for row in top10
+        if row["bm_label"] and not row["is_cex"] and not row["is_dex"]
+    )
 
     lines: list[str] = []
-    lines.append(f"# {metadata['name']} ({metadata['symbol']}) 筹码结构研究")
+    lines.append(f"# {metadata['name']} ({metadata['symbol']}) Top 10 筹码结构研究")
     lines.append("")
     lines.append(f"- BSC 研究合约: `{metadata['contract']}`")
     lines.append(f"- Solana 地址: `{metadata['solana_address']}`")
@@ -809,11 +978,101 @@ def build_report(
     lines.append(f"- 已知本地交易所地址数: {len(exchange_lookup)}")
     lines.append("")
 
-    lines.append("## 1. 当前筹码结构")
+    lines.append("## 1. 先看结论")
     lines.append("")
-    lines.append(f"- Top10 / Top20 / Top50 持仓占比分别为 {fmt_pct(summary['snapshot']['top10_share'])} / {fmt_pct(summary['snapshot']['top20_share'])} / {fmt_pct(summary['snapshot']['top50_share'])}。")
-    lines.append(f"- BubbleMaps 显式标签覆盖 {summary['snapshot']['bubblemaps_labeled_count']} 个地址，合计 {fmt_pct(summary['snapshot']['bubblemaps_labeled_share'])} 的总供应。")
-    lines.append(f"- BubbleMaps 显式 CEX 仅识别到 {summary['snapshot']['bubblemaps_cex_count']} 个地址，当前合计 {fmt_pct(summary['snapshot']['bubblemaps_cex_share'])} 的总供应。这一数值按下限理解。")
+    lines.append(f"- Top10 已经解释了 {fmt_pct(summary['snapshot']['top10_share'])} 的总供应，PRL 当前不是“分散持仓”，而是“Top10 决定流通盘”。")
+    lines.append(f"- Top10 里有 7 个未标注地址，合计 {fmt_pct(unlabeled_top10_share)}；这 7 个地址才是需要重点盯的控盘层。")
+    lines.append(f"- Top10 里真正有明确公共标签的只有 3 类仓位: Binance 库存 {fmt_pct(cex_top10_share)}、Pancake 流动性 {fmt_pct(dex_top10_share)}、`degenrunner.bnb` {fmt_pct(named_top10_share)}。")
+    lines.append(f"- Top11 到 Top50 只剩 {fmt_pct(top11_50_share)}，说明研究重点不该再分散到长尾，而是把 Top10 尤其是那 7 个未标注大户逐个盯住。")
+    lines.append("")
+
+    lines.append("## 2. Top 10 分层")
+    lines.append("")
+    lines.append(md_table(
+        ["层级", "地址数", "Amount", "Supply Share", "涉及 Rank", "解读"],
+        [
+            [
+                top10_control_layer_name(item["layer"]),
+                str(item["count"]),
+                fmt_num(item["amount"], 4),
+                fmt_pct(item["share_supply"]),
+                ", ".join(str(rank) for rank in item["ranks"]),
+                (
+                    "未标注大户簇，表现为新钱包集中拿仓。"
+                    if item["layer"] == "unlabeled_distribution_cluster"
+                    else "BubbleMaps 已识别的交易所库存。"
+                    if item["layer"] == "exchange_inventory"
+                    else "BubbleMaps 已识别的 LP / 交易流动性。"
+                    if item["layer"] == "dex_liquidity"
+                    else "BubbleMaps 已识别的具名地址。"
+                ),
+            ]
+            for item in top10_layer_rows
+        ],
+    ))
+    lines.append("")
+    lines.append(md_table(
+        ["Rank", "Address", "BubbleMaps Label", "标签层", "角色判断", "Amount", "Share", "30d Netflow"],
+        [
+            [
+                str(row["rank"]),
+                short_addr(row["address"]),
+                row["bm_label"] or "-",
+                label_layer_name(row["label_layer"]),
+                row["top_holder_role"],
+                fmt_num(row["current_amount"], 4),
+                fmt_pct(row["current_share_supply"]),
+                fmt_num(row["recent_30d_netflow"], 4),
+            ]
+            for row in top10
+        ],
+    ))
+    lines.append("")
+
+    lines.append("## 3. Top 10 地址逐个研究")
+    lines.append("")
+    for row in top10:
+        lines.append(f"### Rank {row['rank']} | {short_addr(row['address'])}")
+        lines.append("")
+        lines.append(f"- BubbleMaps Label: `{row['bm_label'] or 'None'}`")
+        lines.append(f"- 标签层: {label_layer_name(row['label_layer'])}")
+        lines.append(f"- 角色判断: {row['top_holder_role']}")
+        lines.append(f"- 当前持仓: {fmt_num(row['current_amount'], 4)} {metadata['symbol']} ({fmt_pct(row['current_share_supply'])})")
+        lines.append(f"- 首次入场: {row['first_inbound_at'] or row['first_activity_date'] or '-'}")
+        lines.append(f"- 最近转出: {row['last_outbound_at'] or '-'}")
+        lines.append(f"- 全历史累计收/发: {fmt_num(row['total_received'], 4)} / {fmt_num(row['total_sent'], 4)}")
+        lines.append(f"- 近 30 天净流量: {fmt_num(row['recent_30d_netflow'], 4)}")
+        lines.append(f"- 近 30 天交易所提出 / 存入: {fmt_num(row['recent_30d_cex_withdraw_amount'], 4)} / {fmt_num(row['recent_30d_cex_deposit_amount'], 4)}")
+        lines.append(f"- 对手方数: {row['unique_counterparties_count']}")
+        lines.append(f"- 行为分类: {row['behavior_class']} | 钱包分组: {row['wallet_cohort']}")
+        lines.append(f"- 研究判断: {holder_judgement(row)}")
+        lines.append("")
+
+    lines.append("## 4. BubbleMaps 标签分层")
+    lines.append("")
+    lines.append(f"- BubbleMaps 一共给出 {summary['snapshot']['bubblemaps_labeled_count']} 个已标注地址，对应 {len(label_inventory)} 个去重标签，覆盖 {fmt_pct(summary['snapshot']['bubblemaps_labeled_share'])} 的供应量。")
+    lines.append("- 这部分只能作为显式标签下限。对未标注地址，本报告只做行为归类，不额外创造实体名。")
+    lines.append("")
+    lines.append(md_table(
+        ["Label", "标签层", "Addr Count", "Top Rank", "Amount", "Supply Share"],
+        [
+            [
+                item["label"],
+                label_layer_name(item["layer"]),
+                str(item["count"]),
+                str(item["top_rank"]),
+                fmt_num(item["amount"], 4),
+                fmt_pct(item["share_supply"]),
+            ]
+            for item in label_inventory
+        ],
+    ))
+    lines.append("")
+
+    lines.append("## 5. Top 10 之外还剩什么")
+    lines.append("")
+    lines.append(f"- Top11-Top50 合计 {fmt_pct(top11_50_share)}；Top51-Top500 合计 {fmt_pct(1 - summary['snapshot']['top50_share'])}。")
+    lines.append(f"- 换句话说，Top10 之外所有地址加起来只占 {fmt_pct(1 - summary['snapshot']['top10_share'])}。")
     lines.append("")
     lines.append(md_table(
         ["Segment", "Addr Count", "Amount", "Supply Share"],
@@ -824,179 +1083,56 @@ def build_report(
                 fmt_num(stats["amount"], 4),
                 fmt_pct(stats["share_supply"]),
             ]
-            for segment, stats in sorted(
-                summary["segment_summary"].items(),
-                key=lambda item: item[1]["share_supply"],
-                reverse=True,
-            )
-        ],
-    ))
-    lines.append("")
-    lines.append("### Top 20 持仓快照")
-    lines.append("")
-    lines.append(md_table(
-        ["Rank", "Address", "BubbleMaps Label", "Segment", "Amount", "Share"],
-        [
-            [
-                str(row["rank"]),
-                short_addr(row["address"]),
-                row["bm_label"] or "-",
-                row["segment"],
-                fmt_num(row["current_amount"], 4),
-                fmt_pct(row["current_share_supply"]),
-            ]
-            for row in top20
+            for segment, stats in sorted(summary["segment_summary"].items(), key=lambda item: item[1]["share_supply"], reverse=True)
         ],
     ))
     lines.append("")
 
-    lines.append("## 2. 持仓年龄与回流/新进")
+    lines.append("## 6. 交易所与流动性侧")
     lines.append("")
-    lines.append("- 该部分仅统计非基础设施地址，即排除 BubbleMaps 标记的 CEX / DEX / contract。")
-    lines.append("- `new_wallet`: 首次入场 < 30 天。")
-    lines.append("- `return_wallet`: 首次入场 >= 30 天，近 30 天重新净流入，且 31-60 天窗口未出现同等级增持。")
-    lines.append("")
-    lines.append(md_table(
-        ["Age Bucket", "Addr Count", "Amount", "Supply Share"],
-        [
-            [bucket, str(stats["count"]), fmt_num(stats["amount"], 4), fmt_pct(stats["share_supply"])]
-            for bucket, stats in sorted(
-                summary["age_summary_non_infra"].items(),
-                key=lambda item: item[1]["share_supply"],
-                reverse=True,
-            )
-        ],
-    ))
-    lines.append("")
-    lines.append(md_table(
-        ["Cohort", "Addr Count", "Amount", "Supply Share"],
-        [
-            [bucket, str(stats["count"]), fmt_num(stats["amount"], 4), fmt_pct(stats["share_supply"])]
-            for bucket, stats in sorted(
-                summary["cohort_summary_non_infra"].items(),
-                key=lambda item: item[1]["share_supply"],
-                reverse=True,
-            )
-        ],
-    ))
-    lines.append("")
-
-    lines.append("## 3. CEX 相关筹码")
-    lines.append("")
-    lines.append("- 显式持仓只展示 BubbleMaps 直接标注为 CEX 的地址。")
-    lines.append("- 交易所方向识别使用本地 exchange registry，只用于判断 `向交易所 / 从交易所` 流向，不用于给无标签地址命名。")
-    lines.append("")
-    lines.append("### BubbleMaps 显式 CEX 持仓")
-    lines.append("")
-    lines.append(md_table(
-        ["Rank", "Address", "Label", "Amount", "Share"],
-        [
-            [
-                str(row["rank"]),
-                short_addr(row["address"]),
-                row["bm_label"] or row["bm_entity_id"] or "-",
-                fmt_num(row["current_amount"], 4),
-                fmt_pct(row["current_share_supply"]),
-            ]
-            for row in bubble_cex
-        ] or [["-", "-", "-", "-", "-"]],
-    ))
-    lines.append("")
-    lines.append("### 近 30 天主要向交易所存入")
-    lines.append("")
-    lines.append(md_table(
-        ["Address", "Label", "30d CEX Deposit", "Behavior", "Current Share"],
-        [
-            [
-                short_addr(row["address"]),
-                row["bm_label"] or "-",
-                fmt_num(row["recent_30d_cex_deposit_amount"], 4),
-                row["behavior_class"],
-                fmt_pct(row["current_share_supply"]),
-            ]
-            for row in top_depositors
-        ] or [["-", "-", "-", "-", "-"]],
-    ))
+    lines.append(f"- BubbleMaps 显式 CEX 仓位下限为 {fmt_pct(summary['snapshot']['bubblemaps_cex_share'])}，当前基本都落在 Binance 那个单地址上。")
+    lines.append(f"- BubbleMaps 显式 DEX / LP 仓位下限为 {fmt_pct(summary['snapshot']['bubblemaps_dex_share'])}。")
+    lines.append(f"- 近 30 天非基础设施地址从交易所净提出 {fmt_num(exchange_recent['recent_30d_cex_withdraw_total'], 4)} PRL，向交易所净存入 {fmt_num(exchange_recent['recent_30d_cex_deposit_total'], 4)} PRL。")
     lines.append("")
     lines.append("### 近 30 天主要从交易所提出")
     lines.append("")
     lines.append(md_table(
-        ["Address", "Label", "30d CEX Withdraw", "Behavior", "Current Share"],
+        ["Address", "Label", "角色判断", "30d CEX Withdraw", "Current Share"],
         [
             [
                 short_addr(row["address"]),
                 row["bm_label"] or "-",
+                row["top_holder_role"],
                 fmt_num(row["recent_30d_cex_withdraw_amount"], 4),
-                row["behavior_class"],
                 fmt_pct(row["current_share_supply"]),
             ]
             for row in top_withdrawers
         ] or [["-", "-", "-", "-", "-"]],
     ))
     lines.append("")
-
-    lines.append("## 4. 关键钱包")
+    lines.append("### 近 30 天主要向交易所存入")
     lines.append("")
     lines.append(md_table(
-        ["Address", "Reason", "Label", "Behavior", "30d Netflow", "Current Share"],
+        ["Address", "Label", "角色判断", "30d CEX Deposit", "Current Share"],
         [
             [
                 short_addr(row["address"]),
-                row["key_reason"],
                 row["bm_label"] or "-",
-                row["behavior_class"],
-                fmt_num(row["recent_30d_netflow"], 4),
+                row["top_holder_role"],
+                fmt_num(row["recent_30d_cex_deposit_amount"], 4),
                 fmt_pct(row["current_share_supply"]),
             ]
-            for row in key_wallets[:20]
-        ],
+            for row in top_depositors
+        ] or [["-", "-", "-", "-", "-"]],
     ))
     lines.append("")
 
-    lines.append("## 5. 近期活动")
+    lines.append("## 7. 综合判断")
     lines.append("")
-    lines.append(f"- 非基础设施地址 30d 净流量合计: {fmt_num(summary['recent_activity_non_infra']['recent_30d_netflow_total'], 4)} {metadata['symbol']}")
-    lines.append(f"- 非基础设施地址 7d 净流量合计: {fmt_num(summary['recent_activity_non_infra']['recent_7d_netflow_total'], 4)} {metadata['symbol']}")
-    lines.append("")
-    lines.append("### 近 30 天主要增持")
-    lines.append("")
-    lines.append(md_table(
-        ["Address", "Label", "30d Netflow", "7d Netflow", "Cohort", "Behavior"],
-        [
-            [
-                short_addr(row["address"]),
-                row["bm_label"] or "-",
-                fmt_num(row["recent_30d_netflow"], 4),
-                fmt_num(row["recent_7d_netflow"], 4),
-                row["wallet_cohort"],
-                row["behavior_class"],
-            ]
-            for row in top_accumulators
-        ] or [["-", "-", "-", "-", "-", "-"]],
-    ))
-    lines.append("")
-    lines.append("### 近 30 天主要减持")
-    lines.append("")
-    lines.append(md_table(
-        ["Address", "Label", "30d Netflow", "7d Netflow", "Cohort", "Behavior"],
-        [
-            [
-                short_addr(row["address"]),
-                row["bm_label"] or "-",
-                fmt_num(row["recent_30d_netflow"], 4),
-                fmt_num(row["recent_7d_netflow"], 4),
-                row["wallet_cohort"],
-                row["behavior_class"],
-            ]
-            for row in top_distributors
-        ] or [["-", "-", "-", "-", "-", "-"]],
-    ))
-    lines.append("")
-
-    lines.append("## 6. 综合判断与风险")
-    lines.append("")
-    for bullet in build_conclusions(summary):
-        lines.append(f"- {bullet}")
+    lines.append(f"- 真正需要研究的不是“PRL 的 500 个 holder”，而是 Top10 里的 7 个未标注大户簇，它们合计控制 {fmt_pct(unlabeled_top10_share)}。")
+    lines.append("- 这 7 个地址几乎全部在近一周内形成仓位，且多数是单次收币后静置，说明当前流通盘并没有充分打散。")
+    lines.append("- Binance 和 PancakeSwap 仓位虽然很大，但性质不同于控盘母仓，前者更像交易所库存，后者更像交易流动性。")
+    lines.append("- `degenrunner.bnb` 是 Top10 里唯一值得继续持续追踪的具名非基础设施地址，因为它既进入了 Top10，又出现了明确的交易所提出行为。")
     lines.append("- BubbleMaps labels are treated as the only explicit entity source. Unlabeled addresses are classified by behavior only.")
     lines.append("- BubbleMaps holder balances were sampled against on-chain balanceOf. If the snapshot drifted, the script refreshes all balances from chain and keeps BubbleMaps only as a label source.")
     lines.append("- Cost basis and realized PnL are not included in this report because the current environment does not provide a reliable per-trade pricing ledger for PRL.")

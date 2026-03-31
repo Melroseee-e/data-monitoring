@@ -3,682 +3,784 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perle (PRL) 筹码结构 | On-Chain Data Monitoring</title>
+<title>Perle (PRL) Top 10 筹码结构</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f2efe8;
-  --bg-soft: #fbf8f2;
-  --panel: rgba(255,255,255,0.84);
-  --panel-strong: rgba(255,255,255,0.94);
-  --panel-muted: rgba(255,255,255,0.74);
-  --text: #17202c;
-  --text-soft: #4b5a6b;
-  --text-muted: #748294;
-  --border: rgba(23,32,44,0.12);
-  --accent: #c05f1a;
-  --accent-2: #0d9c78;
-  --accent-3: #1f6fe5;
-  --accent-4: #bf3358;
-  --shadow: 0 28px 72px rgba(26, 37, 51, 0.12);
-  --shadow-soft: 0 10px 28px rgba(26, 37, 51, 0.08);
+  --bg: #f4efe4;
+  --bg-2: #eadfce;
+  --ink: #171717;
+  --ink-soft: #495163;
+  --line: rgba(23, 23, 23, 0.12);
+  --panel: rgba(255,255,255,0.78);
+  --panel-strong: rgba(255,255,255,0.92);
+  --sand: #d8832d;
+  --sand-deep: #9b4f17;
+  --blue: #1967c8;
+  --teal: #0c8d7a;
+  --rose: #b13d5d;
+  --shadow: 0 24px 80px rgba(31, 26, 18, 0.12);
   --mono: "JetBrains Mono", monospace;
+  --display: "Manrope", "Noto Sans SC", sans-serif;
   --body: "Noto Sans SC", sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  min-height: 100vh;
   font-family: var(--body);
-  color: var(--text);
+  color: var(--ink);
   background:
-    radial-gradient(circle at 10% 12%, rgba(192,95,26,0.12), transparent 24%),
-    radial-gradient(circle at 82% 14%, rgba(13,156,120,0.10), transparent 22%),
-    radial-gradient(circle at 80% 82%, rgba(31,111,229,0.10), transparent 20%),
-    linear-gradient(180deg, #f8f5ef 0%, #f2efe8 46%, #e9e2d6 100%);
-  -webkit-font-smoothing: antialiased;
+    radial-gradient(circle at 15% 20%, rgba(216,131,45,0.16), transparent 26%),
+    radial-gradient(circle at 84% 16%, rgba(25,103,200,0.12), transparent 22%),
+    linear-gradient(180deg, #f7f1e8 0%, #f4efe4 42%, #eadfce 100%);
+  min-height: 100vh;
 }
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(23,32,44,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23,32,44,0.03) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.3), transparent 84%);
   pointer-events: none;
+  background-image:
+    linear-gradient(rgba(23,23,23,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23,23,23,0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), transparent 88%);
 }
-a { color: inherit; }
+a { color: inherit; text-decoration: none; }
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: rgba(23,23,23,0.06);
+  padding: 0.18rem 0.38rem;
+  border-radius: 0.45rem;
+}
 .shell {
-  position: relative;
-  max-width: 1520px;
+  width: min(1240px, calc(100vw - 32px));
   margin: 0 auto;
-  padding: 24px 24px 54px;
-}
-.hero, .panel {
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  background: linear-gradient(180deg, var(--panel-strong), var(--panel));
-  box-shadow: var(--shadow);
+  padding: 28px 0 64px;
 }
 .hero {
+  position: relative;
   overflow: hidden;
-}
-.hero-inner, .panel-inner {
+  background: linear-gradient(140deg, rgba(255,255,255,0.82), rgba(255,250,242,0.94));
+  border: 1px solid rgba(23,23,23,0.08);
+  border-radius: 28px;
   padding: 28px;
+  box-shadow: var(--shadow);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: -80px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(216,131,45,0.22), transparent 66%);
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sand-deep);
+  font-size: 12px;
+}
+.hero h1 {
+  margin: 12px 0 10px;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+.hero p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.7;
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-  gap: 18px;
-  align-items: start;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  align-items: end;
 }
-.eyebrow {
-  margin: 0 0 8px;
+.meta-box {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+.meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--ink-soft);
+}
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(23,23,23,0.05);
+  border: 1px solid rgba(23,23,23,0.06);
+}
+.section {
+  margin-top: 26px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.stat, .panel, .info-card, .dossier {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 14px 44px rgba(31, 26, 18, 0.08);
+  backdrop-filter: blur(18px);
+}
+.stat {
+  padding: 18px;
+}
+.stat-label {
   font-size: 12px;
-  color: var(--text-soft);
+  font-family: var(--mono);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
 }
-.title {
-  margin: 0;
-  font-size: clamp(34px, 4vw, 60px);
-  line-height: 1.02;
+.stat-value {
+  margin-top: 12px;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3.1vw, 2.7rem);
+  font-weight: 800;
   letter-spacing: -0.05em;
 }
-.subtitle {
-  max-width: 860px;
-  margin: 14px 0 0;
-  color: var(--text-soft);
-  line-height: 1.9;
-  font-size: 15px;
+.stat-note {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
 }
-.hero-kpis {
+.stat-cool .stat-value { color: var(--teal); }
+.stat-blue .stat-value { color: var(--blue); }
+.stat-rose .stat-value { color: var(--rose); }
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+.section-head h2 {
+  margin: 6px 0 0;
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  letter-spacing: -0.04em;
+}
+.section-head p {
+  margin: 0;
+  max-width: 560px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.layer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.info-card {
+  padding: 18px;
+}
+.info-card h3 {
+  margin: 0 0 10px;
+  font-family: var(--display);
+  font-size: 1.12rem;
+}
+.info-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.info-ink {
+  background: rgba(255,255,255,0.88);
+}
+.dossier-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
-.meta-stack {
-  display: grid;
-  gap: 14px;
+.dossier {
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,248,241,0.74));
+}
+.dossier-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.rank-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(216,131,45,0.14);
+  color: var(--sand-deep);
+  font-family: var(--mono);
+  font-weight: 700;
+}
+.address-link {
+  font-family: var(--mono);
+  color: var(--blue);
+  font-weight: 600;
+}
+.dossier-label {
+  margin-top: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 .pill-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 12px;
 }
 .pill {
   display: inline-flex;
-  gap: 8px;
   align-items: center;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.68);
+  padding: 6px 10px;
   border-radius: 999px;
-  padding: 8px 12px;
-  font-size: 12px;
-  color: var(--text-soft);
-}
-.pill strong {
-  font-family: var(--mono);
-  color: var(--text);
+  background: rgba(23,23,23,0.06);
+  color: var(--ink-soft);
   font-size: 12px;
 }
-.kpi, .note-card, .summary-card {
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.72);
-  border-radius: 20px;
-  box-shadow: var(--shadow-soft);
-}
-.kpi {
-  padding: 16px;
-}
-.kpi-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-soft);
-}
-.kpi-value {
-  margin-top: 10px;
-  font-size: 30px;
-  line-height: 1;
+.dossier-metric {
+  margin-top: 18px;
+  font-family: var(--display);
+  font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: -0.05em;
 }
-.kpi-sub {
-  margin-top: 8px;
-  color: var(--text-muted);
+.dossier-sub {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 0;
+}
+.facts div {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(23,23,23,0.04);
+}
+.facts dt {
+  font-family: var(--mono);
   font-size: 12px;
-  line-height: 1.7;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
 }
-.accent-1 { color: var(--accent); }
-.accent-2 { color: var(--accent-2); }
-.accent-3 { color: var(--accent-3); }
-.accent-4 { color: var(--accent-4); }
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  gap: 18px;
-  margin-top: 18px;
-}
-.stack {
-  display: grid;
-  gap: 18px;
-}
-.panel {
-  overflow: hidden;
-}
-.panel-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(250,247,241,0.82);
-}
-.panel-head h3 {
-  margin: 0;
-  font-size: 15px;
+.facts dd {
+  margin: 8px 0 0;
+  font-weight: 700;
 }
 .note {
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.7;
-  max-width: 420px;
-  text-align: right;
+  margin: 16px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.65;
 }
-.summary-card {
+.panel {
   padding: 18px;
 }
-.summary-card ul {
-  margin: 0;
-  padding-left: 20px;
-  color: var(--text-soft);
-  line-height: 1.95;
-}
-.summary-card li + li { margin-top: 6px; }
-.source-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
-}
-.source-link {
-  text-decoration: none;
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.62);
-  color: var(--text-soft);
-  font-size: 12px;
-}
-.source-link:hover {
-  color: var(--text);
-  transform: translateY(-1px);
-}
-.bars {
-  display: grid;
-  gap: 12px;
-}
-.bar-row {
-  display: grid;
-  gap: 6px;
-}
-.bar-label {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 12px;
-  color: var(--text-soft);
-}
-.bar-track {
-  height: 12px;
-  background: rgba(23,32,44,0.08);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), #eb9b55);
-}
-.bar-fill.alt {
-  background: linear-gradient(90deg, var(--accent-3), #6aa6ff);
-}
-.bar-fill.green {
-  background: linear-gradient(90deg, var(--accent-2), #4dd5b3);
-}
 .table-wrap {
-  overflow: auto;
+  overflow-x: auto;
+  margin-top: 12px;
 }
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 720px;
 }
 th, td {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
   text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(23,23,23,0.08);
   vertical-align: top;
 }
 th {
-  font-size: 11px;
+  font-family: var(--mono);
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-soft);
-  background: rgba(250,247,241,0.64);
+  color: var(--ink-soft);
 }
 td {
-  font-size: 13px;
-  color: var(--text);
+  color: var(--ink);
 }
-tbody tr:hover td {
-  background: rgba(255,255,255,0.56);
-}
-code {
-  font-family: var(--mono);
-  font-size: 12px;
-}
-.rank {
-  display: inline-flex;
-  width: 28px;
-  height: 28px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(23,32,44,0.08);
-  font-family: var(--mono);
-  font-size: 12px;
-}
-.seg, .beh {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 9px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  font-size: 11px;
-  line-height: 1;
-  white-space: nowrap;
-}
-.seg-unlabeled_whale { background: rgba(192,95,26,0.10); color: #9b4b11; border-color: rgba(192,95,26,0.24); }
-.seg-cex { background: rgba(191,51,88,0.10); color: #9d1f46; border-color: rgba(191,51,88,0.24); }
-.seg-dex { background: rgba(31,111,229,0.10); color: #1556b3; border-color: rgba(31,111,229,0.24); }
-.seg-labeled { background: rgba(13,156,120,0.10); color: #0c7c5f; border-color: rgba(13,156,120,0.24); }
-.seg-mid_wallet, .seg-tail_wallet, .seg-contract { background: rgba(23,32,44,0.07); color: var(--text-soft); border-color: rgba(23,32,44,0.12); }
-.beh-accumulating, .beh-cex-withdrawing { background: rgba(13,156,120,0.10); color: #0d7a5e; border-color: rgba(13,156,120,0.24); }
-.beh-distributing, .beh-cex-selling { background: rgba(191,51,88,0.10); color: #9d1f46; border-color: rgba(191,51,88,0.24); }
-.beh-mixed { background: rgba(31,111,229,0.10); color: #1556b3; border-color: rgba(31,111,229,0.24); }
-.beh-inactive { background: rgba(23,32,44,0.07); color: var(--text-soft); border-color: rgba(23,32,44,0.12); }
 .footer {
-  margin-top: 18px;
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.8;
-  text-align: center;
+  margin-top: 28px;
+  padding: 18px 22px;
+  border-radius: 22px;
+  background: rgba(23,23,23,0.88);
+  color: rgba(255,255,255,0.86);
+}
+.footer a {
+  color: #fff;
+  text-decoration: underline;
 }
 @media (max-width: 1080px) {
-  .hero-grid, .layout {
+  .hero-grid,
+  .stats,
+  .layer-grid,
+  .dossier-grid {
     grid-template-columns: 1fr;
   }
 }
 @media (max-width: 720px) {
   .shell {
-    padding: 14px 14px 34px;
+    width: min(100vw - 20px, 1240px);
+    padding-top: 16px;
   }
-  .hero-inner, .panel-inner {
-    padding: 18px;
+  .hero, .panel, .stat, .info-card, .dossier {
+    border-radius: 20px;
   }
-  .hero-kpis {
+  .facts {
     grid-template-columns: 1fr;
   }
-  .panel-head {
-    display: block;
-  }
-  .note {
-    margin-top: 8px;
-    text-align: left;
+  .section-head {
+    flex-direction: column;
+    align-items: start;
   }
 }
 </style>
 </head>
 <body>
-  <div class="shell">
+  <main class="shell">
     <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-grid">
-          <div>
-            <p class="eyebrow">On-Chain Holder Structure</p>
-            <h1 class="title">Perle (PRL)</h1>
-            <p class="subtitle">
-              基于 BubbleMaps Top 500 持仓快照、BSC 全历史 Transfer 聚合与本地交易所地址表生成的公开版筹码结构页。
-              当前结论以 BSC 上的 PRL 合约为主；Solana 地址仅作多链部署参考。BubbleMaps 仅作为显式标签源，持仓量以链上 <code>balanceOf</code> 校验后的结果为准。
-            </p>
-            <div class="pill-row">
-              <div class="pill"><span>BSC</span><strong>0xd20fB09A49a8e75Fef536A2dBc68222900287BAc</strong></div>
-              <div class="pill"><span>Solana</span><strong>PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs</strong></div>
-              <div class="pill"><span>主研究链</span><strong>BSC</strong></div>
-              <div class="pill"><span>总供应</span><strong>84,315,132.1586</strong></div>
-              <div class="pill"><span>更新时间</span><strong>2026-03-30T08:01:12Z</strong></div>
-            </div>
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">PRL Holder Structure / BubbleMaps + Onchain</div>
+          <h1>Perle<br>PRL Top 10</h1>
+          <p>
+            这份页面不再把 500 个地址摊平展示，而是直接围绕控制流通盘的 Top 10 展开。
+            重点是把 Top 10 的角色分清楚，尤其是那 7 个未标注大户地址，它们当前合计控制
+            <strong>86.76%</strong> 的总供应。
+          </p>
+        </div>
+        <div class="meta-box">
+          <div class="meta-line">
+            <span class="meta-pill">BSC <code>0xd20fB09A...00287BAc</code></span>
+            <span class="meta-pill">SOL <code>PERLEQKUNU...Dvfs6pDs</code></span>
           </div>
-          <div class="meta-stack">
-            <div class="hero-kpis">
-              <div class="kpi">
-                <div class="kpi-label">Top10 Share</div>
-                <div class="kpi-value accent-1">97.73%</div>
-                <div class="kpi-sub">Top20: 98.84% · Top50: 99.28%</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Labeled Supply</div>
-                <div class="kpi-value accent-2">11.29%</div>
-                <div class="kpi-sub">14 个 BubbleMaps 显式标签地址</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">30d CEX Withdraw</div>
-                <div class="kpi-value accent-3">2,664,408</div>
-                <div class="kpi-sub">非基础设施地址近 30 天从交易所提出 PRL</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">30d CEX Deposit</div>
-                <div class="kpi-value accent-4">5,617</div>
-                <div class="kpi-sub">非基础设施地址近 30 天向交易所存入 PRL</div>
-              </div>
-            </div>
+          <div class="meta-line">
+            <span class="meta-pill">Total Supply <strong>84,315,132.16</strong></span>
+            <span class="meta-pill">Snapshot <strong>Top 500</strong></span>
+          </div>
+          <div class="meta-line">
+            <span class="meta-pill">Top 11-50 <strong>1.55%</strong></span>
+            <span class="meta-pill">Generated <strong>2026-03-30T08:01:12Z</strong></span>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="layout">
-      <div class="stack">
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Takeaways</div>
-              <h3>核心结论</h3>
-            </div>
-            <div class="note">当前页为公开版 HTML。研究原始 Markdown 与 JSON 产物链接放在右侧。</div>
-          </div>
-          <div class="panel-inner summary-card">
-            <ul>
-              <li>Top10 地址极度集中，占总供应 97.73%。</li><li>BubbleMaps 显式标签覆盖 14 个地址、11.29% 的供应量，实体识别只能视作下限。</li><li>近 30 天从交易所提出明显强于向交易所存入，提出 2,664,408.06 PRL，存入 5,617.09 PRL。</li><li>当前非基础设施筹码几乎全部由新进地址控制，新钱包占 89.33%。</li>
-            </ul>
-          </div>
-        </section>
-
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Segment Summary</h3>
-        </div>
-        <div class="note">按当前持仓分层。BubbleMaps 仅提供标签，排序与金额已按链上余额重排。</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Segment</th><th>Addr Count</th><th>Amount</th><th>Supply Share</th></tr></thead>
-          <tbody><tr><td>unlabeled_whale</td><td>7</td><td>73,150,614.2551</td><td>86.76%</td></tr>
-<tr><td>cex</td><td>1</td><td>7,331,819.1749</td><td>8.70%</td></tr>
-<tr><td>dex</td><td>5</td><td>1,342,791.3200</td><td>1.59%</td></tr>
-<tr><td>labeled</td><td>8</td><td>848,114.2739</td><td>1.01%</td></tr>
-<tr><td>tail_wallet</td><td>467</td><td>751,442.1224</td><td>0.89%</td></tr>
-<tr><td>mid_wallet</td><td>3</td><td>566,406.4342</td><td>0.67%</td></tr>
-<tr><td>contract</td><td>9</td><td>64,213.3794</td><td>0.08%</td></tr></tbody>
-        </table>
-      </div>
-    </section>
+    <section class="section">
+      <div class="stats">
+    <article class="stat stat-warm">
+      <div class="stat-label">Top 10 Share</div>
+      <div class="stat-value">97.73%</div>
+      <div class="stat-note">Top 10 已经决定当前流通盘。</div>
+    </article>
     
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Top 20 Holders</h3>
-        </div>
-        <div class="note">Top holders after on-chain balance refresh.</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Rank</th><th>Address</th><th>BubbleMaps Label</th><th>Segment</th><th>Amount</th><th>Share</th></tr></thead>
-          <tbody><tr><td><span class='rank'>1</span></td><td><code>0x0350...adc0</code></td><td>-</td><td><span class='seg seg-unlabeled_whale'>unlabeled_whale</span></td><td>43,160,000.0000</td><td>51.19%</td></tr>
-<tr><td><span class='rank'>2</span></td><td><code>0xc3c7...22d7</code></td><td>-</td><td><span class='seg seg-unlabeled_whale'>unlabeled_whale</span></td><td>10,000,000.0000</td><td>11.86%</td></tr>
-<tr><td><span class='rank'>3</span></td><td><code>0x73d8...46db</code></td><td>Binance Wallet Proxy (EIP-1967 Transparent)</td><td><span class='seg seg-cex'>cex</span></td><td>7,331,819.1749</td><td>8.70%</td></tr>
-<tr><td><span class='rank'>4</span></td><td><code>0x5861...e257</code></td><td>-</td><td><span class='seg seg-unlabeled_whale'>unlabeled_whale</span></td><td>5,000,000.0000</td><td>5.93%</td></tr>
-<tr><td><span class='rank'>5</span></td><td><code>0x5a4c...4f50</code></td><td>-</td><td><span class='seg seg-unlabeled_whale'>unlabeled_whale</span></td><td>5,000,000.0000</td><td>5.93%</td></tr>
-<tr><td><span class='rank'>6</span></td><td><code>0xccf4...5b55</code></td><td>-</td><td><span class='seg seg-unlabeled_whale'>unlabeled_whale</span></td><td>5,000,000.0000</td><td>5.93%</td></tr>
-<tr><td><span class='rank'>7</span></td><td><code>0x0c4b...8c61</code></td><td>-</td><td><span class='seg seg-unlabeled_whale'>unlabeled_whale</span></td><td>4,499,990.0000</td><td>5.34%</td></tr>
-<tr><td><span class='rank'>8</span></td><td><code>0x238a...e6c4</code></td><td>PancakeSwap Vault (0x23...e6c4)</td><td><span class='seg seg-dex'>dex</span></td><td>1,189,799.9302</td><td>1.41%</td></tr>
-<tr><td><span class='rank'>9</span></td><td><code>0xc806...e799</code></td><td>degenrunner.bnb</td><td><span class='seg seg-labeled'>labeled</span></td><td>725,989.1899</td><td>0.86%</td></tr>
-<tr><td><span class='rank'>10</span></td><td><code>0x1026...4820</code></td><td>-</td><td><span class='seg seg-unlabeled_whale'>unlabeled_whale</span></td><td>490,624.2551</td><td>0.58%</td></tr>
-<tr><td><span class='rank'>11</span></td><td><code>0x3723...c168</code></td><td>-</td><td><span class='seg seg-mid_wallet'>mid_wallet</span></td><td>317,418.9519</td><td>0.38%</td></tr>
-<tr><td><span class='rank'>12</span></td><td><code>0x440a...5593</code></td><td>-</td><td><span class='seg seg-mid_wallet'>mid_wallet</span></td><td>148,987.4824</td><td>0.18%</td></tr>
-<tr><td><span class='rank'>13</span></td><td><code>0x119e...71e5</code></td><td>-</td><td><span class='seg seg-mid_wallet'>mid_wallet</span></td><td>100,000.0000</td><td>0.12%</td></tr>
-<tr><td><span class='rank'>14</span></td><td><code>0xf16b...d019</code></td><td>wyzq.eth</td><td><span class='seg seg-labeled'>labeled</span></td><td>80,598.3421</td><td>0.10%</td></tr>
-<tr><td><span class='rank'>15</span></td><td><code>0x8fa4...ee16</code></td><td>Uniswap (BSC-USD-PRL)</td><td><span class='seg seg-dex'>dex</span></td><td>76,783.5535</td><td>0.09%</td></tr>
-<tr><td><span class='rank'>16</span></td><td><code>0x28e2...e9df</code></td><td>Uniswap PoolManager (0x28...e9dF)</td><td><span class='seg seg-dex'>dex</span></td><td>53,805.2553</td><td>0.06%</td></tr>
-<tr><td><span class='rank'>17</span></td><td><code>0x35ee...8d83</code></td><td>-</td><td><span class='seg seg-contract'>contract</span></td><td>45,866.5128</td><td>0.05%</td></tr>
-<tr><td><span class='rank'>18</span></td><td><code>0x6cce...bb4a</code></td><td>-</td><td><span class='seg seg-tail_wallet'>tail_wallet</span></td><td>40,748.4063</td><td>0.05%</td></tr>
-<tr><td><span class='rank'>19</span></td><td><code>0x008a...b557</code></td><td>-</td><td><span class='seg seg-tail_wallet'>tail_wallet</span></td><td>37,141.8990</td><td>0.04%</td></tr>
-<tr><td><span class='rank'>20</span></td><td><code>0x4128...deae</code></td><td>-</td><td><span class='seg seg-tail_wallet'>tail_wallet</span></td><td>34,943.3847</td><td>0.04%</td></tr></tbody>
-        </table>
-      </div>
-    </section>
+    <article class="stat stat-cool">
+      <div class="stat-label">Unlabeled Cluster</div>
+      <div class="stat-value">86.76%</div>
+      <div class="stat-note">7 个未标注地址构成主要控制层。</div>
+    </article>
     
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Holder Age Buckets</h3>
-        </div>
-        <div class="note">仅统计非基础设施地址。</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Age Bucket</th><th>Addr Count</th><th>Amount</th><th>Supply Share</th></tr></thead>
-          <tbody><tr><td>short_term</td><td>484</td><td>75,314,750.1806</td><td>89.33%</td></tr></tbody>
-        </table>
-      </div>
-    </section>
+    <article class="stat stat-blue">
+      <div class="stat-label">Binance Inventory</div>
+      <div class="stat-value">8.70%</div>
+      <div class="stat-note">BubbleMaps 显式识别到的 CEX 下限仓位。</div>
+    </article>
     
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Wallet Cohorts</h3>
-        </div>
-        <div class="note">new_wallet / return_wallet / existing_wallet 口径见研究脚本。</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Cohort</th><th>Addr Count</th><th>Amount</th><th>Supply Share</th></tr></thead>
-          <tbody><tr><td>new_wallet</td><td>484</td><td>75,314,750.1806</td><td>89.33%</td></tr></tbody>
-        </table>
-      </div>
-    </section>
-    
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Key Wallets</h3>
-        </div>
-        <div class="note">按当前份额、BubbleMaps 标签以及近 30 天交易所双向流动筛选。</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Address</th><th>Label</th><th>Behavior</th><th>30d Netflow</th><th>30d CEX Withdraw</th><th>30d CEX Deposit</th><th>Current Share</th></tr></thead>
-          <tbody><tr><td><code>0x0350...adc0</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>43,160,000.0000</td><td>0.0000</td><td>0.0000</td><td>51.19%</td></tr>
-<tr><td><code>0xc3c7...22d7</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>10,000,000.0000</td><td>0.0000</td><td>0.0000</td><td>11.86%</td></tr>
-<tr><td><code>0x5861...e257</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>5,000,000.0000</td><td>0.0000</td><td>0.0000</td><td>5.93%</td></tr>
-<tr><td><code>0x5a4c...4f50</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>5,000,000.0000</td><td>0.0000</td><td>0.0000</td><td>5.93%</td></tr>
-<tr><td><code>0xccf4...5b55</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>5,000,000.0000</td><td>0.0000</td><td>0.0000</td><td>5.93%</td></tr>
-<tr><td><code>0x0c4b...8c61</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>4,499,990.0000</td><td>0.0000</td><td>0.0000</td><td>5.34%</td></tr>
-<tr><td><code>0xc806...e799</code></td><td>degenrunner.bnb</td><td><span class='beh beh-cex-withdrawing'>CEX-Withdrawing</span></td><td>725,989.1899</td><td>54,717.0577</td><td>0.0000</td><td>0.86%</td></tr>
-<tr><td><code>0x1026...4820</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>490,624.2551</td><td>0.0000</td><td>0.0000</td><td>0.58%</td></tr>
-<tr><td><code>0x3723...c168</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>317,418.9519</td><td>0.0000</td><td>0.0000</td><td>0.38%</td></tr>
-<tr><td><code>0x440a...5593</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>148,987.4824</td><td>0.0000</td><td>0.0000</td><td>0.18%</td></tr>
-<tr><td><code>0x119e...71e5</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>100,000.0000</td><td>0.0000</td><td>0.0000</td><td>0.12%</td></tr>
-<tr><td><code>0xf16b...d019</code></td><td>wyzq.eth</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>80,598.3421</td><td>0.0000</td><td>0.0000</td><td>0.10%</td></tr>
-<tr><td><code>0x6cce...bb4a</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>40,748.4063</td><td>0.0000</td><td>0.0000</td><td>0.05%</td></tr>
-<tr><td><code>0x008a...b557</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>37,141.8990</td><td>0.0000</td><td>0.0000</td><td>0.04%</td></tr>
-<tr><td><code>0x4128...deae</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>34,943.3847</td><td>0.0000</td><td>0.0000</td><td>0.04%</td></tr>
-<tr><td><code>0xcd54...75ee</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>30,000.0000</td><td>0.0000</td><td>0.0000</td><td>0.04%</td></tr>
-<tr><td><code>0x3020...45d1</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>25,203.1322</td><td>0.0000</td><td>0.0000</td><td>0.03%</td></tr>
-<tr><td><code>0x9f53...b8a7</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>18,266.1630</td><td>0.0000</td><td>0.0000</td><td>0.02%</td></tr>
-<tr><td><code>0x246a...727c</code></td><td>Bybit Deposit</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>16,006.3923</td><td>0.0000</td><td>0.0000</td><td>0.02%</td></tr>
-<tr><td><code>0xde6e...e12a</code></td><td>-</td><td><span class='beh beh-accumulating'>Accumulating</span></td><td>15,691.2560</td><td>0.0000</td><td>0.0000</td><td>0.02%</td></tr></tbody>
-        </table>
-      </div>
-    </section>
-    
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Top 30d Accumulators</h3>
-        </div>
-        <div class="note">非基础设施地址近 30 天净流入。</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Address</th><th>Label</th><th>30d Netflow</th><th>7d Netflow</th><th>Cohort</th><th>Behavior</th></tr></thead>
-          <tbody><tr><td><code>0x0350...adc0</code></td><td>-</td><td>43,160,000.0000</td><td>43,160,000.0000</td><td>new_wallet</td><td><span class='beh beh-accumulating'>Accumulating</span></td></tr>
-<tr><td><code>0xc3c7...22d7</code></td><td>-</td><td>10,000,000.0000</td><td>10,000,000.0000</td><td>new_wallet</td><td><span class='beh beh-accumulating'>Accumulating</span></td></tr>
-<tr><td><code>0x5861...e257</code></td><td>-</td><td>5,000,000.0000</td><td>5,000,000.0000</td><td>new_wallet</td><td><span class='beh beh-accumulating'>Accumulating</span></td></tr>
-<tr><td><code>0x5a4c...4f50</code></td><td>-</td><td>5,000,000.0000</td><td>5,000,000.0000</td><td>new_wallet</td><td><span class='beh beh-accumulating'>Accumulating</span></td></tr>
-<tr><td><code>0xccf4...5b55</code></td><td>-</td><td>5,000,000.0000</td><td>5,000,000.0000</td><td>new_wallet</td><td><span class='beh beh-accumulating'>Accumulating</span></td></tr>
-<tr><td><code>0x0c4b...8c61</code></td><td>-</td><td>4,499,990.0000</td><td>4,499,990.0000</td><td>new_wallet</td><td><span class='beh beh-accumulating'>Accumulating</span></td></tr>
-<tr><td><code>0xc806...e799</code></td><td>degenrunner.bnb</td><td>725,989.1899</td><td>725,989.1899</td><td>new_wallet</td><td><span class='beh beh-cex-withdrawing'>CEX-Withdrawing</span></td></tr>
-<tr><td><code>0x1026...4820</code></td><td>-</td><td>490,624.2551</td><td>490,624.2551</td><td>new_wallet</td><td><span class='beh beh-accumulating'>Accumulating</span></td></tr></tbody>
-        </table>
-      </div>
-    </section>
-    
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Top 30d Exchange Withdrawers</h3>
-        </div>
-        <div class="note">近 30 天从交易所提出 PRL 最多的地址。</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Address</th><th>Label</th><th>30d CEX Withdraw</th><th>30d Netflow</th><th>Behavior</th></tr></thead>
-          <tbody><tr><td><code>0xbd97...2866</code></td><td>-</td><td>2,591,678.7446</td><td>14,033.3449</td><td><span class='beh beh-cex-withdrawing'>CEX-Withdrawing</span></td></tr>
-<tr><td><code>0xc806...e799</code></td><td>degenrunner.bnb</td><td>54,717.0577</td><td>725,989.1899</td><td><span class='beh beh-cex-withdrawing'>CEX-Withdrawing</span></td></tr>
-<tr><td><code>0x1c1c...2cf2</code></td><td>-</td><td>18,012.2538</td><td>8.2812</td><td><span class='beh beh-cex-withdrawing'>CEX-Withdrawing</span></td></tr></tbody>
-        </table>
-      </div>
-    </section>
-    
-        
-    <section class="panel table-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">Table</div>
-          <h3>Top 30d Exchange Depositors</h3>
-        </div>
-        <div class="note">近 30 天向交易所存入 PRL 最多的地址。</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Address</th><th>Label</th><th>30d CEX Deposit</th><th>30d Netflow</th><th>Behavior</th></tr></thead>
-          <tbody><tr><td><code>0xcd63...fc37</code></td><td>-</td><td>4,647.1396</td><td>0.0000</td><td><span class='beh beh-cex-selling'>CEX-Selling</span></td></tr>
-<tr><td><code>0x0678...6e90</code></td><td>-</td><td>484.9753</td><td>0.0000</td><td><span class='beh beh-inactive'>Inactive</span></td></tr>
-<tr><td><code>0x5b82...d322</code></td><td>-</td><td>484.9753</td><td>0.0000</td><td><span class='beh beh-inactive'>Inactive</span></td></tr></tbody>
-        </table>
-      </div>
-    </section>
-    
-      </div>
-
-      <div class="stack">
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Concentration</div>
-              <h3>集中度条形图</h3>
-            </div>
-            <div class="note">横轴按总供应占比。</div>
-          </div>
-          <div class="panel-inner">
-            <div class="bars">
-              <div class="bar-row">
-                <div class="bar-label"><span>Top 10</span><strong>97.73%</strong></div>
-                <div class="bar-track"><div class="bar-fill" style="width:97.73%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>Top 20</span><strong>98.84%</strong></div>
-                <div class="bar-track"><div class="bar-fill alt" style="width:98.84%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>Top 50</span><strong>99.28%</strong></div>
-                <div class="bar-track"><div class="bar-fill green" style="width:99.28%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>BubbleMaps Labeled</span><strong>11.29%</strong></div>
-                <div class="bar-track"><div class="bar-fill alt" style="width:11.29%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>BubbleMaps CEX</span><strong>8.70%</strong></div>
-                <div class="bar-track"><div class="bar-fill" style="width:8.70%"></div></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Method</div>
-              <h3>方法与限制</h3>
-            </div>
-            <div class="note">这部分决定如何阅读页面结论。</div>
-          </div>
-          <div class="panel-inner summary-card">
-            <ul>
-              <li>BubbleMaps 只作为显式标签源，不对无标签地址发明实体名。</li>
-              <li>BubbleMaps 快照与链上余额出现漂移时，页面自动采用链上 <code>balanceOf</code> 重算当前持仓。</li>
-              <li>交易所方向识别使用本地 exchange registry，仅用于判断提出 / 存入，不给无标签地址公开补名。</li>
-              <li>本页未包含成本、PNL 与逐笔成交归因，因为当前环境下没有可用的 PRL 历史价格账本。</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Artifacts</div>
-              <h3>源文件</h3>
-            </div>
-            <div class="note">GitHub Pages 会直接托管这些静态产物。</div>
-          </div>
-          <div class="panel-inner summary-card">
-            <div class="source-links">
-              <a class="source-link" href="../data/prl/reports/prl_holder_structure_report.md">Markdown 报告</a>
-              <a class="source-link" href="../data/prl/derived/prl_holder_analysis.json">Analysis JSON</a>
-              <a class="source-link" href="https://github.com/Melroseee-e/data-monitoring">GitHub Repo</a>
-              <a class="source-link" href="./pump_behavior_chart.html">返回公开页</a>
-            </div>
-          </div>
-        </section>
-      </div>
+    <article class="stat stat-rose">
+      <div class="stat-label">LP / DEX</div>
+      <div class="stat-value">1.59%</div>
+      <div class="stat-note">BubbleMaps 显式识别到的 DEX / LP 仓位。</div>
+    </article>
     </div>
+    </section>
 
-    <div class="footer">
-      Generated from <code>data/prl/derived/prl_holder_analysis.json</code> by <code>scripts/prl/build_prl_holder_page.py</code>.
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Control Layers</div>
+          <h2>Top 10 分层</h2>
+        </div>
+        <p>Top 10 基本可以拆成四层: 未标注大户分发簇、交易所库存、DEX 流动性和具名地址。先把层拆开，再研究单个地址。</p>
+      </div>
+      <div class="layer-grid">
+    <article class="info-card info-sand">
+      <h3>未标注大户分发簇</h3>
+      <p><strong>86.76%</strong> of supply, 7 addresses, ranks 1, 2, 4, 5, 6, 7, 10.</p>
+    </article>
+    
+    <article class="info-card info-ink">
+      <h3>交易所库存层</h3>
+      <p><strong>8.70%</strong> of supply, 1 addresses, ranks 3.</p>
+    </article>
+    
+    <article class="info-card info-ink">
+      <h3>DEX 流动性层</h3>
+      <p><strong>1.41%</strong> of supply, 1 addresses, ranks 8.</p>
+    </article>
+    
+    <article class="info-card info-ink">
+      <h3>具名地址层</h3>
+      <p><strong>0.86%</strong> of supply, 1 addresses, ranks 9.</p>
+    </article>
     </div>
-  </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Top 10 Dossiers</div>
+          <h2>逐个地址研究</h2>
+        </div>
+        <p>每个卡片都给出 BubbleMaps 标签状态、角色判断、当前持仓、时间特征和一句话研究结论。</p>
+      </div>
+      <div class="dossier-grid">
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#1</div>
+            <a class="address-link" href="https://bscscan.com/address/0x0350c44e15ada696992d44b13225e0853277adc0" target="_blank" rel="noreferrer">0x0350...adc0</a>
+          </div>
+          <div class="dossier-label">No BubbleMaps label</div>
+          <div class="pill-row">
+            <span class="pill">无 BubbleMaps 标签</span>
+            <span class="pill">主分发母仓</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">51.19%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>43,160,000.0000 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-23 14:04 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>43,160,000.0000</dd></div>
+            <div><dt>Counterparties</dt><dd>5</dd></div>
+          </dl>
+          <p class="note">无 BubbleMaps 标签，但既是最大仓位又承担明显再分发，形态上更像本轮大户簇母仓。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#2</div>
+            <a class="address-link" href="https://bscscan.com/address/0xc3c74940e878b0e9ac86a12b0125c4df1a8f22d7" target="_blank" rel="noreferrer">0xc3c7...22d7</a>
+          </div>
+          <div class="dossier-label">No BubbleMaps label</div>
+          <div class="pill-row">
+            <span class="pill">无 BubbleMaps 标签</span>
+            <span class="pill">单次受配分仓</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">11.86%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>10,000,000.0000 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-25 07:34 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>10,000,000.0000</dd></div>
+            <div><dt>Counterparties</dt><dd>1</dd></div>
+          </dl>
+          <p class="note">无 BubbleMaps 标签，基本表现为单次收币后静置，形态上更像受配分仓。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#3</div>
+            <a class="address-link" href="https://bscscan.com/address/0x73d8bd54f7cf5fab43fe4ef40a62d390644946db" target="_blank" rel="noreferrer">0x73d8...46db</a>
+          </div>
+          <div class="dossier-label">Binance Wallet Proxy (EIP-1967 Transparent)</div>
+          <div class="pill-row">
+            <span class="pill">BubbleMaps 显式 CEX</span>
+            <span class="pill">交易所库存地址</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">8.70%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>7,331,819.1749 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-25 10:00 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>7,309,682.4185</dd></div>
+            <div><dt>Counterparties</dt><dd>1214</dd></div>
+          </dl>
+          <p class="note">BubbleMaps 直接标记为 Binance Wallet Proxy (EIP-1967 Transparent)，更像交易所库存而不是单一控盘仓。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#4</div>
+            <a class="address-link" href="https://bscscan.com/address/0x5861703aa2c6acd7a3902e5a06f6aedba0eae257" target="_blank" rel="noreferrer">0x5861...e257</a>
+          </div>
+          <div class="dossier-label">No BubbleMaps label</div>
+          <div class="pill-row">
+            <span class="pill">无 BubbleMaps 标签</span>
+            <span class="pill">单次受配分仓</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">5.93%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>5,000,000.0000 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-25 07:23 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>5,000,000.0000</dd></div>
+            <div><dt>Counterparties</dt><dd>1</dd></div>
+          </dl>
+          <p class="note">无 BubbleMaps 标签，基本表现为单次收币后静置，形态上更像受配分仓。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#5</div>
+            <a class="address-link" href="https://bscscan.com/address/0x5a4c318d66c0cf8ef381320a5d49f8a329414f50" target="_blank" rel="noreferrer">0x5a4c...4f50</a>
+          </div>
+          <div class="dossier-label">No BubbleMaps label</div>
+          <div class="pill-row">
+            <span class="pill">无 BubbleMaps 标签</span>
+            <span class="pill">单次受配分仓</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">5.93%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>5,000,000.0000 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-24 11:22 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>5,000,000.0000</dd></div>
+            <div><dt>Counterparties</dt><dd>1</dd></div>
+          </dl>
+          <p class="note">无 BubbleMaps 标签，基本表现为单次收币后静置，形态上更像受配分仓。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#6</div>
+            <a class="address-link" href="https://bscscan.com/address/0xccf4d99cb373e054cc8dbf31dca37b8528ec5b55" target="_blank" rel="noreferrer">0xccf4...5b55</a>
+          </div>
+          <div class="dossier-label">No BubbleMaps label</div>
+          <div class="pill-row">
+            <span class="pill">无 BubbleMaps 标签</span>
+            <span class="pill">单次受配分仓</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">5.93%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>5,000,000.0000 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-24 11:25 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>5,000,000.0000</dd></div>
+            <div><dt>Counterparties</dt><dd>1</dd></div>
+          </dl>
+          <p class="note">无 BubbleMaps 标签，基本表现为单次收币后静置，形态上更像受配分仓。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#7</div>
+            <a class="address-link" href="https://bscscan.com/address/0x0c4bb5b2a4cff8c035b590da8e0cf650f63f8c61" target="_blank" rel="noreferrer">0x0c4b...8c61</a>
+          </div>
+          <div class="dossier-label">No BubbleMaps label</div>
+          <div class="pill-row">
+            <span class="pill">无 BubbleMaps 标签</span>
+            <span class="pill">二级分发分仓</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">5.34%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>4,499,990.0000 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-25 07:40 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>4,499,990.0000</dd></div>
+            <div><dt>Counterparties</dt><dd>3</dd></div>
+          </dl>
+          <p class="note">无 BubbleMaps 标签，有少量再分发动作，应视为未标注大户分支。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#8</div>
+            <a class="address-link" href="https://bscscan.com/address/0x238a358808379702088667322f80ac48bad5e6c4" target="_blank" rel="noreferrer">0x238a...e6c4</a>
+          </div>
+          <div class="dossier-label">PancakeSwap Vault (0x23...e6c4)</div>
+          <div class="pill-row">
+            <span class="pill">BubbleMaps 显式 DEX / LP</span>
+            <span class="pill">DEX / LP 流动性地址</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">1.41%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>1,189,799.9302 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-25 01:37 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>1,186,665.1898</dd></div>
+            <div><dt>Counterparties</dt><dd>1770</dd></div>
+          </dl>
+          <p class="note">BubbleMaps 直接标记为 PancakeSwap Vault (0x23...e6c4)，这部分更像交易流动性库存。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#9</div>
+            <a class="address-link" href="https://bscscan.com/address/0xc80633843f6e00bbc63dd4b2383acf3c4586e799" target="_blank" rel="noreferrer">0xc806...e799</a>
+          </div>
+          <div class="dossier-label">degenrunner.bnb</div>
+          <div class="pill-row">
+            <span class="pill">具名个人/团队地址</span>
+            <span class="pill">具名增持地址</span>
+            <span class="pill">CEX-Withdrawing</span>
+          </div>
+          <div class="dossier-metric">0.86%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>725,989.1899 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-25 10:00 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>725,989.1899</dd></div>
+            <div><dt>Counterparties</dt><dd>7</dd></div>
+          </dl>
+          <p class="note">具名地址且近 30 天有交易所提出记录，当前保留 0.86%，行为偏增持。</p>
+        </article>
+        
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#10</div>
+            <a class="address-link" href="https://bscscan.com/address/0x1026efec22061b9f463b63e75e8b531a76404820" target="_blank" rel="noreferrer">0x1026...4820</a>
+          </div>
+          <div class="dossier-label">No BubbleMaps label</div>
+          <div class="pill-row">
+            <span class="pill">无 BubbleMaps 标签</span>
+            <span class="pill">单次受配分仓</span>
+            <span class="pill">Accumulating</span>
+          </div>
+          <div class="dossier-metric">0.58%</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>490,624.2551 PRL</dd></div>
+            <div><dt>First inbound</dt><dd>2026-03-25 10:05 UTC</dd></div>
+            <div><dt>30d netflow</dt><dd>490,624.2551</dd></div>
+            <div><dt>Counterparties</dt><dd>1</dd></div>
+          </dl>
+          <p class="note">无 BubbleMaps 标签，基本表现为单次收币后静置，形态上更像受配分仓。</p>
+        </article>
+        </div>
+    </section>
+
+    
+    <section class="panel table-panel">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Data Slice</div>
+          <h2>BubbleMaps 标签清单</h2>
+        </div>
+        <p>当前去重标签 13 个。标签只能视作显式下限，未标注地址只做行为归类。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Label</th><th>标签层</th><th>Addr Count</th><th>Top Rank</th><th>Amount</th><th>Supply Share</th></tr></thead>
+          <tbody><tr><td>Binance Wallet Proxy (EIP-1967 Transparent)</td><td>BubbleMaps 显式 CEX</td><td>1</td><td>3</td><td>7,331,819.1749</td><td>8.70%</td></tr><tr><td>PancakeSwap Vault (0x23...e6c4)</td><td>BubbleMaps 显式 DEX / LP</td><td>1</td><td>8</td><td>1,189,799.9302</td><td>1.41%</td></tr><tr><td>degenrunner.bnb</td><td>具名个人/团队地址</td><td>1</td><td>9</td><td>725,989.1899</td><td>0.86%</td></tr><tr><td>Uniswap (BSC-USD-PRL)</td><td>BubbleMaps 显式 DEX / LP</td><td>2</td><td>15</td><td>91,986.0237</td><td>0.11%</td></tr><tr><td>wyzq.eth</td><td>具名个人/团队地址</td><td>1</td><td>14</td><td>80,598.3421</td><td>0.10%</td></tr><tr><td>Uniswap PoolManager (0x28...e9dF)</td><td>BubbleMaps 显式 DEX / LP</td><td>1</td><td>16</td><td>53,805.2553</td><td>0.06%</td></tr><tr><td>Bybit Deposit</td><td>交易所相关标签</td><td>1</td><td>24</td><td>16,006.3923</td><td>0.02%</td></tr><tr><td>&quot;Jay-V13&quot; on OpenSea</td><td>具名个人/团队地址</td><td>1</td><td>35</td><td>10,983.9085</td><td>0.01%</td></tr><tr><td>PancakeSwap (BSC-USD-PRL)</td><td>BubbleMaps 显式 DEX / LP</td><td>1</td><td>48</td><td>7,200.1110</td><td>0.01%</td></tr><tr><td>kepler</td><td>具名个人/团队地址</td><td>1</td><td>58</td><td>5,330.0863</td><td>0.01%</td></tr><tr><td>MEXC Deposit</td><td>交易所相关标签</td><td>1</td><td>66</td><td>4,305.0744</td><td>0.01%</td></tr><tr><td>@ArjayManalo18 &quot;Jaymanalo&quot; on OpenSea</td><td>具名个人/团队地址</td><td>1</td><td>78</td><td>3,074.3753</td><td>0.00%</td></tr><tr><td>Proxy</td><td>具名合约</td><td>1</td><td>92</td><td>1,826.9051</td><td>0.00%</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+
+    
+    <section class="panel table-panel">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Data Slice</div>
+          <h2>近 30 天主要从交易所提出</h2>
+        </div>
+        <p>非基础设施地址 30 天内从交易所提出 2,664,408.0561 PRL。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Address</th><th>Label</th><th>角色判断</th><th>30d CEX Withdraw</th><th>Current Share</th></tr></thead>
+          <tbody><tr><td><code>0xbd97...2866</code></td><td>-</td><td>普通持仓地址</td><td>2,591,678.7446</td><td>0.01%</td></tr><tr><td><code>0xc806...e799</code></td><td>degenrunner.bnb</td><td>具名增持地址</td><td>54,717.0577</td><td>0.86%</td></tr><tr><td><code>0x1c1c...2cf2</code></td><td>-</td><td>普通持仓地址</td><td>18,012.2538</td><td>0.00%</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+
+    
+    <section class="panel table-panel">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Data Slice</div>
+          <h2>近 30 天主要向交易所存入</h2>
+        </div>
+        <p>非基础设施地址 30 天内向交易所存入 5,617.0902 PRL。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Address</th><th>Label</th><th>角色判断</th><th>30d CEX Deposit</th><th>Current Share</th></tr></thead>
+          <tbody><tr><td><code>0xcd63...fc37</code></td><td>-</td><td>二级分发分仓</td><td>4,647.1396</td><td>0.00%</td></tr><tr><td><code>0x0678...6e90</code></td><td>-</td><td>二级分发分仓</td><td>484.9753</td><td>0.00%</td></tr><tr><td><code>0x5b82...d322</code></td><td>-</td><td>二级分发分仓</td><td>484.9753</td><td>0.00%</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Reading Notes</div>
+          <h2>如何读这份结构</h2>
+        </div>
+        <p>PRL 现在的核心不是长尾，而是 Top 10 尤其是未标注大户簇。Top 10 之外所有地址加起来只占 2.27%。</p>
+      </div>
+      <div class="layer-grid">
+        
+    <article class="info-card info-sand">
+      <h3>核心风险</h3>
+      <p>Top 10 占 97.73%，筹码极度集中。</p>
+    </article>
+    
+        
+    <article class="info-card info-ink">
+      <h3>显式标签下限</h3>
+      <p>BubbleMaps 只显式覆盖 11.29% 的供应量。</p>
+    </article>
+    
+        
+    <article class="info-card info-ink">
+      <h3>交易所侧</h3>
+      <p>Binance 下限仓位 8.70%，会影响短期流通面。</p>
+    </article>
+    
+        
+    <article class="info-card info-ink">
+      <h3>流动性侧</h3>
+      <p>Pancake / Uniswap 等 DEX 标签合计 1.59%。</p>
+    </article>
+    
+      </div>
+    </section>
+
+    <footer class="footer">
+      Source:
+      <a href="https://github.com/Melroseee-e/data-monitoring" target="_blank" rel="noreferrer">GitHub Repo</a> |
+      <a href="../data/prl/reports/prl_holder_structure_report.md" target="_blank" rel="noreferrer">Markdown Report</a> |
+      <a href="../data/prl/derived/prl_holder_analysis.json" target="_blank" rel="noreferrer">Analysis JSON</a>
+    </footer>
+  </main>
 </body>
 </html>

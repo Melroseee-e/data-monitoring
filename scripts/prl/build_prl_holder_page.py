@@ -38,62 +38,82 @@ def esc(value: Any) -> str:
     return html.escape(str(value))
 
 
-def infer_summary_lines(summary: dict[str, Any]) -> list[str]:
-    snapshot = summary["snapshot"]
-    recent = summary["recent_activity_non_infra"]
-    cohort = summary["cohort_summary_non_infra"]
-
-    lines: list[str] = []
-    top10 = snapshot["top10_share"]
-    if top10 >= 0.6:
-        lines.append(f"Top10 地址极度集中，占总供应 {fmt_pct(top10)}。")
-    elif top10 >= 0.4:
-        lines.append(f"Top10 地址集中度偏高，占总供应 {fmt_pct(top10)}。")
-    else:
-        lines.append(f"Top10 地址集中度中等，占总供应 {fmt_pct(top10)}。")
-
-    label_share = snapshot["bubblemaps_labeled_share"]
-    lines.append(f"BubbleMaps 显式标签覆盖 {snapshot['bubblemaps_labeled_count']} 个地址、{fmt_pct(label_share)} 的供应量，实体识别只能视作下限。")
-
-    withdraw_total = recent["recent_30d_cex_withdraw_total"]
-    deposit_total = recent["recent_30d_cex_deposit_total"]
-    if withdraw_total > deposit_total * 1.2:
-        lines.append(f"近 30 天从交易所提出明显强于向交易所存入，提出 {fmt_num(withdraw_total, 2)} PRL，存入 {fmt_num(deposit_total, 2)} PRL。")
-    elif deposit_total > withdraw_total * 1.2:
-        lines.append(f"近 30 天向交易所存入明显强于提出，存入 {fmt_num(deposit_total, 2)} PRL，提出 {fmt_num(withdraw_total, 2)} PRL。")
-    else:
-        lines.append(f"近 30 天交易所双向流动接近平衡，提出 {fmt_num(withdraw_total, 2)} PRL，存入 {fmt_num(deposit_total, 2)} PRL。")
-
-    new_share = cohort.get("new_wallet", {}).get("share_supply", 0.0)
-    return_share = cohort.get("return_wallet", {}).get("share_supply", 0.0)
-    if new_share > return_share * 1.2:
-        lines.append(f"当前非基础设施筹码几乎全部由新进地址控制，新钱包占 {fmt_pct(new_share)}。")
-    elif return_share > new_share * 1.2:
-        lines.append(f"回流钱包占比高于新钱包，老筹码重新活跃的迹象更强。")
-
-    return lines
+def label_layer_name(layer: str) -> str:
+    return {
+        "bubble_cex": "BubbleMaps 显式 CEX",
+        "bubble_dex": "BubbleMaps 显式 DEX / LP",
+        "exchange_deposit_tag": "交易所相关标签",
+        "contract_label": "具名合约",
+        "named_wallet_label": "具名个人/团队地址",
+        "unlabeled": "无 BubbleMaps 标签",
+    }.get(layer, layer)
 
 
-def section_table(title: str, note: str, headers: list[str], rows: list[list[str]]) -> str:
+def top10_layer_name(layer: str) -> str:
+    return {
+        "unlabeled_distribution_cluster": "未标注大户分发簇",
+        "exchange_inventory": "交易所库存层",
+        "dex_liquidity": "DEX 流动性层",
+        "named_holder": "具名地址层",
+    }.get(layer, layer)
+
+
+def holder_note(row: dict[str, Any]) -> str:
+    share = fmt_pct(row["current_share_supply"])
+    if row["is_cex"]:
+        return f"BubbleMaps 直接标记为 {row['bm_label']}，更像交易所库存而不是单一控盘仓。"
+    if row["is_dex"]:
+        return f"BubbleMaps 直接标记为 {row['bm_label']}，这部分更像交易流动性库存。"
+    if row["bm_label"]:
+        if row["recent_30d_cex_withdraw_amount"] > 0:
+            return f"具名地址且近 30 天有交易所提出记录，当前保留 {share}，行为偏增持。"
+        return f"具名地址，当前持仓 {share}，适合作为已知实体样本持续追踪。"
+    if row["top_holder_role"] == "主分发母仓":
+        return f"无 BubbleMaps 标签，但既是最大仓位又承担明显再分发，形态上更像本轮大户簇母仓。"
+    if row["top_holder_role"] == "单次受配分仓":
+        return f"无 BubbleMaps 标签，基本表现为单次收币后静置，形态上更像受配分仓。"
+    return "无 BubbleMaps 标签，有少量再分发动作，应视为未标注大户分支。"
+
+
+def stat_card(label: str, value: str, note: str, tone: str = "warm") -> str:
+    return f"""
+    <article class="stat stat-{esc(tone)}">
+      <div class="stat-label">{esc(label)}</div>
+      <div class="stat-value">{esc(value)}</div>
+      <div class="stat-note">{esc(note)}</div>
+    </article>
+    """
+
+
+def info_card(title: str, body: str, tone: str = "sand") -> str:
+    return f"""
+    <article class="info-card info-{esc(tone)}">
+      <h3>{esc(title)}</h3>
+      <p>{body}</p>
+    </article>
+    """
+
+
+def table_section(title: str, subtitle: str, headers: list[str], rows: list[list[str]]) -> str:
     thead = "".join(f"<th>{esc(h)}</th>" for h in headers)
-    body_rows = []
+    body = []
     for row in rows:
-        cells = "".join(f"<td>{cell}</td>" for cell in row)
-        body_rows.append(f"<tr>{cells}</tr>")
-    body = "\n".join(body_rows) if body_rows else f"<tr><td colspan=\"{len(headers)}\">No data.</td></tr>"
+        body.append("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>")
+    if not body:
+        body.append(f"<tr><td colspan=\"{len(headers)}\">No data.</td></tr>")
     return f"""
     <section class="panel table-panel">
-      <div class="panel-head">
+      <div class="section-head">
         <div>
-          <div class="eyebrow">Table</div>
-          <h3>{esc(title)}</h3>
+          <div class="eyebrow">Data Slice</div>
+          <h2>{esc(title)}</h2>
         </div>
-        <div class="note">{esc(note)}</div>
+        <p>{esc(subtitle)}</p>
       </div>
       <div class="table-wrap">
         <table>
           <thead><tr>{thead}</tr></thead>
-          <tbody>{body}</tbody>
+          <tbody>{''.join(body)}</tbody>
         </table>
       </div>
     </section>
@@ -105,107 +125,104 @@ def build_page(data: dict[str, Any]) -> str:
     summary = data["summary"]
     holders = data["holders"]
 
-    top20 = holders[:20]
+    top10 = holders[:10]
+    label_inventory = summary.get("label_inventory", [])
+    top10_layers = summary.get("top10_layer_summary", [])
+    recent = summary["recent_activity_non_infra"]
     non_infra = [row for row in holders if not row["is_cex"] and not row["is_dex"] and not row["is_contract"]]
-    key_wallets = sorted(
-        [row for row in non_infra if row["current_share_supply"] >= 0.0001 or row["bm_label"] or row["recent_30d_cex_withdraw_amount"] > 0 or row["recent_30d_cex_deposit_amount"] > 0],
-        key=lambda row: (-float(row["current_share_supply"]), row["rank"]),
-    )[:20]
-    top_accumulators = sorted(
-        [row for row in non_infra if row["recent_30d_netflow"] > 0],
-        key=lambda row: float(row["recent_30d_netflow"]),
-        reverse=True,
-    )[:8]
     top_withdrawers = sorted(
         [row for row in non_infra if row["recent_30d_cex_withdraw_amount"] > 0],
         key=lambda row: float(row["recent_30d_cex_withdraw_amount"]),
         reverse=True,
-    )[:8]
+    )[:5]
     top_depositors = sorted(
         [row for row in non_infra if row["recent_30d_cex_deposit_amount"] > 0],
         key=lambda row: float(row["recent_30d_cex_deposit_amount"]),
         reverse=True,
-    )[:8]
+    )[:5]
 
-    summary_lines = infer_summary_lines(summary)
-    segment_rows = [
+    unlabeled_top10_share = sum(
+        row["current_share_supply"]
+        for row in top10
+        if row["top10_control_layer"] == "unlabeled_distribution_cluster"
+    )
+    top11_50_share = summary["snapshot"]["top50_share"] - summary["snapshot"]["top10_share"]
+
+    stat_cards = "".join([
+        stat_card("Top 10 Share", fmt_pct(summary["snapshot"]["top10_share"]), "Top 10 已经决定当前流通盘。"),
+        stat_card("Unlabeled Cluster", fmt_pct(unlabeled_top10_share), "7 个未标注地址构成主要控制层。", "cool"),
+        stat_card("Binance Inventory", fmt_pct(summary["snapshot"]["bubblemaps_cex_share"]), "BubbleMaps 显式识别到的 CEX 下限仓位。", "blue"),
+        stat_card("LP / DEX", fmt_pct(summary["snapshot"]["bubblemaps_dex_share"]), "BubbleMaps 显式识别到的 DEX / LP 仓位。", "rose"),
+    ])
+
+    layer_cards = "".join(
+        info_card(
+            top10_layer_name(item["layer"]),
+            (
+                f"<strong>{fmt_pct(item['share_supply'])}</strong> of supply, "
+                f"{item['count']} addresses, ranks {', '.join(str(rank) for rank in item['ranks'])}."
+            ),
+            "sand" if item["layer"] == "unlabeled_distribution_cluster" else "ink",
+        )
+        for item in top10_layers
+    )
+
+    dossier_cards = []
+    for row in top10:
+        address_url = f"https://bscscan.com/address/{row['address']}"
+        dossier_cards.append(f"""
+        <article class="dossier">
+          <div class="dossier-top">
+            <div class="rank-chip">#{row['rank']}</div>
+            <a class="address-link" href="{esc(address_url)}" target="_blank" rel="noreferrer">{esc(short_addr(row['address']))}</a>
+          </div>
+          <div class="dossier-label">{esc(row['bm_label'] or 'No BubbleMaps label')}</div>
+          <div class="pill-row">
+            <span class="pill">{esc(label_layer_name(row['label_layer']))}</span>
+            <span class="pill">{esc(row['top_holder_role'])}</span>
+            <span class="pill">{esc(row['behavior_class'])}</span>
+          </div>
+          <div class="dossier-metric">{esc(fmt_pct(row['current_share_supply']))}</div>
+          <div class="dossier-sub">Current share of total supply</div>
+          <dl class="facts">
+            <div><dt>Amount</dt><dd>{esc(fmt_num(row['current_amount'], 4))} PRL</dd></div>
+            <div><dt>First inbound</dt><dd>{esc(row['first_inbound_at'] or row['first_activity_date'] or '-')}</dd></div>
+            <div><dt>30d netflow</dt><dd>{esc(fmt_num(row['recent_30d_netflow'], 4))}</dd></div>
+            <div><dt>Counterparties</dt><dd>{esc(row['unique_counterparties_count'])}</dd></div>
+          </dl>
+          <p class="note">{esc(holder_note(row))}</p>
+        </article>
+        """)
+
+    label_rows = [
         [
-            esc(name),
-            esc(stats["count"]),
-            esc(fmt_num(stats["amount"], 4)),
-            esc(fmt_pct(stats["share_supply"])),
+            esc(item["label"]),
+            esc(label_layer_name(item["layer"])),
+            esc(item["count"]),
+            esc(item["top_rank"]),
+            esc(fmt_num(item["amount"], 4)),
+            esc(fmt_pct(item["share_supply"])),
         ]
-        for name, stats in sorted(summary["segment_summary"].items(), key=lambda item: item[1]["share_supply"], reverse=True)
+        for item in label_inventory
     ]
-    age_rows = [
+
+    exchange_withdraw_rows = [
         [
-            esc(name),
-            esc(stats["count"]),
-            esc(fmt_num(stats["amount"], 4)),
-            esc(fmt_pct(stats["share_supply"])),
-        ]
-        for name, stats in sorted(summary["age_summary_non_infra"].items(), key=lambda item: item[1]["share_supply"], reverse=True)
-    ]
-    cohort_rows = [
-        [
-            esc(name),
-            esc(stats["count"]),
-            esc(fmt_num(stats["amount"], 4)),
-            esc(fmt_pct(stats["share_supply"])),
-        ]
-        for name, stats in sorted(summary["cohort_summary_non_infra"].items(), key=lambda item: item[1]["share_supply"], reverse=True)
-    ]
-    top20_rows = [
-        [
-            f"<span class='rank'>{row['rank']}</span>",
             f"<code>{esc(short_addr(row['address']))}</code>",
             esc(row["bm_label"] or "-"),
-            f"<span class='seg seg-{esc(row['segment'])}'>{esc(row['segment'])}</span>",
-            esc(fmt_num(row["current_amount"], 4)),
-            esc(fmt_pct(row["current_share_supply"])),
-        ]
-        for row in top20
-    ]
-    key_wallet_rows = [
-        [
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(row.get("bm_label") or "-"),
-            f"<span class='beh beh-{esc(str(row['behavior_class']).lower())}'>{esc(row['behavior_class'])}</span>",
-            esc(fmt_num(row["recent_30d_netflow"], 4)),
+            esc(row["top_holder_role"]),
             esc(fmt_num(row["recent_30d_cex_withdraw_amount"], 4)),
-            esc(fmt_num(row["recent_30d_cex_deposit_amount"], 4)),
             esc(fmt_pct(row["current_share_supply"])),
-        ]
-        for row in key_wallets
-    ]
-    accumulator_rows = [
-        [
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(row["bm_label"] or "-"),
-            esc(fmt_num(row["recent_30d_netflow"], 4)),
-            esc(fmt_num(row["recent_7d_netflow"], 4)),
-            esc(row["wallet_cohort"]),
-            f"<span class='beh beh-{esc(str(row['behavior_class']).lower())}'>{esc(row['behavior_class'])}</span>",
-        ]
-        for row in top_accumulators
-    ]
-    withdrawer_rows = [
-        [
-            f"<code>{esc(short_addr(row['address']))}</code>",
-            esc(row["bm_label"] or "-"),
-            esc(fmt_num(row["recent_30d_cex_withdraw_amount"], 4)),
-            esc(fmt_num(row["recent_30d_netflow"], 4)),
-            f"<span class='beh beh-{esc(str(row['behavior_class']).lower())}'>{esc(row['behavior_class'])}</span>",
         ]
         for row in top_withdrawers
     ]
-    depositor_rows = [
+    exchange_deposit_rows = [
         [
             f"<code>{esc(short_addr(row['address']))}</code>",
             esc(row["bm_label"] or "-"),
+            esc(row["top_holder_role"]),
             esc(fmt_num(row["recent_30d_cex_deposit_amount"], 4)),
-            esc(fmt_num(row["recent_30d_netflow"], 4)),
-            f"<span class='beh beh-{esc(str(row['behavior_class']).lower())}'>{esc(row['behavior_class'])}</span>",
+            esc(fmt_pct(row["current_share_supply"])),
         ]
         for row in top_depositors
     ]
@@ -219,500 +236,468 @@ def build_page(data: dict[str, Any]) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{esc(metadata['name'])} ({esc(metadata['symbol'])}) 筹码结构 | On-Chain Data Monitoring</title>
+<title>{esc(metadata['name'])} ({esc(metadata['symbol'])}) Top 10 筹码结构</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {{
-  --bg: #f2efe8;
-  --bg-soft: #fbf8f2;
-  --panel: rgba(255,255,255,0.84);
-  --panel-strong: rgba(255,255,255,0.94);
-  --panel-muted: rgba(255,255,255,0.74);
-  --text: #17202c;
-  --text-soft: #4b5a6b;
-  --text-muted: #748294;
-  --border: rgba(23,32,44,0.12);
-  --accent: #c05f1a;
-  --accent-2: #0d9c78;
-  --accent-3: #1f6fe5;
-  --accent-4: #bf3358;
-  --shadow: 0 28px 72px rgba(26, 37, 51, 0.12);
-  --shadow-soft: 0 10px 28px rgba(26, 37, 51, 0.08);
+  --bg: #f4efe4;
+  --bg-2: #eadfce;
+  --ink: #171717;
+  --ink-soft: #495163;
+  --line: rgba(23, 23, 23, 0.12);
+  --panel: rgba(255,255,255,0.78);
+  --panel-strong: rgba(255,255,255,0.92);
+  --sand: #d8832d;
+  --sand-deep: #9b4f17;
+  --blue: #1967c8;
+  --teal: #0c8d7a;
+  --rose: #b13d5d;
+  --shadow: 0 24px 80px rgba(31, 26, 18, 0.12);
   --mono: "JetBrains Mono", monospace;
+  --display: "Manrope", "Noto Sans SC", sans-serif;
   --body: "Noto Sans SC", sans-serif;
 }}
 * {{ box-sizing: border-box; }}
 html, body {{ margin: 0; padding: 0; }}
 body {{
-  min-height: 100vh;
   font-family: var(--body);
-  color: var(--text);
+  color: var(--ink);
   background:
-    radial-gradient(circle at 10% 12%, rgba(192,95,26,0.12), transparent 24%),
-    radial-gradient(circle at 82% 14%, rgba(13,156,120,0.10), transparent 22%),
-    radial-gradient(circle at 80% 82%, rgba(31,111,229,0.10), transparent 20%),
-    linear-gradient(180deg, #f8f5ef 0%, #f2efe8 46%, #e9e2d6 100%);
-  -webkit-font-smoothing: antialiased;
+    radial-gradient(circle at 15% 20%, rgba(216,131,45,0.16), transparent 26%),
+    radial-gradient(circle at 84% 16%, rgba(25,103,200,0.12), transparent 22%),
+    linear-gradient(180deg, #f7f1e8 0%, #f4efe4 42%, #eadfce 100%);
+  min-height: 100vh;
 }}
 body::before {{
   content: "";
   position: fixed;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(23,32,44,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23,32,44,0.03) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.3), transparent 84%);
   pointer-events: none;
+  background-image:
+    linear-gradient(rgba(23,23,23,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23,23,23,0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), transparent 88%);
 }}
-a {{ color: inherit; }}
+a {{ color: inherit; text-decoration: none; }}
+code {{
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: rgba(23,23,23,0.06);
+  padding: 0.18rem 0.38rem;
+  border-radius: 0.45rem;
+}}
 .shell {{
-  position: relative;
-  max-width: 1520px;
+  width: min(1240px, calc(100vw - 32px));
   margin: 0 auto;
-  padding: 24px 24px 54px;
-}}
-.hero, .panel {{
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  background: linear-gradient(180deg, var(--panel-strong), var(--panel));
-  box-shadow: var(--shadow);
+  padding: 28px 0 64px;
 }}
 .hero {{
+  position: relative;
   overflow: hidden;
-}}
-.hero-inner, .panel-inner {{
+  background: linear-gradient(140deg, rgba(255,255,255,0.82), rgba(255,250,242,0.94));
+  border: 1px solid rgba(23,23,23,0.08);
+  border-radius: 28px;
   padding: 28px;
+  box-shadow: var(--shadow);
+}}
+.hero::after {{
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: -80px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(216,131,45,0.22), transparent 66%);
+}}
+.eyebrow {{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sand-deep);
+  font-size: 12px;
+}}
+.hero h1 {{
+  margin: 12px 0 10px;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}}
+.hero p {{
+  max-width: 760px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.7;
 }}
 .hero-grid {{
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-  gap: 18px;
-  align-items: start;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  align-items: end;
 }}
-.eyebrow {{
-  margin: 0 0 8px;
+.meta-box {{
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}}
+.meta-line {{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--ink-soft);
+}}
+.meta-pill {{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(23,23,23,0.05);
+  border: 1px solid rgba(23,23,23,0.06);
+}}
+.section {{
+  margin-top: 26px;
+}}
+.stats {{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}}
+.stat, .panel, .info-card, .dossier {{
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 14px 44px rgba(31, 26, 18, 0.08);
+  backdrop-filter: blur(18px);
+}}
+.stat {{
+  padding: 18px;
+}}
+.stat-label {{
   font-size: 12px;
-  color: var(--text-soft);
+  font-family: var(--mono);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
 }}
-.title {{
-  margin: 0;
-  font-size: clamp(34px, 4vw, 60px);
-  line-height: 1.02;
+.stat-value {{
+  margin-top: 12px;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3.1vw, 2.7rem);
+  font-weight: 800;
   letter-spacing: -0.05em;
 }}
-.subtitle {{
-  max-width: 860px;
-  margin: 14px 0 0;
-  color: var(--text-soft);
-  line-height: 1.9;
-  font-size: 15px;
+.stat-note {{
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
 }}
-.hero-kpis {{
+.stat-cool .stat-value {{ color: var(--teal); }}
+.stat-blue .stat-value {{ color: var(--blue); }}
+.stat-rose .stat-value {{ color: var(--rose); }}
+.section-head {{
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 14px;
+}}
+.section-head h2 {{
+  margin: 6px 0 0;
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  letter-spacing: -0.04em;
+}}
+.section-head p {{
+  margin: 0;
+  max-width: 560px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}}
+.layer-grid {{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}}
+.info-card {{
+  padding: 18px;
+}}
+.info-card h3 {{
+  margin: 0 0 10px;
+  font-family: var(--display);
+  font-size: 1.12rem;
+}}
+.info-card p {{
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}}
+.info-ink {{
+  background: rgba(255,255,255,0.88);
+}}
+.dossier-grid {{
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
 }}
-.meta-stack {{
-  display: grid;
-  gap: 14px;
+.dossier {{
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,248,241,0.74));
+}}
+.dossier-top {{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}}
+.rank-chip {{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(216,131,45,0.14);
+  color: var(--sand-deep);
+  font-family: var(--mono);
+  font-weight: 700;
+}}
+.address-link {{
+  font-family: var(--mono);
+  color: var(--blue);
+  font-weight: 600;
+}}
+.dossier-label {{
+  margin-top: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
 }}
 .pill-row {{
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 12px;
 }}
 .pill {{
   display: inline-flex;
-  gap: 8px;
   align-items: center;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.68);
+  padding: 6px 10px;
   border-radius: 999px;
-  padding: 8px 12px;
-  font-size: 12px;
-  color: var(--text-soft);
-}}
-.pill strong {{
-  font-family: var(--mono);
-  color: var(--text);
+  background: rgba(23,23,23,0.06);
+  color: var(--ink-soft);
   font-size: 12px;
 }}
-.kpi, .note-card, .summary-card {{
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.72);
-  border-radius: 20px;
-  box-shadow: var(--shadow-soft);
-}}
-.kpi {{
-  padding: 16px;
-}}
-.kpi-label {{
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-soft);
-}}
-.kpi-value {{
-  margin-top: 10px;
-  font-size: 30px;
-  line-height: 1;
+.dossier-metric {{
+  margin-top: 18px;
+  font-family: var(--display);
+  font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: -0.05em;
 }}
-.kpi-sub {{
-  margin-top: 8px;
-  color: var(--text-muted);
+.dossier-sub {{
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}}
+.facts {{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 0;
+}}
+.facts div {{
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(23,23,23,0.04);
+}}
+.facts dt {{
+  font-family: var(--mono);
   font-size: 12px;
-  line-height: 1.7;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
 }}
-.accent-1 {{ color: var(--accent); }}
-.accent-2 {{ color: var(--accent-2); }}
-.accent-3 {{ color: var(--accent-3); }}
-.accent-4 {{ color: var(--accent-4); }}
-.layout {{
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  gap: 18px;
-  margin-top: 18px;
-}}
-.stack {{
-  display: grid;
-  gap: 18px;
-}}
-.panel {{
-  overflow: hidden;
-}}
-.panel-head {{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(250,247,241,0.82);
-}}
-.panel-head h3 {{
-  margin: 0;
-  font-size: 15px;
+.facts dd {{
+  margin: 8px 0 0;
+  font-weight: 700;
 }}
 .note {{
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.7;
-  max-width: 420px;
-  text-align: right;
+  margin: 16px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.65;
 }}
-.summary-card {{
+.panel {{
   padding: 18px;
 }}
-.summary-card ul {{
-  margin: 0;
-  padding-left: 20px;
-  color: var(--text-soft);
-  line-height: 1.95;
-}}
-.summary-card li + li {{ margin-top: 6px; }}
-.source-links {{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
-}}
-.source-link {{
-  text-decoration: none;
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.62);
-  color: var(--text-soft);
-  font-size: 12px;
-}}
-.source-link:hover {{
-  color: var(--text);
-  transform: translateY(-1px);
-}}
-.bars {{
-  display: grid;
-  gap: 12px;
-}}
-.bar-row {{
-  display: grid;
-  gap: 6px;
-}}
-.bar-label {{
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 12px;
-  color: var(--text-soft);
-}}
-.bar-track {{
-  height: 12px;
-  background: rgba(23,32,44,0.08);
-  border-radius: 999px;
-  overflow: hidden;
-}}
-.bar-fill {{
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), #eb9b55);
-}}
-.bar-fill.alt {{
-  background: linear-gradient(90deg, var(--accent-3), #6aa6ff);
-}}
-.bar-fill.green {{
-  background: linear-gradient(90deg, var(--accent-2), #4dd5b3);
-}}
 .table-wrap {{
-  overflow: auto;
+  overflow-x: auto;
+  margin-top: 12px;
 }}
 table {{
   width: 100%;
   border-collapse: collapse;
+  min-width: 720px;
 }}
 th, td {{
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
   text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(23,23,23,0.08);
   vertical-align: top;
 }}
 th {{
-  font-size: 11px;
+  font-family: var(--mono);
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-soft);
-  background: rgba(250,247,241,0.64);
+  color: var(--ink-soft);
 }}
 td {{
-  font-size: 13px;
-  color: var(--text);
+  color: var(--ink);
 }}
-tbody tr:hover td {{
-  background: rgba(255,255,255,0.56);
-}}
-code {{
-  font-family: var(--mono);
-  font-size: 12px;
-}}
-.rank {{
-  display: inline-flex;
-  width: 28px;
-  height: 28px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(23,32,44,0.08);
-  font-family: var(--mono);
-  font-size: 12px;
-}}
-.seg, .beh {{
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 9px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  font-size: 11px;
-  line-height: 1;
-  white-space: nowrap;
-}}
-.seg-unlabeled_whale {{ background: rgba(192,95,26,0.10); color: #9b4b11; border-color: rgba(192,95,26,0.24); }}
-.seg-cex {{ background: rgba(191,51,88,0.10); color: #9d1f46; border-color: rgba(191,51,88,0.24); }}
-.seg-dex {{ background: rgba(31,111,229,0.10); color: #1556b3; border-color: rgba(31,111,229,0.24); }}
-.seg-labeled {{ background: rgba(13,156,120,0.10); color: #0c7c5f; border-color: rgba(13,156,120,0.24); }}
-.seg-mid_wallet, .seg-tail_wallet, .seg-contract {{ background: rgba(23,32,44,0.07); color: var(--text-soft); border-color: rgba(23,32,44,0.12); }}
-.beh-accumulating, .beh-cex-withdrawing {{ background: rgba(13,156,120,0.10); color: #0d7a5e; border-color: rgba(13,156,120,0.24); }}
-.beh-distributing, .beh-cex-selling {{ background: rgba(191,51,88,0.10); color: #9d1f46; border-color: rgba(191,51,88,0.24); }}
-.beh-mixed {{ background: rgba(31,111,229,0.10); color: #1556b3; border-color: rgba(31,111,229,0.24); }}
-.beh-inactive {{ background: rgba(23,32,44,0.07); color: var(--text-soft); border-color: rgba(23,32,44,0.12); }}
 .footer {{
-  margin-top: 18px;
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.8;
-  text-align: center;
+  margin-top: 28px;
+  padding: 18px 22px;
+  border-radius: 22px;
+  background: rgba(23,23,23,0.88);
+  color: rgba(255,255,255,0.86);
+}}
+.footer a {{
+  color: #fff;
+  text-decoration: underline;
 }}
 @media (max-width: 1080px) {{
-  .hero-grid, .layout {{
+  .hero-grid,
+  .stats,
+  .layer-grid,
+  .dossier-grid {{
     grid-template-columns: 1fr;
   }}
 }}
 @media (max-width: 720px) {{
   .shell {{
-    padding: 14px 14px 34px;
+    width: min(100vw - 20px, 1240px);
+    padding-top: 16px;
   }}
-  .hero-inner, .panel-inner {{
-    padding: 18px;
+  .hero, .panel, .stat, .info-card, .dossier {{
+    border-radius: 20px;
   }}
-  .hero-kpis {{
+  .facts {{
     grid-template-columns: 1fr;
   }}
-  .panel-head {{
-    display: block;
-  }}
-  .note {{
-    margin-top: 8px;
-    text-align: left;
+  .section-head {{
+    flex-direction: column;
+    align-items: start;
   }}
 }}
 </style>
 </head>
 <body>
-  <div class="shell">
+  <main class="shell">
     <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-grid">
-          <div>
-            <p class="eyebrow">On-Chain Holder Structure</p>
-            <h1 class="title">{esc(metadata['name'])} ({esc(metadata['symbol'])})</h1>
-            <p class="subtitle">
-              基于 BubbleMaps Top 500 持仓快照、BSC 全历史 Transfer 聚合与本地交易所地址表生成的公开版筹码结构页。
-              当前结论以 BSC 上的 PRL 合约为主；Solana 地址仅作多链部署参考。BubbleMaps 仅作为显式标签源，持仓量以链上 <code>balanceOf</code> 校验后的结果为准。
-            </p>
-            <div class="pill-row">
-              <div class="pill"><span>BSC</span><strong>{esc(metadata['contract'])}</strong></div>
-              <div class="pill"><span>Solana</span><strong>{esc(metadata.get('solana_address') or '-')}</strong></div>
-              <div class="pill"><span>主研究链</span><strong>{esc(str(metadata['chain']).upper())}</strong></div>
-              <div class="pill"><span>总供应</span><strong>{esc(fmt_num(metadata['total_supply'], 4))}</strong></div>
-              <div class="pill"><span>更新时间</span><strong>{esc(metadata['as_of'])}</strong></div>
-            </div>
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">PRL Holder Structure / BubbleMaps + Onchain</div>
+          <h1>{esc(metadata['name'])}<br>{esc(metadata['symbol'])} Top 10</h1>
+          <p>
+            这份页面不再把 500 个地址摊平展示，而是直接围绕控制流通盘的 Top 10 展开。
+            重点是把 Top 10 的角色分清楚，尤其是那 7 个未标注大户地址，它们当前合计控制
+            <strong>{esc(fmt_pct(unlabeled_top10_share))}</strong> 的总供应。
+          </p>
+        </div>
+        <div class="meta-box">
+          <div class="meta-line">
+            <span class="meta-pill">BSC <code>{esc(short_addr(metadata['contract'], 10, 8))}</code></span>
+            <span class="meta-pill">SOL <code>{esc(short_addr(metadata['solana_address'], 10, 8))}</code></span>
           </div>
-          <div class="meta-stack">
-            <div class="hero-kpis">
-              <div class="kpi">
-                <div class="kpi-label">Top10 Share</div>
-                <div class="kpi-value accent-1">{esc(fmt_pct(summary['snapshot']['top10_share']))}</div>
-                <div class="kpi-sub">Top20: {esc(fmt_pct(summary['snapshot']['top20_share']))} · Top50: {esc(fmt_pct(summary['snapshot']['top50_share']))}</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Labeled Supply</div>
-                <div class="kpi-value accent-2">{esc(fmt_pct(summary['snapshot']['bubblemaps_labeled_share']))}</div>
-                <div class="kpi-sub">{esc(summary['snapshot']['bubblemaps_labeled_count'])} 个 BubbleMaps 显式标签地址</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">30d CEX Withdraw</div>
-                <div class="kpi-value accent-3">{esc(fmt_num(summary['recent_activity_non_infra']['recent_30d_cex_withdraw_total'], 0))}</div>
-                <div class="kpi-sub">非基础设施地址近 30 天从交易所提出 PRL</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">30d CEX Deposit</div>
-                <div class="kpi-value accent-4">{esc(fmt_num(summary['recent_activity_non_infra']['recent_30d_cex_deposit_total'], 0))}</div>
-                <div class="kpi-sub">非基础设施地址近 30 天向交易所存入 PRL</div>
-              </div>
-            </div>
+          <div class="meta-line">
+            <span class="meta-pill">Total Supply <strong>{esc(fmt_num(metadata['total_supply'], 2))}</strong></span>
+            <span class="meta-pill">Snapshot <strong>Top {esc(summary['snapshot']['holder_count'])}</strong></span>
+          </div>
+          <div class="meta-line">
+            <span class="meta-pill">Top 11-50 <strong>{esc(fmt_pct(top11_50_share))}</strong></span>
+            <span class="meta-pill">Generated <strong>{esc(metadata['as_of'])}</strong></span>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="layout">
-      <div class="stack">
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Takeaways</div>
-              <h3>核心结论</h3>
-            </div>
-            <div class="note">当前页为公开版 HTML。研究原始 Markdown 与 JSON 产物链接放在右侧。</div>
-          </div>
-          <div class="panel-inner summary-card">
-            <ul>
-              {"".join(f"<li>{esc(line)}</li>" for line in summary_lines)}
-            </ul>
-          </div>
-        </section>
+    <section class="section">
+      <div class="stats">{stat_cards}</div>
+    </section>
 
-        {section_table("Segment Summary", "按当前持仓分层。BubbleMaps 仅提供标签，排序与金额已按链上余额重排。", ["Segment", "Addr Count", "Amount", "Supply Share"], segment_rows)}
-        {section_table("Top 20 Holders", "Top holders after on-chain balance refresh.", ["Rank", "Address", "BubbleMaps Label", "Segment", "Amount", "Share"], top20_rows)}
-        {section_table("Holder Age Buckets", "仅统计非基础设施地址。", ["Age Bucket", "Addr Count", "Amount", "Supply Share"], age_rows)}
-        {section_table("Wallet Cohorts", "new_wallet / return_wallet / existing_wallet 口径见研究脚本。", ["Cohort", "Addr Count", "Amount", "Supply Share"], cohort_rows)}
-        {section_table("Key Wallets", "按当前份额、BubbleMaps 标签以及近 30 天交易所双向流动筛选。", ["Address", "Label", "Behavior", "30d Netflow", "30d CEX Withdraw", "30d CEX Deposit", "Current Share"], key_wallet_rows)}
-        {section_table("Top 30d Accumulators", "非基础设施地址近 30 天净流入。", ["Address", "Label", "30d Netflow", "7d Netflow", "Cohort", "Behavior"], accumulator_rows)}
-        {section_table("Top 30d Exchange Withdrawers", "近 30 天从交易所提出 PRL 最多的地址。", ["Address", "Label", "30d CEX Withdraw", "30d Netflow", "Behavior"], withdrawer_rows)}
-        {section_table("Top 30d Exchange Depositors", "近 30 天向交易所存入 PRL 最多的地址。", ["Address", "Label", "30d CEX Deposit", "30d Netflow", "Behavior"], depositor_rows)}
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Control Layers</div>
+          <h2>Top 10 分层</h2>
+        </div>
+        <p>Top 10 基本可以拆成四层: 未标注大户分发簇、交易所库存、DEX 流动性和具名地址。先把层拆开，再研究单个地址。</p>
       </div>
+      <div class="layer-grid">{layer_cards}</div>
+    </section>
 
-      <div class="stack">
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Concentration</div>
-              <h3>集中度条形图</h3>
-            </div>
-            <div class="note">横轴按总供应占比。</div>
-          </div>
-          <div class="panel-inner">
-            <div class="bars">
-              <div class="bar-row">
-                <div class="bar-label"><span>Top 10</span><strong>{esc(fmt_pct(summary['snapshot']['top10_share']))}</strong></div>
-                <div class="bar-track"><div class="bar-fill" style="width:{summary['snapshot']['top10_share'] * 100:.2f}%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>Top 20</span><strong>{esc(fmt_pct(summary['snapshot']['top20_share']))}</strong></div>
-                <div class="bar-track"><div class="bar-fill alt" style="width:{summary['snapshot']['top20_share'] * 100:.2f}%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>Top 50</span><strong>{esc(fmt_pct(summary['snapshot']['top50_share']))}</strong></div>
-                <div class="bar-track"><div class="bar-fill green" style="width:{summary['snapshot']['top50_share'] * 100:.2f}%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>BubbleMaps Labeled</span><strong>{esc(fmt_pct(summary['snapshot']['bubblemaps_labeled_share']))}</strong></div>
-                <div class="bar-track"><div class="bar-fill alt" style="width:{summary['snapshot']['bubblemaps_labeled_share'] * 100:.2f}%"></div></div>
-              </div>
-              <div class="bar-row">
-                <div class="bar-label"><span>BubbleMaps CEX</span><strong>{esc(fmt_pct(summary['snapshot']['bubblemaps_cex_share']))}</strong></div>
-                <div class="bar-track"><div class="bar-fill" style="width:{summary['snapshot']['bubblemaps_cex_share'] * 100:.2f}%"></div></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Method</div>
-              <h3>方法与限制</h3>
-            </div>
-            <div class="note">这部分决定如何阅读页面结论。</div>
-          </div>
-          <div class="panel-inner summary-card">
-            <ul>
-              <li>BubbleMaps 只作为显式标签源，不对无标签地址发明实体名。</li>
-              <li>BubbleMaps 快照与链上余额出现漂移时，页面自动采用链上 <code>balanceOf</code> 重算当前持仓。</li>
-              <li>交易所方向识别使用本地 exchange registry，仅用于判断提出 / 存入，不给无标签地址公开补名。</li>
-              <li>本页未包含成本、PNL 与逐笔成交归因，因为当前环境下没有可用的 PRL 历史价格账本。</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="eyebrow">Artifacts</div>
-              <h3>源文件</h3>
-            </div>
-            <div class="note">GitHub Pages 会直接托管这些静态产物。</div>
-          </div>
-          <div class="panel-inner summary-card">
-            <div class="source-links">
-              <a class="source-link" href="{report_md}">Markdown 报告</a>
-              <a class="source-link" href="{analysis_json}">Analysis JSON</a>
-              <a class="source-link" href="{source_path}">GitHub Repo</a>
-              <a class="source-link" href="./pump_behavior_chart.html">返回公开页</a>
-            </div>
-          </div>
-        </section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Top 10 Dossiers</div>
+          <h2>逐个地址研究</h2>
+        </div>
+        <p>每个卡片都给出 BubbleMaps 标签状态、角色判断、当前持仓、时间特征和一句话研究结论。</p>
       </div>
-    </div>
+      <div class="dossier-grid">{''.join(dossier_cards)}</div>
+    </section>
 
-    <div class="footer">
-      Generated from <code>data/prl/derived/prl_holder_analysis.json</code> by <code>scripts/prl/build_prl_holder_page.py</code>.
-    </div>
-  </div>
+    {table_section(
+        "BubbleMaps 标签清单",
+        f"当前去重标签 {len(label_inventory)} 个。标签只能视作显式下限，未标注地址只做行为归类。",
+        ["Label", "标签层", "Addr Count", "Top Rank", "Amount", "Supply Share"],
+        label_rows,
+    )}
+
+    {table_section(
+        "近 30 天主要从交易所提出",
+        f"非基础设施地址 30 天内从交易所提出 {fmt_num(recent['recent_30d_cex_withdraw_total'], 4)} PRL。",
+        ["Address", "Label", "角色判断", "30d CEX Withdraw", "Current Share"],
+        exchange_withdraw_rows,
+    )}
+
+    {table_section(
+        "近 30 天主要向交易所存入",
+        f"非基础设施地址 30 天内向交易所存入 {fmt_num(recent['recent_30d_cex_deposit_total'], 4)} PRL。",
+        ["Address", "Label", "角色判断", "30d CEX Deposit", "Current Share"],
+        exchange_deposit_rows,
+    )}
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Reading Notes</div>
+          <h2>如何读这份结构</h2>
+        </div>
+        <p>PRL 现在的核心不是长尾，而是 Top 10 尤其是未标注大户簇。Top 10 之外所有地址加起来只占 {esc(fmt_pct(1 - summary['snapshot']['top10_share']))}。</p>
+      </div>
+      <div class="layer-grid">
+        {info_card("核心风险", f"Top 10 占 {fmt_pct(summary['snapshot']['top10_share'])}，筹码极度集中。", "sand")}
+        {info_card("显式标签下限", f"BubbleMaps 只显式覆盖 {fmt_pct(summary['snapshot']['bubblemaps_labeled_share'])} 的供应量。", "ink")}
+        {info_card("交易所侧", f"Binance 下限仓位 {fmt_pct(summary['snapshot']['bubblemaps_cex_share'])}，会影响短期流通面。", "ink")}
+        {info_card("流动性侧", f"Pancake / Uniswap 等 DEX 标签合计 {fmt_pct(summary['snapshot']['bubblemaps_dex_share'])}。", "ink")}
+      </div>
+    </section>
+
+    <footer class="footer">
+      Source:
+      <a href="{esc(source_path)}" target="_blank" rel="noreferrer">GitHub Repo</a> |
+      <a href="{esc(report_md)}" target="_blank" rel="noreferrer">Markdown Report</a> |
+      <a href="{esc(analysis_json)}" target="_blank" rel="noreferrer">Analysis JSON</a>
+    </footer>
+  </main>
 </body>
 </html>
 """
@@ -720,8 +705,9 @@ code {{
 
 def main() -> None:
     data = json.loads(INPUT_FILE.read_text(encoding="utf-8"))
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_FILE.write_text(build_page(data), encoding="utf-8")
-    print(f"wrote {OUTPUT_FILE}")
+    print(f"Wrote {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
