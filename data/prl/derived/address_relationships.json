@@ -1,0 +1,56 @@
+{
+  "official_core": [
+    {
+      "address": "6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG",
+      "relation": "public_official",
+      "summary": "公开 metadata update authority，同时是当前第 7 大持仓地址。"
+    },
+    {
+      "address": "5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx",
+      "relation": "official_inferred",
+      "summary": "Arkham 将其标注为 Squads Vault \"SGL Marketing Lumen ServiceCo\"，当前位列第 9。"
+    },
+    {
+      "address": "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh",
+      "relation": "official_inferred",
+      "summary": "Top 10 中唯一明显程序控制账户，链上 owner 不是 system program，且活动窗口紧贴 TGE。"
+    }
+  ],
+  "fresh_static_wallets": [
+    {
+      "address": "8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe",
+      "rank": 4,
+      "share": 0.09265000009265,
+      "first_activity_date": "2026-03-10T00:10:57",
+      "role": "fresh_static_bucket"
+    },
+    {
+      "address": "14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF",
+      "rank": 6,
+      "share": 0.04000000004,
+      "first_activity_date": "2026-03-10T00:11:34",
+      "role": "fresh_static_bucket"
+    },
+    {
+      "address": "Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT",
+      "rank": 8,
+      "share": 0.02000000002,
+      "first_activity_date": "2026-03-18T22:00:14",
+      "role": "fresh_static_bucket"
+    },
+    {
+      "address": "5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN",
+      "rank": 11,
+      "share": 0.0065000000065,
+      "first_activity_date": "2026-03-10T00:12:08",
+      "role": "fresh_static_bucket"
+    },
+    {
+      "address": "HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC",
+      "rank": 16,
+      "share": 0.0012000000012,
+      "first_activity_date": "2026-03-10T00:12:39",
+      "role": "fresh_static_bucket"
+    }
+  ]
+}

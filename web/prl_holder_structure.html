@@ -1,0 +1,1040 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRL Solana Top 10 Holder Structure</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --paper: rgba(255,255,255,0.82);
+      --ink: #15110d;
+      --muted: #695f56;
+      --line: rgba(28, 20, 14, 0.10);
+      --official: #0c6b58;
+      --official-soft: #2d9380;
+      --exchange: #1859a8;
+      --dex: #9b5417;
+      --whale: #7d1d1d;
+      --unknown: #6b7280;
+      --accent: #d9b76a;
+      --shadow: 0 18px 50px rgba(41, 26, 18, 0.10);
+      --radius: 24px;
+      --mono: "SFMono-Regular", "JetBrains Mono", Menlo, monospace;
+      --body: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--body);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(217,183,106,0.30), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(12,107,88,0.18), transparent 30%),
+        linear-gradient(180deg, #f8f4ee 0%, var(--bg) 100%);
+    }
+    a { color: inherit; }
+    .page {
+      width: min(1220px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 40px 0 80px;
+    }
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,248,236,0.86));
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(12,107,88,0.18), transparent 68%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 0.98;
+      margin: 0 0 14px;
+      max-width: 760px;
+    }
+    .hero-copy {
+      max-width: 820px;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 26px;
+    }
+    .meta-card {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+    .meta-card span {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .mono { font-family: var(--mono); font-size: 13px; word-break: break-all; }
+    .section {
+      margin-top: 28px;
+      background: var(--paper);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+    .section-intro {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.8);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .stat-kicker {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+    }
+    .stat-value {
+      font-size: 34px;
+      line-height: 1;
+      margin: 10px 0 8px;
+    }
+    .stat-note {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .bucket-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+    }
+    .bucket-strip-item {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .bucket-strip-item strong {
+      font-size: 28px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: white;
+    }
+    .badge-official { background: var(--official); }
+    .badge-official-soft { background: var(--official-soft); }
+    .badge-exchange { background: var(--exchange); }
+    .badge-dex { background: var(--dex); }
+    .badge-whale { background: var(--whale); }
+    .badge-unknown { background: var(--unknown); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .callout-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .callout {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      padding: 18px;
+      background: rgba(255,255,255,0.72);
+    }
+    .callout h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .callout p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .profiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .profile-card {
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.76);
+      padding: 18px;
+    }
+    .profile-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .profile-rank {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .profile-address {
+      font-size: 13px;
+    }
+    .profile-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .profile-metrics strong {
+      font-size: 22px;
+    }
+    .profile-role {
+      font-size: 19px;
+      margin-bottom: 12px;
+    }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .profile-grid span {
+      display: block;
+      color: var(--ink);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 3px;
+    }
+    .profile-evidence {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .footer-note {
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    @media (max-width: 720px) {
+      .page { width: min(100vw - 20px, 1220px); padding-top: 18px; }
+      .hero, .section { padding: 20px; border-radius: 22px; }
+      .profile-grid { grid-template-columns: 1fr; }
+      table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">Perle / PRL • Solana Holder Structure</div>
+      <h1>Top 10 基本不是交易所，而是项目侧与大户侧钱包。</h1>
+      <p class="hero-copy">
+        当前 PRL 的关键问题不是“CEX 上有多少货”，而是 Top 10 里哪些地址可以直接确认属于官方，哪些只是高概率官方托管层，哪些其实是未标注大户。
+        这页把 Top 10 分成四层：官方、交易所、DEX 池子、大户，并把每个 Top 10 的证据链单独展开。
+      </p>
+      <div class="hero-meta">
+        <div class="meta-card">
+          <span>Solana Mint</span>
+          <div class="mono"><a href="https://solscan.io/account/PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs" target="_blank" rel="noreferrer">PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs</a></div>
+        </div>
+        <div class="meta-card">
+          <span>公开官方地址</span>
+          <div class="mono"><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" rel="noreferrer">6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG</a></div>
+        </div>
+        <div class="meta-card">
+          <span>TGE / Supply</span>
+          <div>03/25/2026 / 1B</div>
+        </div>
+        <div class="meta-card">
+          <span>资料来源</span>
+          <div><a href="https://perle.gitbook.io/perle-docs/tokenomics/token-overview" target="_blank" rel="noreferrer">Docs</a> / <a href="https://perle.gitbook.io/perle-docs/perle-prl-token-passes-security-audit-with-halborn" target="_blank" rel="noreferrer">Audit</a> / <a href="https://perle.gitbook.io/perle-docs/tokenomics/token-vesting" target="_blank" rel="noreferrer">Vesting</a></div>
+        </div>
+      </div>
+      <div class="stats">
+        
+    <section class="stat-card">
+      <div class="stat-kicker">Top 10 占比</div>
+      <div class="stat-value">97.68%</div>
+      <div class="stat-note">前十名合计控制的供应量</div>
+    </section>
+    
+        
+    <section class="stat-card">
+      <div class="stat-kicker">Top 5 占比</div>
+      <div class="stat-value">86.47%</div>
+      <div class="stat-note">前五名已经足以决定盘面结构</div>
+    </section>
+    
+        
+    <section class="stat-card">
+      <div class="stat-kicker">首个交易所排名</div>
+      <div class="stat-value">12</div>
+      <div class="stat-note">Top 10 内没有交易所地址</div>
+    </section>
+    
+        
+    <section class="stat-card">
+      <div class="stat-kicker">首个 DEX 排名</div>
+      <div class="stat-value">24</div>
+      <div class="stat-note">Top 10 内没有 DEX 池子</div>
+    </section>
+    
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Top 10 分层总览</h2>
+      <p class="section-intro">
+        这四层是页面的主阅读顺序。先看官方，再看大户，然后看交易所和 DEX。当前 Top 10 里最重要的事实是：
+        <strong>没有交易所，也没有池子；主要是官方相关地址和未标注大户。</strong>
+      </p>
+      <div class="bucket-strip">
+        
+            <div class="bucket-strip-item">
+              <span class="badge badge-whale">大户</span>
+              <strong>85.10%</strong>
+              <span>7 个地址</span>
+            </div>
+            
+
+            <div class="bucket-strip-item">
+              <span class="badge badge-official-soft">高概率官方</span>
+              <strong>10.34%</strong>
+              <span>2 个地址</span>
+            </div>
+            
+
+            <div class="bucket-strip-item">
+              <span class="badge badge-official">已公开官方</span>
+              <strong>2.24%</strong>
+              <span>1 个地址</span>
+            </div>
+            
+      </div>
+      <div class="callout-grid">
+        <div class="callout">
+          <h3>已公开官方</h3>
+          <p>目前只有一个硬证据地址进入 Top 10：6pJjJF...dLRG。它来自官方 audit，而不是链上行为猜测。</p>
+        </div>
+        <div class="callout">
+          <h3>高概率官方</h3>
+          <p>Top 10 里还有至少两类地址带有官方基础设施特征：一个被 Arkham 识别成 Squads Vault，另一个是明显程序控制账户。</p>
+        </div>
+        <div class="callout">
+          <h3>大户层</h3>
+          <p>第 1、2 名两只无标签大仓合计已超过 59%。它们才是 PRL 当前筹码最需要盯的风险源。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Top 10 表</h2>
+      <p class="section-intro">
+        这张表只回答一个问题：Top 10 每个地址现在到底属于哪一层。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>地址</th>
+            <th>持仓</th>
+            <th>占总量</th>
+            <th>归类</th>
+            <th>角色</th>
+            <th>标签</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td>1</td>
+              <td class="mono"><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" rel="noreferrer">Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B</a></td>
+              <td>317,980,209.13</td>
+              <td>31.798%</td>
+              <td><span class="badge badge-whale">大户</span></td>
+              <td>未标注大户</td>
+              <td>—</td>
+            </tr>
+            
+
+            <tr>
+              <td>2</td>
+              <td class="mono"><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" rel="noreferrer">ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS</a></td>
+              <td>276,619,098.00</td>
+              <td>27.662%</td>
+              <td><span class="badge badge-whale">大户</span></td>
+              <td>未标注大户</td>
+              <td>—</td>
+            </tr>
+            
+
+            <tr>
+              <td>3</td>
+              <td class="mono"><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" rel="noreferrer">Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH</a></td>
+              <td>94,080,066.00</td>
+              <td>9.408%</td>
+              <td><span class="badge badge-whale">大户</span></td>
+              <td>未标注大户</td>
+              <td>—</td>
+            </tr>
+            
+
+            <tr>
+              <td>4</td>
+              <td class="mono"><a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" rel="noreferrer">8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe</a></td>
+              <td>92,650,000.00</td>
+              <td>9.265%</td>
+              <td><span class="badge badge-whale">大户</span></td>
+              <td>单跳静态大仓</td>
+              <td>—</td>
+            </tr>
+            
+
+            <tr>
+              <td>5</td>
+              <td class="mono"><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" rel="noreferrer">HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh</a></td>
+              <td>83,386,620.03</td>
+              <td>8.339%</td>
+              <td><span class="badge badge-official-soft">高概率官方</span></td>
+              <td>疑似官方基础设施/托管 vault</td>
+              <td>—</td>
+            </tr>
+            
+
+            <tr>
+              <td>6</td>
+              <td class="mono"><a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" rel="noreferrer">14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF</a></td>
+              <td>40,000,000.00</td>
+              <td>4.000%</td>
+              <td><span class="badge badge-whale">大户</span></td>
+              <td>单跳静态大仓</td>
+              <td>—</td>
+            </tr>
+            
+
+            <tr>
+              <td>7</td>
+              <td class="mono"><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" rel="noreferrer">6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG</a></td>
+              <td>22,397,372.98</td>
+              <td>2.240%</td>
+              <td><span class="badge badge-official">已公开官方</span></td>
+              <td>公开 metadata authority 钱包</td>
+              <td>Squads Vault &quot;Lumen Foundation&quot;</td>
+            </tr>
+            
+
+            <tr>
+              <td>8</td>
+              <td class="mono"><a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" rel="noreferrer">Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT</a></td>
+              <td>20,000,000.00</td>
+              <td>2.000%</td>
+              <td><span class="badge badge-whale">大户</span></td>
+              <td>单跳静态大仓</td>
+              <td>—</td>
+            </tr>
+            
+
+            <tr>
+              <td>9</td>
+              <td class="mono"><a href="https://solscan.io/account/5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx" target="_blank" rel="noreferrer">5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx</a></td>
+              <td>20,000,000.00</td>
+              <td>2.000%</td>
+              <td><span class="badge badge-official-soft">高概率官方</span></td>
+              <td>疑似 Squads 官方运营/服务 vault</td>
+              <td>Squads Vault &quot;SGL Marketing Lumen ServiceCo&quot;</td>
+            </tr>
+            
+
+            <tr>
+              <td>10</td>
+              <td class="mono"><a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" rel="noreferrer">HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M</a></td>
+              <td>9,650,000.00</td>
+              <td>0.965%</td>
+              <td><span class="badge badge-whale">大户</span></td>
+              <td>未标注大户</td>
+              <td>—</td>
+            </tr>
+            
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Top 10 单地址画像</h2>
+      <p class="section-intro">
+        每个 Top 10 地址都拆成一张卡。这里不只看 label，还把第一次活动时间、BubbleMaps 关系度和链上账户形态一起放进来，避免把静态分仓看成自然大户。
+      </p>
+      <div class="profiles">
+        
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 1</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" rel="noreferrer">Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-whale">大户</span>
+                  <strong>31.798%</strong>
+                </div>
+              </div>
+              <div class="profile-role">未标注大户</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>317,980,209.13 PRL</div>
+                <div><span>首次活动</span>2026-02-18T15:48:28</div>
+                <div><span>BubbleMaps 度数</span>37</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-18T15:48:28 BubbleMaps relation 度数 37，in/out = 26/11。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 2</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" rel="noreferrer">ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-whale">大户</span>
+                  <strong>27.662%</strong>
+                </div>
+              </div>
+              <div class="profile-role">未标注大户</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>276,619,098.00 PRL</div>
+                <div><span>首次活动</span>2026-02-09T19:35:51</div>
+                <div><span>BubbleMaps 度数</span>24</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-09T19:35:51 BubbleMaps relation 度数 24，in/out = 18/6。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 3</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" rel="noreferrer">Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-whale">大户</span>
+                  <strong>9.408%</strong>
+                </div>
+              </div>
+              <div class="profile-role">未标注大户</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>94,080,066.00 PRL</div>
+                <div><span>首次活动</span>2026-02-09T19:36:14</div>
+                <div><span>BubbleMaps 度数</span>75</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-02-09T19:36:14 BubbleMaps relation 度数 75，in/out = 59/16。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 4</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" rel="noreferrer">8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-whale">大户</span>
+                  <strong>9.265%</strong>
+                </div>
+              </div>
+              <div class="profile-role">单跳静态大仓</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>92,650,000.00 PRL</div>
+                <div><span>首次活动</span>2026-03-10T00:10:57</div>
+                <div><span>BubbleMaps 度数</span>1</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">public_rpc_not_available BubbleMaps 首次活动时间：2026-03-10T00:10:57 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 5</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" rel="noreferrer">HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-official-soft">高概率官方</span>
+                  <strong>8.339%</strong>
+                </div>
+              </div>
+              <div class="profile-role">疑似官方基础设施/托管 vault</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>83,386,620.03 PRL</div>
+                <div><span>首次活动</span>2026-03-20T21:08:25</div>
+                <div><span>BubbleMaps 度数</span>857</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">账户 owner 为 76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU，不是普通 system wallet，偏向程序控制或 vault 型账户。 BubbleMaps 首次活动时间：2026-03-20T21:08:25 BubbleMaps relation 度数 857，in/out = 149/708。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 6</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" rel="noreferrer">14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-whale">大户</span>
+                  <strong>4.000%</strong>
+                </div>
+              </div>
+              <div class="profile-role">单跳静态大仓</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>40,000,000.00 PRL</div>
+                <div><span>首次活动</span>2026-03-10T00:11:34</div>
+                <div><span>BubbleMaps 度数</span>1</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">public_rpc_not_available BubbleMaps 首次活动时间：2026-03-10T00:11:34 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 7</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" rel="noreferrer">6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-official">已公开官方</span>
+                  <strong>2.240%</strong>
+                </div>
+              </div>
+              <div class="profile-role">公开 metadata authority 钱包</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>22,397,372.98 PRL</div>
+                <div><span>首次活动</span>2025-12-24T12:04:33</div>
+                <div><span>BubbleMaps 度数</span>8987</div>
+                <div><span>标签</span>Squads Vault &quot;Lumen Foundation&quot;</div>
+              </div>
+              <p class="profile-evidence">官方 audit 直接公开为 metadata update authority。 Arkham 标签：Squads Vault &quot;Lumen Foundation&quot; 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2025-12-24T12:04:33 BubbleMaps relation 度数 8987，in/out = 6/8981。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 8</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" rel="noreferrer">Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-whale">大户</span>
+                  <strong>2.000%</strong>
+                </div>
+              </div>
+              <div class="profile-role">单跳静态大仓</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>20,000,000.00 PRL</div>
+                <div><span>首次活动</span>2026-03-18T22:00:14</div>
+                <div><span>BubbleMaps 度数</span>1</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">public_rpc_not_available BubbleMaps 首次活动时间：2026-03-18T22:00:14 BubbleMaps relation 度数 1，in/out = 1/0。 只有单一关系边，偏向一次性分配/停放钱包，而不是活跃市场账户。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 9</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx" target="_blank" rel="noreferrer">5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-official-soft">高概率官方</span>
+                  <strong>2.000%</strong>
+                </div>
+              </div>
+              <div class="profile-role">疑似 Squads 官方运营/服务 vault</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>20,000,000.00 PRL</div>
+                <div><span>首次活动</span>2026-03-18T21:33:11</div>
+                <div><span>BubbleMaps 度数</span>5</div>
+                <div><span>标签</span>Squads Vault &quot;SGL Marketing Lumen ServiceCo&quot;</div>
+              </div>
+              <p class="profile-evidence">Arkham 标签：Squads Vault &quot;SGL Marketing Lumen ServiceCo&quot; 链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-03-18T21:33:11 BubbleMaps relation 度数 5，in/out = 4/1。</p>
+            </article>
+            
+
+            <article class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <div class="profile-rank">Top 10</div>
+                  <div class="profile-address mono"><a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" rel="noreferrer">HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M</a></div>
+                </div>
+                <div class="profile-metrics">
+                  <span class="badge badge-whale">大户</span>
+                  <strong>0.965%</strong>
+                </div>
+              </div>
+              <div class="profile-role">未标注大户</div>
+              <div class="profile-grid">
+                <div><span>持仓</span>9,650,000.00 PRL</div>
+                <div><span>首次活动</span>2026-03-06T22:46:54</div>
+                <div><span>BubbleMaps 度数</span>23</div>
+                <div><span>标签</span>未标注</div>
+              </div>
+              <p class="profile-evidence">链上形态是普通 system wallet。 BubbleMaps 首次活动时间：2026-03-06T22:46:54 BubbleMaps relation 度数 23，in/out = 18/5。</p>
+            </article>
+            
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>官方地址证据链</h2>
+      <p class="section-intro">
+        “官方”被拆成两层：已公开官方只接受 docs / audit 明示；高概率官方则保留为推测层，不和公开事实混写。
+      </p>
+      <div class="callout-grid">
+        <div class="callout">
+          <h3>已公开官方</h3>
+          <p>
+            Metadata update authority 是 <span class="mono"><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" rel="noreferrer">6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG</a></span>，
+            这是官方 audit 页面直接写明的地址。它现在也是第 7 大持仓，持有 2.240%。
+          </p>
+        </div>
+        <div class="callout">
+          <h3>高概率官方</h3>
+          <p>
+            第 9 名被 Arkham 标成 Squads Vault “SGL Marketing Lumen ServiceCo”；第 5 名是程序控制账户，
+            且第一次活动紧贴 TGE。两者都更像项目侧基础设施，而不是普通大户。
+          </p>
+        </div>
+        <div class="callout">
+          <h3>还不能直接判官方</h3>
+          <p>
+            其余几只大仓虽然集中度极高，但如果没有公开文档、明确标签或明显程序控制证据，页面一律继续放在“大户层”。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>交易所与 DEX 池子</h2>
+      <p class="section-intro">
+        这部分的重点不是 Top 10，而是提醒你：交易所和池子并不主导当前顶层筹码。
+      </p>
+      <div class="callout-grid">
+        <div class="callout">
+          <h3>交易所</h3>
+          <p>BubbleMaps / Arkham 目前把 Bitget、Coinbase、Gate、MEXC、Kucoin 识别在 Top 500 内，但最早也只排到第 12 名，合计下限仓位约 1.245%。</p>
+        </div>
+        <div class="callout">
+          <h3>DEX 池子</h3>
+          <p>当前 DEX / LP 不在 Top 10，整体占比也很低。这意味着顶层筹码不是“池子锁仓”，而是项目侧和大额钱包自持。</p>
+        </div>
+        <div class="callout">
+          <h3>市场含义</h3>
+          <p>如果后面盘面松动，最该盯的是 Top 10 大仓是否开始分拆转移，而不是先去盯交易所库存。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Tokenomics 对照</h2>
+      <p class="section-intro">
+        Docs 明确把 PRL 定义为 Solana 原生 token。下面这张表是官方释放口径，用来约束 Top 10 的解释范围，避免把 TGE 初期的大额分仓误判成异常操盘。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Bucket</th>
+            <th>Allocation</th>
+            <th>TGE Unlock</th>
+            <th>Cliff</th>
+            <th>Vesting</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td>Team</td>
+              <td>17.00%</td>
+              <td>0%</td>
+              <td>12 months</td>
+              <td>36 months</td>
+            </tr>
+            
+
+            <tr>
+              <td>Investors</td>
+              <td>27.66%</td>
+              <td>0%</td>
+              <td>12 months</td>
+              <td>36 months</td>
+            </tr>
+            
+
+            <tr>
+              <td>Ecosystem</td>
+              <td>17.84%</td>
+              <td>10% (of total supply)</td>
+              <td>N/A</td>
+              <td>48 months</td>
+            </tr>
+            
+
+            <tr>
+              <td>Community</td>
+              <td>37.50%</td>
+              <td>7.5% (of total supply)</td>
+              <td>N/A</td>
+              <td>36 months</td>
+            </tr>
+            
+        </tbody>
+      </table>
+      <p class="footer-note">
+        当前 Top 10 结构与 docs 的一个关键吻合点是：交易所和池子都没有占据顶层，说明筹码上层更像分配/托管层而不是二级市场流动层。
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Label Inventory</h2>
+      <p class="section-intro">
+        这里汇总了目前抓到的主要标签。高可读页面只解释 Top 10，但底层 label 清单依然保留，方便继续深挖。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>来源</th>
+            <th>标签</th>
+            <th>地址数</th>
+            <th>占总量</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td>Arkham</td>
+              <td>Squads Vault &quot;Lumen Foundation&quot;</td>
+              <td>1</td>
+              <td>2.240%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham</td>
+              <td>Squads Vault &quot;SGL Marketing Lumen ServiceCo&quot;</td>
+              <td>1</td>
+              <td>2.000%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham</td>
+              <td>Hot Wallet</td>
+              <td>8</td>
+              <td>1.165%</td>
+            </tr>
+            
+
+            <tr>
+              <td>BubbleMaps</td>
+              <td>Bitget Exchange (A77H...4RiR)</td>
+              <td>1</td>
+              <td>0.595%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham Entity</td>
+              <td>Bitget</td>
+              <td>1</td>
+              <td>0.595%</td>
+            </tr>
+            
+
+            <tr>
+              <td>BubbleMaps</td>
+              <td>Coinbase Hot Wallet (4NyK...LeFw)</td>
+              <td>1</td>
+              <td>0.232%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham Entity</td>
+              <td>Coinbase</td>
+              <td>1</td>
+              <td>0.232%</td>
+            </tr>
+            
+
+            <tr>
+              <td>BubbleMaps</td>
+              <td>Gate.io (u6PJ...Xq2w)</td>
+              <td>1</td>
+              <td>0.162%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham Entity</td>
+              <td>Gate</td>
+              <td>1</td>
+              <td>0.162%</td>
+            </tr>
+            
+
+            <tr>
+              <td>BubbleMaps</td>
+              <td>MEXC (ASTy...iaJZ)</td>
+              <td>1</td>
+              <td>0.137%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham Entity</td>
+              <td>MEXC</td>
+              <td>1</td>
+              <td>0.137%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham</td>
+              <td>Fireblocks Custody</td>
+              <td>2</td>
+              <td>0.054%</td>
+            </tr>
+            
+
+            <tr>
+              <td>BubbleMaps</td>
+              <td>GSR Markets Fireblocks Custody</td>
+              <td>1</td>
+              <td>0.049%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham Entity</td>
+              <td>GSR Markets</td>
+              <td>1</td>
+              <td>0.049%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham</td>
+              <td>Gate Deposit</td>
+              <td>9</td>
+              <td>0.041%</td>
+            </tr>
+            
+
+            <tr>
+              <td>BubbleMaps</td>
+              <td>Gate Deposit</td>
+              <td>5</td>
+              <td>0.036%</td>
+            </tr>
+            
+
+            <tr>
+              <td>BubbleMaps</td>
+              <td>Kucoin (BmFd...ymy6)</td>
+              <td>1</td>
+              <td>0.033%</td>
+            </tr>
+            
+
+            <tr>
+              <td>Arkham Entity</td>
+              <td>KuCoin</td>
+              <td>1</td>
+              <td>0.033%</td>
+            </tr>
+            
+        </tbody>
+      </table>
+      <p class="footer-note">
+        数据源说明：持仓快照来自 BubbleMaps Top 500；实体标签由 Arkham 补充；官方口径来自 Perle docs 与 audit 页面。Solscan 仅用于外链跳转，不作为本页结构化标签源。
+      </p>
+    </section>
+  </main>
+</body>
+</html>
