@@ -481,20 +481,26 @@ td {
       <div class="layer-grid">
         
     <article class="info-card info-sand">
-      <h3>Bridge Type</h3>
-      <p>BSC PRL 是 LayerZero V2 OFT。源码明确写了“不做初始铸币，只从 Solana 通过 bridge 进入”。</p>
+      <h3>BNB Bridged Slice</h3>
+      <p>当前映射到 BNB 的 PRL 是 83.45M，占官方 1B 总量的 8.345%。</p>
+    </article>
+    
+        
+    <article class="info-card info-ink">
+      <h3>Bridge Model</h3>
+      <p>BSC PRL 是 LayerZero V2 OFT，不是额外新增 supply。</p>
     </article>
     
         
     <article class="info-card info-ink">
       <h3>1:1 Match</h3>
-      <p>BSC totalSupply 现在是 83.45M PRL，对应 Solana escrow 也正好是 83.45M PRL。</p>
+      <p>BNB totalSupply 与 Solana escrow 现在都约为 83.45M PRL，链上是 1:1 对齐。</p>
     </article>
     
         
     <article class="info-card info-ink">
       <h3>Solana Peer</h3>
-      <p>BSC OFT 的 `peers(30168)` 指向 <code>HfXxnd...4fdh</code>，它不是普通钱包，而是程序控制账户。</p>
+      <p>BSC OFT 的 `peers(30168)` 指向 <code>HfXxnd...4fdh</code>，它是上层 peer / store，不是普通钱包。</p>
     </article>
     
         
@@ -524,15 +530,16 @@ td {
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Bridge Fact</th><th>On-chain Object</th><th>Meaning</th></tr></thead>
-          <tbody><tr><td>Bridge Model</td><td>LayerZero V2 OFT</td><td>BscScan 验证源码明确写明 `No initial mint - supply only enters via bridge from Solana`。</td></tr><tr><td>BSC Contract</td><td><a href="https://bscscan.com/address/0xd20fB09A49a8e75Fef536A2dBc68222900287BAc" target="_blank" rel="noreferrer"><code>0xd20f...7BAc</code></a><br>83.45M PRL</td><td>BSC 侧当前 supply 仅占官方 1B 总量的 8.34%。</td></tr><tr><td>Trusted Solana Peer</td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" rel="noreferrer"><code>HfXxnd...4fdh</code></a></td><td>直接读取 BSC OFT 的 `peers(30168)`，其中 30168 是 LayerZero Solana Mainnet EID。</td></tr><tr><td>Escrow Match</td><td><a href="https://solscan.io/account/96Pn2C665uvfiV968PYV1exdNUn3qvbBqHhX2n1kSkgw" target="_blank" rel="noreferrer"><code>96Pn2C...Skgw</code></a><br>83.45M PRL</td><td>该 Solana token account 由上面的 peer 地址控制，余额与 BSC totalSupply 精确 1:1 对齐。</td></tr><tr><td>Solana Program</td><td><a href="https://solscan.io/account/76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU" target="_blank" rel="noreferrer"><code>76fxTp...TaPU</code></a></td><td>该地址是 `HfXx...` 的 owner，链上可见为 executable program，不是普通钱包。</td></tr><tr><td>Endpoint</td><td><code>0x1a44...728c</code></td><td>BSC OFT 返回的 LayerZero endpoint 地址。</td></tr></tbody>
-        </table>
-      </div>
-      <div class="table-wrap">
-        <table>
           <thead><tr><th>BNB Rank</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>First Seen</th><th>Relations</th><th>Working Read</th></tr></thead>
           <tbody><tr><td>1</td><td><a href="https://bscscan.com/address/0x0350c44e15ada696992d44b13225e0853277adc0" target="_blank" rel="noreferrer"><code>0x0350...adc0</code></a></td><td>43.16M PRL</td><td>4.316%</td><td>2026-03-23</td><td>15 / 6 / 9</td><td>核心大仓，更像 BNB 映射层的分发母仓。</td></tr><tr><td>2</td><td><a href="https://bscscan.com/address/0xc3c74940e878b0e9ac86a12b0125c4df1a8f22d7" target="_blank" rel="noreferrer"><code>0xc3c7...22d7</code></a></td><td>10M PRL</td><td>1.000%</td><td>2026-03-25</td><td>3 / 3 / 0</td><td>整数/近整数分仓，更像规则化拆分出来的分仓。</td></tr><tr><td>4</td><td><a href="https://bscscan.com/address/0x5861703aa2c6acd7a3902e5a06f6aedba0eae257" target="_blank" rel="noreferrer"><code>0x5861...e257</code></a></td><td>5M PRL</td><td>0.500%</td><td>2026-03-25</td><td>3 / 3 / 0</td><td>整数/近整数分仓，更像规则化拆分出来的分仓。</td></tr><tr><td>5</td><td><a href="https://bscscan.com/address/0x5a4c318d66c0cf8ef381320a5d49f8a329414f50" target="_blank" rel="noreferrer"><code>0x5a4c...4f50</code></a></td><td>5M PRL</td><td>0.500%</td><td>2026-03-24</td><td>4 / 4 / 0</td><td>整数/近整数分仓，更像规则化拆分出来的分仓。</td></tr><tr><td>6</td><td><a href="https://bscscan.com/address/0xccf4d99cb373e054cc8dbf31dca37b8528ec5b55" target="_blank" rel="noreferrer"><code>0xccf4...5b55</code></a></td><td>5M PRL</td><td>0.500%</td><td>2026-03-24</td><td>3 / 3 / 0</td><td>整数/近整数分仓，更像规则化拆分出来的分仓。</td></tr><tr><td>7</td><td><a href="https://bscscan.com/address/0x0c4bb5b2a4cff8c035b590da8e0cf650f63f8c61" target="_blank" rel="noreferrer"><code>0x0c4b...8c61</code></a></td><td>4.5M PRL</td><td>0.450%</td><td>2026-03-25</td><td>8 / 5 / 3</td><td>整数/近整数分仓，更像规则化拆分出来的分仓。</td></tr></tbody>
         </table>
+      </div>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Overall Rank</div>
+          <h2>Solana + BNB 统一总榜</h2>
+        </div>
+        <p>按官方 <code>1B total supply</code> 口径统一重排。</p>
       </div>
       <div class="table-wrap">
         <table>

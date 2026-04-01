@@ -485,39 +485,6 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
             esc(first_seen_text(row.get("first_activity_date"))),
         ])
 
-    bsc_bridge_rows = [
-        [
-            "Bridge Model",
-            "LayerZero V2 OFT",
-            "BscScan 验证源码明确写明 `No initial mint - supply only enters via bridge from Solana`。",
-        ],
-        [
-            "BSC Contract",
-            f"<a href=\"{esc(bscscan_url(BSC_CONTRACT))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_CONTRACT))}</code></a><br>{esc(fmt_num(BSC_TOTAL_SUPPLY, 2))} PRL",
-            f"BSC 侧当前 supply 仅占官方 1B 总量的 {esc(fmt_pct(BSC_TOTAL_SUPPLY / total_supply, 2))}。",
-        ],
-        [
-            "Trusted Solana Peer",
-            f"<a href=\"{esc(solscan_url(BSC_SOLANA_PEER))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_SOLANA_PEER))}</code></a>",
-            "直接读取 BSC OFT 的 `peers(30168)`，其中 30168 是 LayerZero Solana Mainnet EID。",
-        ],
-        [
-            "Escrow Match",
-            f"<a href=\"{esc(solscan_url(BSC_SOLANA_ESCROW_TOKEN_ACCOUNT))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_SOLANA_ESCROW_TOKEN_ACCOUNT))}</code></a><br>{esc(fmt_num(BSC_TOTAL_SUPPLY, 2))} PRL",
-            "该 Solana token account 由上面的 peer 地址控制，余额与 BSC totalSupply 精确 1:1 对齐。",
-        ],
-        [
-            "Solana Program",
-            f"<a href=\"{esc(solscan_url(BSC_SOLANA_PEER_PROGRAM))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_SOLANA_PEER_PROGRAM))}</code></a>",
-            "该地址是 `HfXx...` 的 owner，链上可见为 executable program，不是普通钱包。",
-        ],
-        [
-            "Endpoint",
-            f"<code>{esc(short_addr(BSC_LAYERZERO_ENDPOINT))}</code>",
-            "BSC OFT 返回的 LayerZero endpoint 地址。",
-        ],
-    ]
-
     bsc_core_rows = []
     for row in bsc_core_whales:
         details = row["address_details"]
@@ -1031,9 +998,10 @@ td {{
         <p>BSC 侧是 LayerZero OFT 映射层，不是额外新增 supply。</p>
       </div>
       <div class="layer-grid">
-        {info_card("Bridge Type", "BSC PRL 是 LayerZero V2 OFT。源码明确写了“不做初始铸币，只从 Solana 通过 bridge 进入”。", "sand")}
-        {info_card("1:1 Match", f"BSC totalSupply 现在是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL，对应 Solana escrow 也正好是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL。", "ink")}
-        {info_card("Solana Peer", f"BSC OFT 的 `peers(30168)` 指向 <code>{short_addr(BSC_SOLANA_PEER)}</code>，它不是普通钱包，而是程序控制账户。", "ink")}
+        {info_card("BNB Bridged Slice", f"当前映射到 BNB 的 PRL 是 {fmt_num(BSC_TOTAL_SUPPLY, 2)}，占官方 1B 总量的 {fmt_pct(BSC_TOTAL_SUPPLY / total_supply, 3)}。", "sand")}
+        {info_card("Bridge Model", "BSC PRL 是 LayerZero V2 OFT，不是额外新增 supply。", "ink")}
+        {info_card("1:1 Match", f"BNB totalSupply 与 Solana escrow 现在都约为 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL，链上是 1:1 对齐。", "ink")}
+        {info_card("Solana Peer", f"BSC OFT 的 `peers(30168)` 指向 <code>{short_addr(BSC_SOLANA_PEER)}</code>，它是上层 peer / store，不是普通钱包。", "ink")}
         {info_card("Current BNB Top 10", f"BNB 前十按官方 1B 总量口径当前合计占 {fmt_pct(bsc_top10_total_share, 2)}。前排仍以未标注大户为主，交易所只有 Binance，DEX 主要是 PancakeSwap / Uniswap。", "ink")}
         {info_card("Top 20 Structure", f"BNB Top 20 里未标注地址有 {bsc_top20_summary['counts']['unlabeled_whale']} 个，合计 {fmt_num(bsc_top20_summary['amounts']['unlabeled_whale'], 2)} PRL，占官方总量 {fmt_pct(bsc_top20_summary['amounts']['unlabeled_whale'] / total_supply, 3)}。", "ink")}
         {info_card("Top 50 Structure", f"BNB Top 50 里未标注地址有 {bsc_top50_summary['counts']['unlabeled_whale']} 个，合计 {fmt_num(bsc_top50_summary['amounts']['unlabeled_whale'], 2)} PRL，占官方总量 {fmt_pct(bsc_top50_summary['amounts']['unlabeled_whale'] / total_supply, 3)}。", "ink")}
@@ -1041,15 +1009,16 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Bridge Fact</th><th>On-chain Object</th><th>Meaning</th></tr></thead>
-          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in bsc_bridge_rows)}</tbody>
-        </table>
-      </div>
-      <div class="table-wrap">
-        <table>
           <thead><tr><th>BNB Rank</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>First Seen</th><th>Relations</th><th>Working Read</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in bsc_core_rows)}</tbody>
         </table>
+      </div>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Overall Rank</div>
+          <h2>Solana + BNB 统一总榜</h2>
+        </div>
+        <p>按官方 <code>1B total supply</code> 口径统一重排。</p>
       </div>
       <div class="table-wrap">
         <table>
