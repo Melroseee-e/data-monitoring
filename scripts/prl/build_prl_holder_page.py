@@ -29,6 +29,12 @@ def fmt_pct(value: float, decimals: int = 2) -> str:
     return f"{float(value) * 100:.{decimals}f}%"
 
 
+def fmt_num_pct(amount: float, total: float, num_decimals: int = 0, pct_decimals: int = 2) -> str:
+    if not total:
+        return fmt_num(amount, num_decimals)
+    return f"{fmt_num(amount, num_decimals)} ({fmt_pct(float(amount) / float(total), pct_decimals)})"
+
+
 def short_addr(address: str, left: int = 6, right: int = 4) -> str:
     if len(address) <= left + right:
         return address
@@ -145,8 +151,8 @@ def build_page(data: dict[str, Any]) -> str:
     stat_cards = "".join([
         stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "顶层筹码高度集中。"),
         stat_card("First Exchange", f"#{summary['first_exchange_rank']}", f"交易所下限仓位 {fmt_pct(summary['exchange_share'])}。", "blue"),
-        stat_card("TGE Unlocked", fmt_num(summary["tge_unlocked_amount"], 0), "docs 理论已解锁量。", "cool"),
-        stat_card("Still Locked", fmt_num(summary["locked_after_tge_amount"], 0), "docs 理论待释放量。", "rose"),
+        stat_card("TGE Unlocked", fmt_num_pct(summary["tge_unlocked_amount"], total_supply, 0), "docs 理论已解锁量。", "cool"),
+        stat_card("Still Locked", fmt_num_pct(summary["locked_after_tge_amount"], total_supply, 0), "docs 理论待释放量。", "rose"),
     ])
 
     tokenomics_rows = []
@@ -156,34 +162,33 @@ def build_page(data: dict[str, Any]) -> str:
             f"{esc(fmt_num(item['allocation_amount'], 0))} PRL"
         )
         unlock_col = (
-            f"TGE {esc(fmt_num(item['tge_unlocked_amount'], 0))}<br>"
-            f"Locked {esc(fmt_num(item['locked_after_tge'], 0))}<br>"
+            f"TGE {esc(fmt_num_pct(item['tge_unlocked_amount'], total_supply, 0))}<br>"
+            f"Locked {esc(fmt_num_pct(item['locked_after_tge'], total_supply, 0))}<br>"
             f"{esc(item.get('cliff') or 'N/A')} cliff / {esc(item.get('vesting') or '-')}"
         )
         matched_parts = []
+        rank_parts = []
         for addr in item["matched_addresses"]:
-            rank_label = top_rank_ref(addr["address"], top10_rank_map)
-            prefix = f"{addr['role'] or '地址'}"
-            if rank_label:
-                prefix += f" · {rank_label}"
+            role_label = addr["role"] or "地址"
             matched_parts.append(
-                f"{esc(prefix)} <a href=\"{esc(solscan_url(addr['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(addr['address']))}</code></a>"
+                f"{esc(role_label)} <a href=\"{esc(solscan_url(addr['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(addr['address']))}</code></a>"
+            )
+            rank_parts.append(
+                f"{esc(role_label)} · {esc(top_rank_ref(addr['address'], top10_rank_map) or '非 Top 10')}"
             )
         matched_col = "<br>".join(matched_parts) or "未识别"
+        rank_col = "<br>".join(rank_parts) or "-"
         tokenomics_rows.append([
             esc(item["bucket"]),
             docs_col,
             unlock_col,
             matched_col,
+            rank_col,
             esc(item["summary"] or "-"),
         ])
 
     top10_rows = []
     for row in top10:
-        flow_col = (
-            f"IN {esc(counterparty_text(row.get('tx_primary_inbound'), top10_rank_map))}<br>"
-            f"OUT {esc(counterparty_text(row.get('tx_primary_outbound'), top10_rank_map))}"
-        )
         current_col = (
             f"{esc(fmt_num(row['amount'], 2))} PRL<br>"
             f"{esc(fmt_pct(row['share'], 3))}"
@@ -194,7 +199,6 @@ def build_page(data: dict[str, Any]) -> str:
             current_col,
             esc(row.get("tokenomics_bucket") or "-"),
             esc(row.get("top_holder_role") or "-"),
-            flow_col,
             esc(row.get("tx_release_status_label") or "-"),
             esc(row.get("classification_reason") or "-"),
         ])
@@ -614,7 +618,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Bucket</th><th>Docs</th><th>Unlock / Vesting</th><th>Current Matching Addresses</th><th>Why It Fits</th></tr></thead>
+          <thead><tr><th>Bucket</th><th>Docs</th><th>Unlock / Vesting</th><th>Current Matching Addresses</th><th>Address Rank</th><th>Why It Fits</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in tokenomics_rows)}</tbody>
         </table>
       </div>
@@ -626,11 +630,11 @@ td {{
           <div class="eyebrow">Top 10</div>
           <h2>Top 10 综合总表</h2>
         </div>
-        <p>角色、主资金路径、释放状态、推断理由。</p>
+        <p>角色、释放状态、推断理由。</p>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Key Flow</th><th>Release</th><th>Why It Fits</th></tr></thead>
+          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in top10_rows)}</tbody>
         </table>
       </div>
