@@ -12,7 +12,17 @@ OUTPUT_FILE = BASE_DIR / "web" / "prl_holder_structure.html"
 
 
 def fmt_num(value: float, decimals: int = 2) -> str:
-    return f"{float(value):,.{decimals}f}"
+    number = float(value)
+    if abs(number) >= 1_000_000:
+        scaled = number / 1_000_000
+        if decimals <= 0:
+            text = f"{scaled:,.0f}"
+        else:
+            text = f"{scaled:,.{decimals}f}".rstrip("0").rstrip(".")
+        return f"{text}M"
+    if decimals <= 0:
+        return f"{number:,.0f}"
+    return f"{number:,.{decimals}f}".rstrip("0").rstrip(".")
 
 
 def fmt_pct(value: float, decimals: int = 2) -> str:
