@@ -470,6 +470,55 @@ td {
       </div>
     </section>
 
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">BNB Bridge</div>
+          <h2>BNB 跨链桥与前排大户</h2>
+        </div>
+        <p>BSC 侧是 LayerZero OFT 映射层，不是额外新增 supply。</p>
+      </div>
+      <div class="layer-grid">
+        
+    <article class="info-card info-sand">
+      <h3>Bridge Type</h3>
+      <p>BSC PRL 是 LayerZero V2 OFT。源码明确写了“不做初始铸币，只从 Solana 通过 bridge 进入”。</p>
+    </article>
+    
+        
+    <article class="info-card info-ink">
+      <h3>1:1 Match</h3>
+      <p>BSC totalSupply 现在是 83.45M PRL，对应 Solana escrow 也正好是 83.45M PRL。</p>
+    </article>
+    
+        
+    <article class="info-card info-ink">
+      <h3>Solana Peer</h3>
+      <p>BSC OFT 的 `peers(30168)` 指向 <code>HfXxnd...4fdh</code>，它不是普通钱包，而是程序控制账户。</p>
+    </article>
+    
+        
+    <article class="info-card info-ink">
+      <h3>Current BNB Top 10</h3>
+      <p>BNB 前十当前合计持有 98.16%。前排仍以未标注大户为主，交易所只有 Binance，DEX 主要是 PancakeSwap。</p>
+    </article>
+    
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Bridge Fact</th><th>On-chain Object</th><th>Meaning</th></tr></thead>
+          <tbody><tr><td>Bridge Model</td><td>LayerZero V2 OFT</td><td>BscScan 验证源码明确写明 `No initial mint - supply only enters via bridge from Solana`。</td></tr><tr><td>BSC Contract</td><td><a href="https://bscscan.com/address/0xd20fB09A49a8e75Fef536A2dBc68222900287BAc" target="_blank" rel="noreferrer"><code>0xd20f...7BAc</code></a><br>83.45M PRL</td><td>BSC 侧当前 supply 仅占官方 1B 总量的 8.34%。</td></tr><tr><td>Trusted Solana Peer</td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" rel="noreferrer"><code>HfXxnd...4fdh</code></a></td><td>直接读取 BSC OFT 的 `peers(30168)`，其中 30168 是 LayerZero Solana Mainnet EID。</td></tr><tr><td>Escrow Match</td><td><a href="https://solscan.io/account/96Pn2C665uvfiV968PYV1exdNUn3qvbBqHhX2n1kSkgw" target="_blank" rel="noreferrer"><code>96Pn2C...Skgw</code></a><br>83.45M PRL</td><td>该 Solana token account 由上面的 peer 地址控制，余额与 BSC totalSupply 精确 1:1 对齐。</td></tr><tr><td>Solana Program</td><td><a href="https://solscan.io/account/76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU" target="_blank" rel="noreferrer"><code>76fxTp...TaPU</code></a></td><td>该地址是 `HfXx...` 的 owner，链上可见为 executable program，不是普通钱包。</td></tr><tr><td>Endpoint</td><td><code>0x1a44...728c</code></td><td>BSC OFT 返回的 LayerZero endpoint 地址。</td></tr></tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Label</th><th>Type</th></tr></thead>
+          <tbody><tr><td>1</td><td><a href="https://bscscan.com/address/0x0350c44e15ada696992d44b13225e0853277adc0" target="_blank" rel="noreferrer"><code>0x0350...adc0</code></a></td><td>43.16M PRL<br>51.720%</td><td>-</td><td>未标注大户</td></tr><tr><td>2</td><td><a href="https://bscscan.com/address/0xc3c74940e878b0e9ac86a12b0125c4df1a8f22d7" target="_blank" rel="noreferrer"><code>0xc3c7...22d7</code></a></td><td>10M PRL<br>11.983%</td><td>-</td><td>未标注大户</td></tr><tr><td>3</td><td><a href="https://bscscan.com/address/0x73d8bd54f7cf5fab43fe4ef40a62d390644946db" target="_blank" rel="noreferrer"><code>0x73d8...46db</code></a></td><td>5.89M PRL<br>7.061%</td><td>Binance Wallet Proxy (EIP-1967 Transparent)</td><td>交易所</td></tr><tr><td>4</td><td><a href="https://bscscan.com/address/0x5861703aa2c6acd7a3902e5a06f6aedba0eae257" target="_blank" rel="noreferrer"><code>0x5861...e257</code></a></td><td>5M PRL<br>5.992%</td><td>-</td><td>未标注大户</td></tr><tr><td>5</td><td><a href="https://bscscan.com/address/0x5a4c318d66c0cf8ef381320a5d49f8a329414f50" target="_blank" rel="noreferrer"><code>0x5a4c...4f50</code></a></td><td>5M PRL<br>5.992%</td><td>-</td><td>未标注大户</td></tr><tr><td>6</td><td><a href="https://bscscan.com/address/0xccf4d99cb373e054cc8dbf31dca37b8528ec5b55" target="_blank" rel="noreferrer"><code>0xccf4...5b55</code></a></td><td>5M PRL<br>5.992%</td><td>-</td><td>未标注大户</td></tr><tr><td>7</td><td><a href="https://bscscan.com/address/0x0c4bb5b2a4cff8c035b590da8e0cf650f63f8c61" target="_blank" rel="noreferrer"><code>0x0c4b...8c61</code></a></td><td>4.5M PRL<br>5.393%</td><td>-</td><td>未标注大户</td></tr><tr><td>8</td><td><a href="https://bscscan.com/address/0x238a358808379702088667322f80ac48bad5e6c4" target="_blank" rel="noreferrer"><code>0x238a...e6c4</code></a></td><td>2.63M PRL<br>3.154%</td><td>PancakeSwap Vault (0x23...e6c4)</td><td>DEX 池子</td></tr><tr><td>9</td><td><a href="https://bscscan.com/address/0x1026efec22061b9f463b63e75e8b531a76404820" target="_blank" rel="noreferrer"><code>0x1026...4820</code></a></td><td>490,624.26 PRL<br>0.588%</td><td>-</td><td>未标注大户</td></tr><tr><td>10</td><td><a href="https://bscscan.com/address/0x372386969100562870d156b64fe05c26c2adc168" target="_blank" rel="noreferrer"><code>0x3723...c168</code></a></td><td>238,064.21 PRL<br>0.285%</td><td>-</td><td>未标注大户</td></tr></tbody>
+        </table>
+      </div>
+      <p class="note"><code>degenrunner.bnb</code> 是历史上出现过的 BNB 侧标签地址，但当前已经不在前十，且我这次链上复核时余额为 0。</p>
+    </section>
+
     <section class="panel section">
       <div class="section-head">
         <div>

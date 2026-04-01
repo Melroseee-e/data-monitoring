@@ -10,6 +10,85 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 INPUT_FILE = BASE_DIR / "data" / "prl" / "derived" / "prl_holder_analysis.json"
 OUTPUT_FILE = BASE_DIR / "web" / "prl_holder_structure.html"
 
+BSC_CONTRACT = "0xd20fB09A49a8e75Fef536A2dBc68222900287BAc"
+BSC_TOTAL_SUPPLY = 83_448_737.510778
+BSC_SOLANA_PEER = "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh"
+BSC_SOLANA_ESCROW_TOKEN_ACCOUNT = "96Pn2C665uvfiV968PYV1exdNUn3qvbBqHhX2n1kSkgw"
+BSC_SOLANA_PEER_PROGRAM = "76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU"
+BSC_LAYERZERO_ENDPOINT = "0x1a44076050125825900e736c501f859c50fe728c"
+BSC_TOP_HOLDERS = [
+    {
+        "rank": 1,
+        "address": "0x0350c44e15ada696992d44b13225e0853277adc0",
+        "amount": 43_160_000.0,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+    {
+        "rank": 2,
+        "address": "0xc3c74940e878b0e9ac86a12b0125c4df1a8f22d7",
+        "amount": 10_000_000.0,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+    {
+        "rank": 3,
+        "address": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
+        "amount": 5_892_437.95799694,
+        "label": "Binance Wallet Proxy (EIP-1967 Transparent)",
+        "holder_type": "交易所",
+    },
+    {
+        "rank": 4,
+        "address": "0x5861703aa2c6acd7a3902e5a06f6aedba0eae257",
+        "amount": 5_000_000.0,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+    {
+        "rank": 5,
+        "address": "0x5a4c318d66c0cf8ef381320a5d49f8a329414f50",
+        "amount": 5_000_000.0,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+    {
+        "rank": 6,
+        "address": "0xccf4d99cb373e054cc8dbf31dca37b8528ec5b55",
+        "amount": 5_000_000.0,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+    {
+        "rank": 7,
+        "address": "0x0c4bb5b2a4cff8c035b590da8e0cf650f63f8c61",
+        "amount": 4_499_990.0,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+    {
+        "rank": 8,
+        "address": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "amount": 2_631_759.34214794,
+        "label": "PancakeSwap Vault (0x23...e6c4)",
+        "holder_type": "DEX 池子",
+    },
+    {
+        "rank": 9,
+        "address": "0x1026efec22061b9f463b63e75e8b531a76404820",
+        "amount": 490_624.25512711,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+    {
+        "rank": 10,
+        "address": "0x372386969100562870d156b64fe05c26c2adc168",
+        "amount": 238_064.21390527,
+        "label": "-",
+        "holder_type": "未标注大户",
+    },
+]
+
 
 def fmt_num(value: float, decimals: int = 2) -> str:
     number = float(value)
@@ -47,6 +126,10 @@ def esc(value: Any) -> str:
 
 def solscan_url(address: str) -> str:
     return f"https://solscan.io/account/{address}"
+
+
+def bscscan_url(address: str) -> str:
+    return f"https://bscscan.com/address/{address}"
 
 
 def bucket_label(bucket: str) -> str:
@@ -162,6 +245,7 @@ def build_page(data: dict[str, Any]) -> str:
 
     official_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"})
     top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
+    bsc_top10_share = sum(row["amount"] for row in BSC_TOP_HOLDERS) / BSC_TOTAL_SUPPLY
     whale_candidates = [
         row for row in holders
         if row.get("resolved_bucket") not in {"official_public", "official_inferred", "exchange", "dex_pool"}
@@ -236,6 +320,50 @@ def build_page(data: dict[str, Any]) -> str:
             esc(holder_title(row).replace("No BubbleMaps / Arkham label", "无外部标签")),
             esc(market_holder_type(row)),
             esc(first_seen_text(row.get("first_activity_date"))),
+        ])
+
+    bsc_bridge_rows = [
+        [
+            "Bridge Model",
+            "LayerZero V2 OFT",
+            "BscScan 验证源码明确写明 `No initial mint - supply only enters via bridge from Solana`。",
+        ],
+        [
+            "BSC Contract",
+            f"<a href=\"{esc(bscscan_url(BSC_CONTRACT))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_CONTRACT))}</code></a><br>{esc(fmt_num(BSC_TOTAL_SUPPLY, 2))} PRL",
+            f"BSC 侧当前 supply 仅占官方 1B 总量的 {esc(fmt_pct(BSC_TOTAL_SUPPLY / total_supply, 2))}。",
+        ],
+        [
+            "Trusted Solana Peer",
+            f"<a href=\"{esc(solscan_url(BSC_SOLANA_PEER))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_SOLANA_PEER))}</code></a>",
+            "直接读取 BSC OFT 的 `peers(30168)`，其中 30168 是 LayerZero Solana Mainnet EID。",
+        ],
+        [
+            "Escrow Match",
+            f"<a href=\"{esc(solscan_url(BSC_SOLANA_ESCROW_TOKEN_ACCOUNT))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_SOLANA_ESCROW_TOKEN_ACCOUNT))}</code></a><br>{esc(fmt_num(BSC_TOTAL_SUPPLY, 2))} PRL",
+            "该 Solana token account 由上面的 peer 地址控制，余额与 BSC totalSupply 精确 1:1 对齐。",
+        ],
+        [
+            "Solana Program",
+            f"<a href=\"{esc(solscan_url(BSC_SOLANA_PEER_PROGRAM))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(BSC_SOLANA_PEER_PROGRAM))}</code></a>",
+            "该地址是 `HfXx...` 的 owner，链上可见为 executable program，不是普通钱包。",
+        ],
+        [
+            "Endpoint",
+            f"<code>{esc(short_addr(BSC_LAYERZERO_ENDPOINT))}</code>",
+            "BSC OFT 返回的 LayerZero endpoint 地址。",
+        ],
+    ]
+
+    bsc_holder_rows = []
+    for row in BSC_TOP_HOLDERS:
+        share = row["amount"] / BSC_TOTAL_SUPPLY
+        bsc_holder_rows.append([
+            esc(str(row["rank"])),
+            f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
+            f"{esc(fmt_num(row['amount'], 2))} PRL<br>{esc(fmt_pct(share, 3))}",
+            esc(row["label"]),
+            esc(row["holder_type"]),
         ])
 
     source_path = "https://github.com/Melroseee-e/data-monitoring"
@@ -689,6 +817,35 @@ td {{
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in whale_rows)}</tbody>
         </table>
       </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">BNB Bridge</div>
+          <h2>BNB 跨链桥与前排大户</h2>
+        </div>
+        <p>BSC 侧是 LayerZero OFT 映射层，不是额外新增 supply。</p>
+      </div>
+      <div class="layer-grid">
+        {info_card("Bridge Type", "BSC PRL 是 LayerZero V2 OFT。源码明确写了“不做初始铸币，只从 Solana 通过 bridge 进入”。", "sand")}
+        {info_card("1:1 Match", f"BSC totalSupply 现在是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL，对应 Solana escrow 也正好是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL。", "ink")}
+        {info_card("Solana Peer", f"BSC OFT 的 `peers(30168)` 指向 <code>{short_addr(BSC_SOLANA_PEER)}</code>，它不是普通钱包，而是程序控制账户。", "ink")}
+        {info_card("Current BNB Top 10", f"BNB 前十当前合计持有 {fmt_pct(bsc_top10_share, 2)}。前排仍以未标注大户为主，交易所只有 Binance，DEX 主要是 PancakeSwap。", "ink")}
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Bridge Fact</th><th>On-chain Object</th><th>Meaning</th></tr></thead>
+          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in bsc_bridge_rows)}</tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Label</th><th>Type</th></tr></thead>
+          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in bsc_holder_rows)}</tbody>
+        </table>
+      </div>
+      <p class="note"><code>degenrunner.bnb</code> 是历史上出现过的 BNB 侧标签地址，但当前已经不在前十，且我这次链上复核时余额为 0。</p>
     </section>
 
     <section class="panel section">
