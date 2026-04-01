@@ -514,6 +514,10 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
             f"{esc(fmt_num(row['amount'], 2))} PRL<br>"
             f"{esc(fmt_pct(row['share'], 3))}"
         )
+        if row["address"] == BSC_SOLANA_PEER:
+            bridge_col = f"是<br>对应 BNB {esc(fmt_num(BSC_TOTAL_SUPPLY, 2))}"
+        else:
+            bridge_col = "-"
         top10_rows.append([
             tag_badge(normalize_tag(row.get("resolved_bucket"))),
             esc(str(row["rank"])),
@@ -521,6 +525,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
             current_col,
             esc(row.get("tokenomics_bucket") or "-"),
             esc(row.get("top_holder_role") or "-"),
+            bridge_col,
             esc(row.get("tx_release_status_label") or "-"),
             esc(row.get("classification_reason") or "-"),
         ])
@@ -1081,7 +1086,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Tag</th><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr></thead>
+          <thead><tr><th>Tag</th><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>BNB Mapping</th><th>Release</th><th>Why It Fits</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in top10_rows)}</tbody>
         </table>
       </div>
