@@ -2,9 +2,16 @@
 from __future__ import annotations
 
 import html
+import time
 import json
+import hmac
+import hashlib
+import base64
 from pathlib import Path
 from typing import Any
+from datetime import datetime, timezone
+
+import requests
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 INPUT_FILE = BASE_DIR / "data" / "prl" / "derived" / "prl_holder_analysis.json"
@@ -16,7 +23,9 @@ BSC_SOLANA_PEER = "HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh"
 BSC_SOLANA_ESCROW_TOKEN_ACCOUNT = "96Pn2C665uvfiV968PYV1exdNUn3qvbBqHhX2n1kSkgw"
 BSC_SOLANA_PEER_PROGRAM = "76fxTpnrukUr6i36wK8K4UJsABtAaPJxP9nZytQKTaPU"
 BSC_LAYERZERO_ENDPOINT = "0x1a44076050125825900e736c501f859c50fe728c"
-BSC_TOP_HOLDERS = [
+BUBBLEMAPS_INTERNAL_API = "https://api.bubblemaps.io"
+BUBBLEMAPS_JWT_SECRET = "LTJBO6Dsb5dEJ9pS"
+BSC_TOP_HOLDERS_FALLBACK = [
     {
         "rank": 1,
         "address": "0x0350c44e15ada696992d44b13225e0853277adc0",
@@ -88,6 +97,35 @@ BSC_TOP_HOLDERS = [
         "holder_type": "未标注大户",
     },
 ]
+
+
+def _b64url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode()
+
+
+def make_bubblemaps_jwt(path: str) -> str:
+    header = _b64url(json.dumps({"alg": "HS256", "typ": "JWT"}).encode())
+    now = int(time.time())
+    payload = _b64url(json.dumps({
+        "data": path,
+        "exp": now + 300,
+        "iat": now,
+    }).encode())
+    signing_input = f"{header}.{payload}".encode()
+    sig = hmac.new(BUBBLEMAPS_JWT_SECRET.encode(), signing_input, hashlib.sha256).digest()
+    return f"{header}.{payload}.{_b64url(sig)}"
+
+
+def fetch_bsc_top_holders(count: int = 500) -> list[dict[str, Any]]:
+    path = f"/addresses/token-top-holders?count={count}&date={datetime.now(timezone.utc).strftime('%Y-%m-%d')}&nocache=false"
+    headers = {
+        "X-Validation": make_bubblemaps_jwt(path),
+        "Content-Type": "application/json",
+    }
+    body = {"chain": "bsc", "address": BSC_CONTRACT}
+    response = requests.post(f"{BUBBLEMAPS_INTERNAL_API}{path}", headers=headers, json=body, timeout=60)
+    response.raise_for_status()
+    return response.json()
 
 
 def fmt_num(value: float, decimals: int = 2) -> str:
@@ -162,6 +200,126 @@ def market_holder_type(row: dict[str, Any]) -> str:
     return "未标注大户"
 
 
+def classify_bsc_holder(holder: dict[str, Any]) -> str:
+    details = holder.get("address_details", {})
+    if details.get("is_cex"):
+        return "exchange"
+    if details.get("is_dex"):
+        return "dex"
+    if details.get("label"):
+        return "labeled_non_exchange"
+    return "unlabeled_whale"
+
+
+def summarize_bsc_holders(holders: list[dict[str, Any]], cutoff: int) -> dict[str, Any]:
+    sample = [row for row in holders if int(row["holder_data"]["rank"]) <= cutoff]
+    summary = {
+        "cutoff": cutoff,
+        "total_amount": sum(float(row["holder_data"]["amount"]) for row in sample),
+        "counts": {"unlabeled_whale": 0, "labeled_non_exchange": 0, "exchange": 0, "dex": 0},
+        "amounts": {"unlabeled_whale": 0.0, "labeled_non_exchange": 0.0, "exchange": 0.0, "dex": 0.0},
+    }
+    for row in sample:
+        bucket = classify_bsc_holder(row)
+        amount = float(row["holder_data"]["amount"])
+        summary["counts"][bucket] += 1
+        summary["amounts"][bucket] += amount
+    return summary
+
+
+def bsc_label_or_role(holder: dict[str, Any]) -> str:
+    details = holder.get("address_details", {})
+    label = details.get("label")
+    if label:
+        return str(label)
+    bucket = classify_bsc_holder(holder)
+    if bucket == "exchange":
+        return "交易所"
+    if bucket == "dex":
+        return "DEX 池子"
+    if bucket == "labeled_non_exchange":
+        return "已标注非官方"
+    return "未标注大户"
+
+
+def bsc_first_seen(holder: dict[str, Any]) -> str:
+    value = holder.get("address_details", {}).get("first_activity_date")
+    return first_seen_text(value)
+
+
+def bsc_relations_text(holder: dict[str, Any]) -> str:
+    details = holder.get("address_details", {})
+    return f"{details.get('degree', 0)} / {details.get('inward_relations', 0)} / {details.get('outward_relations', 0)}"
+
+
+def bsc_working_takeaway(holder: dict[str, Any]) -> str:
+    details = holder.get("address_details", {})
+    amount = float(holder["holder_data"]["amount"])
+    rank = int(holder["holder_data"]["rank"])
+    outward = int(details.get("outward_relations") or 0)
+    degree = int(details.get("degree") or 0)
+    bucket = classify_bsc_holder(holder)
+
+    if bucket == "exchange":
+        return "交易所库存，不视作独立大户。"
+    if bucket == "dex":
+        return "DEX / LP 库存，不视作独立大户。"
+    if rank == 1:
+        return "核心大仓，更像 BNB 映射层的分发母仓。"
+    if amount in {10_000_000.0, 5_000_000.0} or abs(amount - 4_499_990.0) < 1:
+        return "整数/近整数分仓，更像规则化拆分出来的分仓。"
+    if degree <= 8 and outward == 0:
+        return "关系很少且几乎不外发，更像静态持仓仓位。"
+    return "未标注大户，但更偏次级流通持仓而不是基础设施。"
+
+
+def build_bsc_snapshot() -> dict[str, Any]:
+    try:
+        holders = fetch_bsc_top_holders(500)
+        source = "live"
+    except Exception:
+        holders = []
+        for row in BSC_TOP_HOLDERS_FALLBACK:
+            holders.append({
+                "address": row["address"],
+                "address_details": {
+                    "label": None if row["label"] == "-" else row["label"],
+                    "degree": 0,
+                    "is_supernode": False,
+                    "is_contract": row["holder_type"] == "DEX 池子",
+                    "is_cex": row["holder_type"] == "交易所",
+                    "is_dex": row["holder_type"] == "DEX 池子",
+                    "entity_id": None,
+                    "inward_relations": 0,
+                    "outward_relations": 0,
+                    "first_activity_date": None,
+                },
+                "holder_data": {
+                    "amount": row["amount"],
+                    "rank": row["rank"],
+                    "share": row["amount"] / BSC_TOTAL_SUPPLY,
+                },
+            })
+        source = "fallback"
+
+    top10 = [row for row in holders if int(row["holder_data"]["rank"]) <= 10]
+    top20_summary = summarize_bsc_holders(holders, 20)
+    top50_summary = summarize_bsc_holders(holders, 50)
+    core_whales = [
+        row for row in holders
+        if classify_bsc_holder(row) == "unlabeled_whale" and float(row["holder_data"]["amount"]) >= 4_000_000
+    ]
+    core_whales = sorted(core_whales, key=lambda row: float(row["holder_data"]["amount"]), reverse=True)
+    return {
+        "source": source,
+        "holders": holders,
+        "top10": top10,
+        "top20_summary": top20_summary,
+        "top50_summary": top50_summary,
+        "core_whales": core_whales,
+    }
+
+
 def rank_ref(address: str, rank_map: dict[str, int]) -> str:
     rank = rank_map.get(address)
     if rank:
@@ -229,7 +387,7 @@ def table_section(title: str, subtitle: str, headers: list[str], rows: list[list
     """
 
 
-def build_page(data: dict[str, Any]) -> str:
+def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     metadata = data["metadata"]
     summary = data["summary"]
     docs = data["docs_facts"]
@@ -245,7 +403,12 @@ def build_page(data: dict[str, Any]) -> str:
 
     official_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"})
     top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
-    bsc_top10_total_share = sum(row["amount"] for row in BSC_TOP_HOLDERS) / total_supply
+    bsc_top10_holders = bsc_snapshot["top10"]
+    bsc_top20_summary = bsc_snapshot["top20_summary"]
+    bsc_top50_summary = bsc_snapshot["top50_summary"]
+    bsc_core_whales = bsc_snapshot["core_whales"]
+    bsc_top10_total_share = sum(float(row["holder_data"]["amount"]) for row in bsc_top10_holders) / total_supply
+    bsc_core_whale_amount = sum(float(row["holder_data"]["amount"]) for row in bsc_core_whales)
     whale_candidates = [
         row for row in holders
         if row.get("resolved_bucket") not in {"official_public", "official_inferred", "exchange", "dex_pool"}
@@ -355,6 +518,19 @@ def build_page(data: dict[str, Any]) -> str:
         ],
     ]
 
+    bsc_core_rows = []
+    for row in bsc_core_whales:
+        details = row["address_details"]
+        bsc_core_rows.append([
+            esc(str(row["holder_data"]["rank"])),
+            f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
+            f"{esc(fmt_num(row['holder_data']['amount'], 2))} PRL",
+            esc(fmt_pct(float(row["holder_data"]["amount"]) / total_supply, 3)),
+            esc(bsc_first_seen(row)),
+            esc(bsc_relations_text(row)),
+            esc(bsc_working_takeaway(row)),
+        ])
+
     combined_rank_rows = []
     combined_rank_entries: list[dict[str, Any]] = []
     for row in top10:
@@ -370,15 +546,16 @@ def build_page(data: dict[str, Any]) -> str:
             "label": esc(row.get("top_holder_role") or row.get("tokenomics_bucket") or "-"),
             "relation": esc(relation),
         })
-    for row in BSC_TOP_HOLDERS:
+    for row in bsc_top10_holders:
+        amount = float(row["holder_data"]["amount"])
         combined_rank_entries.append({
-            "amount": float(row["amount"]),
+            "amount": amount,
             "chain": "BNB",
             "address_cell": f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
-            "current": f"{esc(fmt_num(row['amount'], 2))} PRL",
-            "share": esc(fmt_pct(row["amount"] / total_supply, 3)),
-            "label": esc(row["label"] if row["label"] != "-" else row["holder_type"]),
-            "relation": "Solana Top 5 映射流通下游",
+            "current": f"{esc(fmt_num(amount, 2))} PRL",
+            "share": esc(fmt_pct(amount / total_supply, 3)),
+            "label": esc(bsc_label_or_role(row)),
+            "relation": "BNB 映射流通下游",
         })
     combined_rank_entries.sort(key=lambda item: item["amount"], reverse=True)
     for idx, item in enumerate(combined_rank_entries, start=1):
@@ -857,7 +1034,10 @@ td {{
         {info_card("Bridge Type", "BSC PRL 是 LayerZero V2 OFT。源码明确写了“不做初始铸币，只从 Solana 通过 bridge 进入”。", "sand")}
         {info_card("1:1 Match", f"BSC totalSupply 现在是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL，对应 Solana escrow 也正好是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL。", "ink")}
         {info_card("Solana Peer", f"BSC OFT 的 `peers(30168)` 指向 <code>{short_addr(BSC_SOLANA_PEER)}</code>，它不是普通钱包，而是程序控制账户。", "ink")}
-        {info_card("Current BNB Top 10", f"BNB 前十按官方 1B 总量口径当前合计占 {fmt_pct(bsc_top10_total_share, 2)}。前排仍以未标注大户为主，交易所只有 Binance，DEX 主要是 PancakeSwap。", "ink")}
+        {info_card("Current BNB Top 10", f"BNB 前十按官方 1B 总量口径当前合计占 {fmt_pct(bsc_top10_total_share, 2)}。前排仍以未标注大户为主，交易所只有 Binance，DEX 主要是 PancakeSwap / Uniswap。", "ink")}
+        {info_card("Top 20 Structure", f"BNB Top 20 里未标注地址有 {bsc_top20_summary['counts']['unlabeled_whale']} 个，合计 {fmt_num(bsc_top20_summary['amounts']['unlabeled_whale'], 2)} PRL，占官方总量 {fmt_pct(bsc_top20_summary['amounts']['unlabeled_whale'] / total_supply, 3)}。", "ink")}
+        {info_card("Top 50 Structure", f"BNB Top 50 里未标注地址有 {bsc_top50_summary['counts']['unlabeled_whale']} 个，合计 {fmt_num(bsc_top50_summary['amounts']['unlabeled_whale'], 2)} PRL，占官方总量 {fmt_pct(bsc_top50_summary['amounts']['unlabeled_whale'] / total_supply, 3)}。", "ink")}
+        {info_card("Core 6 Whales", f"前 6 个核心未标注大户合计 {fmt_num(bsc_core_whale_amount, 2)} PRL，占官方总量 {fmt_pct(bsc_core_whale_amount / total_supply, 3)}。结构更像分发分仓，不像自然形成的市场鲸鱼。", "sand")}
       </div>
       <div class="table-wrap">
         <table>
@@ -867,11 +1047,17 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
+          <thead><tr><th>BNB Rank</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>First Seen</th><th>Relations</th><th>Working Read</th></tr></thead>
+          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in bsc_core_rows)}</tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
           <thead><tr><th>Overall Rank</th><th>Chain</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>Label / Role</th><th>Relation</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in combined_rank_rows)}</tbody>
         </table>
       </div>
-      <p class="note">统一排行全部按官方 <code>1B total supply</code> 口径计算。BNB 行是 Solana Top 5 bridge slice 的下游流通分布，用于看跨链控盘结构，不可与 Solana 行直接相加。<code>degenrunner.bnb</code> 是历史上出现过的 BNB 标签地址，但当前已经不在前十，且我这次链上复核时余额为 0。</p>
+      <p class="note">统一排行全部按官方 <code>1B total supply</code> 口径计算。BNB 行是 Solana bridge slice 的下游流通分布，用于看跨链控盘结构，不可与 Solana 行直接相加。当前最有信息量的是前 6 个未标注大户：它们合计 {fmt_num(bsc_core_whale_amount, 2)} PRL，占 BNB 映射盘约 {fmt_pct(bsc_core_whale_amount / BSC_TOTAL_SUPPLY, 2)}，而且 10M / 5M / 5M / 5M / 4.5M 的整额分仓与集中出现时间，更像规则化分发。</p>
     </section>
 
     <section class="panel section">
@@ -905,8 +1091,9 @@ td {{
 
 def main() -> None:
     data = json.loads(INPUT_FILE.read_text(encoding="utf-8"))
+    bsc_snapshot = build_bsc_snapshot()
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_FILE.write_text(build_page(data), encoding="utf-8")
+    OUTPUT_FILE.write_text(build_page(data, bsc_snapshot), encoding="utf-8")
     print(f"Wrote {OUTPUT_FILE}")
 
 
