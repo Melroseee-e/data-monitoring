@@ -437,10 +437,10 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     ][:8]
 
     stat_cards = "".join([
-        stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "顶层筹码高度集中。"),
-        stat_card("First Exchange", f"#{summary['first_exchange_rank']}", f"交易所下限仓位 {fmt_pct(summary['exchange_share'])}。", "blue"),
-        stat_card("TGE Unlocked", fmt_num_pct(summary["tge_unlocked_amount"], total_supply, 0), "docs 理论已解锁量。", "cool"),
-        stat_card("Still Locked", fmt_num_pct(summary["locked_after_tge_amount"], total_supply, 0), "docs 理论待释放量。", "rose"),
+        stat_card("Official Share", fmt_pct(official_top10_share), "当前已识别官方样仓位。", "sand"),
+        stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "顶层筹码集中度。", "blue"),
+        stat_card("BNB Bridged Slice", fmt_num_pct(BSC_TOTAL_SUPPLY, total_supply, 2), "当前映射到 BNB 的总量。", "cool"),
+        stat_card("TGE Unlocked", fmt_num_pct(summary["tge_unlocked_amount"], total_supply, 0), "docs 理论已解锁量。", "rose"),
     ])
 
     tokenomics_rows = []
@@ -989,7 +989,7 @@ td {{
           </div>
           <div class="meta-line">
             <span class="meta-pill">Total Supply <strong>{esc(fmt_num(total_supply, 0))}</strong></span>
-            <span class="meta-pill">First Exchange <strong>#{esc(summary['first_exchange_rank'])}</strong></span>
+            <span class="meta-pill">BNB Slice <strong>{esc(fmt_pct(BSC_TOTAL_SUPPLY / total_supply, 3))}</strong></span>
           </div>
           <div class="meta-line">
             <span class="meta-pill">Top 11-50 <strong>{esc(fmt_pct(top11_50_share))}</strong></span>
@@ -1095,15 +1095,16 @@ td {{
       <div class="section-head">
         <div>
           <div class="eyebrow">Market Structure</div>
-          <h2>市场结构结论</h2>
+          <h2>整体结论</h2>
         </div>
-        <p>关键结论。</p>
+        <p>四句话看完整体结构。</p>
       </div>
       <div class="layer-grid">
-        {info_card("Official Control", f"Top 10 中已公开官方 + 高概率官方合计 {fmt_pct(official_top10_share)}。", "sand")}
-        {info_card("Exchange", f"第一个交易所地址排第 {summary['first_exchange_rank']}，下限仓位 {fmt_pct(summary['exchange_share'])}。", "ink")}
-        {info_card("DEX", f"DEX / LP 下限仓位 {fmt_pct(summary['dex_share'])}，不在 Top 10。", "ink")}
-        {info_card("Takeaway", "当前最重要的是官方分发与配额释放，不是交易所库存或 LP。", "ink")}
+        {info_card("Solana 主发行层", f"Top 10 当前控制 {fmt_pct(summary['top10_share'])}，其中官方公开 + 高概率官方合计 {fmt_pct(official_top10_share)}。这一层更像官方配额地图，不像自然市场分布。", "sand")}
+        {info_card("BNB 映射层", f"当前跨链到 BNB 的 PRL 是 {fmt_num(BSC_TOTAL_SUPPLY, 2)}，占官方总量 {fmt_pct(BSC_TOTAL_SUPPLY / total_supply, 3)}。这部分是映射流通，不是新增 supply。", "ink")}
+        {info_card("BNB 大户结构", f"BNB 前 6 个未标注大户合计 {fmt_num(bsc_core_whale_amount, 2)}，占 BNB 映射盘 {fmt_pct(bsc_core_whale_amount / BSC_TOTAL_SUPPLY, 2)}。10M / 5M / 5M / 5M / 4.5M 的整额分仓更像规则化分发。", "rose")}
+        {info_card("交易所与 DEX", f"Solana 主层第一个交易所只到第 {summary['first_exchange_rank']}，交易所下限仓位 {fmt_pct(summary['exchange_share'])}；DEX / LP 下限仓位 {fmt_pct(summary['dex_share'])}。二级市场基础设施不是当前主矛盾。", "ink")}
+        {info_card("核心判断", "当前最重要的不是追零散散户，而是盯官方配额释放、Solana 到 BNB 的映射分发，以及 BNB 侧那几个规则化分仓的大户是否继续外流。", "sand")}
       </div>
     </section>
 
