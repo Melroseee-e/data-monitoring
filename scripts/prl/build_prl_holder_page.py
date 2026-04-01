@@ -445,11 +445,6 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
         if row.get("resolved_bucket") not in {"official_public", "official_inferred", "exchange", "dex_pool"}
     )
     sol_cex_amount = float(summary["exchange_share"]) * total_supply
-    bsc_cex_amount = sum(
-        float(row["holder_data"]["amount"]) for row in bsc_snapshot["holders"]
-        if classify_bsc_holder(row) == "exchange"
-    )
-    combined_cex_amount = sol_cex_amount + bsc_cex_amount
     bsc_whale_like_amount = sum(
         float(row["holder_data"]["amount"]) for row in bsc_snapshot["holders"]
         if classify_bsc_holder(row) not in {"exchange", "dex"}
@@ -472,7 +467,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
             "blue",
         ),
         stat_card("Whale Share", fmt_num_pct(sol_whale_like_amount, total_supply, 2), "主供应口径下，排除官方 / CEX / DEX 后的 Solana 大户样仓位。", "rose"),
-        stat_card("CEX Share", fmt_num_pct(combined_cex_amount, total_supply, 2), "跨 Solana + BNB 已识别中心化交易所仓位。", "sand"),
+        stat_card("CEX Share", fmt_num_pct(sol_cex_amount, total_supply, 2), "Solana 主层已识别中心化交易所仓位。", "sand"),
         stat_card("BNB Bridged Slice", fmt_num_pct(BSC_TOTAL_SUPPLY, total_supply, 2), "当前映射到 BNB 的总量。这部分本身是官方 bridge escrow 的下游，不应再和 Official 直接相加。", "cool"),
     ])
 
