@@ -64,6 +64,21 @@ def holder_title(row: dict[str, Any]) -> str:
     return row.get("research_label") or row.get("resolved_entity_name") or "No BubbleMaps / Arkham label"
 
 
+def first_seen_text(value: str | None) -> str:
+    if not value:
+        return "-"
+    return value[:10]
+
+
+def market_holder_type(row: dict[str, Any]) -> str:
+    label = (row.get("resolved_entity_name") or row.get("research_label") or "").lower()
+    if "custody" in label or "fireblocks" in label:
+        return "托管 / 机构痕迹"
+    if label:
+        return "已标注非官方"
+    return "未标注大户"
+
+
 def rank_ref(address: str, rank_map: dict[str, int]) -> str:
     rank = rank_map.get(address)
     if rank:
@@ -147,6 +162,11 @@ def build_page(data: dict[str, Any]) -> str:
 
     official_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"})
     top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
+    whale_candidates = [
+        row for row in holders
+        if row.get("resolved_bucket") not in {"official_public", "official_inferred", "exchange", "dex_pool"}
+        and float(row.get("share") or 0) >= 0.0001
+    ][:8]
 
     stat_cards = "".join([
         stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "顶层筹码高度集中。"),
@@ -163,8 +183,11 @@ def build_page(data: dict[str, Any]) -> str:
         )
         unlock_col = (
             f"TGE {esc(fmt_num_pct(item['tge_unlocked_amount'], total_supply, 0))}<br>"
-            f"Locked {esc(fmt_num_pct(item['locked_after_tge'], total_supply, 0))}<br>"
-            f"{esc(item.get('cliff') or 'N/A')} cliff / {esc(item.get('vesting') or '-')}"
+            f"Locked {esc(fmt_num_pct(item['locked_after_tge'], total_supply, 0))}"
+        )
+        vesting_col = (
+            f"Cliff {esc(item.get('cliff') or 'N/A')}<br>"
+            f"Vesting {esc(item.get('vesting') or '-')}"
         )
         matched_parts = []
         rank_parts = []
@@ -182,6 +205,7 @@ def build_page(data: dict[str, Any]) -> str:
             esc(item["bucket"]),
             docs_col,
             unlock_col,
+            vesting_col,
             matched_col,
             rank_col,
             esc(item["summary"] or "-"),
@@ -201,6 +225,17 @@ def build_page(data: dict[str, Any]) -> str:
             esc(row.get("top_holder_role") or "-"),
             esc(row.get("tx_release_status_label") or "-"),
             esc(row.get("classification_reason") or "-"),
+        ])
+
+    whale_rows = []
+    for row in whale_candidates:
+        whale_rows.append([
+            esc(str(row["rank"])),
+            f"<a href=\"{esc(solscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
+            f"{esc(fmt_num(row['amount'], 2))} PRL<br>{esc(fmt_pct(row['share'], 3))}",
+            esc(holder_title(row).replace("No BubbleMaps / Arkham label", "无外部标签")),
+            esc(market_holder_type(row)),
+            esc(first_seen_text(row.get("first_activity_date"))),
         ])
 
     source_path = "https://github.com/Melroseee-e/data-monitoring"
@@ -614,11 +649,11 @@ td {{
           <div class="eyebrow">Tokenomics</div>
           <h2>完整代币经济与链上对位</h2>
         </div>
-        <p>docs 配额、解锁、链上候选。</p>
+        <p>docs 配额、unlock、vesting、链上候选。</p>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Bucket</th><th>Docs</th><th>Unlock / Vesting</th><th>Current Matching Addresses</th><th>Address Rank</th><th>Why It Fits</th></tr></thead>
+          <thead><tr><th>Bucket</th><th>Docs</th><th>Unlock</th><th>Vesting</th><th>Current Matching Addresses</th><th>Address Rank</th><th>Why It Fits</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in tokenomics_rows)}</tbody>
         </table>
       </div>
@@ -636,6 +671,22 @@ td {{
         <table>
           <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in top10_rows)}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Whales</div>
+          <h2>非官方大户表</h2>
+        </div>
+        <p>排除官方、交易所、DEX 后按余额排序。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Label</th><th>Type</th><th>First Seen</th></tr></thead>
+          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in whale_rows)}</tbody>
         </table>
       </div>
     </section>
