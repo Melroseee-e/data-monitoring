@@ -40,11 +40,7 @@ body {
 .shell { width: min(1240px, 94%); margin: 0 auto; padding: 100px 0 160px; }
 
 /* Highlight Class */
-.pct {
-  color: var(--accent-sand);
-  font-family: var(--mono);
-  font-weight: 800;
-}
+.pct { color: var(--accent-sand); font-family: var(--mono); font-weight: 800; }
 
 /* Hero */
 .hero {
@@ -98,8 +94,21 @@ td { padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); vertical
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--paper); }
 
-.h-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.sep { color: var(--ink-soft); font-weight: 900; font-size: 1rem; }
+/* Entity Row Layout */
+.entity-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+.entity-row:last-child { margin-bottom: 0; }
+.entity-desc {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.sep { color: var(--ink-soft); opacity: 0.5; margin: 0 4px; }
 
 /* Tag Badges */
 .tag-badge {
@@ -199,6 +208,7 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
       </div>
     </section>
 
+    <!-- TABLE 1: Tokenomics Mapping (MERGED ADDRESS & RANK) -->
     <section class="section">
       <div class="section-header">
         <h2>Tokenomics Mapping</h2>
@@ -207,54 +217,75 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
       <div class="ledger-wrap">
         <table>
           <thead>
-            <tr><th>Tag</th><th>Bucket</th><th>Docs</th><th>Unlock</th><th>Vesting</th><th>Current Matching Addresses</th><th>Address Rank</th><th>Why It Fits</th></tr>
+            <tr><th>Tag</th><th>Bucket</th><th>Docs Specs</th><th>Unlock & Vesting</th><th>Matched Intelligence (Address & Rank)</th><th>Why It Fits</th></tr>
           </thead>
           <tbody>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td>Community</td>
-              <td><strong class="pct">37.50%</strong><br>375M PRL</td>
-              <td>TGE 75M (<strong class="pct">7.50%</strong>)<br>Locked 300M (<strong class="pct">30.00%</strong>)</td>
-              <td>Cliff N/A<br>Vesting 36 months</td>
-              <td><div class="h-flow"><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block">Gvpm8t...vE4B</a></div></td>
-              <td>Community 主仓 · Top 1</td>
-              <td>公开官方总控地址先打 375M 到该地址，当前已分发约 57.02M，仍保留约 317.98M。</td>
+              <td><strong>Community</strong></td>
+              <td><strong class="pct">37.50%</strong> (375M)</td>
+              <td>TGE <strong class="pct">7.50%</strong><br>36m Vesting</td>
+              <td>
+                <div class="entity-row">
+                  <a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block">Gvpm8t...vE4B</a>
+                  <span class="entity-desc">Community 主仓 <span class="sep">·</span> Top 1</span>
+                </div>
+              </td>
+              <td>官方总控地址先打 375M 到该地址，当前已分发约 57.02M，仍保留约 317.98M。</td>
             </tr>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td>Investors</td>
-              <td><strong class="pct">27.66%</strong><br>277M PRL</td>
-              <td>TGE 0 (<strong class="pct">0.00%</strong>)<br>Locked 277M (<strong class="pct">27.66%</strong>)</td>
-              <td>Cliff 12 months<br>Vesting 36 months</td>
-              <td><div class="h-flow"><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block">ELoD6e...XLoS</a></div></td>
-              <td>Investors 主锁仓 · Top 2</td>
+              <td><strong>Investors</strong></td>
+              <td><strong class="pct">27.66%</strong> (277M)</td>
+              <td>12m Cliff<br>36m Vesting</td>
+              <td>
+                <div class="entity-row">
+                  <a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block">ELoD6e...XLoS</a>
+                  <span class="entity-desc">Investors 主锁仓 <span class="sep">·</span> Top 2</span>
+                </div>
+              </td>
               <td>从官方总控地址直接收到 276.619098M，当前仍基本静态，最像 investor vesting master。</td>
             </tr>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td>Ecosystem</td>
-              <td><strong class="pct">17.84%</strong><br>178M PRL</td>
-              <td>TGE 100M (<strong class="pct">10.00%</strong>)<br>Locked 78M (<strong class="pct">7.84%</strong>)</td>
-              <td>Cliff N/A<br>Vesting 48 months</td>
-              <td><div class="h-flow"><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block">Bv3u7G...jZHH</a> <span class="sep">·</span> <a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block">HfXxnd...4fdh</a></div></td>
-              <td>Ecosystem 主仓 · Top 3 <span class="sep">·</span> Ecosystem 释放 Vault · Top 5</td>
+              <td><strong>Ecosystem</strong></td>
+              <td><strong class="pct">17.84%</strong> (178M)</td>
+              <td>TGE <strong class="pct">10.00%</strong><br>48m Vesting</td>
+              <td>
+                <div class="entity-row">
+                  <a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block">Bv3u7G...jZHH</a>
+                  <span class="entity-desc">Ecosystem 主仓 <span class="sep">·</span> Top 3</span>
+                </div>
+                <div class="entity-row">
+                  <a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block">HfXxnd...4fdh</a>
+                  <span class="entity-desc">Ecosystem 释放 Vault <span class="sep">·</span> Top 5</span>
+                </div>
+              </td>
               <td>主仓是 178.380902M 的精确配额钱包，另有程序控制释放 vault 持续向外分发。</td>
             </tr>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td>Team</td>
-              <td><strong class="pct">17.00%</strong><br>170M PRL</td>
-              <td>TGE 0 (<strong class="pct">0.00%</strong>)<br>Locked 170M (<strong class="pct">17.00%</strong>)</td>
-              <td>Cliff 12 months<br>Vesting 36 months</td>
+              <td><strong>Team</strong></td>
+              <td><strong class="pct">17.00%</strong> (170M)</td>
+              <td>12m Cliff<br>36m Vesting</td>
               <td>
-                <div class="h-flow">
-                  <a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" class="addr-block">HhU4r2...7X5M</a> <span class="sep">·</span>
-                  <a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block">8G68Pu...cbCe</a> <span class="sep">·</span>
-                  <a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block">14bc3R...B6GF</a> <span class="sep">·</span>
+                <div class="entity-row">
+                  <a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" class="addr-block">HhU4r2...7X5M</a>
+                  <span class="entity-desc">Team 二级中枢 <span class="sep">·</span> Top 10</span>
+                </div>
+                <div class="entity-row">
+                  <a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block">8G68Pu...cbCe</a>
+                  <span class="entity-desc">Team 静态分仓 <span class="sep">·</span> Top 4</span>
+                </div>
+                <div class="entity-row">
+                  <a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block">14bc3R...B6GF</a>
+                  <span class="entity-desc">Team 静态分仓 <span class="sep">·</span> Top 6</span>
+                </div>
+                <div class="entity-row">
                   <a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" class="addr-block">Bu9sDT...2SQT</a>
+                  <span class="entity-desc">Team 静态分仓 <span class="sep">·</span> Top 8</span>
                 </div>
               </td>
-              <td>Team 二级中枢 · Top 10 <span class="sep">·</span> Team 静态分仓 · Top 4 <span class="sep">·</span> Team 静态分仓 · Top 6 <span class="sep">·</span> Team 静态分仓 · Top 8</td>
               <td>170M 先进入 Team 分发中枢，再拆到多个静态分仓。</td>
             </tr>
           </tbody>
@@ -262,22 +293,23 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
       </div>
     </section>
 
+    <!-- TABLE 2: Top 10 Detailed Summary -->
     <section class="section">
       <div class="section-header">
-        <h2>Top 10 Master Ledger</h2>
-        <p>全量地址审计清单。涵盖角色、释放状态及推论依据。</p>
+        <h2>Top 10 Master Summary</h2>
+        <p>全量角色识别与行为审计。锁定 97.68% 流动性源头。</p>
       </div>
       <div class="ledger-wrap">
         <table>
           <thead>
-            <tr><th>Tag</th><th>Rank</th><th>Address Descriptor</th><th>Current Balance</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr>
+            <tr><th>Tag</th><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr>
           </thead>
           <tbody>
             <tr><td><span class="tag-badge tag-official">官方</span></td><td>1</td><td><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block">Gvpm8t...vE4B</a></td><td>317.98M (<strong class="pct">31.798%</strong>)</td><td>Community</td><td>Community 主仓</td><td>中度分发</td><td>收到 375M PRL，与 Community 配额完全对齐。</td></tr>
             <tr><td><span class="tag-badge tag-official">官方</span></td><td>2</td><td><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block">ELoD6e...XLoS</a></td><td>276.62M (<strong class="pct">27.662%</strong>)</td><td>Investors</td><td>Investors 主锁仓</td><td>未见释放</td><td>直接收到 276.619098M PRL，和 docs 几乎一一对应。</td></tr>
             <tr><td><span class="tag-badge tag-official">官方</span></td><td>3</td><td><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block">Bv3u7G...jZHH</a></td><td>94.08M (<strong class="pct">9.408%</strong>)</td><td>Ecosystem</td><td>Ecosystem 主仓</td><td>中度分发</td><td>收到 178.380902M PRL，目前已分发约 87.30M。</td></tr>
             <tr><td><span class="tag-badge tag-official">官方</span></td><td>4</td><td><a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block">8G68Pu...cbCe</a></td><td>92.65M (<strong class="pct">9.265%</strong>)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>仅从 Team 中枢单跳收到，符合分仓停放特征。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>5</td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block">HfXxnd...4fdh</a></td><td>83.39M (<strong class="pct">8.339%</strong>)</td><td>Ecosystem</td><td>释放 Vault</td><td>活跃释放</td><td>程序控制账户，更像官方释放 / 再分发 Vault。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>5</td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block">HfXxnd...4fdh</a></td><td>83.39M (<strong class="pct">8.339%</strong>)</td><td>Ecosystem</td><td>释放 Vault</td><td>活跃释放</td><td>程序控制账户，形态更像官方释放 / 再分发 Vault。</td></tr>
             <tr><td><span class="tag-badge tag-official">官方</span></td><td>6</td><td><a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block">14bc3R...B6GF</a></td><td>40M (<strong class="pct">4.000%</strong>)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>从 Team 中枢收到 40M PRL，之后未释放。</td></tr>
             <tr><td><span class="tag-badge tag-official">官方</span></td><td>7</td><td><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" class="addr-block">6pJjJF...dLRG</a></td><td>22.4M (<strong class="pct">2.240%</strong>)</td><td>Master</td><td>一级分发总控</td><td>中度分发</td><td>Metadata Authority 地址，累计打出约 10 亿 PRL。</td></tr>
             <tr><td><span class="tag-badge tag-official">官方</span></td><td>8</td><td><a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" class="addr-block">Bu9sDT...2SQT</a></td><td>20M (<strong class="pct">2.000%</strong>)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>从 Team 中枢收到 20M PRL。</td></tr>
@@ -288,11 +320,11 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
       </div>
     </section>
 
-    <!-- TABLE 3: Unified Rank (ALL 20 ROWS) -->
+    <!-- TABLE 3: Unified Global Rank (FULL 20 ROWS) -->
     <section class="section">
       <div class="section-header">
         <h2>Unified Global Rank</h2>
-        <p>跨链统一重排。Solana 主发行层与 BNB 映射下游完整视图。</p>
+        <p>按官方 1B total supply 口径统一重排。Solana 主发行层与 BNB 映射下游完整视图。</p>
       </div>
       <div class="ledger-wrap">
         <table>
@@ -344,9 +376,7 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
 
     <footer>
       <div class="footer-left">
-        Source: <a href="https://github.com/Melroseee-e/data-monitoring" target="_blank">GitHub Repo</a> |
-        <a href="../data/prl/reports/prl_holder_structure_report.md" target="_blank">Markdown Report</a> |
-        <a href="../data/prl/derived/prl_holder_analysis.json" target="_blank">Analysis JSON</a>
+        Fingerprint: <a href="https://github.com/Melroseee-e/data-monitoring" target="_blank">PRL-INTEL-V6-FINAL</a>
       </div>
       <div class="footer-right">
         Analysis Terminal © 2026 // GENERATED 06:23:21Z
