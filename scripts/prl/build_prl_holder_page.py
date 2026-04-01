@@ -181,6 +181,27 @@ def bucket_label(bucket: str) -> str:
     }.get(bucket, bucket)
 
 
+def normalize_tag(bucket: str | None) -> str:
+    bucket = (bucket or "").lower()
+    if bucket in {"official", "official_public", "official_inferred"}:
+        return "官方"
+    if bucket in {"exchange", "cex"}:
+        return "CEX"
+    if bucket in {"dex", "dex_pool"}:
+        return "DEX"
+    return "大户"
+
+
+def tag_badge(tag: str) -> str:
+    css = {
+        "官方": "tag-official",
+        "大户": "tag-whale",
+        "CEX": "tag-cex",
+        "DEX": "tag-dex",
+    }.get(tag, "tag-whale")
+    return f"<span class=\"tag-badge {css}\">{esc(tag)}</span>"
+
+
 def holder_title(row: dict[str, Any]) -> str:
     return row.get("research_label") or row.get("resolved_entity_name") or "No BubbleMaps / Arkham label"
 
@@ -449,6 +470,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
         matched_col = "<br>".join(matched_parts) or "未识别"
         rank_col = "<br>".join(rank_parts) or "-"
         tokenomics_rows.append([
+            tag_badge("官方"),
             esc(item["bucket"]),
             docs_col,
             unlock_col,
@@ -465,6 +487,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
             f"{esc(fmt_pct(row['share'], 3))}"
         )
         top10_rows.append([
+            tag_badge(normalize_tag(row.get("resolved_bucket"))),
             esc(str(row["rank"])),
             f"<a href=\"{esc(solscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
             current_col,
@@ -477,6 +500,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     whale_rows = []
     for row in whale_candidates:
         whale_rows.append([
+            tag_badge("大户"),
             esc(str(row["rank"])),
             f"<a href=\"{esc(solscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
             f"{esc(fmt_num(row['amount'], 2))} PRL<br>{esc(fmt_pct(row['share'], 3))}",
@@ -489,6 +513,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     for row in bsc_core_whales:
         details = row["address_details"]
         bsc_core_rows.append([
+            tag_badge("大户"),
             esc(str(row["holder_data"]["rank"])),
             f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
             f"{esc(fmt_num(row['holder_data']['amount'], 2))} PRL",
@@ -505,6 +530,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
         if row["address"] == BSC_SOLANA_PEER:
             relation = "BNB 映射总量上层 peer / store"
         combined_rank_entries.append({
+            "tag": normalize_tag(row.get("resolved_bucket")),
             "amount": float(row["amount"]),
             "chain": "Solana",
             "address_cell": f"<a href=\"{esc(solscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
@@ -515,7 +541,9 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
         })
     for row in bsc_top10_holders:
         amount = float(row["holder_data"]["amount"])
+        bsc_tag = normalize_tag(classify_bsc_holder(row))
         combined_rank_entries.append({
+            "tag": bsc_tag,
             "amount": amount,
             "chain": "BNB",
             "address_cell": f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
@@ -527,6 +555,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     combined_rank_entries.sort(key=lambda item: item["amount"], reverse=True)
     for idx, item in enumerate(combined_rank_entries, start=1):
         combined_rank_rows.append([
+            tag_badge(item["tag"]),
             esc(str(idx)),
             esc(item["chain"]),
             item["address_cell"],
@@ -805,6 +834,39 @@ code {{
   color: var(--ink-soft);
   font-size: 12px;
 }}
+.tag-badge {{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}}
+.tag-official {{
+  background: rgba(216,131,45,0.14);
+  color: var(--sand-deep);
+  border-color: rgba(216,131,45,0.24);
+}}
+.tag-whale {{
+  background: rgba(177,61,93,0.12);
+  color: var(--rose);
+  border-color: rgba(177,61,93,0.20);
+}}
+.tag-cex {{
+  background: rgba(25,103,200,0.12);
+  color: var(--blue);
+  border-color: rgba(25,103,200,0.20);
+}}
+.tag-dex {{
+  background: rgba(12,141,122,0.12);
+  color: var(--teal);
+  border-color: rgba(12,141,122,0.20);
+}}
 .dossier-metric {{
   margin-top: 18px;
   font-family: var(--display);
@@ -951,7 +1013,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Bucket</th><th>Docs</th><th>Unlock</th><th>Vesting</th><th>Current Matching Addresses</th><th>Address Rank</th><th>Why It Fits</th></tr></thead>
+          <thead><tr><th>Tag</th><th>Bucket</th><th>Docs</th><th>Unlock</th><th>Vesting</th><th>Current Matching Addresses</th><th>Address Rank</th><th>Why It Fits</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in tokenomics_rows)}</tbody>
         </table>
       </div>
@@ -967,7 +1029,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr></thead>
+          <thead><tr><th>Tag</th><th>Rank</th><th>Address</th><th>Current</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in top10_rows)}</tbody>
         </table>
       </div>
@@ -983,7 +1045,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Label</th><th>Type</th><th>First Seen</th></tr></thead>
+          <thead><tr><th>Tag</th><th>Rank</th><th>Address</th><th>Current</th><th>Label</th><th>Type</th><th>First Seen</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in whale_rows)}</tbody>
         </table>
       </div>
@@ -1009,7 +1071,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>BNB Rank</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>First Seen</th><th>Relations</th><th>Working Read</th></tr></thead>
+          <thead><tr><th>Tag</th><th>BNB Rank</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>First Seen</th><th>Relations</th><th>Working Read</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in bsc_core_rows)}</tbody>
         </table>
       </div>
@@ -1022,7 +1084,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Overall Rank</th><th>Chain</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>Label / Role</th><th>Relation</th></tr></thead>
+          <thead><tr><th>Tag</th><th>Overall Rank</th><th>Chain</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>Label / Role</th><th>Relation</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in combined_rank_rows)}</tbody>
         </table>
       </div>
