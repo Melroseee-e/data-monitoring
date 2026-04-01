@@ -363,7 +363,6 @@ def build_page(data: dict[str, Any]) -> str:
             relation = "BNB 映射总量上层 peer / store"
         combined_rank_entries.append({
             "amount": float(row["amount"]),
-            "chain_rank": f"Solana Top {row['rank']}",
             "chain": "Solana",
             "address_cell": f"<a href=\"{esc(solscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
             "current": f"{esc(fmt_num(row['amount'], 2))} PRL",
@@ -374,7 +373,6 @@ def build_page(data: dict[str, Any]) -> str:
     for row in BSC_TOP_HOLDERS:
         combined_rank_entries.append({
             "amount": float(row["amount"]),
-            "chain_rank": f"BNB Top {row['rank']}",
             "chain": "BNB",
             "address_cell": f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
             "current": f"{esc(fmt_num(row['amount'], 2))} PRL",
@@ -386,7 +384,6 @@ def build_page(data: dict[str, Any]) -> str:
     for idx, item in enumerate(combined_rank_entries, start=1):
         combined_rank_rows.append([
             esc(str(idx)),
-            esc(item["chain_rank"]),
             esc(item["chain"]),
             item["address_cell"],
             item["current"],
@@ -870,7 +867,7 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Overall Rank</th><th>Chain Rank</th><th>Chain</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>Label / Role</th><th>Relation</th></tr></thead>
+          <thead><tr><th>Overall Rank</th><th>Chain</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>Label / Role</th><th>Relation</th></tr></thead>
           <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in combined_rank_rows)}</tbody>
         </table>
       </div>
