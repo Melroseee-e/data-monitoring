@@ -161,6 +161,30 @@ code {
   font-weight: 800;
   letter-spacing: -0.05em;
 }
+.stat-rich-value {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+.stat-pair {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.stat-pair span {
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+.stat-pair strong {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.8vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
 .stat-note {
   margin-top: 8px;
   font-size: 0.95rem;
@@ -430,21 +454,21 @@ td {
     <section class="section">
       <div class="stats">
     <article class="stat stat-blue">
-      <div class="stat-label">Top 10 Concentration</div>
-      <div class="stat-value">97.68%</div>
-      <div class="stat-note">前十地址当前控制的总量占比。</div>
-    </article>
-    
-    <article class="stat stat-sand">
-      <div class="stat-label">Official Share</div>
-      <div class="stat-value">97.68%</div>
-      <div class="stat-note">当前已识别官方样仓位。</div>
+      <div class="stat-label">Top 10 / Official</div>
+      <div class="stat-rich-value"><div class="stat-pair"><span>Top 10</span><strong>97.68%</strong></div><div class="stat-pair"><span>Official</span><strong>97.68%</strong></div></div>
+      <div class="stat-note">前十地址与已识别官方控制层基本重合。</div>
     </article>
     
     <article class="stat stat-rose">
       <div class="stat-label">Whale Share</div>
       <div class="stat-value">85.08M (8.51%)</div>
       <div class="stat-note">跨 Solana + BNB，排除官方 / CEX / DEX 后的大户样仓位。</div>
+    </article>
+    
+    <article class="stat stat-sand">
+      <div class="stat-label">BNB Whale Share</div>
+      <div class="stat-value">74.84M (7.48%)</div>
+      <div class="stat-note">BNB 映射层里排除 CEX / DEX 后的大户样仓位。</div>
     </article>
     
     <article class="stat stat-cool">

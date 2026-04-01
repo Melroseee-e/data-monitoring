@@ -373,6 +373,16 @@ def stat_card(label: str, value: str, note: str, tone: str = "warm") -> str:
     """
 
 
+def stat_rich_card(label: str, value_html: str, note_html: str, tone: str = "warm") -> str:
+    return f"""
+    <article class="stat stat-{esc(tone)}">
+      <div class="stat-label">{esc(label)}</div>
+      <div class="stat-rich-value">{value_html}</div>
+      <div class="stat-note">{note_html}</div>
+    </article>
+    """
+
+
 def info_card(title: str, body: str, tone: str = "sand") -> str:
     return f"""
     <article class="info-card info-{esc(tone)}">
@@ -446,9 +456,17 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     ][:8]
 
     stat_cards = "".join([
-        stat_card("Top 10 Concentration", fmt_pct(summary["top10_share"]), "前十地址当前控制的总量占比。", "blue"),
-        stat_card("Official Share", fmt_pct(official_top10_share), "当前已识别官方样仓位。", "sand"),
+        stat_rich_card(
+            "Top 10 / Official",
+            (
+                f"<div class=\"stat-pair\"><span>Top 10</span><strong>{esc(fmt_pct(summary['top10_share']))}</strong></div>"
+                f"<div class=\"stat-pair\"><span>Official</span><strong>{esc(fmt_pct(summary['official_share']))}</strong></div>"
+            ),
+            "前十地址与已识别官方控制层基本重合。",
+            "blue",
+        ),
         stat_card("Whale Share", fmt_num_pct(combined_whale_amount, total_supply, 2), "跨 Solana + BNB，排除官方 / CEX / DEX 后的大户样仓位。", "rose"),
+        stat_card("BNB Whale Share", fmt_num_pct(bsc_whale_like_amount, total_supply, 2), "BNB 映射层里排除 CEX / DEX 后的大户样仓位。", "sand"),
         stat_card("BNB Bridged Slice", fmt_num_pct(BSC_TOTAL_SUPPLY, total_supply, 2), "当前映射到 BNB 的总量。", "cool"),
     ])
 
@@ -739,6 +757,30 @@ code {{
   margin-top: 12px;
   font-family: var(--display);
   font-size: clamp(1.8rem, 3.1vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}}
+.stat-rich-value {{
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}}
+.stat-pair {{
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}}
+.stat-pair span {{
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}}
+.stat-pair strong {{
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.8vw, 2.35rem);
   font-weight: 800;
   letter-spacing: -0.05em;
 }}
