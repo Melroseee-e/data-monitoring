@@ -430,6 +430,15 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     bsc_core_whales = bsc_snapshot["core_whales"]
     bsc_top10_total_share = sum(float(row["holder_data"]["amount"]) for row in bsc_top10_holders) / total_supply
     bsc_core_whale_amount = sum(float(row["holder_data"]["amount"]) for row in bsc_core_whales)
+    sol_whale_like_amount = sum(
+        float(row["amount"]) for row in holders
+        if row.get("resolved_bucket") not in {"official_public", "official_inferred", "exchange", "dex_pool"}
+    )
+    bsc_whale_like_amount = sum(
+        float(row["holder_data"]["amount"]) for row in bsc_snapshot["holders"]
+        if classify_bsc_holder(row) not in {"exchange", "dex"}
+    )
+    combined_whale_amount = sol_whale_like_amount + bsc_whale_like_amount
     whale_candidates = [
         row for row in holders
         if row.get("resolved_bucket") not in {"official_public", "official_inferred", "exchange", "dex_pool"}
@@ -439,7 +448,7 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     stat_cards = "".join([
         stat_card("Top 10 Concentration", fmt_pct(summary["top10_share"]), "前十地址当前控制的总量占比。", "blue"),
         stat_card("Official Share", fmt_pct(official_top10_share), "当前已识别官方样仓位。", "sand"),
-        stat_card("Whale Share", fmt_num_pct(bsc_core_whale_amount, total_supply, 2), "当前大户主要集中在 BNB 映射层。", "rose"),
+        stat_card("Whale Share", fmt_num_pct(combined_whale_amount, total_supply, 2), "跨 Solana + BNB，排除官方 / CEX / DEX 后的大户样仓位。", "rose"),
         stat_card("BNB Bridged Slice", fmt_num_pct(BSC_TOTAL_SUPPLY, total_supply, 2), "当前映射到 BNB 的总量。", "cool"),
     ])
 
