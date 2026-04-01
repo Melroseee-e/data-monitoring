@@ -245,7 +245,7 @@ def build_page(data: dict[str, Any]) -> str:
 
     official_top10_share = sum(row["share"] for row in top10 if row["resolved_bucket"] in {"official_public", "official_inferred"})
     top11_50_share = sum(row["share"] for row in holders if 11 <= int(row["rank"]) <= 50)
-    bsc_top10_share = sum(row["amount"] for row in BSC_TOP_HOLDERS) / BSC_TOTAL_SUPPLY
+    bsc_top10_total_share = sum(row["amount"] for row in BSC_TOP_HOLDERS) / total_supply
     whale_candidates = [
         row for row in holders
         if row.get("resolved_bucket") not in {"official_public", "official_inferred", "exchange", "dex_pool"}
@@ -355,15 +355,44 @@ def build_page(data: dict[str, Any]) -> str:
         ],
     ]
 
-    bsc_holder_rows = []
+    combined_rank_rows = []
+    combined_rank_entries: list[dict[str, Any]] = []
+    for row in top10:
+        relation = "主发行层"
+        if row["address"] == BSC_SOLANA_PEER:
+            relation = "BNB 映射总量上层 peer / store"
+        combined_rank_entries.append({
+            "amount": float(row["amount"]),
+            "chain_rank": f"Solana Top {row['rank']}",
+            "chain": "Solana",
+            "address_cell": f"<a href=\"{esc(solscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
+            "current": f"{esc(fmt_num(row['amount'], 2))} PRL",
+            "share": esc(fmt_pct(row["amount"] / total_supply, 3)),
+            "label": esc(row.get("top_holder_role") or row.get("tokenomics_bucket") or "-"),
+            "relation": esc(relation),
+        })
     for row in BSC_TOP_HOLDERS:
-        share = row["amount"] / BSC_TOTAL_SUPPLY
-        bsc_holder_rows.append([
-            esc(str(row["rank"])),
-            f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
-            f"{esc(fmt_num(row['amount'], 2))} PRL<br>{esc(fmt_pct(share, 3))}",
-            esc(row["label"]),
-            esc(row["holder_type"]),
+        combined_rank_entries.append({
+            "amount": float(row["amount"]),
+            "chain_rank": f"BNB Top {row['rank']}",
+            "chain": "BNB",
+            "address_cell": f"<a href=\"{esc(bscscan_url(row['address']))}\" target=\"_blank\" rel=\"noreferrer\"><code>{esc(short_addr(row['address']))}</code></a>",
+            "current": f"{esc(fmt_num(row['amount'], 2))} PRL",
+            "share": esc(fmt_pct(row["amount"] / total_supply, 3)),
+            "label": esc(row["label"] if row["label"] != "-" else row["holder_type"]),
+            "relation": "Solana Top 5 映射流通下游",
+        })
+    combined_rank_entries.sort(key=lambda item: item["amount"], reverse=True)
+    for idx, item in enumerate(combined_rank_entries, start=1):
+        combined_rank_rows.append([
+            esc(str(idx)),
+            esc(item["chain_rank"]),
+            esc(item["chain"]),
+            item["address_cell"],
+            item["current"],
+            item["share"],
+            item["label"],
+            esc(item["relation"]),
         ])
 
     source_path = "https://github.com/Melroseee-e/data-monitoring"
@@ -831,7 +860,7 @@ td {{
         {info_card("Bridge Type", "BSC PRL 是 LayerZero V2 OFT。源码明确写了“不做初始铸币，只从 Solana 通过 bridge 进入”。", "sand")}
         {info_card("1:1 Match", f"BSC totalSupply 现在是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL，对应 Solana escrow 也正好是 {fmt_num(BSC_TOTAL_SUPPLY, 2)} PRL。", "ink")}
         {info_card("Solana Peer", f"BSC OFT 的 `peers(30168)` 指向 <code>{short_addr(BSC_SOLANA_PEER)}</code>，它不是普通钱包，而是程序控制账户。", "ink")}
-        {info_card("Current BNB Top 10", f"BNB 前十当前合计持有 {fmt_pct(bsc_top10_share, 2)}。前排仍以未标注大户为主，交易所只有 Binance，DEX 主要是 PancakeSwap。", "ink")}
+        {info_card("Current BNB Top 10", f"BNB 前十按官方 1B 总量口径当前合计占 {fmt_pct(bsc_top10_total_share, 2)}。前排仍以未标注大户为主，交易所只有 Binance，DEX 主要是 PancakeSwap。", "ink")}
       </div>
       <div class="table-wrap">
         <table>
@@ -841,11 +870,11 @@ td {{
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Rank</th><th>Address</th><th>Current</th><th>Label</th><th>Type</th></tr></thead>
-          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in bsc_holder_rows)}</tbody>
+          <thead><tr><th>Overall Rank</th><th>Chain Rank</th><th>Chain</th><th>Address</th><th>Current</th><th>Total Supply Share</th><th>Label / Role</th><th>Relation</th></tr></thead>
+          <tbody>{''.join("<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>" for row in combined_rank_rows)}</tbody>
         </table>
       </div>
-      <p class="note"><code>degenrunner.bnb</code> 是历史上出现过的 BNB 侧标签地址，但当前已经不在前十，且我这次链上复核时余额为 0。</p>
+      <p class="note">统一排行全部按官方 <code>1B total supply</code> 口径计算。BNB 行是 Solana Top 5 bridge slice 的下游流通分布，用于看跨链控盘结构，不可与 Solana 行直接相加。<code>degenrunner.bnb</code> 是历史上出现过的 BNB 标签地址，但当前已经不在前十，且我这次链上复核时余额为 0。</p>
     </section>
 
     <section class="panel section">
