@@ -465,9 +465,9 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
             "前十地址与已识别官方控制层基本重合。",
             "blue",
         ),
-        stat_card("Whale Share", fmt_num_pct(combined_whale_amount, total_supply, 2), "跨 Solana + BNB，排除官方 / CEX / DEX 后的大户样仓位。", "rose"),
-        stat_card("BNB Whale Share", fmt_num_pct(bsc_whale_like_amount, total_supply, 2), "BNB 映射层里排除 CEX / DEX 后的大户样仓位。", "sand"),
-        stat_card("BNB Bridged Slice", fmt_num_pct(BSC_TOTAL_SUPPLY, total_supply, 2), "当前映射到 BNB 的总量。", "cool"),
+        stat_card("Whale Share", fmt_num_pct(sol_whale_like_amount, total_supply, 2), "主供应口径下，排除官方 / CEX / DEX 后的 Solana 大户样仓位。", "rose"),
+        stat_card("BNB Whale Share", fmt_num_pct(bsc_whale_like_amount, total_supply, 2), "BNB 映射层里排除 CEX / DEX 后的大户样仓位。这个口径包含在 BNB Slice 里。", "sand"),
+        stat_card("BNB Bridged Slice", fmt_num_pct(BSC_TOTAL_SUPPLY, total_supply, 2), "当前映射到 BNB 的总量。这部分本身是官方 bridge escrow 的下游，不应再和 Official 直接相加。", "cool"),
     ])
 
     tokenomics_rows = []
