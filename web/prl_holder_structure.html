@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRL Intelligence Dossier // Full Spectrum Holder Analysis</title>
+<title>Perle (PRL) Top 10 Intelligence Report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -17,7 +17,8 @@
   --border-subtle: rgba(18, 18, 18, 0.03);
   
   --accent-sand: oklch(0.68 0.12 65);
-  --accent-blue: oklch(0.52 0.15 250);
+  --accent-blue: #0052cc; /* Accurate Blue from reference */
+  --accent-blue-bg: #f0f7ff; /* Accurate Light Blue BG from reference */
   --accent-teal: oklch(0.58 0.12 175);
   --accent-rose: oklch(0.58 0.16 25);
   
@@ -38,9 +39,9 @@ body {
 
 .shell { width: min(1240px, 94%); margin: 0 auto; padding: 80px 0 160px; }
 
-/* Hero */
+/* Hero Section */
 .hero {
-  display: grid; grid-template-columns: 1fr 360px; gap: 80px;
+  display: grid; grid-template-columns: 1fr 360px; gap: 60px;
   padding-top: 32px; border-top: 16px solid var(--ink); margin-bottom: 80px;
   position: relative;
 }
@@ -66,20 +67,44 @@ h1 {
   position: relative; overflow: hidden;
 }
 .meta-report::before {
-  content: "ACTIVE INTEL"; position: absolute; top: 10px; right: -35px;
+  content: "ACTIVE MONITORING"; position: absolute; top: 10px; right: -35px;
   background: var(--accent-teal); color: white; padding: 4px 40px;
   transform: rotate(45deg); font-weight: 900; font-size: 0.55rem; letter-spacing: 0.1em;
 }
-.meta-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--border-subtle); }
+.meta-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border-subtle); }
 .meta-row:last-child { border-bottom: none; }
 .meta-row span { color: var(--ink-soft); text-transform: uppercase; font-weight: 700; }
 .meta-row strong { color: var(--ink); font-weight: 800; }
-.meta-row code { color: var(--accent-blue); font-weight: 700; background: oklch(from var(--accent-blue) l c h / 0.08); padding: 2px 6px; }
 
-/* Stats Bar */
+/* The Requested Blue Block Style */
+.addr-block {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+  font-family: var(--mono);
+  font-weight: 800;
+  font-size: 0.9rem;
+  border-radius: 2px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.addr-block:hover { background: var(--accent-blue); color: white; }
+.meta-row code { 
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+  font-family: var(--mono);
+  font-weight: 800;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}
+
+/* Stats Grid */
 .stats-bar {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-  margin-bottom: 120px; gap: 32px;
+  margin-bottom: 100px; gap: 32px;
 }
 .stat-item {
   padding: 40px; border: 3px solid var(--ink); background: white;
@@ -89,10 +114,10 @@ h1 {
 .stat-item:hover { transform: translate(-4px, -4px); box-shadow: 12px 12px 0 var(--ink); }
 .stat-label { font-family: var(--mono); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-soft); }
 .stat-value { font-family: var(--display); font-size: 3.5rem; font-weight: 900; line-height: 1; margin: 16px 0; letter-spacing: -0.04em; }
-.stat-rich-value { margin-top: 12px; display: grid; gap: 8px; }
-.stat-pair { display: flex; align-items: end; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px; }
-.stat-pair span { font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--ink-soft); }
-.stat-pair strong { font-family: var(--display); font-size: 1.4rem; font-weight: 800; color: var(--ink); }
+.stat-rich-value { margin-top: 12px; display: grid; gap: 12px; }
+.stat-pair { display: flex; align-items: end; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 6px; }
+.stat-pair span { font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+.stat-pair strong { font-family: var(--display); font-size: 1.6rem; font-weight: 900; color: var(--ink); }
 
 .stat-blue .stat-value, .stat-blue .stat-pair strong { color: var(--accent-blue); }
 .stat-rose .stat-value { color: var(--accent-rose); }
@@ -106,36 +131,13 @@ h2 { font-family: var(--display); font-size: 2.8rem; font-weight: 900; letter-sp
 
 /* Ledger Tables */
 .ledger-wrap { margin-bottom: 100px; border: 3px solid var(--ink); background: white; box-shadow: 12px 12px 0 var(--ink); overflow-x: auto; position: relative; }
-.ledger-wrap::after {
-  content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-  background: repeating-linear-gradient(90deg, var(--ink), var(--ink) 40px, transparent 40px, transparent 80px);
-}
 table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 th { background: var(--ink); color: white; text-align: left; padding: 20px 24px; font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; }
 td { padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); vertical-align: top; font-weight: 500; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--paper); }
 
-/* Address Blocks - Clean Square Pill */
-.addr-block {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  background: rgba(23, 23, 23, 0.05);
-  border: 1.5px solid rgba(23, 23, 23, 0.1);
-  border-radius: 4px;
-  text-decoration: none !important;
-  color: var(--ink) !important;
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  transition: all 0.2s;
-}
-.addr-block:hover { background: var(--ink); color: white !important; border-color: var(--ink); transform: translateY(-1px); }
-.addr-block.sol { color: var(--accent-blue) !important; }
-.addr-block.sol:hover { color: white !important; background: var(--accent-blue); border-color: var(--accent-blue); }
-
-/* New Tag Design - Horizontal & Crisp */
+/* Tag Badges - Elegant & Horizontal */
 .tag-badge {
   display: inline-flex;
   align-items: center;
@@ -147,50 +149,26 @@ tr:hover td { background: var(--paper); }
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-radius: 4px;
-  white-space: nowrap;
   border: 1.5px solid transparent;
+  white-space: nowrap;
 }
 .tag-official { background: rgba(216, 131, 45, 0.1); color: var(--accent-sand); border-color: var(--accent-sand); }
 .tag-whale { background: rgba(177, 61, 93, 0.1); color: var(--accent-rose); border-color: var(--accent-rose); }
-.tag-cex { background: rgba(25, 103, 200, 0.1); color: var(--accent-blue); border-color: var(--accent-blue); }
+.tag-cex { background: rgba(0, 82, 204, 0.1); color: var(--accent-blue); border-color: var(--accent-blue); }
 .tag-dex { background: rgba(12, 141, 122, 0.1); color: var(--accent-teal); border-color: var(--accent-teal); }
 
-/* Tokenomics Highlighting */
-.bucket-name { font-weight: 900; font-size: 1.1rem; color: var(--ink); display: block; margin-bottom: 6px; text-transform: uppercase; }
-.alloc-specs { display: grid; gap: 4px; }
-.alloc-specs strong { font-size: 1.2rem; color: var(--accent-sand); letter-spacing: -0.02em; }
-.logic-box { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.4; border-left: 2px solid var(--border-subtle); padding-left: 12px; }
-
-/* Dossier Grid */
-.dossier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(540px, 1fr)); gap: 48px; margin-bottom: 120px; }
-.dossier-profile { 
-  display: flex; background: white; border: 3px solid var(--ink); 
-  box-shadow: 10px 10px 0 var(--ink); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.dossier-profile:hover { transform: translate(-8px, -8px); box-shadow: 18px 18px 0 var(--ink); }
-.rank-side {
-  flex: 0 0 70px; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-weight: 900; font-size: 1.8rem; writing-mode: vertical-rl; transform: rotate(180deg);
-}
-.dossier-content { flex: 1; padding: 40px; }
-.metric-hero { margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px dashed var(--border-subtle); }
-.metric-val { font-family: var(--display); font-size: 4rem; font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; }
-.profile-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: var(--paper); padding: 24px; margin-bottom: 32px; border: 1px solid var(--border-subtle); }
-.profile-facts dd { margin: 6px 0 0; font-weight: 900; font-size: 1rem; color: var(--ink); }
-.intel-note { font-size: 0.95rem; border-left: 6px solid var(--ink); padding: 4px 0 4px 20px; font-weight: 500; font-style: italic; color: var(--ink-soft); }
-
-/* Layers */
+/* Findings Layers */
 .layer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; margin-bottom: 100px; }
 .layer-card { padding: 32px; border: 3px solid var(--ink); background: white; box-shadow: 6px 6px 0 var(--ink); }
 .layer-card h3 { font-family: var(--display); font-size: 1.2rem; font-weight: 900; text-transform: uppercase; margin: 0 0 16px; letter-spacing: 0.02em; border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
 .layer-card p { font-size: 1rem; color: var(--ink-soft); margin: 0; font-weight: 500; }
 .layer-card.sand { border-color: var(--accent-sand); box-shadow: 6px 6px 0 var(--accent-sand); }
 
-/* Chain Specific */
+.note { font-size: 0.95rem; color: var(--ink-soft); padding: 24px; background: var(--paper); border: 1px solid var(--border-subtle); margin-top: 24px; line-height: 1.7; }
+
+/* Chain Specific Styles */
 .chain-sol { color: #9945FF; font-weight: 800; font-family: var(--mono); }
 .chain-bnb { color: #F3BA2F; font-weight: 800; font-family: var(--mono); }
-
-.note { font-size: 0.95rem; color: var(--ink-soft); padding: 24px; background: var(--paper); border: 1px solid var(--border-subtle); margin-top: 24px; line-height: 1.7; }
 
 /* Footer */
 footer { border-top: 6px solid var(--ink); padding: 80px 0; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; }
@@ -202,8 +180,6 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
 }
 @media (max-width: 768px) {
   .shell { padding: 60px 0; }
-  .dossier-grid { grid-template-columns: 1fr; }
-  .metric-val { font-size: 3.5rem; }
   .stats-bar { grid-template-columns: 1fr; gap: 24px; }
 }
 </style>
@@ -225,7 +201,7 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
         <div class="meta-row"><span>Total Supply</span><strong>1,000M</strong></div>
         <div class="meta-row"><span>BNB Slice</span><strong>8.345%</strong></div>
         <div class="meta-row"><span>Top 11-50</span><strong>2.21%</strong></div>
-        <div class="meta-row"><span>Generated</span><strong>2026-03-31T06:23:21Z</strong></div>
+        <div class="meta-row"><span>Updated</span><strong>2026-03-31T06:23:21Z</strong></div>
       </aside>
     </header>
 
@@ -263,52 +239,57 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
       <div class="ledger-wrap">
         <table>
           <thead>
-            <tr><th>Tag</th><th>Bucket</th><th>Doc Specs</th><th>Vesting Logic</th><th>Matching Address</th><th>Address Rank</th><th>Why It Fits</th></tr>
+            <tr><th>Tag</th><th>Bucket</th><th>Doc Specs</th><th>Unlock Logic</th><th>Vesting</th><th>Matching Address</th><th>Rank</th><th>Why It Fits</th></tr>
           </thead>
           <tbody>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td><span class="bucket-name">Community</span></td>
-              <td class="alloc-specs"><strong>37.50%</strong><span>375M PRL</span></td>
-              <td><div class="logic-box">TGE 75M (7.50%)<br>Locked 300M (30.00%)<br>Vesting 36 months</div></td>
-              <td><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block sol">Gvpm8t...vE4B</a></td>
-              <td><strong style="color:var(--accent-blue)">Top 1</strong></td>
+              <td><strong>Community</strong></td>
+              <td><strong>37.50%</strong> (375M)</td>
+              <td>TGE 75M (7.50%)</td>
+              <td>36 months</td>
+              <td><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block">Gvpm8t...vE4B</a></td>
+              <td><strong>Top 1</strong></td>
               <td>公开官方总控地址先打 375M 到该地址，当前已分发约 57.02M，仍保留约 317.98M。</td>
             </tr>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td><span class="bucket-name">Investors</span></td>
-              <td class="alloc-specs"><strong>27.66%</strong><span>277M PRL</span></td>
-              <td><div class="logic-box">TGE 0 (0.00%)<br>Cliff 12 months<br>Vesting 36 months</div></td>
-              <td><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block sol">ELoD6e...XLoS</a></td>
-              <td><strong style="color:var(--accent-blue)">Top 2</strong></td>
+              <td><strong>Investors</strong></td>
+              <td><strong>27.66%</strong> (277M)</td>
+              <td>TGE 0 (0.00%)</td>
+              <td>12m Cliff / 36m</td>
+              <td><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block">ELoD6e...XLoS</a></td>
+              <td><strong>Top 2</strong></td>
               <td>从官方总控地址直接收到 276.619098M，当前仍基本静态，最像 investor vesting master。</td>
             </tr>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td><span class="bucket-name">Ecosystem</span></td>
-              <td class="alloc-specs"><strong>17.84%</strong><span>178M PRL</span></td>
-              <td><div class="logic-box">TGE 100M (10.00%)<br>Locked 78M (7.84%)<br>Vesting 48 months</div></td>
+              <td><strong>Ecosystem</strong></td>
+              <td><strong>17.84%</strong> (178M)</td>
+              <td>TGE 100M (10.00%)</td>
+              <td>48 months</td>
               <td>
-                <a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block sol" style="margin-bottom: 6px;">Bv3u7G...jZHH</a><br>
-                <a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block sol">HfXxnd...4fdh</a>
+                <a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block" style="margin-bottom:4px">Bv3u7G...jZHH</a>
+                <a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block">HfXxnd...4fdh</a>
               </td>
               <td><strong>Top 3 / 5</strong></td>
               <td>主仓是 178.380902M 的精确配额钱包，另有程序控制释放 vault 持续向外分发。</td>
             </tr>
             <tr>
               <td><span class="tag-badge tag-official">官方</span></td>
-              <td><span class="bucket-name">Team</span></td>
-              <td class="alloc-specs"><strong>17.00%</strong><span>170M PRL</span></td>
-              <td><div class="logic-box">TGE 0 (0.00%)<br>Cliff 12 months<br>Vesting 36 months</div></td>
+              <td><strong>Team</strong></td>
+              <td><strong>17.00%</strong> (170M)</td>
+              <td>TGE 0 (0.00%)</td>
+              <td>12m Cliff / 36m</td>
               <td>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" class="addr-block sol">HhU4r2...7X5M</a>
-                  <a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block sol">8G68Pu...cbCe</a>
-                  <a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block sol">14bc3R...B6GF</a>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                  <a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" class="addr-block">HhU4r2...7X5M</a>
+                  <a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block">8G68Pu...cbCe</a>
+                  <a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block">14bc3R...B6GF</a>
+                  <a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" class="addr-block">Bu9sDT...2SQT</a>
                 </div>
               </td>
-              <td><strong>Top 4 / 6 / 10</strong></td>
+              <td><strong>Top 4 / 6 / 8 / 10</strong></td>
               <td>170M 先进入 Team 分发中枢，再拆到多个静态分仓。</td>
             </tr>
           </tbody>
@@ -318,25 +299,25 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
 
     <section class="section">
       <div class="section-header">
-        <h2>Top 10 Combined Ledger</h2>
+        <h2>Top 10 Master Ledger</h2>
         <p>全量地址审计清单。涵盖角色、释放状态及推论依据。</p>
       </div>
       <div class="ledger-wrap">
         <table>
           <thead>
-            <tr><th>Tag</th><th>Rank</th><th>Address Descriptor</th><th>Balance</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr>
+            <tr><th>Tag</th><th>Rank</th><th>Address Descriptor</th><th>Current Balance</th><th>Bucket</th><th>Role</th><th>Release</th><th>Why It Fits</th></tr>
           </thead>
           <tbody>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>1</td><td><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block sol">Gvpm8t...vE4B</a></td><td>317.98M<br>(31.79%)</td><td>Community</td><td>Community 主仓</td><td>中度分发</td><td>从官方总控单点收到 375M PRL，与 Community 配额完全对齐。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>2</td><td><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block sol">ELoD6e...XLoS</a></td><td>276.62M<br>(27.66%)</td><td>Investors</td><td>Investors 主锁仓</td><td>未见释放</td><td>直接收到 276.61M PRL，与 Investors 27.66% 几乎一一对应。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>3</td><td><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block sol">Bv3u7G...jZHH</a></td><td>94.08M<br>(9.40%)</td><td>Ecosystem</td><td>Ecosystem 主仓</td><td>中度分发</td><td>收到 178.38M PRL，与 Ecosystem 17.84% 完全对齐。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>4</td><td><a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block sol">8G68Pu...cbCe</a></td><td>92.65M<br>(9.26%)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>仅从 HhU4r2...7X5M 单跳收到，符合 Team 分仓停放特征。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>5</td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block sol">HfXxnd...4fdh</a></td><td>83.39M<br>(8.33%)</td><td>Ecosystem</td><td>释放 Vault</td><td>活跃释放</td><td>程序账户，对外分发活跃，形态更像官方释放 Vault。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>6</td><td><a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block sol">14bc3R...B6GF</a></td><td>40M<br>(4.00%)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>仅从 HhU4r2...7X5M 单跳收到，符合 Team 分仓停放特征。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>7</td><td><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" class="addr-block sol">6pJjJF...dLRG</a></td><td>22.4M<br>(2.24%)</td><td>Master</td><td>一级分发总控</td><td>中度分发</td><td>Metadata Authority 地址，累计打出约 10 亿 PRL。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>8</td><td><a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" class="addr-block sol">Bu9sDT...2SQT</a></td><td>20M<br>(2.00%)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>仅从 HhU4r2...7X5M 单跳收到，符合 Team 分仓停放特征。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>9</td><td><a href="https://solscan.io/account/5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx" target="_blank" class="addr-block sol">5MnWHh...HcQx</a></td><td>20M<br>(2.00%)</td><td>Operations</td><td>运营 Vault</td><td>未见释放</td><td>Arkham 标注为 Squads Vault / ServiceCo。</td></tr>
-            <tr><td><span class="tag-badge tag-official">官方</span></td><td>10</td><td><a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" class="addr-block sol">HhU4r2...7X5M</a></td><td>9.65M<br>(0.96%)</td><td>Team</td><td>二级分发中枢</td><td>中度分发</td><td>累计收到 170M PRL，随后拆分到多个静态分仓。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>1</td><td><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block">Gvpm8t...vE4B</a></td><td>317.98M (31.798%)</td><td>Community</td><td>Community 主仓</td><td>中度分发</td><td>从公开官方总控地址单点收到 375M PRL，与 docs 的 Community 配额完全对齐。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>2</td><td><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block">ELoD6e...XLoS</a></td><td>276.62M (27.662%)</td><td>Investors</td><td>Investors 主锁仓</td><td>未见释放</td><td>从公开官方总控地址直接收到 276.619098M PRL，和 docs 的 Investors 27.66% 几乎一一对应。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>3</td><td><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block">Bv3u7G...jZHH</a></td><td>94.08M (9.408%)</td><td>Ecosystem</td><td>Ecosystem 主仓</td><td>中度分发</td><td>从公开官方总控地址直接收到 178.380902M PRL，目前已向外分发约 87.30M。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>4</td><td><a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block">8G68Pu...cbCe</a></td><td>92.65M (9.265%)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>仅从 HhU4r2...7X5M 单跳收到 92,650,000.00 PRL，之后未继续释放。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>5</td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block">HfXxnd...4fdh</a></td><td>83.39M (8.339%)</td><td>Ecosystem</td><td>Ecosystem 释放 Vault</td><td>活跃释放</td><td>程序控制账户，且对外分发活跃，形态更像官方释放 / 再分发 vault。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>6</td><td><a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block">14bc3R...B6GF</a></td><td>40M (4.000%)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>仅从 HhU4r2...7X5M 单跳收到 40,000,000.00 PRL，形态符合 Team 分仓。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>7</td><td><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" class="addr-block">6pJjJF...dLRG</a></td><td>22.4M (2.240%)</td><td>Master Distributor</td><td>官方一级分发总控</td><td>中度分发</td><td>公开的 metadata authority 地址，累计打出约 10 亿 PRL。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>8</td><td><a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" class="addr-block">Bu9sDT...2SQT</a></td><td>20M (2.000%)</td><td>Team</td><td>Team 静态分仓</td><td>未见释放</td><td>仅从 HhU4r2...7X5M 单跳收到 20,000,000.00 PRL。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>9</td><td><a href="https://solscan.io/account/5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx" target="_blank" class="addr-block">5MnWHh...HcQx</a></td><td>20M (2.000%)</td><td>Operations</td><td>官方运营 / ServiceCo Vault</td><td>未见释放</td><td>Arkham 直接标注为 Squads Vault / ServiceCo。</td></tr>
+            <tr><td><span class="tag-badge tag-official">官方</span></td><td>10</td><td><a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" class="addr-block">HhU4r2...7X5M</a></td><td>9.65M (0.965%)</td><td>Team</td><td>Team 二级分发中枢</td><td>中度分发</td><td>累计收到 170M PRL，随后拆分到多个静态分仓。</td></tr>
           </tbody>
         </table>
       </div>
@@ -344,19 +325,20 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
 
     <section class="section">
       <div class="section-header">
-        <h2>Target Whales</h2>
-        <p>关注排除基础设施后的市场流通实体。识别大户的进出场痕迹。</p>
+        <h2>Non-Official Target Whales</h2>
+        <p>排除官方、交易所、DEX 后按余额排序。识别市场流通中的真实鲸鱼实体。</p>
       </div>
       <div class="ledger-wrap">
         <table>
           <thead>
-            <tr><th>Tag</th><th>Rank</th><th>Address</th><th>Current</th><th>Label</th><th>Type</th><th>First Seen</th></tr>
+            <tr><th>Tag</th><th>Rank</th><th>Address Descriptor</th><th>Current Balance</th><th>Label</th><th>Type</th><th>First Seen</th></tr>
           </thead>
           <tbody>
-            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>11</td><td><a href="https://solscan.io/account/5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN" target="_blank" class="addr-block sol">5TSnK6...zcmN</a></td><td>6.5M PRL</td><td>无外部标签</td><td>未标注大户</td><td>2026-03-10</td></tr>
-            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>16</td><td><a href="https://solscan.io/account/HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC" target="_blank" class="addr-block sol">HeM1Uu...JHeC</a></td><td>1.2M PRL</td><td>无外部标签</td><td>未标注大户</td><td>2026-03-10</td></tr>
-            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>17</td><td><a href="https://solscan.io/account/BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z" target="_blank" class="addr-block sol">BpiDUD...7p6z</a></td><td>1.05M PRL</td><td>无外部标签</td><td>未标注大户</td><td>2026-03-24</td></tr>
-            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>18</td><td><a href="https://solscan.io/account/8XczZeEmUpyvbYF6mbzFX2kTreAu9zLxygRqX4hCUBRv" target="_blank" class="addr-block sol">8XczZe...UBRv</a></td><td>486,323 PRL</td><td>GSR Markets Custody</td><td>机构托管</td><td>2025-05-16</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>11</td><td><a href="https://solscan.io/account/5TSnK6g7BUb9h3gadZNKmvB7A9zYEKRavWh2JuqQzcmN" target="_blank" class="addr-block">5TSnK6...zcmN</a></td><td>6.5M (0.650%)</td><td>无外部标签</td><td>未标注大户</td><td>2026-03-10</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>16</td><td><a href="https://solscan.io/account/HeM1Uu22dSBrYq4Qs3HGJVd3BtndpN1a2gMq7koSJHeC" target="_blank" class="addr-block">HeM1Uu...JHeC</a></td><td>1.2M (0.120%)</td><td>无外部标签</td><td>未标注大户</td><td>2026-03-10</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>17</td><td><a href="https://solscan.io/account/BpiDUD7u3iBt1KhkQzcCpcQp9o8a1y2EvapJnTgQ7p6z" target="_blank" class="addr-block">BpiDUD...7p6z</a></td><td>1.05M (0.105%)</td><td>无外部标签</td><td>未标注大户</td><td>2026-03-24</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>18</td><td><a href="https://solscan.io/account/8XczZeEmUpyvbYF6mbzFX2kTreAu9zLxygRqX4hCUBRv" target="_blank" class="addr-block">8XczZe...UBRv</a></td><td>486,323 (0.049%)</td><td>GSR Markets Fireblocks</td><td>托管 / 机构</td><td>2025-05-16</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>22</td><td><a href="https://solscan.io/account/BM9CcyErJcu2mjrFvUsRRrD3snGeHDDVirJLvL6EjvMN" target="_blank" class="addr-block">BM9Ccy...jvMN</a></td><td>198,817 (0.020%)</td><td>无外部标签</td><td>未标注大户</td><td>2025-10-29</td></tr>
           </tbody>
         </table>
       </div>
@@ -365,22 +347,25 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
     <section class="section">
       <div class="section-header">
         <h2>BNB Bridge Analysis</h2>
-        <p>LayerZero OFT 映射层分析。1:1 锚定，监控跨链筹码流向。</p>
+        <p>LayerZero OFT 映射层分析。监控跨链筹码流向与 1:1 锚定关系。</p>
       </div>
       <div class="layer-grid">
-        <div class="layer-card sand"><h3>83.45M PRL</h3><p>跨链到 BNB 的总量 (8.345%)。</p></div>
-        <div class="layer-card"><h3>1:1 Alignment</h3><p>BNB supply 与 Solana escrow 链上对齐。</p></div>
-        <div class="layer-card sand"><h3>Core 6 Matrix</h3><p>BNB 前 6 大户占映射盘 87.07%，分仓特征明显。</p></div>
+        <div class="layer-card sand"><h3>83.45M PRL</h3><p>当前映射到 BNB 的总量，占官方 1B 总量的 8.345%。</p></div>
+        <div class="layer-card"><h3>1:1 Alignment</h3><p>BNB supply 与 Solana bridge escrow 链上对齐，无增发。</p></div>
+        <div class="layer-card sand"><h3>Core 6 Whales</h3><p>前 6 个 BNB 大户合计占映射盘 87.07%，呈现高度同步的规则化分发特征。</p></div>
       </div>
       <div class="ledger-wrap">
         <table>
           <thead>
-            <tr><th>Rank</th><th>Address</th><th>Current</th><th>Relations</th><th>Working Read</th></tr>
+            <tr><th>Tag</th><th>BNB Rank</th><th>Address Block</th><th>Current</th><th>Relations</th><th>Working Read</th></tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td><a href="https://bscscan.com/address/0x0350c44e15ada696992d44b13225e0853277adc0" target="_blank" class="addr-block">0x0350...adc0</a></td><td>43.16M</td><td>15 / 6 / 9</td><td>核心大仓，更像 BNB 映射层的分发母仓。</td></tr>
-            <tr><td>2</td><td><a href="https://bscscan.com/address/0xc3c74940e878b0e9ac86a12b0125c4df1a8f22d7" target="_blank" class="addr-block">0xc3c7...22d7</a></td><td>10M</td><td>3 / 3 / 0</td><td>整数分仓，更像规则化拆分。</td></tr>
-            <tr><td>4</td><td><a href="https://bscscan.com/address/0x5861703aa2c6acd7a3902e5a06f6aedba0eae257" target="_blank" class="addr-block">0x5861...e257</a></td><td>5M</td><td>3 / 3 / 0</td><td>整数分仓，更像规则化拆分。</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>1</td><td><a href="https://bscscan.com/address/0x0350c44e15ada696992d44b13225e0853277adc0" target="_blank" class="addr-block">0x0350...adc0</a></td><td>43.16M (4.316%)</td><td>15 / 6 / 9</td><td>核心大仓，更像 BNB 映射层的分发母仓。</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>2</td><td><a href="https://bscscan.com/address/0xc3c74940e878b0e9ac86a12b0125c4df1a8f22d7" target="_blank" class="addr-block">0xc3c7...22d7</a></td><td>10M (1.000%)</td><td>3 / 3 / 0</td><td>整数分仓，更像规则化拆分。</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>4</td><td><a href="https://bscscan.com/address/0x5861703aa2c6acd7a3902e5a06f6aedba0eae257" target="_blank" class="addr-block">0x5861...e257</a></td><td>5M (0.500%)</td><td>3 / 3 / 0</td><td>整数分仓，更像规则化拆分。</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>5</td><td><a href="https://bscscan.com/address/0x5a4c318d66c0cf8ef381320a5d49f8a329414f50" target="_blank" class="addr-block">0x5a4c...4f50</a></td><td>5M (0.500%)</td><td>4 / 4 / 0</td><td>整数分仓，更像规则化拆分。</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>6</td><td><a href="https://bscscan.com/address/0xccf4d99cb373e054cc8dbf31dca37b8528ec5b55" target="_blank" class="addr-block">0xccf4...5b55</a></td><td>5M (0.500%)</td><td>3 / 3 / 0</td><td>整数分仓，更像规则化拆分。</td></tr>
+            <tr><td><span class="tag-badge tag-whale">大户</span></td><td>7</td><td><a href="https://bscscan.com/address/0x0c4bb5b2a4cff8c035b590da8e0cf650f63f8c61" target="_blank" class="addr-block">0x0c4b...8c61</a></td><td>4.5M (0.450%)</td><td>8 / 5 / 3</td><td>整数分仓，更像规则化拆分。</td></tr>
           </tbody>
         </table>
       </div>
@@ -389,59 +374,58 @@ footer a { color: var(--ink); text-decoration: none; border-bottom: 3px solid va
     <section class="section">
       <div class="section-header">
         <h2>Unified Global Rank</h2>
-        <p>跨链统一重排。Solana 主发行层 + BNB 映射下游。</p>
+        <p>按官方 1B total supply 口径统一重排。透视跨链控盘结构。</p>
       </div>
       <div class="ledger-wrap">
         <table>
           <thead>
-            <tr><th>Overall Rank</th><th>Chain</th><th>Address Block</th><th>Holding</th><th>Share</th><th>Label / Role</th></tr>
+            <tr><th>Overall Rank</th><th>Chain</th><th>Address Block</th><th>Holding</th><th>Share</th><th>Label / Role</th><th>Relation</th></tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block sol">Gvpm8t...vE4B</a></td><td>317.98M</td><td>31.79%</td><td>Community 主仓</td></tr>
-            <tr><td>2</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block sol">ELoD6e...XLoS</a></td><td>276.62M</td><td>27.66%</td><td>Investors Master</td></tr>
-            <tr><td>3</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block sol">Bv3u7G...jZHH</a></td><td>94.08M</td><td>9.40%</td><td>Ecosystem Master</td></tr>
-            <tr><td>4</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block sol">8G68Pu...cbCe</a></td><td>92.65M</td><td>9.26%</td><td>Team Static Slice</td></tr>
-            <tr><td>5</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block sol">HfXxnd...4fdh</a></td><td>83.39M</td><td>8.33%</td><td>Bridge Store</td></tr>
-            <tr><td>6</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x0350c44e15ada696992d44b13225e0853277adc0" target="_blank" class="addr-block">0x0350...adc0</a></td><td>43.16M</td><td>4.31%</td><td>未标注大户</td></tr>
+            <tr><td>1</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/Gvpm8tjTDofEp86Yeb8vLnPSamPssHtBYSuaRqLgvE4B" target="_blank" class="addr-block">Gvpm8t...vE4B</a></td><td>317.98M</td><td>31.798%</td><td>Community 主仓</td><td>主发行层</td></tr>
+            <tr><td>2</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/ELoD6eKDQAffL63TMQv1VhARj3w5GPgHsvQPE3PYXLoS" target="_blank" class="addr-block">ELoD6e...XLoS</a></td><td>276.62M</td><td>27.662%</td><td>Investors 主锁仓</td><td>主发行层</td></tr>
+            <tr><td>3</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/Bv3u7GRzziLxvojGvDC9Vt1rRwgquLf7KpwobxHEjZHH" target="_blank" class="addr-block">Bv3u7G...jZHH</a></td><td>94.08M</td><td>9.408%</td><td>Ecosystem 主仓</td><td>主发行层</td></tr>
+            <tr><td>4</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/8G68Pu5fy5DmFAZT4wxZ4TBr3oVnemUrwMAYmTitcbCe" target="_blank" class="addr-block">8G68Pu...cbCe</a></td><td>92.65M</td><td>9.265%</td><td>Team 静态分仓</td><td>主发行层</td></tr>
+            <tr><td>5</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/HfXxndwJekWeExQyPgE32dCLLh2QbVrcU3AtE2bL4fdh" target="_blank" class="addr-block">HfXxnd...4fdh</a></td><td>83.39M</td><td>8.339%</td><td>Ecosystem 释放 Vault</td><td>Bridge Store</td></tr>
+            <tr><td>6</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x0350c44e15ada696992d44b13225e0853277adc0" target="_blank" class="addr-block">0x0350...adc0</a></td><td>43.16M</td><td>4.316%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>7</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/14bc3Rse5cVtsnha7iaDPkSaQ62nJiXqaAJ5asDuB6GF" target="_blank" class="addr-block">14bc3R...B6GF</a></td><td>40M</td><td>4.000%</td><td>Team 静态分仓</td><td>主发行层</td></tr>
+            <tr><td>8</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/6pJjJFA69U4YFvwu1wajkLBrP4BoP2ULncBBjKwidLRG" target="_blank" class="addr-block">6pJjJF...dLRG</a></td><td>22.4M</td><td>2.240%</td><td>官方一级分发总控</td><td>主发行层</td></tr>
+            <tr><td>9</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/Bu9sDTKTyqS3RF6udyzgHQdxB562yZKhkBxQYqHd2SQT" target="_blank" class="addr-block">Bu9sDT...2SQT</a></td><td>20M</td><td>2.000%</td><td>Team 静态分仓</td><td>主发行层</td></tr>
+            <tr><td>10</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/5MnWHhe5Bbuq8X6kwU3PCEfBFqJvb2uequxMtnRBHcQx" target="_blank" class="addr-block">5MnWHh...HcQx</a></td><td>20M</td><td>2.000%</td><td>运营 Vault</td><td>主发行层</td></tr>
+            <tr><td>11</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0xc3c74940e878b0e9ac86a12b0125c4df1a8f22d7" target="_blank" class="addr-block">0xc3c7...22d7</a></td><td>10M</td><td>1.000%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>12</td><td><span class="chain-sol">SOL</span></td><td><a href="https://solscan.io/account/HhU4r2WHMV4anKFzMHt4yaEaYxw6Ffgn81T1wnUX7X5M" target="_blank" class="addr-block">HhU4r2...7X5M</a></td><td>9.65M</td><td>0.965%</td><td>Team 二级分发中枢</td><td>主发行层</td></tr>
+            <tr><td>13</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x73d8bd54f7cf5fab43fe4ef40a62d390644946db" target="_blank" class="addr-block">0x73d8...46db</a></td><td>6.9M</td><td>0.690%</td><td>Binance Proxy</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>14</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x5861703aa2c6acd7a3902e5a06f6aedba0eae257" target="_blank" class="addr-block">0x5861...e257</a></td><td>5M</td><td>0.500%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>15</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x5a4c318d66c0cf8ef381320a5d49f8a329414f50" target="_blank" class="addr-block">0x5a4c...4f50</a></td><td>5M</td><td>0.500%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>16</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0xccf4d99cb373e054cc8dbf31dca37b8528ec5b55" target="_blank" class="addr-block">0xccf4...5b55</a></td><td>5M</td><td>0.500%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>17</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x0c4bb5b2a4cff8c035b590da8e0cf650f63f8c61" target="_blank" class="addr-block">0x0c4b...8c61</a></td><td>4.5M</td><td>0.450%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>18</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x238a358808379702088667322f80ac48bad5e6c4" target="_blank" class="addr-block">0x238a...e6c4</a></td><td>1.36M</td><td>0.136%</td><td>Pancake Vault</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>19</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x1026efec22061b9f463b63e75e8b531a76404820" target="_blank" class="addr-block">0x1026...4820</a></td><td>490,624.26</td><td>0.049%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
+            <tr><td>20</td><td><span class="chain-bnb">BNB</span></td><td><a href="https://bscscan.com/address/0x372386969100562870d156b64fe05c26c2adc168" target="_blank" class="addr-block">0x3723...c168</a></td><td>317,418.95</td><td>0.032%</td><td>未标注大户</td><td>BNB 映射流通下游</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note">
-        统一排行全部按官方 1B supply 计算。BNB 行是 Solana bridge slice 的下游流通分布。前 6 个未标注大户合计占映射盘 87%，且整额分仓特征明显。
+        统一排行全部按官方 1B total supply 口径计算。当前最有信息量的是前 6 个未标注大户：它们合计 72.66M PRL，占 BNB 映射盘约 87.07%，而且 10M / 5M / 5M / 5M / 4.5M 的整额分仓与集中出现时间，更像规则化分发。
       </div>
     </section>
 
     <section class="section">
       <div class="section-header">
-        <h2>Intelligence Findings</h2>
-        <p>基于当前结构的四项核心判断。</p>
+        <h2>Market Structure Overall</h2>
+        <p>四句话看完整体结构。</p>
       </div>
       <div class="layer-grid">
-        <div class="layer-card sand">
-          <h3>Solana 主发行层</h3>
-          <p>Top 10 控制 97.68%，更像官方配额地图。</p>
-        </div>
-        <div class="layer-card">
-          <h3>BNB 映射层</h3>
-          <p>83.45M PRL (8.345%)，是映射流通而非新增供应。</p>
-        </div>
-        <div class="layer-card sand">
-          <h3>BNB 大户结构</h3>
-          <p>前 6 个大户占映射盘 87%，更像规则化分发。</p>
-        </div>
-        <div class="layer-card">
-          <h3>基础设施薄弱</h3>
-          <p>DEX 流动性不足 0.1%，滑点风险极高。</p>
-        </div>
-      </div>
-      <div class="note">
-        <strong>核心判断：</strong> 盯死官方配额释放、Solana 到 BNB 的映射分发，以及 BNB 侧那几个规则化分仓的大户流向。
+        <div class="layer-card sand"><h3>Solana 主发行层</h3><p>Top 10 控制 97.68%，这一层更像官方配额地图。</p></div>
+        <div class="layer-card"><h3>BNB 映射层</h3><p>跨链到 BNB 的 PRL 为 83.45M (8.345%)，是映射流通而非新增供应。</p></div>
+        <div class="layer-card sand"><h3>BNB 大户结构</h3><p>BNB 前 6 未标注大户占盘 87.07%，整额分仓特征明显。</p></div>
+        <div class="layer-card"><h3>核心判断</h3><p>盯死官方配额释放、Solana 到 BNB 的映射分发，以及 BNB 侧整额大户的流向。</p></div>
       </div>
     </section>
 
     <footer>
       <div class="footer-left">
-        Fingerprint: <a href="https://github.com/Melroseee-e/data-monitoring" target="_blank">PRL-INTEL-V5-FINAL</a>
+        Source: <a href="https://github.com/Melroseee-e/data-monitoring" target="_blank">93A3AD8-TACTICAL-V2</a>
       </div>
       <div class="footer-right">
         Analysis Terminal © 2026 // GENERATED 06:23:21Z
