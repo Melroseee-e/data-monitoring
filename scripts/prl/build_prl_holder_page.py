@@ -437,10 +437,10 @@ def build_page(data: dict[str, Any], bsc_snapshot: dict[str, Any]) -> str:
     ][:8]
 
     stat_cards = "".join([
+        stat_card("Top 10 Concentration", fmt_pct(summary["top10_share"]), "前十地址当前控制的总量占比。", "blue"),
         stat_card("Official Share", fmt_pct(official_top10_share), "当前已识别官方样仓位。", "sand"),
-        stat_card("Top 10 Share", fmt_pct(summary["top10_share"]), "顶层筹码集中度。", "blue"),
+        stat_card("Whale Share", fmt_num_pct(bsc_core_whale_amount, total_supply, 2), "当前大户主要集中在 BNB 映射层。", "rose"),
         stat_card("BNB Bridged Slice", fmt_num_pct(BSC_TOTAL_SUPPLY, total_supply, 2), "当前映射到 BNB 的总量。", "cool"),
-        stat_card("TGE Unlocked", fmt_num_pct(summary["tge_unlocked_amount"], total_supply, 0), "docs 理论已解锁量。", "rose"),
     ])
 
     tokenomics_rows = []
